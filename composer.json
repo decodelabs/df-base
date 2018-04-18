@@ -1,5 +1,5 @@
 {
-    "name": "decode/df-base",
+    "name": "decodelabs/df-base",
     "description": "Base DF package",
     "type": "library",
     "license": "MIT",
