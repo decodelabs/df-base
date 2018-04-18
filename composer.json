@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-4": {
-            "df\\": "src"
+            "df\\": "libraries/"
         }
     }
 }
