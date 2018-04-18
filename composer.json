@@ -17,10 +17,5 @@
         "psr-4": {
             "df\\": "src/"
         }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.0.x-dev"
-        }
     }
 }
