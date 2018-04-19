@@ -14,8 +14,8 @@ class Composer implements core\ILoader
 {
     public $autoload;
 
-    public $vendorDir;
-    public $baseDir;
+    public $vendorPath;
+    public $basePath;
 
     protected $apexPaths = [];
     protected $libraryPaths = [];
@@ -25,18 +25,18 @@ class Composer implements core\ILoader
         $this->autoload = $autoload;
 
         $reflection = new \ReflectionClass(ClassLoader::class);
-        $this->vendorDir = dirname(dirname($reflection->getFileName()));
-        $this->baseDir = dirname($this->vendorDir);
+        $this->vendorPath = dirname(dirname($reflection->getFileName()));
+        $this->basePath = dirname($this->vendorPath);
     }
 
     public function loadPackages(array $packages): void
     {
-        $this->apexPaths = [$this->baseDir.'/app'];
-        $this->libraryPaths = [$this->baseDir.'/libraries'];
+        $this->apexPaths = [$this->basePath.'/app'];
+        $this->libraryPaths = [$this->basePath.'/libraries'];
 
         foreach (array_reverse($packages) as $package) {
-            $this->apexPaths[] = $this->vendorDir.'/decodelabs/df-'.$package;
-            $this->libraryPaths[] = $this->vendorDir.'/decodelabs/df-'.$package.'/libraries';
+            $this->apexPaths[] = $this->vendorPath.'/decodelabs/df-'.$package;
+            $this->libraryPaths[] = $this->vendorPath.'/decodelabs/df-'.$package.'/libraries';
         }
 
         $this->autoload->setPsr4('df\\apex\\', $this->apexPaths);
