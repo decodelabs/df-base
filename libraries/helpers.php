@@ -12,7 +12,7 @@ define('df\\START', microtime(true));
 function dump(...$vars)
 {
     var_dump(...$vars);
-    echo "\n\n".'<br /><pre class="xdebug-var-dump">Time: <strong>'.number_format(microtime(true) - df\START, 5).'</strong></pre>';
+    echo "\n\n".'<br /><pre class="xdebug-var-dump">Time: <strong>'.number_format((microtime(true) - df\START) * 1000, 2).' ms</strong></pre>';
 
     exit;
 }
