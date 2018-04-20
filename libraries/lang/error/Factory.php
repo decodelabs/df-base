@@ -176,8 +176,10 @@ class Factory
 
         $this->buildDefinitions($interfaces);
 
-        foreach ($this->interfaceDefs as $def) {
-            eval($def);
+        foreach ($this->interfaceDefs as $interface => $def) {
+            if (!interface_exists('\\'.$interface)) {
+                eval($def);
+            }
         }
 
         $hash = md5($this->exceptionDef);
@@ -279,40 +281,36 @@ class Factory
             return null;
         }
 
-        if (!interface_exists($interface, true)) {
-            $output = implode('\\', $parts);
+        $output = implode('\\', $parts);
 
-            if (isset(static::STANDARD[$name])) {
-                $standard = static::STANDARD[$name];
+        if (isset(static::STANDARD[$name])) {
+            $standard = static::STANDARD[$name];
 
-                if (isset($standard['extend'])) {
-                    $standard['extend'] = ['df\\'.$standard['extend']];
-                }
-
-                $this->interfaces[$interface] = $standard;
-
-                if ($this->type === null && isset($standard['type'])) {
-                    $this->type = $standard['type'];
-                }
-
-                if (!isset($this->params['http']) && isset($standard['http'])) {
-                    $this->params['http'] = $standard['http'];
-                }
-            } elseif (!isset($this->interfaces[$interface])) {
-                $this->interfaces[$interface] = [];
+            if (isset($standard['extend'])) {
+                $standard['extend'] = ['df\\'.$standard['extend']];
             }
 
-            if ($name === 'IError') {
-                array_pop($parts);
+            $this->interfaces[$interface] = $standard;
+
+            if ($this->type === null && isset($standard['type'])) {
+                $this->type = $standard['type'];
             }
 
-            $extend = implode('\\', $parts).'\\IError';
-
-            if (count($parts) > 1 && $extend !== 'df\\lang\\error\\IError') {
-                $this->interfaces[$interface]['extend'][] = $extend;
+            if (!isset($this->params['http']) && isset($standard['http'])) {
+                $this->params['http'] = $standard['http'];
             }
-        } else {
-            $this->interfaces[$interface] = null;
+        } elseif (!isset($this->interfaces[$interface])) {
+            $this->interfaces[$interface] = [];
+        }
+
+        if ($name === 'IError') {
+            array_pop($parts);
+        }
+
+        $extend = implode('\\', $parts).'\\IError';
+
+        if (count($parts) > 1) {
+            $this->interfaces[$interface]['extend'][] = $extend;
         }
 
         return $output;
@@ -332,10 +330,6 @@ class Factory
             $first = $parent == 'df';
             $ins = $parent.'\\'.$part;
             $interface = $ins.'\\IError';
-
-            if (interface_exists($interface) || isset($this->interfaces[$interface])) {
-                return;
-            }
 
             $this->listInterface($interface);
             $parent = $ins;
