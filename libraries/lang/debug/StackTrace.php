@@ -15,9 +15,9 @@ class StackTrace implements \IteratorAggregate
     /**
      * Extract trace from exception and build
      */
-    public static function createFromException(\Throwable $e): StackTrace
+    public static function createFromException(\Throwable $e, int $rewind=0): StackTrace
     {
-        return self::createFromBacktrace($e->getTrace(), 0);
+        return self::createFromBacktrace($e->getTrace(), $rewind);
     }
 
     /**
@@ -33,6 +33,8 @@ class StackTrace implements \IteratorAggregate
      */
     public static function createFromBacktrace(array $trace, int $rewind=0): StackTrace
     {
+        $last = null;
+
         if($rewind) {
             if ($rewind > count($trace) - 1) {
                 throw df\Error::EOutOfRange('Stack rewind out of stack call range', [
@@ -43,7 +45,7 @@ class StackTrace implements \IteratorAggregate
                 ]);
             }
 
-            while ($rewind > 0) {
+            while ($rewind >= 0) {
                 $rewind--;
                 $last = array_shift($trace);
             }

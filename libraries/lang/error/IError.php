@@ -6,7 +6,7 @@
 namespace df\lang\error;
 
 use df;
-use df\core;
+use df\lang;
 
 interface IError
 {
@@ -16,6 +16,6 @@ interface IError
     public function setHttpCode(?int $code);
     public function getHttpCode(): ?int;
 
-    //public function getStackCall(): core\debug\IStackCall;
-    //public function getStackTrace(): core\debug\IStackTrace;
+    public function getStackCall(): lang\debug\StackCall;
+    public function getStackTrace(): lang\debug\StackTrace;
 }

@@ -82,19 +82,24 @@ trait TError
         return $this->http;
     }
 
-/*
-    public function getStackCall(): core\debug\IStackCall
+
+    /**
+     * Get first call from trace
+     */
+    public function getStackCall(): lang\debug\StackCall
     {
         return $this->getStackTrace()->getFirstCall();
     }
 
-    public function getStackTrace(): core\debug\IStackTrace
+    /**
+     * Generate a StackTrace object from Exception trace
+     */
+    public function getStackTrace(): lang\debug\StackTrace
     {
-        if (!$this->_stackTrace) {
-            $this->_stackTrace = core\debug\StackTrace::factory($this->_rewind + 1, $this->getTrace());
+        if (!$this->stackTrace) {
+            $this->stackTrace = lang\debug\StackTrace::createFromException($this, $this->rewind + 2);
         }
 
-        return $this->_stackTrace;
+        return $this->stackTrace;
     }
-    */
 }

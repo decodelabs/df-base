@@ -24,6 +24,7 @@ class StackCall
     protected $originFile;
     protected $originLine;
 
+
     /**
      * Generate a new trace and pull out a single call
      * depending on the rewind range
