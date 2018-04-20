@@ -16,7 +16,7 @@ class Error
 {
     const TYPE = null;
 
-    public static function __callStatic(string $method, array $args): lang\error\IError
+    public static function __callStatic(string $method, array $args): IError
     {
         return lang\error\Factory::create(
             static::TYPE,

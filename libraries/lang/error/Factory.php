@@ -124,7 +124,7 @@ class Factory
     /**
      * Generate a context specific, message oriented throwable error
      */
-    public static function create(?string $type, $message, array $params=[], array $interfaces=[]): IError
+    public static function create(?string $type, $message, array $params=[], array $interfaces=[]): df\IError
     {
         if (is_array($message)) {
             $params = $message;
@@ -147,7 +147,7 @@ class Factory
     /**
      * Build exception object
      */
-    protected function build(string $message, array $interfaces): IError
+    protected function build(string $message, array $interfaces): df\IError
     {
         $this->params['rewind'] = $rewind = max((int)($this->params['rewind'] ?? 0), 0);
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $rewind + static::REWIND);
@@ -207,11 +207,6 @@ class Factory
         $directType = null;
         $this->traits[] = 'df\\lang\\error\\TError';
 
-        // Ensure root IError exists
-        if (!interface_exists('\\df\\IError')) {
-            $this->interfaceDefs['df\\IError'] = 'namespace df;interface IError extends \\df\\lang\\error\\IError {};';
-        }
-
         // Create initial interface list
         foreach ($interfaces as $i => $interface) {
             if (false !== strpos($interface, '/')) {
@@ -262,7 +257,7 @@ class Factory
 
         $this->exceptionDef .= ' {';
 
-        foreach ($this->traits as $trait) {
+        foreach (array_unique($this->traits) as $trait) {
             $this->exceptionDef .= 'use '.$trait.';';
         }
 

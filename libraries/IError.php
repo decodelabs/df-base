@@ -3,7 +3,7 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\lang\error;
+namespace df;
 
 use df;
 use df\lang;

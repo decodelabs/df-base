@@ -18,7 +18,7 @@ function dump(...$vars)
 }
 
 
-function Error($message, array $params=[], array $interfaces=[]): lang\error\IError
+function Error($message, array $params=[], array $interfaces=[]): IError
 {
     return lang\error\Factory::create(
         null,
