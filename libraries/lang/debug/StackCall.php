@@ -33,7 +33,7 @@ class StackCall
         $data = debug_backtrace();
 
         if ($rewind >= count($data) - 1) {
-            throw df\Error::EOutOfRange('Out of stack call range');
+            throw df\Error::EOutOfRange('Stack rewind of stack call range');
         }
 
         if ($rewind) {
@@ -57,10 +57,7 @@ class StackCall
      */
     public function __construct(array $call)
     {
-        if (isset($call['fromFile']) && $call['fromFile'] !== ($call['file'] ?? null)) {
-            $this->callingFile = $call['fromFile'];
-        }
-
+        $this->callingFile = $call['fromFile'] ?? null;
         $this->callingLine = $call['fromLine'] ?? null;
         $this->originFile = $call['file'] ?? null;
         $this->originLine = $call['line'] ?? null;
@@ -363,11 +360,7 @@ class StackCall
      */
     public function getCallingFile(): ?string
     {
-        if ($this->callingFile !== null) {
-            return $this->callingFile;
-        }
-
-        return $this->originFile;
+        return $this->callingFile;
     }
 
     /**
@@ -375,11 +368,7 @@ class StackCall
      */
     public function getCallingLine(): ?int
     {
-        if ($this->callingLine !== null) {
-            return $this->callingLine;
-        }
-
-        return $this->originLine;
+        return $this->callingLine;
     }
 
 
