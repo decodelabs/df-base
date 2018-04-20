@@ -42,13 +42,13 @@ class Handler
 
         $cloner = new Cloner\VarCloner();
 
+        /*
         $cloner->addCasters([
-            /*
-            'Exception' => function ($object, $array, Cloner\Stub $stub, $isNested, $filter) {
+            'test' => function ($object, $array, Cloner\Stub $stub, $isNested, $filter) {
                 return $array;
             }
-            */
         ]);
+        */
 
         $dumper->dump($cloner->cloneVar($var));
     }
