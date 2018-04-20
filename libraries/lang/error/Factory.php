@@ -124,11 +124,19 @@ class Factory
     /**
      * Generate a context specific, message oriented throwable error
      */
-    public static function create(?string $type, $message, array $params=[], array $interfaces=[]): df\IError
+    public static function create(?string $type, array $interfaces=[], $message, ?array $params=[], $data=null): df\IError
     {
         if (is_array($message)) {
             $params = $message;
             $message = $message['message'] ?? 'Undefined error';
+        }
+
+        if($params === null) {
+            $params = [];
+        }
+
+        if($data !== null) {
+            $params['data'] = $data;
         }
 
         return (new self($type, $params))

@@ -44,13 +44,14 @@ namespace df
     /**
      * Direct facade for generating IError based exceptions
      */
-    function Error($message, array $params=[], array $interfaces=[]): IError
+    function Error($message, ?array $params=[], $data=null): IError
     {
         return lang\error\Factory::create(
             null,
+            [],
             $message,
             $params,
-            $interfaces
+            $data
         );
     }
 }

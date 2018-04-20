@@ -20,9 +20,8 @@ class Error
     {
         return lang\error\Factory::create(
             static::TYPE,
-            $args[0] ?? null,
-            $args[1] ?? [],
-            explode(',', $method)
+            explode(',', $method),
+            ...$args
         );
     }
 
