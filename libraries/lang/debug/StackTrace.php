@@ -148,4 +148,26 @@ class StackTrace implements \IteratorAggregate
             return $call->toArray();
         }, $this->calls);
     }
+
+
+
+    /**
+     * Debug info
+     */
+    public function __debugInfo(): array
+    {
+        $output = [];
+        $calls = $this->getCalls();
+        $count = count($calls);
+
+        foreach($calls as $i => $call) {
+            if($i === 0) {
+                $output[($count + 1).': df\\Error()'] = $call->getFile().' : '.$call->getLine();
+            }
+
+            $output[($count - $i).': '.$call->getSignature(true)] = $call->getCallingFile().' : '.$call->getCallingLine();
+        }
+
+        return $output;
+    }
 }

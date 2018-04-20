@@ -141,19 +141,7 @@ trait TError
 
 
         // Trace
-        $trace = [];
-        $calls = $this->getStackTrace()->getCalls();
-        $count = count($calls);
-
-        foreach($calls as $i => $call) {
-            if($i === 0) {
-                $trace[($count + 1).': df\\Error()'] = $call->getFile().' : '.$call->getLine();
-            }
-
-            $trace[($count - $i).': '.$call->getSignature(true)] = $call->getCallingFile().' : '.$call->getCallingLine();
-        }
-
-        $output['trace'] = $trace;
+        $output['trace'] = $this->getStackTrace();
 
         return $output;
     }
