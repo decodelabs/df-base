@@ -16,13 +16,7 @@ namespace
          */
         function dd(...$vars): void
         {
-            http_response_code(500);
-
-            foreach ($vars as $var) {
-                df\lang\debug\dumper\Handler::dump($var);
-            }
-
-            die(1);
+            df\lang\debug\dumper\Handler::dump(...$vars);
         }
     }
 }
@@ -42,15 +36,9 @@ namespace df
     /**
      * Quick dump
      */
-    function dump(): void
+    function dump(...$vars): void
     {
-        http_response_code(500);
-
-        foreach ($vars as $var) {
-            df\lang\debug\dumper\Handler::dump($var);
-        }
-
-        die(1);
+        df\lang\debug\dumper\Handler::dump(...$vars);
     }
 
     /**
