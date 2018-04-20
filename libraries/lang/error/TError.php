@@ -102,4 +102,59 @@ trait TError
 
         return $this->stackTrace;
     }
+
+
+
+    /**
+     * Get debug info
+     */
+    public function __debugInfo(): array
+    {
+        $output = [
+            'message' => $this->message,
+            'code' => $this->code
+        ];
+
+
+        // Http
+        if($this->http !== null) {
+            $output['http'] = $this->http;
+        }
+
+
+        // Data
+        if($this->data !== null) {
+            $output['data'] = $this->data;
+        }
+
+
+        // Types
+        $types = [];
+        $class = new \ReflectionClass($this);
+
+        while ($class = $class->getParentClass())
+        {
+            $types[] = $class->getName();
+        }
+
+        $output['types'] = array_merge($types, array_values(class_implements($this)));
+
+
+        // Trace
+        $trace = [];
+        $calls = $this->getStackTrace()->getCalls();
+        $count = count($calls);
+
+        foreach($calls as $i => $call) {
+            if($i === 0) {
+                $trace[($count + 1).': df\\Error()'] = $call->getFile().' : '.$call->getLine();
+            }
+
+            $trace[($count - $i).': '.$call->getSignature(true)] = $call->getCallingFile().' : '.$call->getCallingLine();
+        }
+
+        $output['trace'] = $trace;
+
+        return $output;
+    }
 }

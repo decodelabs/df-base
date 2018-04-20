@@ -3,27 +3,66 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df;
 
-use df;
 
-define('df\\START', microtime(true));
-
-function dump(...$vars)
+/**
+ * global helpers
+ */
+namespace
 {
-    var_dump(...$vars);
-    echo "\n\n".'<br /><pre class="xdebug-var-dump">Time: <strong>'.number_format((microtime(true) - df\START) * 1000, 2).' ms</strong></pre>';
+    if (!function_exists('dd')) {
+        /**
+         * Super quick global dump
+         */
+        function dd(...$vars): void
+        {
+            http_response_code(500);
 
-    exit;
+            foreach ($vars as $var) {
+                df\lang\debug\dumper\Handler::dump($var);
+            }
+
+            die(1);
+        }
+    }
 }
 
 
-function Error($message, array $params=[], array $interfaces=[]): IError
+/**
+ * df helper
+ */
+namespace df
 {
-    return lang\error\Factory::create(
-        null,
-        $message,
-        $params,
-        $interfaces
-    );
+
+    use df;
+    use df\lang;
+
+    define('df\\START', microtime(true));
+
+    /**
+     * Quick dump
+     */
+    function dump(): void
+    {
+        http_response_code(500);
+
+        foreach ($vars as $var) {
+            df\lang\debug\dumper\Handler::dump($var);
+        }
+
+        die(1);
+    }
+
+    /**
+     * Direct facade for generating IError based exceptions
+     */
+    function Error($message, array $params=[], array $interfaces=[]): IError
+    {
+        return lang\error\Factory::create(
+            null,
+            $message,
+            $params,
+            $interfaces
+        );
+    }
 }
