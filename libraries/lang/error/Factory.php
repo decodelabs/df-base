@@ -363,7 +363,13 @@ class Factory
                     unset($this->interfaces[$extend]);
                     $this->defineInterface($extend, $inner);
                 } elseif (isset(static::STANDARD[$name])) {
-                    $this->defineInterface($extend, static::STANDARD[$name]);
+                    $standard = static::STANDARD[$name];
+
+                    if (isset($standard['extend'])) {
+                        $standard['extend'] = ['df\\'.$standard['extend']];
+                    }
+
+                    $this->defineInterface($extend, $standard);
                 }
             }
 
