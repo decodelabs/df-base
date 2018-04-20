@@ -10,7 +10,7 @@ use df\core;
 
 use Composer\Autoload\ClassLoader;
 
-class Composer implements core\ILoader
+class Composer implements ILoader
 {
     public $autoload;
 
