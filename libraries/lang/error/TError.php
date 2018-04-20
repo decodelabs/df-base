@@ -112,14 +112,9 @@ trait TError
     {
         $output = [
             'message' => $this->message,
-            'code' => $this->code
+            'code' => $this->code,
+            'http' => $this->http
         ];
-
-
-        // Http
-        if($this->http !== null) {
-            $output['http'] = $this->http;
-        }
 
 
         // Data
