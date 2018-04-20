@@ -35,7 +35,7 @@ class StackTrace implements \IteratorAggregate
     {
         $last = null;
 
-        if($rewind) {
+        if ($rewind) {
             if ($rewind > count($trace) - 1) {
                 throw df\Error::EOutOfRange('Stack rewind out of stack call range', [
                     'data' => [
@@ -88,7 +88,7 @@ class StackTrace implements \IteratorAggregate
             $this->calls[] = $call;
         }
 
-        if(empty($this->calls)) {
+        if (empty($this->calls)) {
             throw df\Error::EUnderflow('Stack trace is empty');
         }
     }
@@ -144,7 +144,7 @@ class StackTrace implements \IteratorAggregate
      */
     public function toArray(): array
     {
-        return array_map(function($call) {
+        return array_map(function ($call) {
             return $call->toArray();
         }, $this->calls);
     }
@@ -160,8 +160,8 @@ class StackTrace implements \IteratorAggregate
         $calls = $this->getCalls();
         $count = count($calls);
 
-        foreach($calls as $i => $call) {
-            if($i === 0) {
+        foreach ($calls as $i => $call) {
+            if ($i === 0) {
                 $output[($count + 1).': df\\Error()'] = $call->getFile().' : '.$call->getLine();
             }
 

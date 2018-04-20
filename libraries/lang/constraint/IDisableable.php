@@ -8,7 +8,6 @@ namespace df\lang\constraint;
 use df;
 use df\lang;
 
-
 interface IDisableable
 {
     public function isDisabled(): bool;

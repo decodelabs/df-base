@@ -131,11 +131,11 @@ class Factory
             $message = $message['message'] ?? 'Undefined error';
         }
 
-        if($params === null) {
+        if ($params === null) {
             $params = [];
         }
 
-        if($data !== null) {
+        if ($data !== null) {
             $params['data'] = $data;
         }
 

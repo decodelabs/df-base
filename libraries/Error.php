@@ -25,5 +25,7 @@ class Error
         );
     }
 
-    private function __construct() {}
+    private function __construct()
+    {
+    }
 }

@@ -8,7 +8,6 @@ namespace df\lang\error;
 use df;
 use df\lang;
 
-
 /**
  * Main root exception inheritance
  * This trait is automatically rolled into the generated exception
@@ -118,7 +117,7 @@ trait TError
 
 
         // Data
-        if($this->data !== null) {
+        if ($this->data !== null) {
             $output['data'] = $this->data;
         }
 
@@ -127,8 +126,7 @@ trait TError
         $types = [];
         $class = new \ReflectionClass($this);
 
-        while ($class = $class->getParentClass())
-        {
+        while ($class = $class->getParentClass()) {
             $types[] = $class->getName();
         }
 
