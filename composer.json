@@ -15,8 +15,7 @@
         "symfony/polyfill-php72": "~1.5",
         "psr/container": "^1.0",
 
-        "symfony/var-dumper": "~4.0",
-        "vlucas/phpdotenv": "~2.2"
+        "symfony/var-dumper": "~4.0"
     },
     "autoload": {
         "psr-4": {
