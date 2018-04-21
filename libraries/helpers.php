@@ -39,7 +39,19 @@ namespace df
      */
     function dump(...$vars): void
     {
-        df\lang\debug\dumper\Handler::dump(...$vars);
+        lang\debug\dumper\Handler::dump(...$vars);
+    }
+
+    /**
+     * Cry about a method not being complete
+     */
+    function incomplete(): void
+    {
+        $call = lang\debug\StackCall::create(1);
+
+        throw df\Error::EImplementation(
+            $call->getSignature().' has not been completed yet!'
+        );
     }
 
     /**
