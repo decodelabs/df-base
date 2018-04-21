@@ -10,7 +10,7 @@ use df;
 use df\data;
 
 
-trait TTHashMap
+trait THashMap
 {
     /**
      * Get all keys in array, enforce string formatting

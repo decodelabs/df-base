@@ -12,7 +12,9 @@ use df\data;
 trait TMutableHashMap
 {
     use TReadable;
-    use THashMap;
+    use THashMap {
+        THashMap::getKeys insteadof TReadable;
+    }
     use TMutableSortable;
 
     /**
