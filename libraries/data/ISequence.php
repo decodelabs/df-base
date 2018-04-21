@@ -3,7 +3,7 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\data\subLib;
+namespace df\data;
 
 use df;
 use df\data;
@@ -15,15 +15,19 @@ interface ISequence extends ICollection
     public function pull(int $key);
     public function set(int $key, $value): ISequence;
     public function has(int ...$keys): bool;
-    public function hasAny(int ...$keys): bool;
+    public function hasAll(int ...$keys): bool;
     public function hasKey(int ...$keys): bool;
-    public function hasAnyKey(int ...$keys): bool;
+    public function hasKeys(int ...$keys): bool;
     public function remove(int ...$keys): ISequence;
+    public function keep(int ...$keys): ISequence;
+
+    public function findKey($value, bool $strict=false): ?int;
 
     public function clear(): ISequence;
     public function clearKeys(): ISequence;
 
-    public function collapse(): ISequence;
+    public function collapse(bool $unique=false, bool $removeNull=false): ISequence;
+    public function collapseValues(bool $unique=false, bool $removeNull=false): ISequence;
 
     public function pop();
     public function shift();
