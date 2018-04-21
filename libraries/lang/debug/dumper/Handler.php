@@ -65,7 +65,7 @@ class Handler
             $dumper = new HtmlDumper();
 
             $dumper->setDisplayOptions([
-                'maxDepth' => 3
+                'maxDepth' => 10
             ]);
         }
 
