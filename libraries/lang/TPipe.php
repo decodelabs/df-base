@@ -26,7 +26,7 @@ trait TPipe
      */
     public function pipeEach(array $values, callable $callback): IPipe
     {
-        foreach($values as $key => $value) {
+        foreach ($values as $key => $value) {
             $callback($this, $value, $key);
         }
 
