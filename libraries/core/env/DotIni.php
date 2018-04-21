@@ -8,9 +8,12 @@ namespace df\core\env;
 
 use df;
 use df\core;
+use df\lang;
 
-class DotIni implements IConfig
+class DotIni implements IConfig, lang\IPipe
 {
+    use lang\TPipe;
+
     protected $data = [];
 
     /**
