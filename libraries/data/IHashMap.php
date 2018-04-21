@@ -8,8 +8,7 @@ namespace df\data;
 use df;
 use df\data;
 
-
-interface IHashMap extends IReadable
+interface IHashMap extends IReadable, ISortable
 {
     public function get(string $key);
     public function pull(string $key);

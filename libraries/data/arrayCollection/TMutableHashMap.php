@@ -12,6 +12,7 @@ use df\data;
 trait TMutableHashMap
 {
     use TReadable;
+    use TMutableSortable;
 
     /**
      * Get all keys in array, enforce string formatting

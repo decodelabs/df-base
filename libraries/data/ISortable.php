@@ -19,13 +19,14 @@ interface ISortable
 
     public function sortValues(int $flags=\SORT_REGULAR): ISortable; // sort
     public function reverseSortValues(int $flags=\SORT_REGULAR): ISortable; // rsort
-    public function sortValuesBy(callable $callback, int $flags=\SORT_REGULAR): ISortable; // usort
+    public function sortValuesBy(callable $callback): ISortable; // usort
 
     public function sortKeys(int $flags=\SORT_REGULAR): ISortable; // ksort
     public function reverseSortKeys(int $flags=\SORT_REGULAR): ISortable; // krsort
-    public function sortKeysBy(callable $callback, int $flags=\SORT_REGULAR): ISortable; // uksort
+    public function sortKeysBy(callable $callback): ISortable; // uksort
 
     public function reverse(): ISortable; // array_reverse
+    public function reverseValues(): ISortable; // array_reverse
     public function shuffle(): ISortable; // kshuffle
     public function shuffleValues(): ISortable; // shuffle
 }
