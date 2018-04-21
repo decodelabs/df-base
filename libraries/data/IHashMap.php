@@ -3,27 +3,31 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\data\subLib;
+namespace df\data;
 
 use df;
 use df\data;
 
 
-interface IHashMap extends ICollection
+interface IHashMap extends IReadable
 {
     public function get(string $key);
     public function pull(string $key);
     public function set(string $key, $value): IHashMap;
     public function has(string ...$keys): bool;
-    public function hasAny(string ...$keys): bool;
+    public function hasAll(string ...$keys): bool;
     public function hasKey(string ...$keys): bool;
-    public function hasAnyKey(string ...$keys): bool;
+    public function hasKeys(string ...$keys): bool;
     public function remove(string ...$keys): IHashMap;
+    public function keep(string ...$keys): IHashMap;
+
+    public function findKey($value, bool $strict=false): ?string;
 
     public function clear(): IHashMap;
     public function clearKeys(): IHashMap;
 
-    public function collapse(): IHashMap;
+    public function collapse(bool $unique=false, bool $removeNull=false): IHashMap;
+    public function collapseValues(bool $unique=false, bool $removeNull=false): IHashMap;
 
     public function pop();
     public function shift();
@@ -49,6 +53,4 @@ interface IHashMap extends ICollection
 
     public function walk(callable $callback, $data=null): IHashMap;
     public function walkRecursive(callable $callback, $data=null): IHashMap;
-
-    public function createByMap(array $keys, callable $callback): IHashMap;
 }

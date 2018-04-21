@@ -7,21 +7,22 @@ namespace df\data;
 
 use df;
 use df\data;
+use df\lang;
 
 /**
  * All methods returning IReadable MUST be immutable,
  * regardless of whether implementation is mutable
  */
-interface IReadable extends ICollection, \Countable
+interface IReadable extends ICollection, \Countable, lang\IPipe
 {
-    public function getFirst();
-    public function getLast();
+    public function getFirst(callable $filter=null);
+    public function getLast(callable $filter=null);
     public function getRandom();
 
     public function getKeys(): IReadable;
 
-    public function contains($value, bool $string=false): bool;
-    public function searchKey($value, bool $string=false);
+    public function contains($value, bool $strict=false): bool;
+    public function containsRecursive($value, bool $strict=false): bool;
 
     public function getSlice(int $offset, int $length=null): IReadable;
     public function getRandomSlice(int $number): IReadable;
@@ -49,13 +50,14 @@ interface IReadable extends ICollection, \Countable
     public function intersectKeys(iterable ...$arrays): IReadable; // array_intersect_key
     public function intersectKeysBy(callable $keyCallback, iterable ...$arrays): IReadable; // array_intersect_ukey
 
-    public function filter(callable $callback): IReadable;
+    public function filter(callable $callback=null): IReadable;
     public function map(callable $callback, iterable ...$arrays): IReadable;
+    public function mapSelf(callable $callback): IReadable;
     public function reduce(callable $callback, $initial=null);
 
-    public function getProduct(callable $filter=null): float;
-    public function getSum(callable $filter=null): float;
-    public function getAvg(callable $filter=null): float;
+    public function getSum(callable $filter=null);
+    public function getProduct(callable $filter=null);
+    public function getAvg(callable $filter=null);
 
     public function pluck(string $valueKey, string $indexKey=null): IReadable;
 }

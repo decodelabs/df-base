@@ -8,11 +8,11 @@ namespace df\data;
 use df;
 use df\data;
 
-interface ICollection extends \Iterable, IArrayProvider
+interface ICollection extends \Traversable, IArrayProvider
 {
     public function isEmpty(): bool;
 
-    public function isMutable(): ICollection;
+    public function isMutable(): bool;
 
     public function ensureMutable(): ICollection;
     public function ensureImmutable(): ICollection;
