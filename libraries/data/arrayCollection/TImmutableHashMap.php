@@ -12,8 +12,10 @@ use df\data;
 trait TImmutableHashMap
 {
     use TReadable;
-    use THashMap;
     use TMutableSortable;
+    use THashMap {
+        THashMap::getKeys insteadof TReadable;
+    }
 
     /**
      * Can the values in this collection change?
@@ -29,11 +31,7 @@ trait TImmutableHashMap
      */
     public function pull(string $key)
     {
-        if (isset($this->items[$key])) {
-            return $this->items[$key];
-        }
-
-        return null;
+        return $this->items[$key] ?? null;
     }
 
     /**
@@ -61,7 +59,8 @@ trait TImmutableHashMap
     /**
      * Remove all values not associated with $keys
      */
-    public function keep(string ...$keys): data\IHashMap {
+    public function keep(string ...$keys): data\IHashMap
+    {
         $output = $this->copyImmutable();
         $output->items = array_intersect_key($output->items, array_flip($keys));
         return $output;
@@ -174,7 +173,7 @@ trait TImmutableHashMap
     public function fill($value): data\IHashMap
     {
         $output = $this->copyImmutable();
-        $output->items = array_fill(array_keys($output->items), $value);
+        $output->items = array_fill_keys(array_keys($output->items), $value);
         return $output;
     }
 

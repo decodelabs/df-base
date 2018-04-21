@@ -198,7 +198,7 @@ class Arr
         }
 
         if (!$iterable instanceof \Traversable) {
-            $iterable = function() use($iterable) {
+            $iterable = function () use ($iterable) {
                 yield from $iterable;
             };
         }
@@ -211,7 +211,7 @@ class Arr
      */
     public static function iterablesToArrays(iterable ...$iterables): array
     {
-        foreach($iterables as $i => $iterable) {
+        foreach ($iterables as $i => $iterable) {
             $iterables[$i] = self::iterableToArray($iterable);
         }
 
@@ -228,7 +228,7 @@ class Arr
         }
 
         foreach ($array as $item) {
-            if(is_iterable($item)) {
+            if (is_iterable($item)) {
                 $item = self::iterableToArray($item);
 
                 if (self::inArrayRecursive($value, $item, $strict)) {

@@ -12,10 +12,10 @@ use df\data;
 trait TMutableHashMap
 {
     use TReadable;
+    use TMutableSortable;
     use THashMap {
         THashMap::getKeys insteadof TReadable;
     }
-    use TMutableSortable;
 
     /**
      * Can the values in this collection change?
@@ -62,7 +62,8 @@ trait TMutableHashMap
     /**
      * Remove all values not associated with $keys
      */
-    public function keep(string ...$keys): data\IHashMap {
+    public function keep(string ...$keys): data\IHashMap
+    {
         $this->items = array_intersect_key($this->items, array_flip($keys));
         return $this;
     }
@@ -70,7 +71,7 @@ trait TMutableHashMap
 
 
     /**
-     *
+     * Reset all values
      */
     public function clear(): data\IHashMap
     {
@@ -79,7 +80,7 @@ trait TMutableHashMap
     }
 
     /**
-     *
+     * Remove all keys
      */
     public function clearKeys(): data\IHashMap
     {
@@ -164,7 +165,7 @@ trait TMutableHashMap
      */
     public function fill($value): data\IHashMap
     {
-        $this->items = array_fill(array_keys($this->items), $value);
+        $this->items = array_fill_keys(array_keys($this->items), $value);
         return $this;
     }
 

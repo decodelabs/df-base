@@ -9,7 +9,6 @@ namespace df\data\arrayCollection;
 use df;
 use df\data;
 
-
 trait THashMap
 {
     /**
@@ -26,11 +25,7 @@ trait THashMap
      */
     public function get(string $key)
     {
-        if (isset($this->items[$key])) {
-            return $this->items[$key];
-        }
-
-        return null;
+        return $this->items[$key] ?? null;
     }
 
 
