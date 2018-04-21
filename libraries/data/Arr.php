@@ -3,6 +3,7 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
+declare(strict_types=1);
 namespace df\data;
 
 use df;
@@ -141,7 +142,7 @@ class Arr
     /**
      * Get random subset from array
      */
-    public static function sliceRandom(array $array, int $number): array
+    public static function getRandomSlice(array $array, int $number): array
     {
         $count = count($array);
 
