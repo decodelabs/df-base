@@ -8,7 +8,7 @@ namespace df\data;
 use df;
 use df\data;
 
-interface ICollection extends \Traversable, IArrayProvider
+interface ICollection extends \Traversable, \ArrayAccess, IArrayProvider
 {
     public function isEmpty(): bool;
 

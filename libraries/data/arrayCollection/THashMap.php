@@ -97,4 +97,40 @@ trait THashMap
 
         return (string)$key;
     }
+
+
+
+    /**
+     * Set by array access
+     */
+    public function offsetSet($key, $value)
+    {
+        $this->items[$key] = $value;
+        return $this;
+    }
+
+    /**
+     * Get by array access
+     */
+    public function offsetGet($key)
+    {
+        return $this->items[$key] ?? null;
+    }
+
+    /**
+     * Check by array access
+     */
+    public function offsetExists($key)
+    {
+        return isset($this->items[$key]);
+    }
+
+    /**
+     * Remove by array access
+     */
+    public function offsetUnset($key)
+    {
+        unset($this->items[$key]);
+        return $this;
+    }
 }
