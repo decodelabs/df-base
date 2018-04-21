@@ -14,7 +14,7 @@ class Arr
     /**
      * Collapse multi-dimensional collections to flat array
      */
-    public static function collapse(iterable $data, bool $unique=false, bool $removeNull=false): array
+    public static function collapse(iterable $data, bool $keepKeys=true, bool $unique=false, bool $removeNull=false): array
     {
         $output = [];
         $sort = SORT_STRING;
@@ -38,7 +38,7 @@ class Arr
                     $sort = SORT_REGULAR;
                 }
 
-                if (is_string($key)) {
+                if ($keepKeys && is_string($key)) {
                     $output[$key] = $value;
                 } else {
                     $output[] = $value;
@@ -65,7 +65,7 @@ class Arr
     /**
      * Generator, scanning all non-container nodes
      */
-    public static function scanLeaves(iterable $data, bool $removeNull=false): \Generator
+    public static function scanValues(iterable $data, bool $removeNull=false): \Generator
     {
         foreach ($data as $key => $value) {
             if ($isIterable = is_iterable($value)) {
@@ -102,10 +102,10 @@ class Arr
     /**
      * Get first of a collection
      */
-    public static function getFirst(iterable $data, callable $filter=null)
+    public static function getFirst(iterable $data, callable $filter=null, object $callbackTarget=null)
     {
         foreach ($data as $key => $item) {
-            if ($filter !== null && !$filter($item, $key)) {
+            if ($filter !== null && !$filter($item, $key, $callbackTarget)) {
                 continue;
             }
 
@@ -118,13 +118,13 @@ class Arr
     /**
      * Get last item in an array
      */
-    public static function getLast(array $array, callable $filter=null)
+    public static function getLast(array $array, callable $filter=null, object $callbackTarget=null)
     {
         if (!$filter) {
             return end($array);
         }
 
-        return self::getFirst(array_reverse($array, true), $filter);
+        return self::getFirst(array_reverse($array, true), $filter, $callbackTarget);
     }
 
     /**
@@ -132,7 +132,7 @@ class Arr
      */
     public static function getRandom(array $array)
     {
-        if(empty($array)) {
+        if (empty($array)) {
             throw df\Error::EUnderflow('Cannot pick random, array is empty');
         }
 
@@ -146,15 +146,15 @@ class Arr
     {
         $count = count($array);
 
-        if($number < 1) {
+        if ($number < 1) {
             return [];
         }
 
-        if($number > $count) {
+        if ($number > $count) {
             throw df\Error::EUnderflow('Cannot random slice '.$number.' items, only '.$count.' items in array');
         }
 
-        return self::intersectKeys($array, array_rand($array, $number));
+        return self::intersectKeys($array, (array)array_rand($array, $number));
     }
 
     /**
@@ -162,7 +162,9 @@ class Arr
      */
     public static function kshuffle(array $array): array
     {
-        uksort($array, function() { return rand() > getrandmax() / 2; });
+        uksort($array, function () {
+            return rand() > getrandmax() / 2;
+        });
         return $array;
     }
 
@@ -182,6 +184,61 @@ class Arr
         return array_filter($array, $filter, ARRAY_FILTER_USE_BOTH);
     }
 
+    /**
+     * Convert iterable to array
+     */
+    public static function iterableToArray(iterable $iterable): array
+    {
+        if (is_array($iterable)) {
+            return $iterable;
+        }
+
+        if ($iterable instanceof \JsonSerializable) {
+            return $iterable->jsonSerialize();
+        }
+
+        if (!$iterable instanceof \Traversable) {
+            $iterable = function() use($iterable) {
+                yield from $iterable;
+            };
+        }
+
+        return iterator_to_array($iterable);
+    }
+
+    /**
+     * Convert list of iterables to arrays
+     */
+    public static function iterablesToArrays(iterable ...$iterables): array
+    {
+        foreach($iterables as $i => $iterable) {
+            $iterables[$i] = self::iterableToArray($iterable);
+        }
+
+        return $iterables;
+    }
+
+    /**
+     * Multi dimensional in_array
+     */
+    public static function inArrayRecursive($value, array $array, bool $strict=false): bool
+    {
+        if (in_array($value, $array, $strict)) {
+            return true;
+        }
+
+        foreach ($array as $item) {
+            if(is_iterable($item)) {
+                $item = self::iterableToArray($item);
+
+                if (self::inArrayRecursive($value, $item, $strict)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Re-coding of var_export for tidiness
