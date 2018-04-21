@@ -9,7 +9,7 @@ namespace df\data\arrayCollection;
 use df;
 use df\data;
 
-trait TMutableHashMap
+trait TImmutableHashMap
 {
     use TReadable;
     use THashMap;
@@ -20,19 +20,17 @@ trait TMutableHashMap
      */
     public function isMutable(): bool
     {
-        return true;
+        return false;
     }
 
 
     /**
-     * Retrieve entry and remove from collection
+     * In an immutable collection, pull is the same as get
      */
     public function pull(string $key)
     {
         if (isset($this->items[$key])) {
-            $output = $this->items[$key];
-            unset($this->items[$key]);
-            return $output;
+            return $this->items[$key];
         }
 
         return null;
@@ -43,9 +41,11 @@ trait TMutableHashMap
      */
     public function set(string $key, $value): data\IHashMap
     {
-        $this->items[$key] = $value;
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items[$key] = $value;
+        return $output;
     }
+
 
 
     /**
@@ -53,16 +53,18 @@ trait TMutableHashMap
      */
     public function remove(string ...$keys): data\IHashMap
     {
-        $this->items = array_diff_key($this->items, array_flip($keys));
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_diff_key($output->items, array_flip($keys));
+        return $output;
     }
 
     /**
      * Remove all values not associated with $keys
      */
     public function keep(string ...$keys): data\IHashMap {
-        $this->items = array_intersect_key($this->items, array_flip($keys));
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_intersect_key($output->items, array_flip($keys));
+        return $output;
     }
 
 
@@ -72,8 +74,9 @@ trait TMutableHashMap
      */
     public function clear(): data\IHashMap
     {
-        $this->items = [];
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = [];
+        return $output;
     }
 
     /**
@@ -81,8 +84,9 @@ trait TMutableHashMap
      */
     public function clearKeys(): data\IHashMap
     {
-        $this->items = array_values($this->items);
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_values($output->items);
+        return $output;
     }
 
 
@@ -91,8 +95,9 @@ trait TMutableHashMap
      */
     public function collapse(bool $unique=false, bool $removeNull=false): data\IHashMap
     {
-        $this->items = data\Arr::collapse($this->items, true, $unique, $removeNull);
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = data\Arr::collapse($output->items, true, $unique, $removeNull);
+        return $output;
     }
 
     /**
@@ -100,8 +105,9 @@ trait TMutableHashMap
      */
     public function collapseValues(bool $unique=false, bool $removeNull=false): data\IHashMap
     {
-        $this->items = data\Arr::collapse($this->items, false, $unique, $removeNull);
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = data\Arr::collapse($output->items, false, $unique, $removeNull);
+        return $output;
     }
 
 
@@ -110,7 +116,7 @@ trait TMutableHashMap
      */
     public function pop()
     {
-        return array_pop($this->items);
+        return $this->getLast();
     }
 
     /**
@@ -118,7 +124,7 @@ trait TMutableHashMap
      */
     public function shift()
     {
-        return array_shift($this->items);
+        return $this->getFirst();
     }
 
 
@@ -127,8 +133,9 @@ trait TMutableHashMap
      */
     public function changeKeyCase(int $case=CASE_LOWER): data\IHashMap
     {
-        $this->items = array_change_key_case($this->items, $case);
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_change_key_case($output->items, $case);
+        return $output;
     }
 
 
@@ -137,11 +144,13 @@ trait TMutableHashMap
      */
     public function combineWithKeys(iterable $keys): data\IHashMap
     {
-        if (false !== ($result = array_combine(data\Arr::iterableToArray($keys), $this->items))) {
-            $this->items = $result;
+        $output = $this->copyImmutable();
+
+        if (false !== ($result = array_combine(data\Arr::iterableToArray($keys), $output->items))) {
+            $output->items = $result;
         }
 
-        return $this;
+        return $output;
     }
 
     /**
@@ -149,11 +158,13 @@ trait TMutableHashMap
      */
     public function combineWithValues(iterable $values): data\IHashMap
     {
-        if (false !== ($result = array_combine($this->items, data\Arr::iterableToArray($values)))) {
-            $this->items = $result;
+        $output = $this->copyImmutable();
+
+        if (false !== ($result = array_combine($output->items, data\Arr::iterableToArray($values)))) {
+            $output->items = $result;
         }
 
-        return $this;
+        return $output;
     }
 
 
@@ -162,8 +173,9 @@ trait TMutableHashMap
      */
     public function fill($value): data\IHashMap
     {
-        $this->items = array_fill(array_keys($this->items), $value);
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_fill(array_keys($output->items), $value);
+        return $output;
     }
 
     /**
@@ -171,8 +183,9 @@ trait TMutableHashMap
      */
     public function flip(): data\IHashMap
     {
-        $this->items = array_flip($this->items);
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_flip($output->items);
+        return $output;
     }
 
 
@@ -181,8 +194,9 @@ trait TMutableHashMap
      */
     public function merge(iterable ...$arrays): data\IHashMap
     {
-        $this->items = array_merge($this->items, ...data\Arr::iterablesToArrays(...$arrays));
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_merge($output->items, ...data\Arr::iterablesToArrays(...$arrays));
+        return $output;
     }
 
     /**
@@ -190,8 +204,9 @@ trait TMutableHashMap
      */
     public function mergeRecursive(iterable ...$arrays): data\IHashMap
     {
-        $this->items = array_merge_recursive($this->items, ...data\Arr::iterablesToArrays(...$arrays));
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_merge_recursive($output->items, ...data\Arr::iterablesToArrays(...$arrays));
+        return $output;
     }
 
 
@@ -200,8 +215,9 @@ trait TMutableHashMap
      */
     public function replace(iterable ...$arrays): data\IHashMap
     {
-        $this->items = array_replace($this->items, ...data\Arr::iterablesToArrays(...$arrays));
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_replace($output->items, ...data\Arr::iterablesToArrays(...$arrays));
+        return $output;
     }
 
     /**
@@ -209,8 +225,9 @@ trait TMutableHashMap
      */
     public function replaceRecursive(iterable ...$arrays): data\IHashMap
     {
-        $this->items = array_replace_recursive($this->items, ...data\Arr::iterablesToArrays(...$arrays));
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_replace_recursive($output->items, ...data\Arr::iterablesToArrays(...$arrays));
+        return $output;
     }
 
 
@@ -219,15 +236,17 @@ trait TMutableHashMap
      */
     public function removeSlice(int $offset, int $length=null, data\IHashMap &$removed=null): data\IHashMap
     {
+        $output = $this->copyImmutable();
+
         if ($length === null) {
-            $length = count($this->items);
+            $length = count($output->items);
         }
 
         $removed = new static(
-            array_splice($this->items, $offset, $length)
+            array_splice($output->items, $offset, $length)
         );
 
-        return $this;
+        return $output;
     }
 
     /**
@@ -235,15 +254,17 @@ trait TMutableHashMap
      */
     public function replaceSlice(int $offset, int $length=null, iterable $replacement, data\IHashMap &$removed=null): data\IHashMap
     {
+        $output = $this->copyImmutable();
+
         if ($length === null) {
-            $length = count($this->items);
+            $length = count($output->items);
         }
 
         $removed = new static(
-            array_splice($this->items, $offset, $length, data\Arr::iterableToArray($replacement))
+            array_splice($output->items, $offset, $length, data\Arr::iterableToArray($replacement))
         );
 
-        return $this;
+        return $output;
     }
 
 
@@ -252,8 +273,9 @@ trait TMutableHashMap
      */
     public function unique(int $flags=SORT_STRING): data\IHashMap
     {
-        $this->items = array_unique($this->items, $flags);
-        return $this;
+        $output = $this->copyImmutable();
+        $output->items = array_unique($output->items, $flags);
+        return $output;
     }
 
 
@@ -262,8 +284,9 @@ trait TMutableHashMap
      */
     public function walk(callable $callback, $data=null): data\IHashMap
     {
-        array_walk($this->items, $callback, $data);
-        return $this;
+        $output = $this->copyImmutable();
+        array_walk($output->items, $callback, $data);
+        return $output;
     }
 
     /**
@@ -271,7 +294,8 @@ trait TMutableHashMap
      */
     public function walkRecursive(callable $callback, $data=null): data\IHashMap
     {
-        array_walk_recursive($this->items, $callback, $data);
-        return $this;
+        $output = $this->copyImmutable();
+        array_walk_recursive($output->items, $callback, $data);
+        return $output;
     }
 }
