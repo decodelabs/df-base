@@ -32,7 +32,7 @@ class Handler
     {
         http_response_code(500);
 
-        $call = lang\debug\StackCall::create(1);
+        $call = lang\debug\StackFrame::create(1);
 
         $attrs = [
             'time' => self::formatMicrotime(microtime(true) - df\START),

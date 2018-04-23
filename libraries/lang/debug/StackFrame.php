@@ -12,7 +12,7 @@ use df\lang;
 /**
  * Represents a single entry in a stack trace
  */
-class StackCall
+class StackFrame
 {
     protected $function;
     protected $className;
@@ -27,15 +27,15 @@ class StackCall
 
 
     /**
-     * Generate a new trace and pull out a single call
+     * Generate a new trace and pull out a single frame
      * depending on the rewind range
      */
-    public static function create(int $rewind=0): StackCall
+    public static function create(int $rewind=0): StackFrame
     {
         $data = debug_backtrace();
 
         if ($rewind >= count($data) - 1) {
-            throw df\Error::EOutOfRange('Stack rewind of stack call range');
+            throw df\Error::EOutOfRange('Stack rewind of stack frame range');
         }
 
         if ($rewind) {
@@ -55,18 +55,18 @@ class StackCall
 
 
     /**
-     * Build the call object from a stack trace call array
+     * Build the frame object from a stack trace frame array
      */
-    public function __construct(array $call)
+    public function __construct(array $frame)
     {
-        $this->callingFile = $call['fromFile'] ?? null;
-        $this->callingLine = $call['fromLine'] ?? null;
-        $this->originFile = $call['file'] ?? null;
-        $this->originLine = $call['line'] ?? null;
-        $this->function = $call['function'] ?? null;
+        $this->callingFile = $frame['fromFile'] ?? null;
+        $this->callingLine = $frame['fromLine'] ?? null;
+        $this->originFile = $frame['file'] ?? null;
+        $this->originLine = $frame['line'] ?? null;
+        $this->function = $frame['function'] ?? null;
 
-        if (isset($call['class'])) {
-            $parts = explode('\\', $call['class']);
+        if (isset($frame['class'])) {
+            $parts = explode('\\', $frame['class']);
             $this->className = array_pop($parts);
         } elseif ($this->function !== null) {
             $parts = explode('\\', $this->function);
@@ -77,8 +77,8 @@ class StackCall
             $this->namespace = implode('\\', $parts);
         }
 
-        if (isset($call['type'])) {
-            switch ($call['type']) {
+        if (isset($frame['type'])) {
+            switch ($frame['type']) {
                 case '::':
                     $this->type = 'staticMethod';
                     break;
@@ -93,15 +93,15 @@ class StackCall
             $this->type = 'globalFunction';
         }
 
-        if (isset($call['args'])) {
-            $this->args = (array)$call['args'];
+        if (isset($frame['args'])) {
+            $this->args = (array)$frame['args'];
         }
     }
 
 
 
     /**
-     * Get detected call type
+     * Get detected frame type
      */
     public function getType(): ?string
     {
@@ -160,7 +160,7 @@ class StackCall
 
 
     /**
-     * Get call namespace if applicable
+     * Get frame namespace if applicable
      */
     public function getNamespace(): ?string
     {
@@ -303,7 +303,7 @@ class StackCall
 
 
     /**
-     * Generate a full call signature
+     * Generate a full frame signature
      */
     public function getSignature(?bool $argString=false): string
     {

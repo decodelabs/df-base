@@ -86,7 +86,7 @@ trait TError
     /**
      * Get first call from trace
      */
-    public function getStackCall(): lang\debug\StackCall
+    public function getStackFrame(): lang\debug\StackFrame
     {
         return $this->getStackTrace()->getFirstCall();
     }

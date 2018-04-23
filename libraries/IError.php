@@ -16,6 +16,6 @@ interface IError
     public function setHttpCode(?int $code);
     public function getHttpCode(): ?int;
 
-    public function getStackCall(): lang\debug\StackCall;
+    public function getStackFrame(): lang\debug\StackFrame;
     public function getStackTrace(): lang\debug\StackTrace;
 }

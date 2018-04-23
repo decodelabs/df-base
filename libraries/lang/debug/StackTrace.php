@@ -11,7 +11,7 @@ use df\lang;
 
 class StackTrace implements \IteratorAggregate
 {
-    protected $calls= [];
+    protected $frames= [];
 
     /**
      * Extract trace from exception and build
@@ -38,7 +38,7 @@ class StackTrace implements \IteratorAggregate
 
         if ($rewind) {
             if ($rewind > count($trace) - 1) {
-                throw df\Error::EOutOfRange('Stack rewind out of stack call range', [
+                throw df\Error::EOutOfRange('Stack rewind out of stack frame range', [
                     'data' => [
                         'rewind' => $rewind,
                         'trace' => $trace
@@ -59,14 +59,14 @@ class StackTrace implements \IteratorAggregate
         $last['fromFile'] = $last['file'] ?? null;
         $last['fromLine'] = $last['line'] ?? null;
 
-        foreach ($trace as $call) {
-            $call['fromFile'] = $call['file'] ?? null;
-            $call['fromLine'] = $call['line'] ?? null;
-            $call['file'] = $last['fromFile'];
-            $call['line'] = $last['fromLine'];
+        foreach ($trace as $frame) {
+            $frame['fromFile'] = $frame['file'] ?? null;
+            $frame['fromLine'] = $frame['line'] ?? null;
+            $frame['file'] = $last['fromFile'];
+            $frame['line'] = $last['fromLine'];
 
-            $output[] = new StackCall($call);
-            $last = $call;
+            $output[] = new StackFrame($frame);
+            $last = $frame;
         }
 
         return new self($output);
@@ -74,22 +74,22 @@ class StackTrace implements \IteratorAggregate
 
 
     /**
-     * Check list of calls
+     * Check list of frames
      */
-    public function __construct(array $calls)
+    public function __construct(array $frames)
     {
-        foreach ($calls as $call) {
-            if (!$call instanceof StackCall) {
+        foreach ($frames as $frame) {
+            if (!$frame instanceof StackFrame) {
                 throw df\Error::EUnexpectedValue([
-                    'message' => 'Trace call is not an instance of df\\lang\\StackCall',
-                    'data' => $call
+                    'message' => 'Trace frame is not an instance of df\\lang\\StackFrame',
+                    'data' => $frame
                 ]);
             }
 
-            $this->calls[] = $call;
+            $this->frames[] = $frame;
         }
 
-        if (empty($this->calls)) {
+        if (empty($this->frames)) {
             throw df\Error::EUnderflow('Stack trace is empty');
         }
     }
@@ -97,36 +97,36 @@ class StackTrace implements \IteratorAggregate
 
 
     /**
-     * Get the call list as an array
+     * Get the frame list as an array
      */
-    public function getCalls(): array
+    public function getFrames(): array
     {
-        return $this->calls;
+        return $this->frames;
     }
 
     /**
-     * Get first call
+     * Get first frame
      */
-    public function getFirstCall(): StackCall
+    public function getFirstFrame(): StackFrame
     {
-        return $this->calls[0];
+        return $this->frames[0];
     }
 
 
     /**
-     * Get file from first call
+     * Get file from first frame
      */
     public function getFile(): ?string
     {
-        return $this->calls[0]->getFile();
+        return $this->frames[0]->getFile();
     }
 
     /**
-     * Get line from first call
+     * Get line from first frame
      */
     public function getLine(): ?int
     {
-        return $this->calls[0]->getLine();
+        return $this->frames[0]->getLine();
     }
 
 
@@ -136,7 +136,7 @@ class StackTrace implements \IteratorAggregate
      */
     public function getIterator(): \Traversable
     {
-        return new \ArrayIterator($this->calls);
+        return new \ArrayIterator($this->frames);
     }
 
 
@@ -145,9 +145,9 @@ class StackTrace implements \IteratorAggregate
      */
     public function toArray(): array
     {
-        return array_map(function ($call) {
-            return $call->toArray();
-        }, $this->calls);
+        return array_map(function ($frame) {
+            return $frame->toArray();
+        }, $this->frames);
     }
 
 
@@ -158,15 +158,15 @@ class StackTrace implements \IteratorAggregate
     public function __debugInfo(): array
     {
         $output = [];
-        $calls = $this->getCalls();
-        $count = count($calls);
+        $frames = $this->getCalls();
+        $count = count($frames);
 
-        foreach ($calls as $i => $call) {
+        foreach ($frames as $i => $frame) {
             if ($i === 0) {
-                $output[($count + 1).': df\\Error()'] = $call->getFile().' : '.$call->getLine();
+                $output[($count + 1).': df\\Error()'] = $frame->getFile().' : '.$frame->getLine();
             }
 
-            $output[($count - $i).': '.$call->getSignature(true)] = $call->getCallingFile().' : '.$call->getCallingLine();
+            $output[($count - $i).': '.$frame->getSignature(true)] = $frame->getCallingFile().' : '.$frame->getCallingLine();
         }
 
         return $output;

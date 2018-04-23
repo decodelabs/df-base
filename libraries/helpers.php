@@ -47,7 +47,7 @@ namespace df
      */
     function incomplete(): void
     {
-        $call = lang\debug\StackCall::create(1);
+        $call = lang\debug\StackFrame::create(1);
 
         throw df\Error::EImplementation(
             $call->getSignature().' has not been completed yet!'
