@@ -78,7 +78,7 @@ trait TReadable
     /**
      * Return new collection containing $offset + $length items
      */
-    public function getSlice(int $offset, int $length=null): data\IReadable
+    public function slice(int $offset, int $length=null): data\IReadable
     {
         return new static(array_slice(
             $this->items,
@@ -91,9 +91,9 @@ trait TReadable
     /**
      * Pick a random $number length set of items
      */
-    public function getRandomSlice(int $number): data\IReadable
+    public function sliceRandom(int $number): data\IReadable
     {
-        return new static(data\Arr::getRandomSlice($this->items, $number));
+        return new static(data\Arr::sliceRandom($this->items, $number));
     }
 
 

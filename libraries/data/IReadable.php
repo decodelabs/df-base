@@ -24,8 +24,8 @@ interface IReadable extends ICollection, \Countable, lang\IPipe
     public function contains($value, bool $strict=false): bool;
     public function containsRecursive($value, bool $strict=false): bool;
 
-    public function getSlice(int $offset, int $length=null): IReadable;
-    public function getRandomSlice(int $number): IReadable;
+    public function slice(int $offset, int $length=null): IReadable;
+    public function sliceRandom(int $number): IReadable;
 
     public function chunk(int $size): IReadable;
     public function chunkValues(int $size): IReadable;

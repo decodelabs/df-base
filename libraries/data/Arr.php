@@ -142,7 +142,7 @@ class Arr
     /**
      * Get random subset from array
      */
-    public static function getRandomSlice(array $array, int $number): array
+    public static function sliceRandom(array $array, int $number): array
     {
         $count = count($array);
 
