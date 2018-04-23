@@ -83,6 +83,14 @@ trait TCollection
         return $this->items;
     }
 
+    /**
+     * Convert to json
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+
 
 
     /**
