@@ -13,4 +13,13 @@ use Carbon\CarbonInterval;
 
 class Interval extends CarbonInterval
 {
+    /**
+     * Dump info
+     */
+    public function __debugInfo(): array
+    {
+        return [
+            'human' => $this->forHumans()
+        ];
+    }
 }
