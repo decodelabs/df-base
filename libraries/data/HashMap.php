@@ -9,9 +9,9 @@ namespace df\data;
 use df;
 use df\data;
 
-class Sequence implements \IteratorAggregate, ISequence
+class HashMap implements \IteratorAggregate, IHashMap
 {
-    use namespace\arrayCollection\TSequence;
+    use namespace\arrayCollection\THashMap;
 
     const MUTABLE = false;
 }

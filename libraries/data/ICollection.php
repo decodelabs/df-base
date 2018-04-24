@@ -8,16 +8,11 @@ namespace df\data;
 use df;
 use df\data;
 
-interface ICollection extends \Traversable, \ArrayAccess, IArrayProvider, \JsonSerializable
+interface ICollection extends \Traversable, IArrayProvider, \JsonSerializable
 {
     public function isEmpty(): bool;
 
     public function isMutable(): bool;
 
-    public function ensureMutable(): ICollection;
-    public function ensureImmutable(): ICollection;
-
     public function copy(): ICollection;
-    public function copyMutable(): ICollection;
-    public function copyImmutable(): ICollection;
 }

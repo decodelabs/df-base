@@ -11,7 +11,10 @@ use df\data;
 
 class Tree implements \IteratorAggregate, IHashMap, IValueProvider
 {
+    use namespace\arrayCollection\THashMap;
     use namespace\arrayCollection\TMutableHashMap;
+
+    const MUTABLE = true;
 
     protected $value;
 
@@ -25,24 +28,6 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
         if ($items !== null) {
             $this->merge(data\Arr::iterableToArray($items));
         }
-    }
-
-
-
-    /**
-     * Create a new mutable copy
-     */
-    public function copyMutable(): ICollection
-    {
-        return clone $this;
-    }
-
-    /**
-     * Create an immutable copy
-     */
-    public function copyImmutable(): ICollection
-    {
-        df\incomplete();
     }
 
 

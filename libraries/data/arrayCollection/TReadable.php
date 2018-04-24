@@ -448,4 +448,40 @@ trait TReadable
     {
         return new static(array_column($this->items, $valueKey, $indexKey));
     }
+
+
+
+
+
+    /**
+     * Set by array access
+     */
+    public function offsetSet($key, $value)
+    {
+        return $this->set($key, $value);
+    }
+
+    /**
+     * Get by array access
+     */
+    public function offsetGet($key)
+    {
+        return $this->get($key);
+    }
+
+    /**
+     * Check by array access
+     */
+    public function offsetExists($key)
+    {
+        return $this->has($key);
+    }
+
+    /**
+     * Remove by array access
+     */
+    public function offsetUnset($key)
+    {
+        return $this->remove($key);
+    }
 }

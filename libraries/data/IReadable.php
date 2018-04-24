@@ -13,7 +13,7 @@ use df\lang;
  * All methods returning IReadable MUST be immutable,
  * regardless of whether implementation is mutable
  */
-interface IReadable extends ICollection, \Countable, lang\IPipe
+interface IReadable extends ICollection, \Countable, \ArrayAccess, lang\IPipe
 {
     public function getFirst(callable $filter=null);
     public function getLast(callable $filter=null);

@@ -9,15 +9,16 @@ namespace df\data\arrayCollection;
 use df;
 use df\data;
 
-trait TMutableSortable
+trait TSortable
 {
     /**
      * Sort values, keep keys
      */
     public function sort(int $flags=\SORT_REGULAR): data\ISortable
     {
-        asort($this->items, $flags);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        asort($output->items, $flags);
+        return $output;
     }
 
     /**
@@ -25,8 +26,9 @@ trait TMutableSortable
      */
     public function reverseSort(int $flags=\SORT_REGULAR): data\ISortable
     {
-        arsort($this->items, $flags);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        arsort($output->items, $flags);
+        return $output;
     }
 
     /**
@@ -34,8 +36,9 @@ trait TMutableSortable
      */
     public function sortBy(callable $callable): data\ISortable
     {
-        uasort($this->items, $callable);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        uasort($output->items, $callable);
+        return $output;
     }
 
 
@@ -44,8 +47,9 @@ trait TMutableSortable
      */
     public function sortNatural(): data\ISortable
     {
-        natsort($this->items);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        natsort($output->items);
+        return $output;
     }
 
     /**
@@ -53,8 +57,9 @@ trait TMutableSortable
      */
     public function sortCaseNatural(): data\ISortable
     {
-        natcasesort($this->items);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        natcasesort($output->items);
+        return $output;
     }
 
 
@@ -63,8 +68,9 @@ trait TMutableSortable
      */
     public function sortValues(int $flags=\SORT_REGULAR): data\ISortable
     {
-        sort($this->items, $flags);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        sort($output->items, $flags);
+        return $output;
     }
 
     /**
@@ -72,8 +78,9 @@ trait TMutableSortable
      */
     public function reverseSortValues(int $flags=\SORT_REGULAR): data\ISortable
     {
-        rsort($this->items, $flags);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        rsort($output->items, $flags);
+        return $output;
     }
 
     /**
@@ -81,8 +88,9 @@ trait TMutableSortable
      */
     public function sortValuesBy(callable $callback): data\ISortable
     {
-        usort($this->items, $callback);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        usort($output->items, $callback);
+        return $output;
     }
 
 
@@ -91,8 +99,9 @@ trait TMutableSortable
      */
     public function sortKeys(int $flags=\SORT_REGULAR): data\ISortable
     {
-        ksort($this->items, $flags);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        ksort($output->items, $flags);
+        return $output;
     }
 
     /**
@@ -100,8 +109,9 @@ trait TMutableSortable
      */
     public function reverseSortKeys(int $flags=\SORT_REGULAR): data\ISortable
     {
-        krsort($this->items, $flags);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        krsort($output->items, $flags);
+        return $output;
     }
 
     /**
@@ -109,8 +119,9 @@ trait TMutableSortable
      */
     public function sortKeysBy(callable $callback): data\ISortable
     {
-        uksort($this->items, $callback);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        uksort($output->items, $callback);
+        return $output;
     }
 
 
@@ -119,8 +130,9 @@ trait TMutableSortable
      */
     public function reverse(): data\ISortable
     {
-        $this->items = array_reverse($this->items, true);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        $output->items = array_reverse($output->items, true);
+        return $output;
     }
 
     /**
@@ -128,8 +140,9 @@ trait TMutableSortable
      */
     public function reverseValues(): data\ISortable
     {
-        $this->items = array_reverse($this->items, false);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        $output->items = array_reverse($output->items, false);
+        return $output;
     }
 
     /**
@@ -137,8 +150,9 @@ trait TMutableSortable
      */
     public function shuffle(): data\ISortable
     {
-        $this->items = data\Arr::kshuffle($this->items);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        $output->items = data\Arr::kshuffle($output->items);
+        return $output;
     }
 
     /**
@@ -146,7 +160,8 @@ trait TMutableSortable
      */
     public function shuffleValues(): data\ISortable
     {
-        shuffle($this->items);
-        return $this;
+        $output = static::MUTABLE ? $this : $this->copy();
+        shuffle($output->items);
+        return $output;
     }
 }

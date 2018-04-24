@@ -8,7 +8,7 @@ namespace df\data;
 use df;
 use df\data;
 
-interface ISequence extends ICollection
+interface ISequence extends IReadable, ISortable
 {
     public function get(int $key);
     public function pull(int $key);
@@ -42,7 +42,9 @@ interface ISequence extends ICollection
     public function replace(iterable ...$arrays): ISequence;
     public function replaceRecursive(iterable ...$arrays): ISequence;
 
-    public function pad(int $size, $value=null): ISequence;
+    public function padLeft(int $size, $value=null): ISequence;
+    public function padRight(int $size, $value=null): ISequence;
+    public function padBoth(int $size, $value=null): ISequence;
 
     public function removeSlice(int $offset, int $length=null, ISequence &$removed=null): ISequence;
     public function replaceSlice(int $offset, int $length=null, iterable $replacement, ISequence &$removed=null): ISequence;

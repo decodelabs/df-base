@@ -11,7 +11,7 @@ use df\flex;
 use df\data;
 use df\lang;
 
-class Text implements \IteratorAggregate, data\ICollection, \Countable, lang\IPipe
+class Text implements \IteratorAggregate, data\ICollection, \ArrayAccess, \Countable, lang\IPipe
 {
     use lang\TPipe;
 
@@ -392,6 +392,54 @@ class Text implements \IteratorAggregate, data\ICollection, \Countable, lang\IPi
 
         return false;
     }
+
+
+
+    /**
+     * Ensure sequence is at least $size long
+     */
+    public function padLeft(int $size, string $value=' '): Text
+    {
+        return new static(
+            str_pad($this->text, abs($size), $value, STR_PAD_LEFT),
+            $this->encoding
+        );
+    }
+
+    /**
+     * Ensure sequence is at least $size long
+     */
+    public function padRight(int $size, string $value=' '): Text
+    {
+        return new static(
+            str_pad($this->text, abs($size), $value, STR_PAD_RIGHT),
+            $this->encoding
+        );
+    }
+
+    /**
+     * Ensure sequence is at least $size long
+     */
+    public function padBoth(int $size, string $value=' '): Text
+    {
+        $length = $this->getLength();
+        $output = $this->text;
+
+        if (($size = abs($size)) < $length) {
+            return new static($output, $this->encoding);
+        }
+
+        $padSize = ($size - $length) / 2;
+        $leftSize = $length + floor($padSize);
+        $rightSize = $size;
+
+        $output = str_pad($output, (int)$leftSize, $value, STR_PAD_LEFT);
+        $output = str_pad($output, (int)$rightSize, $value, STR_PAD_RIGHT);
+
+        return new static($output, $this->encoding);
+    }
+
+
 
 
     /**
@@ -1196,41 +1244,9 @@ class Text implements \IteratorAggregate, data\ICollection, \Countable, lang\IPi
     }
 
     /**
-     * Check $this is mutable and copy if needed
-     */
-    public function ensureMutable(): data\ICollection
-    {
-        df\incomplete();
-    }
-
-    /**
-     * Check $this is immutable and copy if needed
-     */
-    public function ensureImmutable(): data\ICollection
-    {
-        return $this;
-    }
-
-    /**
      * Duplicate collection, can change type if needed
      */
     public function copy(): data\ICollection
-    {
-        return $this->copyImmutable();
-    }
-
-    /**
-     * Create a new mutable copy
-     */
-    public function copyMutable(): data\ICollection
-    {
-        df\incomplete();
-    }
-
-    /**
-     * Create an immutable copy
-     */
-    public function copyImmutable(): data\ICollection
     {
         return clone $this;
     }

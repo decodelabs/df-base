@@ -11,6 +11,8 @@ use df\data;
 
 trait TCollection
 {
+    //const MUTABLE = false;
+
     protected $items = [];
 
     /**
@@ -19,6 +21,15 @@ trait TCollection
     public function __construct(iterable $items)
     {
         $this->items = data\Arr::iterableToArray($items);
+    }
+
+
+    /**
+     * Can the values in this collection change?
+     */
+    public function isMutable(): bool
+    {
+        return static::MUTABLE;
     }
 
     /**
@@ -31,39 +42,11 @@ trait TCollection
 
 
     /**
-     * Check $this is mutable and copy if needed
-     */
-    public function ensureMutable(): data\ICollection
-    {
-        if ($this->isMutable()) {
-            return $this;
-        } else {
-            return $this->copyMutable();
-        }
-    }
-
-    /**
-     * Check $this is immutable and copy if needed
-     */
-    public function ensureImmutable(): data\ICollection
-    {
-        if (!$this->isMutable()) {
-            return $this;
-        } else {
-            return $this->copyImmutable();
-        }
-    }
-
-    /**
      * Duplicate collection, can change type if needed
      */
     public function copy(): data\ICollection
     {
-        if ($this->isMutable()) {
-            return $this->copyMutable();
-        } else {
-            return $this->copyImmutable();
-        }
+        return clone $this;
     }
 
 
