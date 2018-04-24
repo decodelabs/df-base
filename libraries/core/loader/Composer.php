@@ -13,6 +13,10 @@ use Composer\Autoload\ClassLoader;
 
 class Composer implements ILoader
 {
+    const APEX = [
+        'http', 'themes'
+    ];
+
     public $autoload;
 
     public $vendorPath;
@@ -32,7 +36,7 @@ class Composer implements ILoader
 
     public function loadPackages(array $packages): void
     {
-        $this->apexPaths = [$this->basePath.'/app'];
+        $this->apexPaths = [$this->basePath];
         $this->libraryPaths = [$this->basePath.'/libraries'];
 
         foreach (array_reverse($packages) as $package) {
@@ -40,7 +44,12 @@ class Composer implements ILoader
             $this->libraryPaths[] = $this->vendorPath.'/decodelabs/df-'.$package.'/libraries';
         }
 
-        $this->autoload->setPsr4('df\\apex\\', $this->apexPaths);
+        foreach (static::APEX as $folder) {
+            $this->autoload->setPsr4('df\\apex\\'.$folder.'\\', array_map(function ($path) use ($folder) {
+                return $path.'/'.$folder;
+            }, $this->apexPaths));
+        }
+
         $this->autoload->setPsr4('df\\', $this->libraryPaths);
     }
 
