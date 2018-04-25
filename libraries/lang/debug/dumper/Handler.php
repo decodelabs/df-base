@@ -71,15 +71,6 @@ class Handler
 
 
         $cloner = new Cloner\VarCloner();
-
-        /*
-        $cloner->addCasters([
-            'test' => function ($object, $array, Cloner\Stub $stub, $isNested, $filter) {
-                return $array;
-            }
-        ]);
-        */
-
         $dumper->dump($cloner->cloneVar($var));
     }
 
