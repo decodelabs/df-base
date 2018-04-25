@@ -32,6 +32,7 @@ interface IContainer extends ContainerInterface, \ArrayAccess
     //public function get(string $type);
     public function getWith(string $type, array $params=[]): object;
     public function getGroup(string $type): array;
+    public function each(string $type, callable $callback): IContainer;
 
     //public function has(string $type): bool;
     public function remove(string $type): IContainer;
