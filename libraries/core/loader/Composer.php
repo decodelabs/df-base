@@ -63,6 +63,15 @@ class Composer implements core\ILoader
 
 
     /**
+     * Get autoload handler
+     */
+    public function getAutoLoadHandler(): ClassLoader
+    {
+        return $this->autoload;
+    }
+
+
+    /**
      * Path to app/
      */
     public function getBasePath(): string
@@ -94,5 +103,14 @@ class Composer implements core\ILoader
     public function getLibraryPaths(): array
     {
         return $this->libraryPaths;
+    }
+
+
+    /**
+     * Filter debug args
+     */
+    public function __debugInfo(): array
+    {
+        return $this->apexPaths;
     }
 }
