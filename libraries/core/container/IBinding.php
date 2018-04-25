@@ -33,7 +33,7 @@ interface IBinding
     public function inject(string $name, $value): IBinding;
     public function getParam(string $name);
     public function addParams(array $params): IBinding;
-    public function hasParam(string $name);
+    public function hasParam(string $name): bool;
     public function removeParam(string $name): IBinding;
     public function clearParams(): IBinding;
 
@@ -41,6 +41,7 @@ interface IBinding
     public function forgetInstance(): IBinding;
     public function getInstance(): object;
     public function newInstance(): object;
+    public function getGroupInstances(): array;
 
     public function afterResolving(callable $callback): IBinding;
     public function afterRebinding(callable $callback): IBinding;

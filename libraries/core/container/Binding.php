@@ -261,7 +261,7 @@ class Binding implements IBinding
     /**
      * Has a specific parameter been injected?
      */
-    public function hasParam(string $name)
+    public function hasParam(string $name): bool
     {
         return array_key_exists(ltrim($name, '$'), $this->params);
     }
@@ -281,6 +281,7 @@ class Binding implements IBinding
     public function clearParams(): IBinding
     {
         $this->params = [];
+        return $this;
     }
 
 
@@ -328,6 +329,15 @@ class Binding implements IBinding
     {
         return $this->factory->__invoke($this->container);
     }
+
+    /**
+     * Wrap instance in array
+     */
+    public function getGroupInstances(): array
+    {
+        return [$this->getInstance()];
+    }
+
 
     /**
      * Run instance through preparators

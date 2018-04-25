@@ -77,9 +77,12 @@ namespace df
         $app->bindShared(Whoops\Run::class)
             ->alias('lang.whoops')
             ->afterResolving(function ($whoops, $app) {
-                $app->bindOnce(WhoopsHandler::class, Whoops\Handler\PrettyPageHandler::class);
+                $app->bindToGroup(WhoopsHandler::class, Whoops\Handler\PrettyPageHandler::class);
 
-                $whoops->pushHandler($app[WhoopsHandler::class]);
+                foreach ($app->getGroup(WhoopsHandler::class) as $handler) {
+                    $whoops->pushHandler($handler);
+                }
+
                 $whoops->register();
             })
             ->getInstance();

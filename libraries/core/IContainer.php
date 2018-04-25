@@ -15,8 +15,11 @@ interface IContainer extends ContainerInterface, \ArrayAccess
 {
     public function bind(string $type, $target=null): IBinding;
     public function bindOnce(string $type, $target=null, callable $callback=null): IBinding;
+    public function bindToGroup(string $type, $target=null): IBinding;
     public function bindShared(string $type, $target=null): IBinding;
     public function bindSharedOnce(string $type, $target=null, callable $callback=null): IBinding;
+    public function bindSharedToGroup(string $type, $target=null): IBinding;
+
 
     public function alias(string $type, string $alias): IContainer;
     public function getAlias(string $type): ?string;
@@ -28,6 +31,7 @@ interface IContainer extends ContainerInterface, \ArrayAccess
 
     //public function get(string $type);
     public function getWith(string $type, array $params=[]): object;
+    public function getGroup(string $type): array;
 
     //public function has(string $type): bool;
     public function remove(string $type): IContainer;
@@ -36,7 +40,7 @@ interface IContainer extends ContainerInterface, \ArrayAccess
     public function getBindings(): array;
 
     public function prepareWith(string $type, callable $callback): IContainer;
-    public function inject(string $type, string $argName, $value): IContainer;
+    public function inject(string $type, string $name, $value): IContainer;
     public function addParams(string $type, array $params): IContainer;
     public function clearParams(string $type): IContainer;
     public function clearAllParams(): IContainer;
@@ -45,8 +49,6 @@ interface IContainer extends ContainerInterface, \ArrayAccess
 
     public function forgetInstance(string $type): IBinding;
     public function forgetAllInstances(): IContainer;
-
-
 
     public function afterResolving(string $type, callable $callback): IContainer;
     public function triggerAfterResolving(IBinding $binding, object $instancegetWith);

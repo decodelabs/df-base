@@ -64,6 +64,37 @@ class Generic implements IContainer
     }
 
     /**
+     * Add binding as part of a group
+     */
+    public function bindToGroup(string $type, $target=null): IBinding
+    {
+        $oldBinding = null;
+
+        if (isset($this->bindings[$type])) {
+            $group = $this->bindings[$type];
+
+            if (!$group instanceof Group) {
+                $oldBinding = $group;
+                $group = new Group($this, $type);
+                $this->remove($type);
+            }
+        } else {
+            $group = new Group($this, $type);
+        }
+
+        $binding = new Binding($this, $type, $target);
+        $group->addBinding($binding);
+        $this->bindings[$type] = $group;
+
+        if ($oldBinding) {
+            $this->triggerAfterRebinding($group);
+        }
+
+        return $binding;
+    }
+
+
+    /**
      * Bind a singleton concrete type
      */
     public function bindShared(string $type, $target=null): IBinding
@@ -87,6 +118,14 @@ class Generic implements IContainer
         }
 
         return $binding;
+    }
+
+    /**
+     * Add singleton binding as group
+     */
+    public function bindSharedToGroup(string $type, $target=null): IBinding
+    {
+        return $this->bindToGroup($type, $target)->setShared(true);
     }
 
 
@@ -163,6 +202,15 @@ class Generic implements IContainer
         return $this->getBinding($type)
             ->addParams($params)
             ->getInstance();
+    }
+
+    /**
+     * Return array of bound instances
+     */
+    public function getGroup(string $type): array
+    {
+        return $this->getBinding($type)
+            ->getGroupInstances();
     }
 
 
