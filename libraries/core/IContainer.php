@@ -35,9 +35,9 @@ interface IContainer extends ContainerInterface, \ArrayAccess
     public function getBinding(string $type): IBinding;
     public function getBindings(): array;
 
-    public function prepareWith(string $type, callable $callback): ICollection;
-    public function inject(string $type, string $argName, $value): ICollection;
-    public function addParams(string $type, array $params): ICollection;
+    public function prepareWith(string $type, callable $callback): IContainer;
+    public function inject(string $type, string $argName, $value): IContainer;
+    public function addParams(string $type, array $params): IContainer;
     public function clearParams(string $type): IContainer;
     public function clearAllParams(): IContainer;
 
