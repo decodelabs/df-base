@@ -44,10 +44,14 @@ class Composer implements core\ILoader
      */
     public function loadPackages(array $packages): void
     {
+        $packages = array_reverse($packages);
+        $packages[] = 'base';
+        $packages = array_unique($packages);
+
         $this->apexPaths = [$this->basePath];
         $this->libraryPaths = [$this->basePath.'/libraries'];
 
-        foreach (array_reverse($packages) as $package) {
+        foreach ($packages as $package) {
             $this->apexPaths[] = $this->vendorPath.'/decodelabs/df-'.$package;
             $this->libraryPaths[] = $this->vendorPath.'/decodelabs/df-'.$package.'/libraries';
         }

@@ -32,10 +32,97 @@ namespace df
 {
 
     use df;
+    use df\core;
     use df\lang\error;
     use df\lang\debug;
 
+    use Composer\Autoload\ClassLoader;
+    use Whoops;
+    use Whoops\Handler\HandlerInterface as WhoopsHandler;
+
     define('df\\START', microtime(true));
+
+
+    /**
+     * Initial bootstrap
+     */
+    function bootstrap(): core\IContainer
+    {
+        static $started;
+
+        if ($started) {
+            throw new \RuntimeException('df has already been bootstrapped');
+        }
+
+        $started = true;
+        $class = new \ReflectionClass(ClassLoader::class);
+        [$basePath,] = explode('/vendor/', $class->getFileName(), 2);
+
+        if (file_exists($basePath.'/App.php')) {
+            require_once $basePath.'/App.php';
+        }
+
+        $loader = require $basePath.'/vendor/autoload.php';
+        debug\dumper\Handler::register();
+
+        $app = df\app();
+
+
+        // Autoload
+        $app->bindShared(ClassLoader::class, $loader)
+            ->alias('core.autoload');
+
+
+        // Whoops
+        $app->bindShared(Whoops\Run::class)
+            ->alias('lang.whoops')
+            ->afterResolving(function ($whoops, $app) {
+                $app->bindOnce(WhoopsHandler::class, Whoops\Handler\PrettyPageHandler::class);
+
+                $whoops->pushHandler($app[WhoopsHandler::class]);
+                $whoops->register();
+            })
+            ->getInstance();
+
+
+        // Loader
+        $app->bindShared(core\ILoader::class, core\loader\Composer::class)
+            ->alias('core.loader')
+            ->afterResolving(function ($loader, $app) {
+                $loader->loadPackages($app::PACKAGES);
+            })
+            ->getInstance();
+
+
+        // Env
+        $app
+            ->bindShared(core\env\IConfig::class, function ($app) {
+                return core\env\DotIni::loadFile($app['loader']->getBasePath().'/.env');
+            })
+            ->alias('core.env');
+
+        return $app;
+    }
+
+
+    /**
+     * Get active app instance
+     */
+    function app(): core\IApp
+    {
+        static $app;
+
+        if (!isset($app)) {
+            if (class_exists('df\apex\App', true)) {
+                $app = new df\apex\App();
+            } else {
+                $app = new df\core\App();
+            }
+        }
+
+        return $app;
+    }
+
 
     /**
      * Quick dump
