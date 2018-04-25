@@ -76,6 +76,7 @@ class Generic implements IContainer
             if (!$group instanceof Group) {
                 $oldBinding = $group;
                 $group = new Group($this, $type);
+                $group->addBinding($oldBinding);
                 $this->remove($type);
             }
         } else {
@@ -85,10 +86,6 @@ class Generic implements IContainer
         $binding = new Binding($this, $type, $target);
         $group->addBinding($binding);
         $this->bindings[$type] = $group;
-
-        if ($oldBinding) {
-            $this->triggerAfterRebinding($group);
-        }
 
         return $binding;
     }
@@ -211,6 +208,18 @@ class Generic implements IContainer
     {
         return $this->getBinding($type)
             ->getGroupInstances();
+    }
+
+    /**
+     * Loop through all group instances and call callback
+     */
+    public function each(string $type, callable $callback): IContainer
+    {
+        foreach ($this->getGroup($type) as $instance) {
+            $callback($instance, $this);
+        }
+
+        return $this;
     }
 
 
