@@ -11,13 +11,17 @@ declare(strict_types=1);
  */
 namespace
 {
+    use df\lang\debug;
+
+    debug\dumper\Handler::register();
+
     if (!function_exists('dd')) {
         /**
          * Super quick global dump
          */
         function dd(...$vars): void
         {
-            df\lang\debug\dumper\Handler::dump(...$vars);
+            debug\dumper\Handler::dump(...$vars);
         }
     }
 }
@@ -30,7 +34,8 @@ namespace df
 {
 
     use df;
-    use df\lang;
+    use df\lang\error;
+    use df\lang\debug;
 
     define('df\\START', microtime(true));
 
@@ -39,7 +44,7 @@ namespace df
      */
     function dump(...$vars): void
     {
-        lang\debug\dumper\Handler::dump(...$vars);
+        debug\dumper\Handler::dump(...$vars);
     }
 
     /**
@@ -47,7 +52,7 @@ namespace df
      */
     function incomplete(): void
     {
-        $call = lang\debug\StackFrame::create(1);
+        $call = debug\StackFrame::create(1);
 
         throw df\Error::EImplementation(
             $call->getSignature().' has not been completed yet!'
@@ -59,7 +64,7 @@ namespace df
      */
     function Error($message, ?array $params=[], $data=null): IError
     {
-        return lang\error\Factory::create(
+        return error\Factory::create(
             null,
             [],
             $message,
