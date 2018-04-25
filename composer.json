@@ -23,6 +23,9 @@
     "autoload": {
         "psr-4": {
             "df\\": "libraries/"
-        }
+        },
+        "files": [
+            "libraries/helpers.php"
+        ]
     }
 }

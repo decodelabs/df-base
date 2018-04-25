@@ -13,8 +13,6 @@ namespace
 {
     use df\lang\debug;
 
-    debug\dumper\Handler::register();
-
     if (!function_exists('dd')) {
         /**
          * Super quick global dump
