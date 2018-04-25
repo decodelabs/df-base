@@ -158,7 +158,7 @@ class StackTrace implements \IteratorAggregate
     public function __debugInfo(): array
     {
         $output = [];
-        $frames = $this->getCalls();
+        $frames = $this->getFrames();
         $count = count($frames);
 
         foreach ($frames as $i => $frame) {
