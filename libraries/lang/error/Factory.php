@@ -220,6 +220,8 @@ class Factory
 
         // Create initial interface list
         foreach ($interfaces as $i => $interface) {
+            $direct = false !== strpos($interface, '\\');
+
             if (false !== strpos($interface, '/')) {
                 $interface = 'df\\'.str_replace('/', '\\', ltrim($interface, '/'));
             }
@@ -230,7 +232,7 @@ class Factory
                 $interface = $namespace.'\\'.$interface;
             }
 
-            if (null !== ($ns = $this->listInterface($interface))) {
+            if (null !== ($ns = $this->listInterface($interface, $direct))) {
                 $namespaces[] = $ns;
             }
         }
@@ -280,8 +282,13 @@ class Factory
     /**
      * Add interface info to class extend list
      */
-    protected function listInterface(string $interface): ?string
+    protected function listInterface(string $interface, bool $direct=false): ?string
     {
+        if ($direct) {
+            $this->interfaces[$interface] = [];
+            return null;
+        }
+
         $parts = explode('\\', $interface);
         $name = array_pop($parts);
         $output = null;
