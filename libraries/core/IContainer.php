@@ -18,7 +18,7 @@ interface IContainer extends ContainerInterface, \ArrayAccess
     public function bindShared(string $type, $target=null): IBinding;
     public function bindSharedOnce(string $type, $target=null, callable $callback=null): IBinding;
 
-    public function alias(string $type, string $alias): IBinding;
+    public function alias(string $type, string $alias): IContainer;
     public function getAlias(string $type): ?string;
     public function hasAlias(string $alias): bool;
     public function isAliased(string $type): bool;

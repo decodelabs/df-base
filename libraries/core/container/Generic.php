@@ -93,9 +93,10 @@ class Generic implements IContainer
     /**
      * Set an alias for an existing binding
      */
-    public function alias(string $type, string $alias): IBinding
+    public function alias(string $type, string $alias): IContainer
     {
-        return $this->getBinding($type)->alias($alias);
+        $this->getBinding($type)->alias($alias);
+        return $this;
     }
 
     /**
