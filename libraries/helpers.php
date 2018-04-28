@@ -37,8 +37,6 @@ namespace df
     use df\lang\debug;
 
     use Composer\Autoload\ClassLoader;
-    use Whoops;
-    use Whoops\Handler\HandlerInterface as WhoopsHandler;
 
     define('df\\START', microtime(true));
 
@@ -73,19 +71,16 @@ namespace df
             ->alias('core.autoload');
 
 
-        // Whoops
-        $app->bindShared(Whoops\Run::class)
-            ->alias('lang.whoops')
-            ->afterResolving(function ($whoops, $app) {
-                $app->bindOnce(WhoopsHandler::class, Whoops\Handler\PrettyPageHandler::class);
-
-                $app->each(WhoopsHandler::class, function ($handler) use ($whoops) {
-                    $whoops->pushHandler($handler);
-                });
-
-                $whoops->register();
+        // Errors
+        $app->bindShared(core\error\IHandler::class, core\error\Handler::class)
+            ->alias('error.handler')
+            ->afterResolving(function ($handler, $app) {
+                core\error\Handler::register($handler);
             })
             ->getInstance();
+
+        $app->bind(core\error\IReporter::class, core\error\reporter\Whoops::class)
+            ->alias('error.reporter');
 
 
         // Loader
