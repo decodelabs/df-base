@@ -58,6 +58,7 @@ class StackTrace implements \IteratorAggregate
 
         $last['fromFile'] = $last['file'] ?? null;
         $last['fromLine'] = $last['line'] ?? null;
+        $output = [];
 
         foreach ($trace as $frame) {
             $frame['fromFile'] = $frame['file'] ?? null;
@@ -87,10 +88,6 @@ class StackTrace implements \IteratorAggregate
             }
 
             $this->frames[] = $frame;
-        }
-
-        if (empty($this->frames)) {
-            throw df\Error::EUnderflow('Stack trace is empty');
         }
     }
 
