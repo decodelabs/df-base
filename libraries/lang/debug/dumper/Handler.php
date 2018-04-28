@@ -37,7 +37,7 @@ class Handler
         $attrs = [
             'time' => self::formatMicrotime(microtime(true) - df\START),
             'memory' => self::formatFilesize(memory_get_usage()),
-            'location' => $call->getCallingFile().' : '.$call->getCallingLine()
+            'location' => df\stripBasePath($call->getCallingFile()).' : '.$call->getCallingLine()
         ];
 
         if ('cli' === PHP_SAPI) {

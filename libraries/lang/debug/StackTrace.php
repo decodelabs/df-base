@@ -160,10 +160,12 @@ class StackTrace implements \IteratorAggregate
 
         foreach ($frames as $i => $frame) {
             if ($i === 0) {
-                $output[($count + 1).': df\\Error()'] = $frame->getFile().' : '.$frame->getLine();
+                $output[($count + 1).': df\\Error()'] =
+                    df\stripBasePath($frame->getFile()).' : '.$frame->getLine();
             }
 
-            $output[($count - $i).': '.$frame->getSignature(true)] = $frame->getCallingFile().' : '.$frame->getCallingLine();
+            $output[($count - $i).': '.$frame->getSignature(true)] =
+                df\stripBasePath($frame->getCallingFile()).' : '.$frame->getCallingLine();
         }
 
         return $output;

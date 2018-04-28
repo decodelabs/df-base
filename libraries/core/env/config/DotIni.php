@@ -4,11 +4,14 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\env;
+namespace df\core\env\config;
 
 use df;
 use df\core;
 use df\lang;
+
+use df\core\env\IConfig;
+use df\core\env\IValidator;
 
 class DotIni implements IConfig, lang\IPipe
 {

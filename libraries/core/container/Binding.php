@@ -17,6 +17,7 @@ class Binding implements IBinding
     protected $type;
     protected $alias;
 
+    protected $target;
     protected $factory;
     protected $shared = false;
     protected $instance;
@@ -33,8 +34,10 @@ class Binding implements IBinding
     public function __construct(IContainer $container, string $type, $target)
     {
         $this->container = $container;
+        $isInterface = $isClass = false;
 
-        if (!interface_exists($type, true) && !class_exists($type, true)) {
+        if (!($isInterface = interface_exists($type, true))
+        && !($isClass = class_exists($type, true))) {
             throw df\Error::EInvalidArgument(
                 'Binding type must be a valid interface'
             );
@@ -42,6 +45,19 @@ class Binding implements IBinding
 
         $this->type = $type;
         $this->setTarget($target);
+
+        $parts = explode('\\', $type);
+
+        if (array_shift($parts) === 'df') {
+            $name = array_pop($parts);
+
+            if ($isInterface) {
+                $name = substr($name, 1);
+            }
+
+            $parts[] = lcfirst($name);
+            $this->alias(implode('.', $parts));
+        }
     }
 
 
@@ -71,6 +87,8 @@ class Binding implements IBinding
             $target = $this->type;
         }
 
+        $this->target = $target;
+
         if (!$target instanceof \Closure) {
             if (is_object($target)) {
                 $this->setInstance($target);
@@ -92,6 +110,19 @@ class Binding implements IBinding
 
         return $this->setFactory($target);
     }
+
+    /**
+     * Get originally bound target
+     */
+    public function getTarget()
+    {
+        if ($this->instance) {
+            return $this->instance;
+        }
+
+        return $this->target;
+    }
+
 
     /**
      * Set resolver factory closure
@@ -290,6 +321,7 @@ class Binding implements IBinding
      */
     public function setInstance(object $instance): IBinding
     {
+        $this->target = null;
         $this->instance = $this->prepareInstance($instance);
         return $this;
     }
@@ -336,6 +368,27 @@ class Binding implements IBinding
     public function getGroupInstances(): array
     {
         return [$this->getInstance()];
+    }
+
+    /**
+     * Create a simple text representation of instance or factory
+     */
+    public function describeInstance()
+    {
+        $output = $this->isShared() ? '* ':'';
+
+        if (is_string($this->target)) {
+            $output .= 'type : '.$this->target;
+        } elseif ($this->target instanceof \Closure) {
+            $ref = new \ReflectionFunction($this->target);
+            $output .= 'closure @ '.df\stripBasePath($ref->getFileName()).' : '.$ref->getStartLine();
+        } elseif (isset($this->instance)) {
+            $output .= 'instance : '.get_class($this->instance);
+        } else {
+            $output .= 'null';
+        }
+
+        return $output;
     }
 
 
@@ -432,19 +485,5 @@ class Binding implements IBinding
     {
         $this->container->afterRebinding($this->type, $callback);
         return $this;
-    }
-
-
-
-    /**
-     * Get debug info
-     */
-    public function __debugInfo(): array
-    {
-        return [
-            'type' => $this->type,
-            'alias' => $this->alias,
-            'shared' => $this->shared
-        ];
     }
 }

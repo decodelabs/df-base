@@ -25,7 +25,7 @@ class Group extends Binding
         }
 
         $this->type = $type;
-        unset($this->params);
+        unset($this->params, $this->target);
     }
 
 
@@ -36,6 +36,14 @@ class Group extends Binding
     public function setTarget($target): IBinding
     {
         throw df\Error::EImplementation('setTarget is not used for groups');
+    }
+
+    /**
+     * Noop
+     */
+    public function getTarget()
+    {
+        throw df\Error::EImplementation('getTarget is not used for groups');
     }
 
     /**
@@ -246,6 +254,20 @@ class Group extends Binding
 
         foreach ($this->bindings as $binding) {
             $output[] = $binding->getInstance();
+        }
+
+        return $output;
+    }
+
+    /**
+     * Create a simple text representation of instance or factory
+     */
+    public function describeInstance()
+    {
+        $output = [];
+
+        foreach ($this->bindings as $binding) {
+            $output[] = $binding->describeInstance();
         }
 
         return $output;

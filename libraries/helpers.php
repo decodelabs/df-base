@@ -44,8 +44,9 @@ namespace df
     /**
      * Initial bootstrap
      */
-    function bootstrap(): core\IContainer
+    function bootstrap(string $basePath=null): core\IContainer
     {
+        /* Ensure this only ever gets called once */
         static $started;
 
         if ($started) {
@@ -53,51 +54,28 @@ namespace df
         }
 
         $started = true;
-        $class = new \ReflectionClass(ClassLoader::class);
-        [$basePath,] = explode('/vendor/', $class->getFileName(), 2);
 
+
+        /* Use reflection to get a handle on vendor path
+         * and by extension, base path */
+        if ($basePath === null) {
+            $class = new \ReflectionClass(ClassLoader::class);
+            [$basePath,] = explode('/vendor/', $class->getFileName(), 2);
+        }
+
+        /* Make basePath available globally */
+        define('df\\BASE_PATH', $basePath);
+
+        /* Manually load App class from base path */
         if (file_exists($basePath.'/App.php')) {
             require_once $basePath.'/App.php';
         }
 
-        $loader = require $basePath.'/vendor/autoload.php';
-        debug\dumper\Handler::register();
 
+        /* Ask the app to setup its own loader, register bindings
+         * and all that jazz */
         $app = df\app();
-
-
-        // Autoload
-        $app->bindShared(ClassLoader::class, $loader)
-            ->alias('core.autoload');
-
-
-        // Errors
-        $app->bindShared(core\error\IHandler::class, core\error\Handler::class)
-            ->alias('error.handler')
-            ->afterResolving(function ($handler, $app) {
-                core\error\Handler::register($handler);
-            })
-            ->getInstance();
-
-        $app->bind(core\error\IReporter::class, core\error\reporter\Whoops::class)
-            ->alias('error.reporter');
-
-
-        // Loader
-        $app->bindShared(core\ILoader::class, core\loader\Composer::class)
-            ->alias('core.loader')
-            ->afterResolving(function ($loader, $app) {
-                $loader->loadPackages($app::PACKAGES);
-            })
-            ->getInstance();
-
-
-        // Env
-        $app
-            ->bindShared(core\env\IConfig::class, function ($app) {
-                return core\env\DotIni::loadFile($app['loader']->getBasePath().'/.env');
-            })
-            ->alias('core.env');
+        $app->bootstrap();
 
         return $app;
     }
@@ -154,5 +132,18 @@ namespace df
             $params,
             $data
         );
+    }
+
+    /**
+     * Strip base path from path string
+     */
+    function stripBasePath(string $path): string
+    {
+        if (!defined('df\\BASE_PATH')) {
+            return $path;
+        }
+
+        $parts = explode(df\BASE_PATH, $path, 2);
+        return array_pop($parts);
     }
 }

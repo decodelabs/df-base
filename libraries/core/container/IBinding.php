@@ -15,6 +15,8 @@ interface IBinding
     public function getType(): string;
 
     public function setTarget($target): IBinding;
+    public function getTarget();
+    
     public function setFactory(\Closure $factory);
     public function getFactory(): ?\Closure;
 
@@ -42,6 +44,7 @@ interface IBinding
     public function getInstance(): object;
     public function newInstance(): object;
     public function getGroupInstances(): array;
+    public function describeInstance();
 
     public function afterResolving(callable $callback): IBinding;
     public function afterRebinding(callable $callback): IBinding;

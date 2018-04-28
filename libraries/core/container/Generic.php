@@ -491,6 +491,13 @@ class Generic implements IContainer
      */
     public function __debugInfo(): array
     {
-        return $this->bindings;
+        $output = [];
+
+        foreach ($this->bindings as $binding) {
+            $alias = $binding->getAlias() ?? $binding->getType();
+            $output[$alias] = $binding->describeInstance();
+        }
+
+        return $output;
     }
 }
