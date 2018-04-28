@@ -132,6 +132,7 @@ trait TError
         }
 
         $output['types'] = array_merge($types, array_values(class_implements($this)));
+        $output['file'] = $this->file.' : '.$this->line;
 
 
         // Trace
