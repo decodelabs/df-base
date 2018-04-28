@@ -17,9 +17,11 @@ use Composer\Autoload\ClassLoader;
 class App extends container\Generic implements IApp
 {
     const PACKAGES = [];
+    const PROVIDERS = [];
 
-    const SERVICES = [
-
+    const DEFAULT_PROVIDERS = [
+        core\env\EnvServiceProvider::class,
+        core\error\ErrorServiceProvider::class
     ];
 
     /**
@@ -27,26 +29,19 @@ class App extends container\Generic implements IApp
      */
     public function bootstrap(): void
     {
-        // Prepare container
-        $this->registerPlatformServices();
-
-        // Loader
+        /* The loader needs to be set up manually before
+         * everything else to ensure custom classes are found */
+        $this->registerLoaderServices();
         $this['core.loader']->loadPackages($this::PACKAGES);
 
-        // Errors
-        error\Handler::register($this[error\IHandler::class]);
-    }
 
+        /* Load up all the available providers */
+        $this->registerProviders(...$this::DEFAULT_PROVIDERS);
+        $this->registerProviders(...$this::PROVIDERS);
 
-    /**
-     * Register all the other bindings
-     */
-    public function registerPlatformServices(): void
-    {
-        $this->registerLoaderServices();
-        $this->registerErrorServices();
-        $this->registerDumperServices();
-        $this->registerEnvServices();
+        /* Register error handler */
+        error\Handler::register($this['core.error.handler']);
+        debug\dumper\Handler::register();
     }
 
 
@@ -62,32 +57,5 @@ class App extends container\Generic implements IApp
 
         /* Register the main loader handler */
         $this->bindShared(core\ILoader::class, core\loader\Composer::class);
-    }
-
-    /**
-     * Register error handler services
-     */
-    protected function registerErrorServices(): void
-    {
-        $this->bindShared(core\error\IHandler::class, core\error\Handler::class);
-        $this->bind(error\IReporter::class, error\reporter\Whoops::class);
-    }
-
-    /**
-     * Register dumper services
-     */
-    protected function registerDumperServices(): void
-    {
-        //debug\dumper\Handler::register();
-    }
-
-    /**
-     * Register env services
-     */
-    protected function registerEnvServices(): void
-    {
-        $this->bindShared(core\env\IConfig::class, function ($app) {
-            return core\env\config\DotIni::loadFile(df\BASE_PATH.'/.env');
-        });
     }
 }

@@ -44,7 +44,7 @@ namespace df
     /**
      * Initial bootstrap
      */
-    function bootstrap(string $basePath=null): core\IContainer
+    function bootstrap(string $basePath=null): core\IApp
     {
         /* Ensure this only ever gets called once */
         static $started;
@@ -71,12 +71,8 @@ namespace df
             require_once $basePath.'/App.php';
         }
 
-
-        /* Ask the app to setup its own loader, register bindings
-         * and all that jazz */
         $app = df\app();
         $app->bootstrap();
-
         return $app;
     }
 

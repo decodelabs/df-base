@@ -13,6 +13,12 @@ use Psr\Container\ContainerInterface;
 
 interface IContainer extends ContainerInterface, \ArrayAccess
 {
+    public function registerProviders(string ...$providers): void;
+    public function registerProvider(string $provider): void;
+    public function registerProviderInstance(core\IServiceProvider $provider): void;
+
+    public function getProviders(): array;
+
     public function bind(string $type, $target=null): IBinding;
     public function bindOnce(string $type, $target=null, callable $callback=null): IBinding;
     public function bindToGroup(string $type, $target=null): IBinding;
@@ -20,11 +26,11 @@ interface IContainer extends ContainerInterface, \ArrayAccess
     public function bindSharedOnce(string $type, $target=null, callable $callback=null): IBinding;
     public function bindSharedToGroup(string $type, $target=null): IBinding;
 
-
     public function alias(string $type, string $alias): IContainer;
     public function getAlias(string $type): ?string;
     public function hasAlias(string $alias): bool;
     public function isAliased(string $type): bool;
+    public function getAliasedType(string $alias): ?string;
 
     public function registerAlias(string $type, string $alias): void;
     public function unregisterAlias(string $alias): void;

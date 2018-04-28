@@ -10,5 +10,5 @@ use df\core;
 
 interface IApp extends IContainer
 {
-    public function registerPlatformServices(): void;
+    public function bootstrap(): void;
 }

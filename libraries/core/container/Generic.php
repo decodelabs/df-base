@@ -13,16 +13,64 @@ use df\core\IContainer;
 class Generic implements IContainer
 {
     protected $bindings = [];
+    protected $providers = [];
     protected $aliases = [];
     protected $events;
 
+
     /**
-     * Prepare container with event dispatcher
+     * Take a list of provider types and register
      */
-    public function __construct()
+    public function registerProviders(string ...$providers): void
     {
-        $this->events = new core\event\Dispatcher();
+        foreach ($providers as $provider) {
+            $this->registerProvider($provider);
+        }
     }
+
+    /**
+     * Instantiate provider and register
+     */
+    public function registerProvider(string $provider): void
+    {
+        if (!class_exists($provider, true)) {
+            throw df\Error::{'EImplementation,ENotFound'}(
+                'Service provider '.$provider.' could not be found'
+            );
+        }
+
+        $this->registerProviderInstance(new $provider());
+    }
+
+    /**
+     * Register provider instance
+     */
+    public function registerProviderInstance(core\IServiceProvider $provider): void
+    {
+        $types = $provider::getProvidedServices();
+
+        foreach ($types as $type) {
+            if (isset($this->bindings[$type])) {
+                continue;
+            }
+            
+            $this->providers[$type] = $provider;
+
+            if ($alias = Binding::typeToAlias($type)) {
+                $this->registerAlias($type, $alias);
+            }
+        }
+    }
+
+
+    /**
+     * Get list of registered providers
+     */
+    public function getProviders(): array
+    {
+        return $this->providers;
+    }
+
 
     /**
      * Bind a concrete type or instance to interface
@@ -37,6 +85,7 @@ class Generic implements IContainer
         }
 
         $this->bindings[$type] = $binding;
+        unset($this->providers[$type]);
 
         if ($oldBinding) {
             $this->triggerAfterRebinding($binding);
@@ -86,6 +135,7 @@ class Generic implements IContainer
         $binding = new Binding($this, $type, $target);
         $group->addBinding($binding);
         $this->bindings[$type] = $group;
+        unset($this->providers[$type]);
 
         return $binding;
     }
@@ -140,11 +190,15 @@ class Generic implements IContainer
      */
     public function getAlias(string $type): ?string
     {
-        if (!$binding = $this->getBinding($type)) {
-            return null;
+        if (isset($this->bindings[$type])) {
+            return $this->bindings[$type]->getAlias();
         }
 
-        return $binding->getAlias();
+        if (false !== ($key = array_search($type, $this->aliases))) {
+            return $key;
+        }
+
+        return null;
     }
 
     /**
@@ -161,6 +215,14 @@ class Generic implements IContainer
     public function isAliased(string $type): bool
     {
         return in_array($type, $this->aliases);
+    }
+
+    /**
+     * Lookup alias
+     */
+    public function getAliasedType(string $alias): ?string
+    {
+        return $this->aliases[$alias] ?? null;
     }
 
 
@@ -228,7 +290,9 @@ class Generic implements IContainer
      */
     public function has($type): bool
     {
-        return isset($this->bindings[$type]) || isset($this->aliases[$type]);
+        return isset($this->bindings[$type])
+            || isset($this->aliases[$type])
+            || isset($this->providers[$type]);
     }
 
 
@@ -237,6 +301,8 @@ class Generic implements IContainer
      */
     public function remove(string $type): IContainer
     {
+        unset($this->providers[$type]);
+
         if (!isset($this->bindings[$type])) {
             return $this;
         }
@@ -262,15 +328,23 @@ class Generic implements IContainer
             $type = $this->aliases[$type];
         }
 
-        if (!isset($this->bindings[$type])) {
-            throw df\Error::{
-                'ENotFound,Psr\\Container\\NotFoundExceptionInterface'
-            }(
-                $type.' has not been bound'
-            );
+        if (isset($this->bindings[$type])) {
+            return $this->bindings[$type];
         }
 
-        return $this->bindings[$type];
+        if (isset($this->providers[$type])) {
+            $this->providers[$type]->registerServices($this);
+
+            if (isset($this->bindings[$type])) {
+                return $this->bindings[$type];
+            }
+        }
+
+        throw df\Error::{
+            'ENotFound,Psr\\Container\\NotFoundExceptionInterface'
+        }(
+            $type.' has not been bound'
+        );
     }
 
     /**
@@ -339,7 +413,11 @@ class Generic implements IContainer
     {
         $this->bindings = [];
         $this->aliases = [];
-        $this->events->clear();
+
+        if ($this->events) {
+            $this->events->clear();
+        }
+
         return $this;
     }
 
@@ -373,7 +451,7 @@ class Generic implements IContainer
      */
     public function afterResolving(string $type, callable $callback): IContainer
     {
-        $this->events->after('resolving.'.$type, $callback);
+        $this->events()->after('resolving.'.$type, $callback);
         return $this;
     }
 
@@ -384,7 +462,7 @@ class Generic implements IContainer
     {
         $type = $binding->getType();
 
-        $this->events->withAfter(['resolving.'.$type, 'resolving.*'], function ($events) use ($type, $instance) {
+        $this->events()->withAfter(['resolving.'.$type, 'resolving.*'], function ($events) use ($type, $instance) {
             $events->triggerAfter('resolving.'.$type, $instance, $this);
             $events->triggerAfter('resolving.*', $instance, $this);
         });
@@ -395,7 +473,7 @@ class Generic implements IContainer
      */
     public function afterRebinding(string $type, callable $callback): IContainer
     {
-        $this->events->after('rebinding.'.$type, $callback);
+        $this->events()->after('rebinding.'.$type, $callback);
         return $this;
     }
 
@@ -406,7 +484,7 @@ class Generic implements IContainer
     {
         $type = $binding->getType();
 
-        $this->events->withAfter(['rebinding.'.$type, 'rebinding.*'], function ($events) use ($type, $binding) {
+        $this->events()->withAfter(['rebinding.'.$type, 'rebinding.*'], function ($events) use ($type, $binding) {
             $instance = $binding->getInstance();
 
             $events->triggerAfter('rebinding.'.$type, $instance, $this);
@@ -484,6 +562,18 @@ class Generic implements IContainer
         return $this->remove($type);
     }
 
+
+    /**
+     * Prepare event dispatcher
+     */
+    protected function events(): core\event\Dispatcher
+    {
+        if (!$this->events) {
+            $this->events = new core\event\Dispatcher();
+        }
+
+        return $this->events;
+    }
 
 
     /**

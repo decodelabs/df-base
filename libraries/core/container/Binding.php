@@ -34,10 +34,8 @@ class Binding implements IBinding
     public function __construct(IContainer $container, string $type, $target)
     {
         $this->container = $container;
-        $isInterface = $isClass = false;
 
-        if (!($isInterface = interface_exists($type, true))
-        && !($isClass = class_exists($type, true))) {
+        if (!interface_exists($type, true) && !class_exists($type, true)) {
             throw df\Error::EInvalidArgument(
                 'Binding type must be a valid interface'
             );
@@ -46,17 +44,8 @@ class Binding implements IBinding
         $this->type = $type;
         $this->setTarget($target);
 
-        $parts = explode('\\', $type);
-
-        if (array_shift($parts) === 'df') {
-            $name = array_pop($parts);
-
-            if ($isInterface) {
-                $name = substr($name, 1);
-            }
-
-            $parts[] = lcfirst($name);
-            $this->alias(implode('.', $parts));
+        if (null !== ($alias = $this->typeToAlias($this->type))) {
+            $this->alias($alias);
         }
     }
 
@@ -75,6 +64,27 @@ class Binding implements IBinding
     public function getType(): string
     {
         return $this->type;
+    }
+
+    /**
+     * Convert type to alias
+     */
+    public static function typeToAlias(string $type): ?string
+    {
+        $parts = explode('\\', $type);
+
+        if (array_shift($parts) !== 'df') {
+            return null;
+        }
+
+        $name = array_pop($parts);
+
+        if (interface_exists($type)) {
+            $name = substr($name, 1);
+        }
+
+        $parts[] = lcfirst($name);
+        return implode('.', $parts);
     }
 
 
@@ -167,7 +177,8 @@ class Binding implements IBinding
             return $this;
         }
 
-        if ($this->container->hasAlias($alias)) {
+        if ($this->container->hasAlias($alias)
+        && $this->container->getAliasedType($alias) !== $this->type) {
             throw df\Error::{
                 'ELogic,Psr\Container\ContainerExceptionInterface'
             }(
