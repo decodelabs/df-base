@@ -1,4 +1,3 @@
-<?php
 /**
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
@@ -346,7 +345,6 @@ class Binding implements IBinding
     {
         foreach ($this->preparators as $callback) {
             $instance = $callback($instance, $this);
-            // TODO: check instance is still of $type
         }
 
         if (!$instance instanceof $this->type) {
