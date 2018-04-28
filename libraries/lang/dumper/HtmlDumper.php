@@ -4,7 +4,7 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\lang\debug\dumper;
+namespace df\lang\dumper;
 
 use df;
 use df\lang;

@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace
 {
-    use df\lang\debug;
+    use df\lang\dumper;
 
     if (!function_exists('dd')) {
         /**
@@ -19,7 +19,7 @@ namespace
          */
         function dd(...$vars): void
         {
-            debug\dumper\Handler::dump(...$vars);
+            dumper\Handler::dump(...$vars);
         }
     }
 }
@@ -34,7 +34,7 @@ namespace df
     use df;
     use df\core;
     use df\lang\error;
-    use df\lang\debug;
+    use df\lang\dumper;
 
     use Composer\Autoload\ClassLoader;
 
@@ -101,7 +101,7 @@ namespace df
      */
     function dump(...$vars): void
     {
-        debug\dumper\Handler::dump(...$vars);
+        dumper\Handler::dump(...$vars);
     }
 
     /**
@@ -109,7 +109,7 @@ namespace df
      */
     function incomplete(): void
     {
-        $call = debug\StackFrame::create(1);
+        $call = lang\stack\Frame::create(1);
 
         throw df\Error::EImplementation(
             $call->getSignature().' has not been completed yet!'

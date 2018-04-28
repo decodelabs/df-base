@@ -4,19 +4,19 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\lang\debug;
+namespace df\lang\stack;
 
 use df;
 use df\lang;
 
-class StackTrace implements \IteratorAggregate
+class Trace implements \IteratorAggregate
 {
     protected $frames= [];
 
     /**
      * Extract trace from exception and build
      */
-    public static function createFromException(\Throwable $e, int $rewind=0): StackTrace
+    public static function createFromException(\Throwable $e, int $rewind=0): Trace
     {
         return self::createFromBacktrace($e->getTrace(), $rewind);
     }
@@ -24,7 +24,7 @@ class StackTrace implements \IteratorAggregate
     /**
      * Generate a backtrace and build
      */
-    public static function create(int $rewind=0): StackTrace
+    public static function create(int $rewind=0): Trace
     {
         return self::createFromBacktrace(debug_backtrace(), $rewind + 1);
     }
@@ -32,7 +32,7 @@ class StackTrace implements \IteratorAggregate
     /**
      * Take a trace array and convert to objects
      */
-    public static function createFromBacktrace(array $trace, int $rewind=0): StackTrace
+    public static function createFromBacktrace(array $trace, int $rewind=0): Trace
     {
         $last = null;
 
@@ -66,7 +66,7 @@ class StackTrace implements \IteratorAggregate
             $frame['file'] = $last['fromFile'];
             $frame['line'] = $last['fromLine'];
 
-            $output[] = new StackFrame($frame);
+            $output[] = new Frame($frame);
             $last = $frame;
         }
 
@@ -80,9 +80,9 @@ class StackTrace implements \IteratorAggregate
     public function __construct(array $frames)
     {
         foreach ($frames as $frame) {
-            if (!$frame instanceof StackFrame) {
+            if (!$frame instanceof Frame) {
                 throw df\Error::EUnexpectedValue([
-                    'message' => 'Trace frame is not an instance of df\\lang\\StackFrame',
+                    'message' => 'Trace frame is not an instance of df\\lang\\stack\\Frame',
                     'data' => $frame
                 ]);
             }
@@ -104,9 +104,9 @@ class StackTrace implements \IteratorAggregate
     /**
      * Get first frame
      */
-    public function getFirstFrame(): StackFrame
+    public function getFirstFrame(): ?Frame
     {
-        return $this->frames[0];
+        return $this->frames[0] ?? null;
     }
 
 
@@ -115,6 +115,10 @@ class StackTrace implements \IteratorAggregate
      */
     public function getFile(): ?string
     {
+        if (!isset($this->frames[0])) {
+            return null;
+        }
+
         return $this->frames[0]->getFile();
     }
 
@@ -123,6 +127,10 @@ class StackTrace implements \IteratorAggregate
      */
     public function getLine(): ?int
     {
+        if (!isset($this->frames[0])) {
+            return null;
+        }
+        
         return $this->frames[0]->getLine();
     }
 

@@ -86,7 +86,7 @@ trait TError
     /**
      * Get first call from trace
      */
-    public function getStackFrame(): lang\debug\StackFrame
+    public function getStackFrame(): lang\stack\Frame
     {
         return $this->getStackTrace()->getFirstCall();
     }
@@ -94,10 +94,10 @@ trait TError
     /**
      * Generate a StackTrace object from Exception trace
      */
-    public function getStackTrace(): lang\debug\StackTrace
+    public function getStackTrace(): lang\stack\Trace
     {
         if (!$this->stackTrace) {
-            $this->stackTrace = lang\debug\StackTrace::createFromException($this, $this->rewind + 2);
+            $this->stackTrace = lang\stack\Trace::createFromException($this, $this->rewind + 2);
         }
 
         return $this->stackTrace;

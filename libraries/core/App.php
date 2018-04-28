@@ -10,7 +10,7 @@ use df;
 use df\core;
 use df\core\container;
 use df\core\error;
-use df\lang\debug;
+use df\lang\dumper;
 
 use Composer\Autoload\ClassLoader;
 
@@ -41,7 +41,7 @@ class App extends container\Generic implements IApp
 
         /* Register error handler */
         error\Handler::register($this['core.error.handler']);
-        debug\dumper\Handler::register();
+        dumper\Handler::register();
     }
 
 

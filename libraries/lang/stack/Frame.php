@@ -4,7 +4,7 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\lang\debug;
+namespace df\lang\stack;
 
 use df;
 use df\lang;
@@ -12,7 +12,7 @@ use df\lang;
 /**
  * Represents a single entry in a stack trace
  */
-class StackFrame
+class Frame
 {
     protected $function;
     protected $className;
@@ -30,7 +30,7 @@ class StackFrame
      * Generate a new trace and pull out a single frame
      * depending on the rewind range
      */
-    public static function create(int $rewind=0): StackFrame
+    public static function create(int $rewind=0): Frame
     {
         $data = debug_backtrace();
 
