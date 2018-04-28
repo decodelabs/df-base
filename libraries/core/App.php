@@ -10,7 +10,7 @@ use df;
 use df\core;
 use df\core\container;
 use df\core\error;
-use df\lang\dumper;
+use df\lang;
 
 use Composer\Autoload\ClassLoader;
 
@@ -20,8 +20,8 @@ class App extends container\Generic implements IApp
     const PROVIDERS = [];
 
     const DEFAULT_PROVIDERS = [
-        core\env\EnvServiceProvider::class,
-        core\error\ErrorServiceProvider::class
+        env\EnvServiceProvider::class,
+        error\ErrorServiceProvider::class
     ];
 
     /**
@@ -29,6 +29,9 @@ class App extends container\Generic implements IApp
      */
     public function bootstrap(): void
     {
+        /* Set basic PHP defaults */
+        $this->setPlatformDefaults();
+
         /* The loader needs to be set up manually before
          * everything else to ensure custom classes are found */
         $this->registerLoaderServices();
@@ -40,8 +43,20 @@ class App extends container\Generic implements IApp
         $this->registerProviders(...$this::PROVIDERS);
 
         /* Register error handler */
-        error\Handler::register($this['core.error.handler']);
-        dumper\Handler::register();
+        if ($this->has('core.error.handler')) {
+            error\Handler::register($this['core.error.handler']);
+        }
+    }
+
+
+    /**
+     * Setup basic PHP platform defaults
+     */
+    protected function setPlatformDefaults(): void
+    {
+        error_reporting(-1);
+        date_default_timezone_set('UTC');
+        mb_internal_encoding('UTF-8');
     }
 
 

@@ -9,91 +9,35 @@ namespace df\lang\dumper;
 use df;
 use df\lang;
 
-use Symfony\Component\VarDumper\VarDumper;
-use Symfony\Component\VarDumper\Cloner;
-use Symfony\Component\VarDumper\Dumper\CliDumper;
-use Symfony\Component\VarDumper\Caster;
-
 class Handler
 {
-    /**
-     * Register handler
-     */
-    public static function register(): void
+    public static function createGeneric()
     {
-        VarDumper::setHandler([self::class, 'dumpOne']);
+        return new Symfony();
     }
 
+    public static function getDumper(): lang\IDumper
+    {
+        if (!defined('df\\BOOTSTRAPPED')) {
+            return self::createGeneric();
+        } else {
+            $app = df\app();
 
-    /**
-     * Main dump handler
-     */
+            if ($app->has('lang.dumper')) {
+                return $app['lang.dumper'];
+            } else {
+                return self::createGeneric();
+            }
+        }
+    }
+
     public static function dump(...$vars): void
     {
-        http_response_code(500);
-
-        $call = lang\stack\Frame::create(1);
-
-        $attrs = [
-            'time' => self::formatMicrotime(microtime(true) - df\START),
-            'memory' => self::formatFilesize(memory_get_usage()),
-            'location' => df\stripBasePath($call->getCallingFile()).' : '.$call->getCallingLine()
-        ];
-
-        if ('cli' === PHP_SAPI) {
-            echo implode(' | ', $attrs)."\n\n";
-        } else {
-            echo '<pre class="sf-dump">'.implode(' | ', $attrs).'</pre>';
-        }
-
-        foreach ($vars as $var) {
-            self::dumpOne($var);
-        }
-
-        die(1);
+        static::getDumper()->dump(...$vars);
     }
 
-
-    /**
-     * Dump an individual var
-     */
-    public static function dumpOne($var)
+    public static function dumpDie(...$vars): void
     {
-        if ('cli' === PHP_SAPI) {
-            $dumper = new CliDumper();
-        } else {
-            $dumper = new HtmlDumper();
-
-            $dumper->setDisplayOptions([
-                'maxDepth' => 10
-            ]);
-        }
-
-
-        $cloner = new Cloner\VarCloner();
-        $dumper->dump($cloner->cloneVar($var));
-    }
-
-
-
-
-
-    /**
-     * TODO: move these to a shared location
-     */
-    private static function formatFilesize($bytes)
-    {
-        $units = ['B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB'];
-
-        for ($i = 0; $bytes > 1024; $i++) {
-            $bytes /= 1024;
-        }
-
-        return round($bytes, 2).' '.$units[$i];
-    }
-
-    private static function formatMicrotime($time)
-    {
-        return number_format($time * 1000, 2).' ms';
+        static::getDumper()->dumpDie(...$vars);
     }
 }

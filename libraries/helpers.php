@@ -12,15 +12,28 @@ declare(strict_types=1);
 namespace
 {
     use df\lang\dumper;
+    use Symfony\Component\VarDumper\VarDumper;
 
     if (!function_exists('dd')) {
         /**
-         * Super quick global dump
+         * Super quick global dump & die
          */
         function dd(...$vars): void
         {
+            dumper\Handler::dumpDie(...$vars);
+        }
+    }
+
+    if (!function_exists('dump')) {
+        /**
+         * Quick dump
+         */
+        function dump(...$vars): void
+        {
             dumper\Handler::dump(...$vars);
         }
+    } elseif (class_exists(VarDumper::class)) {
+        VarDumper::setHandler([dumper\Handler::class, 'dump']);
     }
 }
 
@@ -73,6 +86,8 @@ namespace df
 
         $app = df\app();
         $app->bootstrap();
+        define('df\\BOOTSTRAPPED', true);
+
         return $app;
     }
 
@@ -95,14 +110,6 @@ namespace df
         return $app;
     }
 
-
-    /**
-     * Quick dump
-     */
-    function dump(...$vars): void
-    {
-        dumper\Handler::dump(...$vars);
-    }
 
     /**
      * Cry about a method not being complete
@@ -133,9 +140,9 @@ namespace df
     /**
      * Strip base path from path string
      */
-    function stripBasePath(string $path): string
+    function stripBasePath(?string $path): ?string
     {
-        if (!defined('df\\BASE_PATH')) {
+        if (!defined('df\\BASE_PATH') || $path === null) {
             return $path;
         }
 
