@@ -10,6 +10,7 @@ use df;
 use df\core;
 use df\core\service;
 use df\core\error;
+use df\core\kernel;
 use df\lang;
 
 use Composer\Autoload\ClassLoader;
@@ -24,11 +25,15 @@ class App extends service\Container implements IApp
         error\ErrorServiceProvider::class
     ];
 
+
     /**
      * Setup initial state
      */
     public function bootstrap(): void
     {
+        /* Register self */
+        $this->bindShared(IApp::class, $this);
+
         /* Set basic PHP defaults */
         $this->setPlatformDefaults();
 
@@ -37,10 +42,13 @@ class App extends service\Container implements IApp
         $this->registerLoaderServices();
         $this['core.loader']->loadPackages($this::PACKAGES);
 
-
         /* Load up all the available providers */
         $this->registerProviders(...$this::DEFAULT_PROVIDERS);
         $this->registerProviders(...$this::PROVIDERS);
+
+        /* Load kernels */
+        $this->registerHttpKernel();
+        $this->registerConsoleKernel();
 
         /* Register error handler */
         error\Handler::register($this['core.error.handler']);
@@ -72,6 +80,21 @@ class App extends service\Container implements IApp
         $this->bindShared(core\ILoader::class, core\loader\Composer::class);
     }
 
+    /**
+     * Register HTTP kernel
+     */
+    protected function registerHttpKernel(): void
+    {
+        $this->bindShared(kernel\IHttp::class, kernel\Http::class);
+    }
+
+    /**
+     * Register console kernel
+     */
+    protected function registerConsoleKernel(): void
+    {
+        $this->bindShared(kernel\IConsole::class, kernel\Console::class);
+    }
 
     /**
      * Get root app path

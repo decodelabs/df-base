@@ -116,10 +116,10 @@ namespace df
      */
     function incomplete(): void
     {
-        $call = lang\stack\Frame::create(1);
+        $frame = lang\stack\Frame::create(1);
 
         throw df\Error::EImplementation(
-            $call->getSignature().' has not been completed yet!'
+            $frame->getSignature().' has not been completed yet!'
         );
     }
 
