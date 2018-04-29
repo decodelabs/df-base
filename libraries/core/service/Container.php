@@ -587,6 +587,11 @@ class Container implements IContainer
             $output[$alias] = $binding->describeInstance();
         }
 
+        foreach ($this->providers as $type => $provider) {
+            $alias = Binding::typeToAlias($type) ?? $type;
+            $output[$alias] = 'provider : '.get_class($provider);
+        }
+
         return $output;
     }
 }

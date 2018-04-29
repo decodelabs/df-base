@@ -387,13 +387,13 @@ class Binding implements IBinding
     {
         $output = $this->isShared() ? '* ':'';
 
-        if (is_string($this->target)) {
+        if (isset($this->instance)) {
+            $output .= 'instance : '.get_class($this->instance);
+        } elseif (is_string($this->target)) {
             $output .= 'type : '.$this->target;
         } elseif ($this->target instanceof \Closure) {
             $ref = new \ReflectionFunction($this->target);
             $output .= 'closure @ '.df\stripBasePath($ref->getFileName()).' : '.$ref->getStartLine();
-        } elseif (isset($this->instance)) {
-            $output .= 'instance : '.get_class($this->instance);
         } else {
             $output .= 'null';
         }
