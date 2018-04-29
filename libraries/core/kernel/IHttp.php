@@ -8,7 +8,14 @@ namespace df\core\kernel;
 use df;
 use df\core;
 
-interface IHttp
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+interface IHttp extends RequestHandlerInterface
 {
     public function run(): void;
+    public function prepareServerRequest(): ServerRequestInterface;
+    public function sendResponse(ResponseInterface $response): void;
+    public function terminate(ServerRequestInterface $request, ResponseInterface $response): void;
 }

@@ -85,7 +85,7 @@ class App extends service\Container implements IApp
      */
     protected function registerHttpKernel(): void
     {
-        $this->bindShared(kernel\IHttp::class, kernel\Http::class);
+        $this->bindShared(kernel\IHttp::class, df\http\Kernel::class);
     }
 
     /**
@@ -93,7 +93,7 @@ class App extends service\Container implements IApp
      */
     protected function registerConsoleKernel(): void
     {
-        $this->bindShared(kernel\IConsole::class, kernel\Console::class);
+        $this->bindShared(kernel\IConsole::class, df\clip\Kernel::class);
     }
 
     /**

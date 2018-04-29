@@ -4,12 +4,13 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\kernel;
+namespace df\clip;
 
 use df;
-use df\core;
+use df\clip;
+use df\core\kernel\IConsole;
 
-class Console implements IConsole
+class Kernel implements IConsole
 {
     protected $app;
 

@@ -363,6 +363,8 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
         $output = [];
 
         foreach ($this->toDelimitedSet(true) as $key => $value) {
+            $key = rawurlencode($key);
+            
             if (!empty($value) || $value === '0' || $value === 0) {
                 $output[] = $key.$valueDelimiter.rawurlencode((string)$value);
             } else {
