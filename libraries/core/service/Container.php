@@ -4,13 +4,12 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\container;
+namespace df\core\service;
 
 use df;
 use df\core;
-use df\core\IContainer;
 
-class Generic implements IContainer
+class Container implements IContainer
 {
     protected $bindings = [];
     protected $providers = [];
@@ -53,7 +52,7 @@ class Generic implements IContainer
             if (isset($this->bindings[$type])) {
                 continue;
             }
-            
+
             $this->providers[$type] = $provider;
 
             if ($alias = Binding::typeToAlias($type)) {

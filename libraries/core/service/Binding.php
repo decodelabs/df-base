@@ -4,11 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\container;
+namespace df\core\service;
 
 use df;
 use df\core;
-use df\core\IContainer;
 
 use Psr\Container\NotFoundExceptionInterface;
 

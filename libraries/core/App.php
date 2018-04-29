@@ -8,13 +8,13 @@ namespace df\core;
 
 use df;
 use df\core;
-use df\core\container;
+use df\core\service;
 use df\core\error;
 use df\lang;
 
 use Composer\Autoload\ClassLoader;
 
-class App extends container\Generic implements IApp
+class App extends service\Container implements IApp
 {
     const PACKAGES = [];
     const PROVIDERS = [];
@@ -43,9 +43,7 @@ class App extends container\Generic implements IApp
         $this->registerProviders(...$this::PROVIDERS);
 
         /* Register error handler */
-        if ($this->has('core.error.handler')) {
-            error\Handler::register($this['core.error.handler']);
-        }
+        error\Handler::register($this['core.error.handler']);
     }
 
 
@@ -72,5 +70,30 @@ class App extends container\Generic implements IApp
 
         /* Register the main loader handler */
         $this->bindShared(core\ILoader::class, core\loader\Composer::class);
+    }
+
+
+    /**
+     * Get root app path
+     */
+    public function getBasePath(): string
+    {
+        return df\BASE_PATH;
+    }
+
+    /**
+     * Get composer vendor lib path
+     */
+    public function getVendorPath(): string
+    {
+        return df\BASE_PATH.'/vendor';
+    }
+
+    /**
+     * Get public entry point path
+     */
+    public function getPublicPath(): string
+    {
+        return df\BASE_PATH.'/public';
     }
 }

@@ -8,6 +8,7 @@ namespace df\core\env;
 
 use df;
 use df\core;
+use df\core\service\IContainer;
 
 class EnvServiceProvider implements core\IServiceProvider
 {
@@ -18,7 +19,7 @@ class EnvServiceProvider implements core\IServiceProvider
         ];
     }
 
-    public function registerServices(core\IContainer $app): void
+    public function registerServices(IContainer $app): void
     {
         $app->bindShared(core\env\IConfig::class, function ($app) {
             return core\env\config\DotIni::loadFile(df\BASE_PATH.'/.env');

@@ -3,11 +3,10 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\core\container;
+namespace df\core\service;
 
 use df;
 use df\core;
-use df\core\IContainer;
 
 interface IBinding
 {
@@ -16,7 +15,7 @@ interface IBinding
 
     public function setTarget($target): IBinding;
     public function getTarget();
-    
+
     public function setFactory(\Closure $factory);
     public function getFactory(): ?\Closure;
 

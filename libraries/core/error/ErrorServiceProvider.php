@@ -9,6 +9,7 @@ namespace df\core\error;
 use df;
 use df\core;
 use df\core\error;
+use df\core\service\IContainer;
 
 class ErrorServiceProvider implements core\IServiceProvider
 {
@@ -20,7 +21,7 @@ class ErrorServiceProvider implements core\IServiceProvider
         ];
     }
 
-    public function registerServices(core\IContainer $app): void
+    public function registerServices(IContainer $app): void
     {
         $app->bindShared(error\IHandler::class, error\Handler::class);
         $app->bind(error\IReporter::class, error\reporter\Whoops::class);

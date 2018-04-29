@@ -3,11 +3,10 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\core;
+namespace df\core\service;
 
 use df;
 use df\core;
-use df\core\container\IBinding;
 
 use Psr\Container\ContainerInterface;
 

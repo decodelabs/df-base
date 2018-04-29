@@ -7,9 +7,10 @@ namespace df\core;
 
 use df;
 use df\core;
+use df\core\service\IContainer;
 
 interface IServiceProvider
 {
     public static function getProvidedServices(): array;
-    public function registerServices(core\IContainer $container): void;
+    public function registerServices(IContainer $container): void;
 }
