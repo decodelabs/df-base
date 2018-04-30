@@ -28,15 +28,20 @@ class Factory
         $server = $this->prepareServerData($server ?? $_SERVER);
         $files = $this->prepareFiles($files ?? $_FILES);
         $headers = $this->extractHeaders($server);
+        $uri = $this->extractUri($server, $headers);
 
         if ($cookies === null && array_key_exists('cookie', $headers)) {
             $cookies = $this->parseCookies($headers['cookie']);
         }
 
+        if ($query === null) {
+            parse_str($uri->getQuery(), $query);
+        }
+
         return new ServerRequest(
             $server,
             $files,
-            $this->extractUri($server, $headers),
+            $uri,
             $server['REQUEST_METHOD'] ?? 'GET',
             'php://input',
             $headers,
@@ -150,7 +155,12 @@ class Factory
     {
         [$host, $port] = $this->extractHostAndPort($server, $headers);
         $relative = $this->extractRelative($server);
-        $path = $query = $fragment = null;
+        $parts = explode('#', $relative, 2);
+        $relative = array_shift($parts);
+        $fragment = array_shift($parts);
+        $parts = explode('?', $relative, 2);
+        $path = array_shift($parts);
+        $query = array_shift($parts);
 
         return http\Uri::create(
             $this->extractScheme($server, $headers),
