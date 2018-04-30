@@ -33,12 +33,37 @@ class Uri implements IUri
     protected $fragment;
 
 
+    public static function create(
+        string $scheme='http',
+        string $username=null,
+        string $password=null,
+        string $host=null,
+        int $port=null,
+        string $path=null,
+        string $query=null,
+        string $fragment=null
+    ) {
+        $output = new static(null);
+
+        $output->scheme = $output->prepareScheme($scheme);
+        $output->username = $output->prepareUserInfo($username);
+        $output->password = $output->prepareUserInfo($password);
+        $output->host = $output->prepareHost($host);
+        $output->port = $output->preparePort($port);
+        $output->path = $output->preparePath($path);
+        $output->query = $output->prepareQuery($query);
+        $output->fragment = $output->prepareFragment($fragment);
+
+        return $output;
+    }
+
+
     /**
      * Create new instance with text uri
      */
     public function __construct(?string $uri)
     {
-        if (strlen($uri)) {
+        if (!empty($uri)) {
             $this->parse($uri);
         }
     }
@@ -435,7 +460,7 @@ class Uri implements IUri
      */
     protected static function preparePath(?string $path): ?string
     {
-        if (!strlen($path)) {
+        if (empty($path)) {
             return null;
         }
 
@@ -657,7 +682,7 @@ class Uri implements IUri
     public function __debugInfo(): array
     {
         return [
-            'uri' => $this->__toString()
+            '' => $this->__toString()
         ];
     }
 }

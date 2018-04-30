@@ -43,8 +43,8 @@ class Kernel implements IHttp
      */
     public function prepareServerRequest(): ServerRequestInterface
     {
-        $uri = new http\Uri('RFGORTJ$£%POT%');
-        dd($uri);
+        $factory = new http\request\Factory();
+        return $factory->createFromEnvironment();
     }
 
     /**
