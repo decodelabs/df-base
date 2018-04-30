@@ -26,7 +26,7 @@ trait TMessage
     protected function initMessage($uri, $body, array $headers, string $protocol='1.1'): void
     {
         $this->protocol = $this->prepareProtocolVersion($protocol);
-        $this->stream = $this->prepareStream($body);
+        $this->body = $this->prepareStream($body);
         $this->uri = $this->prepareUri($uri);
         $this->setHeaders($headers);
 
