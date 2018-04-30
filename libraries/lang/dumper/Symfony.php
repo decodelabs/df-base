@@ -51,9 +51,11 @@ class Symfony implements lang\IDumper
                 ];
             };
 
+            /*
             $dumper->setDisplayOptions([
                 'maxDepth' => 10
             ]);
+            */
         }
 
 
