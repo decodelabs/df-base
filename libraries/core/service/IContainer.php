@@ -14,7 +14,7 @@ interface IContainer extends ContainerInterface, \ArrayAccess
 {
     public function registerProviders(string ...$providers): void;
     public function registerProvider(string $provider): void;
-    public function registerProviderInstance(core\IServiceProvider $provider): void;
+    public function registerProviderInstance(IProvider $provider): void;
 
     public function getProviders(): array;
 

@@ -9,8 +9,9 @@ namespace df\core\env;
 use df;
 use df\core;
 use df\core\service\IContainer;
+use df\core\service\IProvider;
 
-class EnvServiceProvider implements core\IServiceProvider
+class EnvServiceProvider implements IProvider
 {
     public static function getProvidedServices(): array
     {

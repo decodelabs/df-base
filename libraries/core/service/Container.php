@@ -44,7 +44,7 @@ class Container implements IContainer
     /**
      * Register provider instance
      */
-    public function registerProviderInstance(core\IServiceProvider $provider): void
+    public function registerProviderInstance(IProvider $provider): void
     {
         $types = $provider::getProvidedServices();
 

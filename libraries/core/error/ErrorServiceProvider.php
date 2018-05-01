@@ -10,8 +10,9 @@ use df;
 use df\core;
 use df\core\error;
 use df\core\service\IContainer;
+use df\core\service\IProvider;
 
-class ErrorServiceProvider implements core\IServiceProvider
+class ErrorServiceProvider implements IProvider
 {
     public static function getProvidedServices(): array
     {

@@ -3,13 +3,12 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\core;
+namespace df\core\service;
 
 use df;
 use df\core;
-use df\core\service\IContainer;
 
-interface IServiceProvider
+interface IProvider
 {
     public static function getProvidedServices(): array;
     public function registerServices(IContainer $container): void;
