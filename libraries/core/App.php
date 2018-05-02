@@ -8,21 +8,28 @@ namespace df\core;
 
 use df;
 use df\core;
-use df\core\service;
-use df\core\error;
+
+use df\core\service\Container;
+use df\core\env\EnvServiceProvider;
+use df\core\error\ErrorServiceProvider;
+use df\core\error\Handler;
+
 use df\core\kernel;
 use df\lang;
 
+use df\http\HttpServiceProvider;
+
 use Composer\Autoload\ClassLoader;
 
-class App extends service\Container implements IApp
+class App extends Container implements IApp
 {
     const PACKAGES = [];
     const PROVIDERS = [];
 
     const DEFAULT_PROVIDERS = [
-        env\EnvServiceProvider::class,
-        error\ErrorServiceProvider::class
+        EnvServiceProvider::class,
+        ErrorServiceProvider::class,
+        HttpServiceProvider::class
     ];
 
 
@@ -51,7 +58,7 @@ class App extends service\Container implements IApp
         $this->registerConsoleKernel();
 
         /* Register error handler */
-        error\Handler::register($this['core.error.handler']);
+        Handler::register($this['core.error.handler']);
     }
 
 
@@ -85,7 +92,7 @@ class App extends service\Container implements IApp
      */
     protected function registerHttpKernel(): void
     {
-        $this->bindShared(kernel\IHttp::class, df\http\Kernel::class);
+        $this->bindShared(kernel\IHttp::class, df\http\HttpKernel::class);
     }
 
     /**
@@ -93,7 +100,7 @@ class App extends service\Container implements IApp
      */
     protected function registerConsoleKernel(): void
     {
-        $this->bindShared(kernel\IConsole::class, df\clip\Kernel::class);
+        $this->bindShared(kernel\IConsole::class, df\clip\ConsoleKernel::class);
     }
 
     /**
@@ -118,5 +125,14 @@ class App extends service\Container implements IApp
     public function getPublicPath(): string
     {
         return df\BASE_PATH.'/public';
+    }
+
+
+    /**
+     * Tidy things up before exiting
+     */
+    public function terminate(): void
+    {
+        // nothing to do yet
     }
 }

@@ -4,15 +4,17 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\error;
+namespace df\http;
 
 use df;
-use df\core;
-use df\core\error;
+use df\http;
+use df\http\request\Factory;
 use df\core\service\IContainer;
 use df\core\service\IProvider;
 
-class ErrorServiceProvider implements IProvider
+use Psr\Http\Message\ServerRequestInterface;
+
+class HttpServiceProvider implements IProvider
 {
     /**
      * Get list of provided classes
@@ -20,8 +22,7 @@ class ErrorServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
-            error\IHandler::class,
-            error\IReporter::class
+            ServerRequestInterface::class
         ];
     }
 
@@ -30,7 +31,9 @@ class ErrorServiceProvider implements IProvider
      */
     public function registerServices(IContainer $app): void
     {
-        $app->bindShared(error\IHandler::class, error\Handler::class);
-        $app->bind(error\IReporter::class, error\reporter\Whoops::class);
+        // Server request
+        $app->bindShared(ServerRequestInterface::class, function ($app) {
+            return (new Factory())->createFromEnvironment();
+        })->alias('http.request.server');
     }
 }

@@ -14,7 +14,7 @@ use df\core\kernel\IHttp;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Kernel implements IHttp
+class HttpKernel implements IHttp
 {
     protected $app;
 
@@ -43,8 +43,7 @@ class Kernel implements IHttp
      */
     public function prepareServerRequest(): ServerRequestInterface
     {
-        $factory = new http\request\Factory();
-        return $factory->createFromEnvironment();
+        return $this->app[ServerRequestInterface::class];
     }
 
     /**
@@ -69,7 +68,7 @@ class Kernel implements IHttp
     public function terminate(ServerRequestInterface $request, ResponseInterface $response): void
     {
         // terminate middleware
-        //$this->app->terminate();
+        $this->app->terminate();
 
         df\incomplete();
     }

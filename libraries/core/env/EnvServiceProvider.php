@@ -13,6 +13,9 @@ use df\core\service\IProvider;
 
 class EnvServiceProvider implements IProvider
 {
+    /**
+     * Get list of provided classes
+     */
     public static function getProvidedServices(): array
     {
         return [
@@ -20,6 +23,9 @@ class EnvServiceProvider implements IProvider
         ];
     }
 
+    /**
+     * Load provided classes into app
+     */
     public function registerServices(IContainer $app): void
     {
         $app->bindShared(core\env\IConfig::class, function ($app) {
