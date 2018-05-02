@@ -21,6 +21,7 @@ class Sender implements ISender
 
     protected $sendfile = 'X-Sendfile';
     protected $manualChunk = true;
+    protected $sendDebug = true;
 
 
     /**
@@ -57,6 +58,24 @@ class Sender implements ISender
     public function shouldManualChunk(): bool
     {
         return $this->manualChunk;
+    }
+
+
+    /**
+     * Send debug info in headers
+     */
+    public function setSendDebug(bool $send): ISender
+    {
+        $this->sendDebug = $send;
+        return $this;
+    }
+
+    /**
+     * Should we send debug info?
+     */
+    public function shouldSendDebug(): bool
+    {
+        return $this->sendDebug;
     }
 
 
@@ -103,7 +122,9 @@ class Sender implements ISender
 
 
         // Debug time
-        header('X-Request-Time: '.number_format((microtime(true) - df\START) * 1000, 2).' ms', false, $status);
+        if ($this->sendDebug) {
+            header('X-Request-Time: '.number_format((microtime(true) - df\START) * 1000, 2).' ms', false, $status);
+        }
 
 
         // Send status
