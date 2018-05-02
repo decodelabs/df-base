@@ -51,6 +51,13 @@ class HttpKernel implements IHttp
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
+        // TODO: Move to middleware
+        if ($request->getMethod() === 'OPTIONS' && $request->getRequestTarget() === '*') {
+            return new http\response\Text('', 200, [
+                'allow' => 'OPTIONS,GET,HEAD,POST,PUT,DELETE'
+            ]);
+        }
+
         return new http\response\Text('Hello world');
     }
 
