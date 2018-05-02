@@ -51,7 +51,9 @@ class HttpKernel implements IHttp
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        dd($request);
+        return new http\response\Stream(
+            http\body\Stream::createFromString('Hello world')
+        );
     }
 
     /**
@@ -59,7 +61,7 @@ class HttpKernel implements IHttp
      */
     public function sendResponse(ResponseInterface $response): void
     {
-        $response->send();
+        dd($response, $response->getBody()->__toString());
     }
 
     /**

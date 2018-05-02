@@ -40,8 +40,18 @@ trait TRequest
         }
 
         $this->method = $method;
+        $this->uri = $this->prepareUri($uri);
 
-        $this->initMessage($uri, $body, $headers);
+        $this->initMessage($body, $headers, $protocol);
+
+        if (!$this->hasHeader('host') && ($host = $this->uri->getHost())) {
+            if ($port = $this->uri->getPort()) {
+                $host .= ':'.$port;
+            }
+
+            $this->headerAliases['host'] = 'Host';
+            $this->headers['Host'] = [$host];
+        }
     }
 
     /**

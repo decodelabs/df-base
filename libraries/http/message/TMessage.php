@@ -23,21 +23,12 @@ trait TMessage
     /**
      * Initialise message data
      */
-    protected function initMessage($uri, $body, array $headers, string $protocol='1.1'): void
+    protected function initMessage($body, array $headers, string $protocol='1.1'): void
     {
         $this->protocol = $this->prepareProtocolVersion($protocol);
         $this->body = $this->prepareStream($body);
-        $this->uri = $this->prepareUri($uri);
+
         $this->setHeaders($headers);
-
-        if (!$this->hasHeader('host') && ($host = $this->uri->getHost())) {
-            if ($port = $this->uri->getPort()) {
-                $host .= ':'.$port;
-            }
-
-            $this->headerAliases['host'] = 'Host';
-            $this->headers['Host'] = [$host];
-        }
     }
 
 
