@@ -61,7 +61,41 @@ class HttpKernel implements IHttp
      */
     public function sendResponse(ResponseInterface $response): void
     {
-        dd($response, $response->getBody()->__toString());
+        if (headers_sent()) {
+            throw df\Error::ERuntime('Cannot send request, headers already sent');
+        }
+
+        $status = $response->getStatusCode();
+        $phrase = $response->getReasonPhrase();
+
+        // Send headers
+        static $mergable = ['Set-Cookie'];
+
+        foreach ($response->getHeaders() as $header => $values) {
+            $name = str_replace('-', ' ', $header);
+            $name = ucwords($name);
+            $name = str_replace(' ', '-', $name);
+            $merge = in_array($name, $mergable);
+
+            foreach ($values as $value) {
+                header($name.': '.$value, $merge, $status);
+            }
+        }
+
+        // Send status
+        $header = 'HTTP/'.$response->getProtocolVersion();
+        $header .= ' '.(string)$status;
+
+        if (!empty($phrase)) {
+            $header .= ' '.$phrase;
+        }
+
+        header($header, true, $status);
+
+
+        // Send body
+        // TODO: check status needs body
+        echo $response->getBody();
     }
 
     /**
@@ -69,9 +103,8 @@ class HttpKernel implements IHttp
      */
     public function terminate(ServerRequestInterface $request, ResponseInterface $response): void
     {
-        // terminate middleware
-        $this->app->terminate();
+        // TODO: terminate middleware
 
-        df\incomplete();
+        $this->app->terminate();
     }
 }
