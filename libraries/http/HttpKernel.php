@@ -70,5 +70,6 @@ class HttpKernel implements IHttp
         // TODO: terminate middleware
 
         $this->app->terminate();
+        exit;
     }
 }

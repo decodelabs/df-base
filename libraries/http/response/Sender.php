@@ -97,9 +97,13 @@ class Sender implements ISender
             $this->sendfile !== null &&
             $stream->getMetadata('wrapper_type') === 'plainfile' &&
             ($filePath = $stream->getMetadata('uri'))) {
-            header($this->sendfile.': '.$filePath);
+            header($this->sendfile.': '.$filePath, true, $status);
             $sendData = false;
         }
+
+
+        // Debug time
+        header('X-Request-Time: '.number_format((microtime(true) - df\START) * 1000, 2).' ms', false, $status);
 
 
         // Send status
