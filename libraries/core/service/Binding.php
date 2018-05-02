@@ -30,7 +30,7 @@ class Binding implements IBinding
     /**
      * Create new instance referencing base container
      */
-    public function __construct(IContainer $container, string $type, $target)
+    public function __construct(IContainer $container, string $type, $target, bool $autoAlias=true)
     {
         $this->container = $container;
 
@@ -43,7 +43,7 @@ class Binding implements IBinding
         $this->type = $type;
         $this->setTarget($target);
 
-        if (null !== ($alias = $this->typeToAlias($this->type))) {
+        if ($autoAlias && null !== ($alias = $this->typeToAlias($this->type))) {
             $this->alias($alias);
         }
     }

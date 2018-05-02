@@ -421,6 +421,28 @@ class Container implements IContainer
     }
 
 
+
+    /**
+     * Create a new instanceof $type
+     */
+    public function newInstanceOf(string $type, array $params=[]): object
+    {
+        if (isset($this->aliases[$type])) {
+            $type = $this->aliases[$type];
+        }
+
+        if (isset($this->bindings[$type])) {
+            $binding = clone $this->bindings[$type];
+        } else {
+            $binding = new Binding($this, $type, $type, false);
+        }
+
+        $binding->addParams($params);
+        return $binding->newInstance();
+    }
+
+
+
     /**
      * Force a binding to forget its shared instance
      */
