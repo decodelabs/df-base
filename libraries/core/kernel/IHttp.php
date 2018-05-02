@@ -16,6 +16,6 @@ interface IHttp extends RequestHandlerInterface
 {
     public function run(): void;
     public function prepareServerRequest(): ServerRequestInterface;
-    public function sendResponse(ResponseInterface $response): void;
+    public function sendResponse(ServerRequestInterface $request, ResponseInterface $response): void;
     public function terminate(ServerRequestInterface $request, ResponseInterface $response): void;
 }

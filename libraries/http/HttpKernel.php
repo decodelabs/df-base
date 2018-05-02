@@ -34,7 +34,7 @@ class HttpKernel implements IHttp
         $request = $this->prepareServerRequest();
         $response = $this->handle($request);
 
-        $this->sendResponse($response);
+        $this->sendResponse($request, $response);
         $this->terminate($request, $response);
     }
 
@@ -51,20 +51,24 @@ class HttpKernel implements IHttp
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return new http\response\Html('<h1>Hello world</h1>');
+        return new http\response\Stream($this->app->getBasePath().'/LICENSE', 200, ['content-type' => 'text/plain']);
     }
 
     /**
      * Ensure the response is sent - generally just a wrapper
      */
-    public function sendResponse(ResponseInterface $response): void
+    public function sendResponse(ServerRequestInterface $request, ResponseInterface $response): void
     {
         if (headers_sent()) {
-            throw df\Error::ERuntime('Cannot send request, headers already sent');
+            throw df\Error::ERuntime('Cannot send response, headers already sent');
         }
+
+        static $sendFile = 'X-Sendfile';
 
         $status = $response->getStatusCode();
         $phrase = $response->getReasonPhrase();
+        $stream = $response->getBody();
+        $sendData = true;
 
         // Send headers
         static $mergable = ['Set-Cookie'];
@@ -75,10 +79,25 @@ class HttpKernel implements IHttp
             $name = str_replace(' ', '-', $name);
             $merge = in_array($name, $mergable);
 
+            if ($name === $sendFile) {
+                $sendData = false;
+            }
+
             foreach ($values as $value) {
                 header($name.': '.$value, $merge, $status);
             }
         }
+
+
+        // Hand off using x-sendfile
+        if ($sendData &&
+            $sendFile !== null &&
+            $stream->getMetadata('wrapper_type') === 'plainfile' &&
+            ($filePath = $stream->getMetadata('uri'))) {
+            header($sendFile.': '.$filePath);
+            $sendData = false;
+        }
+
 
         // Send status
         $header = 'HTTP/'.$response->getProtocolVersion();
@@ -91,9 +110,26 @@ class HttpKernel implements IHttp
         header($header, true, $status);
 
 
+
+        // Check request requiring data
+        if ($request->getMethod() === 'HEAD' ||
+            $status === 304) {
+            $sendData = false;
+        }
+
+        if (!$sendData) {
+            return;
+        }
+
+
         // Send body
-        // TODO: check status needs body
-        echo $response->getBody();
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+
+        while (!$stream->eof()) {
+            echo $stream->read(4096);
+        }
     }
 
     /**
