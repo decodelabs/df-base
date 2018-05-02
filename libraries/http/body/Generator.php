@@ -14,28 +14,30 @@ use Psr\Http\Message\StreamInterface;
 
 class Generator implements StreamInterface
 {
-    protected $generator;
+    protected $iterator;
     protected $buffer = '';
     protected $position = 0;
     protected $eof = false;
     protected $complete = false;
+    protected $bufferAll = true;
 
     /**
-     * Init with generator
+     * Init with iterator
      */
-    public function __construct($generator)
+    public function __construct($iterator, bool $buffer=true)
     {
-        if (is_callable($generator)) {
-            $generator = $generator();
+        if (!$iterator instanceof \Iterator && is_callable($iterator)) {
+            $iterator = $iterator();
         }
 
-        if (!$generator instanceof \Generator) {
+        if (!$iterator instanceof \Iterator) {
             throw df\Error::EInvalidArgument(
-                'Invalid generator passed as response'
+                'Invalid iterator passed as response'
             );
         }
 
-        $this->generator = $generator;
+        $this->iterator = $iterator;
+        $this->bufferAll = $buffer;
     }
 
     /**
@@ -47,7 +49,7 @@ class Generator implements StreamInterface
     }
 
     /**
-     * Get position of generator
+     * Get position of iterator
      */
     public function tell(): int
     {
@@ -75,7 +77,7 @@ class Generator implements StreamInterface
      */
     public function seek($offset, $whence=SEEK_SET): void
     {
-        throw df\Error::ERuntime('Generators cannot seek');
+        throw df\Error::ERuntime('Iterators cannot seek');
     }
 
     /**
@@ -83,7 +85,7 @@ class Generator implements StreamInterface
      */
     public function rewind(): void
     {
-        throw df\Error::ERuntime('Generators cannot seek');
+        throw df\Error::ERuntime('Iterators cannot seek');
     }
 
     /**
@@ -99,7 +101,7 @@ class Generator implements StreamInterface
      */
     public function write($string): void
     {
-        throw df\Error::ERuntime('Generators cannot be written to');
+        throw df\Error::ERuntime('Iterators cannot be written to');
     }
 
     /**
@@ -112,31 +114,40 @@ class Generator implements StreamInterface
 
     /**
      * Read from stream
+     * If $bufferAll, the iterator is iterated until the buffer can send $length
+     * otherise it's iterated once on each call
      */
     public function read($length): string
     {
-        if ($this->generator === null) {
+        if ($this->iterator === null) {
             throw df\Error::ERuntime('Cannot read from stream, resource has been detached');
         }
 
         if ($this->eof) {
-            throw df\Error::ERuntime('Cannot read from stream, generator has completed');
+            throw df\Error::ERuntime('Cannot read from stream, iterator has completed');
         }
+
 
         $length = (int)$length;
 
         if (!$this->complete && strlen($this->buffer) < $length) {
-            $this->buffer .= (string)$this->generator->current();
+            do {
+                $this->buffer .= (string)$this->iterator->current();
+                $this->iterator->next();
 
-            $this->generator->next();
-
-            if (!$this->generator->valid()) {
-                $this->complete = true;
-            }
+                if (!$this->iterator->valid()) {
+                    $this->complete = true;
+                    break;
+                }
+            } while ($this->bufferAll && strlen($this->buffer) < $length);
         }
 
         $output = substr($this->buffer, 0, $length);
-        $this->buffer = substr($this->buffer, $outLength = strlen($output));
+
+        if (!empty($this->buffer)) {
+            $this->buffer = substr($this->buffer, $outLength = strlen($output));
+        }
+
         $this->position += $outLength;
 
         if ($this->complete && empty($this->buffer)) {
@@ -151,12 +162,12 @@ class Generator implements StreamInterface
      */
     public function getContents(): string
     {
-        if ($this->generator === null) {
+        if ($this->iterator === null) {
             throw df\Error::ERuntime('Cannot read from stream, resource has been detached');
         }
 
         if ($this->eof) {
-            throw df\Error::ERuntime('Cannot read from stream, generator has completed');
+            throw df\Error::ERuntime('Cannot read from stream, iterator has completed');
         }
 
         $output = '';
@@ -177,7 +188,7 @@ class Generator implements StreamInterface
     {
         $metadata = [
             'eof' => $this->eof(),
-            'stream_type' => 'generator',
+            'stream_type' => 'iterator',
             'seekable' => false
         ];
 
@@ -197,7 +208,7 @@ class Generator implements StreamInterface
      */
     public function close(): void
     {
-        if (!$this->generator) {
+        if (!$this->iterator) {
             return;
         }
 
@@ -205,12 +216,12 @@ class Generator implements StreamInterface
     }
 
     /**
-     * Detach generator from stream
+     * Detach iterator from stream
      */
     public function detach()
     {
-        $output = $this->generator;
-        $this->generator = null;
+        $output = $this->iterator;
+        $this->iterator = null;
 
         return $output;
     }

@@ -53,12 +53,15 @@ class HttpKernel implements IHttp
     {
         return new http\response\Stream(
             new http\body\Generator(function () {
-                yield 'line 1'."\n";
-                yield 'line 2'."\n";
-                yield 'line 3'."\n";
+                for ($i = 0; $i < 10000; $i++) {
+                    yield 'This is line '.$i."\n";
+                }
             }),
             200,
-            ['content-type' => 'text/plain']
+            [
+                'content-type' => 'text/plain',
+                'transfer-encoding' => 'chunked'
+            ]
         );
     }
 
@@ -72,6 +75,7 @@ class HttpKernel implements IHttp
         }
 
         static $sendFile = 'X-Sendfile';
+        static $chunkManual = true;
 
         $status = $response->getStatusCode();
         $phrase = $response->getReasonPhrase();
@@ -135,8 +139,26 @@ class HttpKernel implements IHttp
             $stream->rewind();
         }
 
+        flush();
+        $isChunked = $chunkManual ? $response->getHeaderLine('transfer-encoding') == 'chunked' : false;
+
         while (!$stream->eof()) {
-            echo $stream->read(4096);
+            $chunk = $stream->read(4096);
+
+            if ($isChunked) {
+                echo dechex(strlen($chunk))."\r\n";
+                echo $chunk."\r\n";
+                flush();
+            } else {
+                echo $chunk;
+                flush();
+            }
+        }
+
+        // Send end chunk
+        if ($isChunked) {
+            echo "0\r\n\r\n";
+            flush();
         }
     }
 
