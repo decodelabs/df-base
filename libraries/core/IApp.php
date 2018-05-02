@@ -12,6 +12,8 @@ interface IApp extends IContainer
 {
     public function bootstrap(): void;
 
+    public function getGlobalMiddleware(): array;
+
     public function getBasePath(): string;
     public function getVendorPath(): string;
     public function getPublicPath(): string;

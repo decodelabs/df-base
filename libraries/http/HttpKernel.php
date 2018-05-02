@@ -52,15 +52,7 @@ class HttpKernel implements IHttp
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $dispatcher = $this->app[http\pipeline\IDispatcher::class];
-
-        $dispatcher->queueList([
-            http\middleware\GlobalRequests::class,
-            http\middleware\HelloWorld::class
-        ]);
-
-
-        // add middleware to dispatcher
-
+        $dispatcher->queueList($this->app->getGlobalMiddleware());
         return $dispatcher->handle($request);
     }
 

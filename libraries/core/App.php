@@ -17,6 +17,7 @@ use df\core\error\Handler;
 use df\core\kernel;
 use df\lang;
 
+use df\http;
 use df\http\HttpServiceProvider;
 
 use Composer\Autoload\ClassLoader;
@@ -30,6 +31,14 @@ class App extends Container implements IApp
         EnvServiceProvider::class,
         ErrorServiceProvider::class,
         HttpServiceProvider::class
+    ];
+
+    const MIDDLEWARE = [];
+
+    const DEFAULT_MIDDLEWARE = [
+        http\middleware\GlobalRequests::class => -99,
+        // user
+        http\middleware\HelloWorld::class => 99
     ];
 
 
@@ -102,6 +111,43 @@ class App extends Container implements IApp
     {
         $this->bindShared(kernel\IConsole::class, df\clip\ConsoleKernel::class);
     }
+
+
+
+    /**
+     * Combine middleware array for global dispatcher
+     */
+    public function getGlobalMiddleware(): array
+    {
+        $middleware = array_merge(static::DEFAULT_MIDDLEWARE, static::MIDDLEWARE);
+        $output = [];
+        $i = 0;
+
+        foreach ($middleware as $key => $value) {
+            if ($value === null) {
+                continue;
+            }
+
+            if (is_string($key)) {
+                $type = $key;
+                $priority = (int)$value;
+            } else {
+                $type = $value;
+                $priority = $i++;
+            }
+
+            while (isset($output[$priority])) {
+                $priority++;
+            }
+
+            $output[$priority] = $type;
+        }
+
+        ksort($output);
+        return array_values($output);
+    }
+
+
 
     /**
      * Get root app path
