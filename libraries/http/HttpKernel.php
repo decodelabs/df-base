@@ -51,7 +51,15 @@ class HttpKernel implements IHttp
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return new http\response\Stream($this->app->getBasePath().'/LICENSE', 200, ['content-type' => 'text/plain']);
+        return new http\response\Stream(
+            new http\body\Generator(function () {
+                yield 'line 1'."\n";
+                yield 'line 2'."\n";
+                yield 'line 3'."\n";
+            }),
+            200,
+            ['content-type' => 'text/plain']
+        );
     }
 
     /**
