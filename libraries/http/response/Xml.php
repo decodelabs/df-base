@@ -9,6 +9,8 @@ namespace df\http\response;
 use df;
 use df\http;
 
+use df\http\message\Stream as MessageStream;
+
 class Xml extends Stream
 {
     /**
@@ -17,7 +19,7 @@ class Xml extends Stream
     public function __construct(string $xml, int $status=200, array $headers=[])
     {
         parent::__construct(
-            http\body\Stream::createFromString($xml, 'wb+'),
+            MessageStream::createFromString($xml, 'wb+'),
             $status,
             $this->injectDefaultHeaders([
                 'content-type' => 'application/xml; charset=utf-8',

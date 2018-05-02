@@ -316,6 +316,6 @@ trait TMessage
             return $stream;
         }
 
-        return new http\body\Stream($stream, $mode);
+        return new http\message\Stream($stream, $mode);
     }
 }

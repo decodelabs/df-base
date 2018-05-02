@@ -9,6 +9,8 @@ namespace df\http\request;
 use df;
 use df\http;
 
+use df\http\message\UploadedFile;
+
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
@@ -262,13 +264,13 @@ class Factory
     /**
      * Create uploadFile object
      */
-    public function createUploadedFile(array $file): UploadedFile
+    public function createUploadedFile(array $file): UploadedFileInterface
     {
         if (is_array($file['tmp_name'])) {
             return $this->normalizeNestedFiles($file);
         }
 
-        return new http\body\UploadedFile(
+        return new UploadedFile(
             $file['tmp_name'],
             $file['size'],
             $file['error'],

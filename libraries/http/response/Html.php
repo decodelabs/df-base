@@ -9,6 +9,8 @@ namespace df\http\response;
 use df;
 use df\http;
 
+use df\http\message\Stream as MessageStream;
+
 class Html extends Stream
 {
     /**
@@ -17,7 +19,7 @@ class Html extends Stream
     public function __construct(string $html, int $status=200, array $headers=[])
     {
         parent::__construct(
-            http\body\Stream::createFromString($html, 'wb+'),
+            MessageStream::createFromString($html, 'wb+'),
             $status,
             $this->injectDefaultHeaders([
                 'content-type' => 'text/html; charset=utf-8',

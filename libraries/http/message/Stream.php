@@ -4,7 +4,7 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\body;
+namespace df\http\message;
 
 use df;
 use df\http;
