@@ -9,6 +9,8 @@ namespace df\http;
 use df;
 use df\http;
 use df\http\request\Factory;
+use df\http\response\Sender;
+use df\http\response\ISender;
 use df\core\service\IContainer;
 use df\core\service\IProvider;
 
@@ -22,7 +24,8 @@ class HttpServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
-            ServerRequestInterface::class
+            ServerRequestInterface::class,
+            ISender::class
         ];
     }
 
@@ -35,5 +38,8 @@ class HttpServiceProvider implements IProvider
         $app->bindShared(ServerRequestInterface::class, function ($app) {
             return (new Factory())->createFromEnvironment();
         })->alias('http.request.server');
+
+        // Response sender
+        $app->bind(ISender::class, Sender::class);
     }
 }
