@@ -51,9 +51,7 @@ class HttpKernel implements IHttp
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return new http\response\Stream(
-            http\body\Stream::createFromString('Hello world')
-        );
+        return new http\response\Html('<h1>Hello world</h1>');
     }
 
     /**

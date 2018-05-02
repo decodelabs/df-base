@@ -33,6 +33,27 @@ trait TMessage
 
 
     /**
+     * Inject a header into header array
+     */
+    protected static function injectDefaultHeaders(array $defaults, array $headers): array
+    {
+        $testHeaders = array_change_key_case($headers, CASE_LOWER);
+
+        foreach ($defaults as $key => $value) {
+            if (!isset($testHeaders[strtolower($key)])) {
+                if (!is_array($value)) {
+                    $value = [$value];
+                }
+
+                $headers[$key] = $value;
+            }
+        }
+
+        return $headers;
+    }
+
+
+    /**
      * Alias withProtocolVersion()
      */
     public function setProtocolVersion(string $version): MessageInterface
@@ -244,6 +265,8 @@ trait TMessage
         if (!is_scalar($value) || $value === null) {
             return false;
         }
+
+        $value = (string)$value;
 
         if (preg_match("#(?:(?:(?<!\r)\n)|(?:\r(?!\n))|(?:\r\n(?![ \t])))#", $value)) {
             return false;

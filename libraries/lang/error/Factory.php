@@ -200,11 +200,11 @@ class Factory
         $trace = array_pop($trace);
 
         if (!isset($this->params['file'])) {
-            $this->params['file'] = $trace['file'];
+            $this->params['file'] = $trace['file'] ?? null;
         }
 
         if (!isset($this->params['line'])) {
-            $this->params['line'] = $trace['line'];
+            $this->params['line'] = $trace['line'] ?? null;
         }
 
         return new self::$instances[$hash]($message, $this->params);

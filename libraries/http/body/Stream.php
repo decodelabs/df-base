@@ -19,26 +19,27 @@ class Stream implements StreamInterface
     /**
      * Create temp stream
      */
-    public static function createTemp(): StreamInterface
+    public static function createTemp(string $mode='r+'): StreamInterface
     {
-        return new static('php://temp', 'r+');
+        return new static('php://temp', $mode);
     }
 
     /**
      * Create memory stream
      */
-    public static function createMemory(): StreamInterface
+    public static function createMemory(string $mode='r+'): StreamInterface
     {
-        return new static('php://memory', 'r+');
+        return new static('php://memory', $mode);
     }
 
     /**
      * Create from string
      */
-    public static function createFromString(string $content): StreamInterface
+    public static function createFromString(string $content, string $mode='r+'): StreamInterface
     {
-        $output = self::createMemory();
+        $output = self::createTemp($mode);
         $output->write($content);
+        $output->rewind();
 
         return $output;
     }
