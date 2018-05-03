@@ -14,8 +14,8 @@ use Df\Core\Service\IProvider;
 use Df\Http\Request\Factory;
 use Df\Http\Response\Sender;
 use Df\Http\Response\ISender;
-use Df\Http\pipeline\Dispatcher;
-use Df\Http\pipeline\IDispatcher;
+use Df\Http\Pipeline\Dispatcher;
+use Df\Http\Pipeline\IDispatcher;
 
 use Psr\Http\Message\ServerRequestInterface;
 

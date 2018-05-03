@@ -4,7 +4,7 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\core\service;
+namespace Df\Core\Service;
 
 use Df;
 use Df\Core\Event\Dispatcher;

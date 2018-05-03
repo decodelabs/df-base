@@ -3,7 +3,7 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace Df\core;
+namespace Df\Core;
 
 use Df;
 use Df\Core\Service\IContainer;
