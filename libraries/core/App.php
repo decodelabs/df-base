@@ -12,7 +12,7 @@ use df\core;
 use df\core\service\Container;
 use df\core\env\EnvServiceProvider;
 use df\core\error\ErrorServiceProvider;
-use df\core\error\Handler;
+use df\core\error\Handler as ErrorHandler;
 
 use df\core\ILoader;
 use df\core\loader\Composer as ComposerLoader;
@@ -73,7 +73,7 @@ class App extends Container implements IApp
         $this->registerConsoleKernel();
 
         /* Register error handler */
-        Handler::register($this['core.error.handler']);
+        ErrorHandler::register($this['core.error.handler']);
     }
 
 
