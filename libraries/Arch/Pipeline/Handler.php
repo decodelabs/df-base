@@ -16,29 +16,35 @@ class Handler implements IHandler
 {
     protected $areaMaps = [];
 
-    /**
-     * Init with config...
-     */
-    public function __construct()
-    {
-        // TODO: Get this from config
-        $devAreas = [
-            '*' => 'df.test:8080/test/df-playground-/',
-            'admin' => 'df.test:8080/test/df-playground-/admin/',
-            'shared' => 'df.test:8080/test/df-playground-/~{name-test}/{stuff}',
-            'devtools' => 'devtools.df.test:8080/test/df-playground-/'
-        ];
 
-        foreach ($devAreas as $area => $uri) {
+    /**
+     * Load list of string maps
+     */
+    public function loadAreaMaps(array $maps): IHandler
+    {
+        foreach ($maps as $area => $uri) {
             $map = new AreaMap($area, $uri);
-            $this->areaMaps[$map->getArea()] = $map;
+            $this->addAreaMap($map);
         }
 
-        if (!isset($this->areaMaps['front']) && !isset($this->areaMaps['*'])) {
-            throw Df\Error::EDefinition(
-                'No default area map (front or *) has been defined'
+        return $this;
+    }
+
+    /**
+     * Add area map to stack
+     */
+    public function addAreaMap(AreaMap $map): IHandler
+    {
+        $area = $map->getArea();
+
+        if (isset($this->areaMaps[$area])) {
+            throw Df\Error::ELogic(
+                'Area "'.$area.'" has already been mapped'
             );
         }
+
+        $this->areaMaps[$area] = $map;
+        return $this;
     }
 
 
@@ -57,15 +63,40 @@ class Handler implements IHandler
 
 
     /**
-     * Map request
+     * Map request input request to an area via a matched base path
+     * The resulting request abstracts the input URL across multiple environments
      */
     protected function mapRequest(ServerRequestInterface $request): ?ServerRequestInterface
     {
+        if (empty($this->areaMaps)) {
+            throw Df\Error::ELogic(
+                'No area maps have been defined'
+            );
+        }
+
+        if (!isset($this->areaMaps['front']) && !isset($this->areaMaps['*'])) {
+            throw Df\Error::EDefinition(
+                'No default area map (front or *) has been defined'
+            );
+        }
+
         $uri = $request->getUri();
         $url = $uri->getAuthority().$uri->getPath();
 
         foreach (array_reverse($this->areaMaps) as $area => $map) {
             if (null !== ($outUri = $map->matches($url, $params))) {
+                if ($area === '*') {
+                    if (preg_match('#^/~([^/]+)(/.*)?$#', $outUri, $matches)) {
+                        $area = $matches[1];
+                    } else {
+                        if (isset($this->areaMaps['front'])) {
+                            continue;
+                        }
+
+                        $area = 'front';
+                    }
+                }
+
                 $newUri = $uri
                     ->withHost($area)
                     ->withPort(null)

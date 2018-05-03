@@ -354,7 +354,6 @@ class Binding implements IBinding
             $output = $this->instance;
         } else {
             $output = $this->newInstance();
-            $output = $this->prepareInstance($output);
 
             if ($this->shared) {
                 $this->instance = $output;
@@ -369,7 +368,10 @@ class Binding implements IBinding
      */
     public function newInstance(): object
     {
-        return $this->factory->__invoke($this->container);
+        $output = $this->factory->__invoke($this->container);
+        $output = $this->prepareInstance($output);
+
+        return $output;
     }
 
     /**

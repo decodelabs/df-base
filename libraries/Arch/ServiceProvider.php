@@ -8,6 +8,7 @@ namespace Df\Arch;
 
 use Df;
 
+use Df\Arch\Pipeline\AreaMap;
 use Df\Arch\Pipeline\IHandler;
 use Df\Arch\Pipeline\Handler;
 
@@ -31,6 +32,18 @@ class ServiceProvider implements IProvider
      */
     public function registerServices(IContainer $app): void
     {
-        $app->bindShared(IHandler::class, Handler::class);
+        $app->bindShared(IHandler::class, Handler::class)
+            ->prepareWith(function ($handler) {
+                // TODO: Get this from config
+                $devAreas = [
+                    '*' => 'df.test:8080/test/df-playground-/',
+                    'admin' => 'df.test:8080/test/df-playground-/admin/',
+                    'shared' => 'df.test:8080/test/df-playground-/~{name-test}/{stuff}',
+                    'devtools' => 'devtools.df.test:8080/test/df-playground-/'
+                ];
+
+                $handler->loadAreaMaps($devAreas);
+                return $handler;
+            });
     }
 }
