@@ -7,7 +7,10 @@ declare(strict_types=1);
 namespace df\data\arrayCollection;
 
 use df;
-use df\data;
+
+use df\data\Arr;
+use df\data\IReadable;
+use df\data\ISequence;
 
 trait TSequence
 {
@@ -20,7 +23,7 @@ trait TSequence
     public function __construct(iterable $items)
     {
         $this->items = array_values(
-            data\Arr::iterableToArray($items)
+            Arr::iterableToArray($items)
         );
     }
 
@@ -28,7 +31,7 @@ trait TSequence
     /**
      * Get all keys in array, enforce int formatting
      */
-    public function getKeys(): data\IReadable
+    public function getKeys(): IReadable
     {
         return new static(array_map('intval', array_keys($this->items)));
     }
@@ -69,7 +72,7 @@ trait TSequence
     /**
      * Set a value by index, keys normalized
      */
-    public function set(int $key, $value): data\ISequence
+    public function set(int $key, $value): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $count = count($output->items);
@@ -82,7 +85,7 @@ trait TSequence
     /**
      * Add an item in at selected index, move rest
      */
-    public function put(int $key, $value): data\ISequence
+    public function put(int $key, $value): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $count = count($output->items);
@@ -205,7 +208,7 @@ trait TSequence
     /**
      * Remove all values associated with $keys
      */
-    public function remove(int ...$keys): data\ISequence
+    public function remove(int ...$keys): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $count = count($output->items);
@@ -221,7 +224,7 @@ trait TSequence
     /**
      * Remove all values not associated with $keys
      */
-    public function keep(int ...$keys): data\ISequence
+    public function keep(int ...$keys): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $count = count($output->items);
@@ -253,7 +256,7 @@ trait TSequence
     /**
      * Reset all values
      */
-    public function clear(): data\ISequence
+    public function clear(): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = [];
@@ -263,7 +266,7 @@ trait TSequence
     /**
      * Remove all keys
      */
-    public function clearKeys(): data\ISequence
+    public function clearKeys(): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_values($output->items);
@@ -275,10 +278,10 @@ trait TSequence
     /**
      * Collapse multi dimensional array to flat
      */
-    public function collapse(bool $unique=false, bool $removeNull=false): data\ISequence
+    public function collapse(bool $unique=false, bool $removeNull=false): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = data\Arr::collapse($output->items, false, $unique, $removeNull);
+        $output->items = Arr::collapse($output->items, false, $unique, $removeNull);
         return $output;
     }
 
@@ -311,7 +314,7 @@ trait TSequence
     /**
      * Add items to the end
      */
-    public function append(...$values): data\ISequence
+    public function append(...$values): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         array_push($output->items, ...$values);
@@ -321,7 +324,7 @@ trait TSequence
     /**
      * Add items to the start
      */
-    public function prepend(...$values): data\ISequence
+    public function prepend(...$values): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         array_unshift($output->items, ...$values);
@@ -333,7 +336,7 @@ trait TSequence
     /**
      * Replace all values with $value
      */
-    public function fill($value): data\ISequence
+    public function fill($value): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_fill_keys(array_keys($output->items), $value);
@@ -343,7 +346,7 @@ trait TSequence
     /**
      * Create a new sequence with numeric range
      */
-    public static function createFill(int $length, $value): data\ISequence
+    public static function createFill(int $length, $value): ISequence
     {
         return new static(array_fill(0, $length, $value));
     }
@@ -353,20 +356,20 @@ trait TSequence
     /**
      * Merge all passed collections into one
      */
-    public function merge(iterable ...$arrays): data\ISequence
+    public function merge(iterable ...$arrays): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = array_values(array_merge($output->items, ...data\Arr::iterablesToArrays(...$arrays)));
+        $output->items = array_values(array_merge($output->items, ...Arr::iterablesToArrays(...$arrays)));
         return $output;
     }
 
     /**
      * Merge EVERYTHING :D
      */
-    public function mergeRecursive(iterable ...$arrays): data\ISequence
+    public function mergeRecursive(iterable ...$arrays): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = array_values(array_merge_recursive($output->items, ...data\Arr::iterablesToArrays(...$arrays)));
+        $output->items = array_values(array_merge_recursive($output->items, ...Arr::iterablesToArrays(...$arrays)));
         return $output;
     }
 
@@ -374,20 +377,20 @@ trait TSequence
     /**
      * Like merge, but replaces.. obvs
      */
-    public function replace(iterable ...$arrays): data\ISequence
+    public function replace(iterable ...$arrays): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = array_values(array_replace($output->items, ...data\Arr::iterablesToArrays(...$arrays)));
+        $output->items = array_values(array_replace($output->items, ...Arr::iterablesToArrays(...$arrays)));
         return $output;
     }
 
     /**
      * Replace EVERYTHING :D
      */
-    public function replaceRecursive(iterable ...$arrays): data\ISequence
+    public function replaceRecursive(iterable ...$arrays): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = array_values(array_replace_recursive($output->items, ...data\Arr::iterablesToArrays(...$arrays)));
+        $output->items = array_values(array_replace_recursive($output->items, ...Arr::iterablesToArrays(...$arrays)));
         return $output;
     }
 
@@ -396,7 +399,7 @@ trait TSequence
     /**
      * Ensure sequence is at least $size long
      */
-    public function padLeft(int $size, $value=null): data\ISequence
+    public function padLeft(int $size, $value=null): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_pad($output->items, 0 - abs($size), $value);
@@ -406,7 +409,7 @@ trait TSequence
     /**
      * Ensure sequence is at least $size long
      */
-    public function padRight(int $size, $value=null): data\ISequence
+    public function padRight(int $size, $value=null): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_pad($output->items, abs($size), $value);
@@ -416,7 +419,7 @@ trait TSequence
     /**
      * Ensure sequence is at least $size long
      */
-    public function padBoth(int $size, $value=null): data\ISequence
+    public function padBoth(int $size, $value=null): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $length = $output->count();
@@ -439,7 +442,7 @@ trait TSequence
     /**
      * Remove $offet + $length items
      */
-    public function removeSlice(int $offset, int $length=null, data\ISequence &$removed=null): data\ISequence
+    public function removeSlice(int $offset, int $length=null, ISequence &$removed=null): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $count = count($output->items);
@@ -459,7 +462,7 @@ trait TSequence
     /**
      * Like removeSlice, but leaves a present behind
      */
-    public function replaceSlice(int $offset, int $length=null, iterable $replacement, data\ISequence &$removed=null): data\ISequence
+    public function replaceSlice(int $offset, int $length=null, iterable $replacement, ISequence &$removed=null): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $count = count($output->items);
@@ -470,7 +473,7 @@ trait TSequence
         }
 
         $removed = new static(
-            array_splice($output->items, $offset, $length, array_values(data\Arr::iterableToArray($replacement)))
+            array_splice($output->items, $offset, $length, array_values(Arr::iterableToArray($replacement)))
         );
 
         return $output;
@@ -481,7 +484,7 @@ trait TSequence
     /**
      * Remove duplicates from collection
      */
-    public function unique(int $flags=SORT_STRING): data\ISequence
+    public function unique(int $flags=SORT_STRING): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_unique($output->items, $flags);
@@ -492,7 +495,7 @@ trait TSequence
     /**
      * Iterate each entry
      */
-    public function walk(callable $callback, $data=null): data\ISequence
+    public function walk(callable $callback, $data=null): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         array_walk($output->items, $callback, $data);
@@ -502,7 +505,7 @@ trait TSequence
     /**
      * Iterate everything
      */
-    public function walkRecursive(callable $callback, $data=null): data\ISequence
+    public function walkRecursive(callable $callback, $data=null): ISequence
     {
         $output = static::MUTABLE ? $this : $this->copy();
         array_walk_recursive($output->items, $callback, $data);
@@ -514,7 +517,7 @@ trait TSequence
     /**
      * Create a collection of numbers
      */
-    public function createRange(int $start, int $end, int $step=1): data\ISequence
+    public function createRange(int $start, int $end, int $step=1): ISequence
     {
         return new static(range($start, $end, $step));
     }

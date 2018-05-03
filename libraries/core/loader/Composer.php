@@ -7,11 +7,11 @@ declare(strict_types=1);
 namespace df\core\loader;
 
 use df;
-use df\core;
+use df\core\ILoader;
 
 use Composer\Autoload\ClassLoader;
 
-class Composer implements core\ILoader
+class Composer implements ILoader
 {
     const APEX = [
         'http', 'themes'

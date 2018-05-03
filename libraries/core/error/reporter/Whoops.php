@@ -7,12 +7,13 @@ declare(strict_types=1);
 namespace df\core\error\reporter;
 
 use df;
-use df\core;
+
+use df\core\error\IReporter;
 
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;
 
-class Whoops implements core\error\IReporter
+class Whoops implements IReporter
 {
     /**
      * Report a caught exception

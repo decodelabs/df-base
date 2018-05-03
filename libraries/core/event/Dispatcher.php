@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\core\event;
 
 use df;
-use df\core;
 
 class Dispatcher
 {

@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\http\pipeline;
 
 use df;
-use df\http;
 
 use df\core\IApp;
 

@@ -6,8 +6,6 @@
 namespace df\lang;
 
 use df;
-use df\lang;
-
 
 interface IPipe
 {

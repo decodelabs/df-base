@@ -7,7 +7,8 @@ declare(strict_types=1);
 namespace df\data;
 
 use df;
-use df\data;
+use df\data\Arr;
+use df\data\IHashMap;
 
 class Tree implements \IteratorAggregate, IHashMap, IValueProvider
 {
@@ -26,7 +27,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
         $this->value = $value;
 
         if ($items !== null) {
-            $this->merge(data\Arr::iterableToArray($items));
+            $this->merge(Arr::iterableToArray($items));
         }
     }
 
@@ -208,7 +209,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     /**
      * Reset all values
      */
-    public function clear(): data\IHashMap
+    public function clear(): IHashMap
     {
         $this->value = null;
         $this->items = [];
@@ -364,7 +365,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
 
         foreach ($this->toDelimitedSet(true) as $key => $value) {
             $key = rawurlencode($key);
-            
+
             if (!empty($value) || $value === '0' || $value === 0) {
                 $output[] = $key.$valueDelimiter.rawurlencode((string)$value);
             } else {
@@ -406,13 +407,13 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     /**
      * Map $values to values of collection as keys
      */
-    public function combineWithValues(iterable $values): data\IHashMap
+    public function combineWithValues(iterable $values): IHashMap
     {
         $items = array_map(function ($node) {
             return $node->getValue();
         }, $this->items);
 
-        if (false !== ($result = array_combine($items, data\Arr::iterableToArray($values)))) {
+        if (false !== ($result = array_combine($items, Arr::iterableToArray($values)))) {
             $this->clear()->merge($result);
         }
 
@@ -424,7 +425,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     /**
      * Replace all values with $value
      */
-    public function fill($value): data\IHashMap
+    public function fill($value): IHashMap
     {
         $result = array_fill_keys(array_keys($this->items), $value);
         return $this->clear()->merge($result);
@@ -434,7 +435,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     /**
      * Flip keys and values
      */
-    public function flip(): data\IHashMap
+    public function flip(): IHashMap
     {
         $items = array_map(function ($node) {
             return (string)$node->getValue();
@@ -448,7 +449,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     /**
      * Merge all passed collections into one
      */
-    public function merge(iterable ...$arrays): data\IHashMap
+    public function merge(iterable ...$arrays): IHashMap
     {
         foreach ($arrays as $array) {
             if ($array instanceof Tree) {
@@ -486,7 +487,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     /**
      * Merge EVERYTHING :D
      */
-    public function mergeRecursive(iterable ...$arrays): data\IHashMap
+    public function mergeRecursive(iterable ...$arrays): IHashMap
     {
         return $this->merge(...$arrays);
     }
@@ -495,7 +496,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     /**
      * Like merge, but replaces.. obvs
      */
-    public function replace(iterable ...$arrays): data\IHashMap
+    public function replace(iterable ...$arrays): IHashMap
     {
         foreach ($arrays as $array) {
             if ($array instanceof Tree) {
@@ -521,7 +522,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     /**
      * Alias of replace
      */
-    public function replaceRecursive(iterable ...$arrays): data\IHashMap
+    public function replaceRecursive(iterable ...$arrays): IHashMap
     {
         return $this->replace(...$arrays);
     }
@@ -530,7 +531,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     /**
      * Remove duplicates from collection
      */
-    public function unique(int $flags=SORT_STRING): data\IHashMap
+    public function unique(int $flags=SORT_STRING): IHashMap
     {
         $items = array_map(function ($node) {
             return (string)$node->getValue();

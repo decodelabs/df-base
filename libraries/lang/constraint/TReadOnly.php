@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\lang\constraint;
 
 use df;
-use df\lang;
 
 trait TReadOnly
 {

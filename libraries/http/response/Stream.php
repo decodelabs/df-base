@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\http\response;
 
 use df;
-use df\http;
 use df\http\message\TMessage;
 
 use Psr\Http\Message\ResponseInterface;

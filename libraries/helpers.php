@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace
 {
-    use df\lang\dumper;
+    use df\lang\dumper\Handler;
     use Symfony\Component\VarDumper\VarDumper;
 
     if (!function_exists('dd')) {
@@ -20,7 +20,7 @@ namespace
          */
         function dd(...$vars): void
         {
-            dumper\Handler::dumpDie(...$vars);
+            Handler::dumpDie(...$vars);
         }
     }
 
@@ -30,10 +30,10 @@ namespace
          */
         function dump(...$vars): void
         {
-            dumper\Handler::dump(...$vars);
+            Handler::dump(...$vars);
         }
     } elseif (class_exists(VarDumper::class)) {
-        VarDumper::setHandler([dumper\Handler::class, 'dump']);
+        VarDumper::setHandler([Handler::class, 'dump']);
     }
 }
 
@@ -45,9 +45,8 @@ namespace df
 {
 
     use df;
-    use df\core;
-    use df\lang\error;
-    use df\lang\dumper;
+    use df\core\IApp;
+    use df\lang\error\Factory as ErrorFactory;
 
     use Composer\Autoload\ClassLoader;
 
@@ -57,7 +56,7 @@ namespace df
     /**
      * Initial bootstrap
      */
-    function bootstrap(string $basePath=null): core\IApp
+    function bootstrap(string $basePath=null): IApp
     {
         /* Ensure this only ever gets called once */
         static $started;
@@ -95,7 +94,7 @@ namespace df
     /**
      * Get active app instance
      */
-    function app(): core\IApp
+    function app(): IApp
     {
         static $app;
 
@@ -128,7 +127,7 @@ namespace df
      */
     function Error($message, ?array $params=[], $data=null): IError
     {
-        return error\Factory::create(
+        return ErrorFactory::create(
             null,
             [],
             $message,

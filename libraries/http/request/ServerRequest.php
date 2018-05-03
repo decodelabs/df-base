@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace df\http\request;
 
 use df;
-use df\http;
+use df\http\message\TRequest;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -16,7 +16,7 @@ use Psr\Http\Message\UriInterface;
 
 class ServerRequest implements ServerRequestInterface
 {
-    use http\message\TRequest;
+    use TRequest;
 
     protected $query = [];
     protected $attributes = [];

@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\core\env;
 
 use df;
-use df\core;
 
 class Validator implements IValidator
 {

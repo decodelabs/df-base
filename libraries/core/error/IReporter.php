@@ -6,7 +6,6 @@
 namespace df\core\error;
 
 use df;
-use df\core;
 
 interface IReporter
 {

@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace df\http\message;
 
 use df;
-use df\http;
+use df\http\Uri;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -63,7 +63,7 @@ trait TRequest
             return $uri;
         }
 
-        return new http\Uri($uri);
+        return new Uri($uri);
     }
 
 

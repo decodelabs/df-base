@@ -6,7 +6,6 @@
 namespace df\core\kernel;
 
 use df;
-use df\core;
 
 use df\http\response\ISender;
 

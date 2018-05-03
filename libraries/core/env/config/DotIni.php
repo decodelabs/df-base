@@ -7,15 +7,16 @@ declare(strict_types=1);
 namespace df\core\env\config;
 
 use df;
-use df\core;
-use df\lang;
 
 use df\core\env\IConfig;
 use df\core\env\IValidator;
 
-class DotIni implements IConfig, lang\IPipe
+use df\lang\IPipe;
+use df\lang\TPipe;
+
+class DotIni implements IConfig, IPipe
 {
-    use lang\TPipe;
+    use TPipe;
 
     protected $data = [];
 

@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace df\http\middleware;
 
 use df;
-use df\http;
+use df\http\response\Text as TextResponse;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -21,6 +21,6 @@ class HelloWorld implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        return new http\response\Text('Hello world');
+        return new TextResponse('Hello world');
     }
 }

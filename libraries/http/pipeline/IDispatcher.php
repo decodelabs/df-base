@@ -6,7 +6,6 @@
 namespace df\http\pipeline;
 
 use df;
-use df\http;
 
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;

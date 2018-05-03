@@ -6,7 +6,6 @@
 namespace df\http\response;
 
 use df;
-use df\http;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

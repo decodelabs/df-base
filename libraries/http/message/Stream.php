@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\http\message;
 
 use df;
-use df\http;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;

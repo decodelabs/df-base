@@ -6,7 +6,6 @@
 namespace df\core\env;
 
 use df;
-use df\core;
 
 interface IValidator
 {

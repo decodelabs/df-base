@@ -7,13 +7,16 @@ declare(strict_types=1);
 namespace df\data\arrayCollection;
 
 use df;
-use df\data;
-use df\lang;
+
+use df\data\Arr;
+use df\data\IReadable;
+
+use df\lang\TPipe;
 
 trait TReadable
 {
     use TCollection;
-    use lang\TPipe;
+    use TPipe;
 
     /**
      * Count items
@@ -28,7 +31,7 @@ trait TReadable
      */
     public function getFirst(callable $filter=null)
     {
-        return data\Arr::getFirst($this->items, $filter, $this);
+        return Arr::getFirst($this->items, $filter, $this);
     }
 
     /**
@@ -36,7 +39,7 @@ trait TReadable
      */
     public function getLast(callable $filter=null)
     {
-        return data\Arr::getLast($this->items, $filter, $this);
+        return Arr::getLast($this->items, $filter, $this);
     }
 
     /**
@@ -44,14 +47,14 @@ trait TReadable
      */
     public function getRandom()
     {
-        return data\Arr::getRandom($this->items);
+        return Arr::getRandom($this->items);
     }
 
 
     /**
      * Get all keys in array
      */
-    public function getKeys(): data\IReadable
+    public function getKeys(): IReadable
     {
         return new static(array_keys($this->items));
     }
@@ -70,7 +73,7 @@ trait TReadable
      */
     public function containsRecursive($value, bool $strict=false): bool
     {
-        return data\Arr::inArrayRecursive($value, $this->items, $strict);
+        return Arr::inArrayRecursive($value, $this->items, $strict);
     }
 
 
@@ -78,7 +81,7 @@ trait TReadable
     /**
      * Return new collection containing $offset + $length items
      */
-    public function slice(int $offset, int $length=null): data\IReadable
+    public function slice(int $offset, int $length=null): IReadable
     {
         return new static(array_slice(
             $this->items,
@@ -91,16 +94,16 @@ trait TReadable
     /**
      * Pick a random $number length set of items
      */
-    public function sliceRandom(int $number): data\IReadable
+    public function sliceRandom(int $number): IReadable
     {
-        return new static(data\Arr::sliceRandom($this->items, $number));
+        return new static(Arr::sliceRandom($this->items, $number));
     }
 
 
     /**
      * Split the current items into $size length chunks, maintain keys
      */
-    public function chunk(int $size): data\IReadable
+    public function chunk(int $size): IReadable
     {
         return new static(array_chunk($this->items, $size, true));
     }
@@ -108,7 +111,7 @@ trait TReadable
     /**
      * Split the current items into $size length chunks, ignore keys
      */
-    public function chunkValues(int $size): data\IReadable
+    public function chunkValues(int $size): IReadable
     {
         return new static(array_chunk($this->items, $size, false));
     }
@@ -117,7 +120,7 @@ trait TReadable
     /**
      * Return indexed sum list - filters non scalar first
      */
-    public function countValues(): data\IReadable
+    public function countValues(): IReadable
     {
         return new static(array_count_values(
             array_filter($this->items, function ($value) {
@@ -130,20 +133,20 @@ trait TReadable
     /**
      * Return all items in collection where value or key not in $arrays
      */
-    public function diffAssoc(iterable ...$arrays): data\IReadable
+    public function diffAssoc(iterable ...$arrays): IReadable
     {
         return new static(array_diff_assoc(
             $this->items,
-            ...data\Arr::iterablesToArrays(...$arrays)
+            ...Arr::iterablesToArrays(...$arrays)
         ));
     }
 
     /**
      * DiffAssoc with custom key comparator
      */
-    public function diffAssocBy(callable $keyCallback, iterable ...$arrays): data\IReadable
+    public function diffAssocBy(callable $keyCallback, iterable ...$arrays): IReadable
     {
-        $args = data\Arr::iterablesToArrays(...$arrays);
+        $args = Arr::iterablesToArrays(...$arrays);
         $args[] = $keyCallback;
 
         return new static(array_diff_uassoc(
@@ -155,9 +158,9 @@ trait TReadable
     /**
      * DiffAssoc with custom value comparator
      */
-    public function diffAssocByValue(callable $valueCallback, iterable ...$arrays): data\IReadable
+    public function diffAssocByValue(callable $valueCallback, iterable ...$arrays): IReadable
     {
-        $args = data\Arr::iterablesToArrays(...$arrays);
+        $args = Arr::iterablesToArrays(...$arrays);
         $args[] = $valueCallback;
 
         return new static(array_udiff_assoc(
@@ -169,9 +172,9 @@ trait TReadable
     /**
      * DiffAssoc with custom key and value comparator
      */
-    public function diffAssocAll(callable $valueCallback, callable $keyCallback, iterable ...$arrays): data\IReadable
+    public function diffAssocAll(callable $valueCallback, callable $keyCallback, iterable ...$arrays): IReadable
     {
-        $args = data\Arr::iterablesToArrays(...$arrays);
+        $args = Arr::iterablesToArrays(...$arrays);
         $args[] = $valueCallback;
         $args[] = $keyCallback;
 
@@ -184,20 +187,20 @@ trait TReadable
     /**
      * Return all items in collection where value not in $arrays
      */
-    public function diffValues(iterable ...$arrays): data\IReadable
+    public function diffValues(iterable ...$arrays): IReadable
     {
         return new static(array_diff(
             $this->items,
-            ...data\Arr::iterablesToArrays(...$arrays)
+            ...Arr::iterablesToArrays(...$arrays)
         ));
     }
 
     /**
      * DiffValues with custom value comparator
      */
-    public function diffValuesBy(callable $valueCallback, iterable ...$arrays): data\IReadable
+    public function diffValuesBy(callable $valueCallback, iterable ...$arrays): IReadable
     {
-        $args = data\Arr::iterablesToArrays(...$arrays);
+        $args = Arr::iterablesToArrays(...$arrays);
         $args[] = $valueCallback;
 
         return new static(array_udiff(
@@ -209,20 +212,20 @@ trait TReadable
     /**
      * Return all items in collection where key not in $arrays
      */
-    public function diffKeys(iterable ...$arrays): data\IReadable
+    public function diffKeys(iterable ...$arrays): IReadable
     {
         return new static(array_diff_key(
             $this->items,
-            ...data\Arr::iterablesToArrays(...$arrays)
+            ...Arr::iterablesToArrays(...$arrays)
         ));
     }
 
     /**
      * DiffKeys with custom key comparator
      */
-    public function diffKeysBy(callable $keyCallback, iterable ...$arrays): data\IReadable
+    public function diffKeysBy(callable $keyCallback, iterable ...$arrays): IReadable
     {
-        $args = data\Arr::iterablesToArrays(...$arrays);
+        $args = Arr::iterablesToArrays(...$arrays);
         $args[] = $keyCallback;
 
         return new static(array_diff_ukey(
@@ -235,20 +238,20 @@ trait TReadable
     /**
      * Return all items in collection where value or key in $arrays
      */
-    public function intersectAssoc(iterable ...$arrays): data\IReadable
+    public function intersectAssoc(iterable ...$arrays): IReadable
     {
         return new static(array_intersect_assoc(
             $this->items,
-            ...data\Arr::iterablesToArrays(...$arrays)
+            ...Arr::iterablesToArrays(...$arrays)
         ));
     }
 
     /**
      * IntersectAssoc with custom key comparator
      */
-    public function intersectAssocBy(callable $keyCallback, iterable ...$arrays): data\IReadable
+    public function intersectAssocBy(callable $keyCallback, iterable ...$arrays): IReadable
     {
-        $args = data\Arr::iterablesToArrays(...$arrays);
+        $args = Arr::iterablesToArrays(...$arrays);
         $args[] = $keyCallback;
 
         return new static(array_intersect_uassoc(
@@ -260,9 +263,9 @@ trait TReadable
     /**
      * IntersectAssoc with custom value comparator
      */
-    public function intersectAssocByValue(callable $valueCallback, iterable ...$arrays): data\IReadable
+    public function intersectAssocByValue(callable $valueCallback, iterable ...$arrays): IReadable
     {
-        $args = data\Arr::iterablesToArrays(...$arrays);
+        $args = Arr::iterablesToArrays(...$arrays);
         $args[] = $valueCallback;
 
         return new static(array_uintersect_assoc(
@@ -274,9 +277,9 @@ trait TReadable
     /**
      * IntersectAssoc with custom key and value comparator
      */
-    public function intersectAssocAll(callable $valueCallback, callable $keyCallback, iterable ...$arrays): data\IReadable
+    public function intersectAssocAll(callable $valueCallback, callable $keyCallback, iterable ...$arrays): IReadable
     {
-        $args = data\Arr::iterablesToArrays(...$arrays);
+        $args = Arr::iterablesToArrays(...$arrays);
         $args[] = $valueCallback;
         $args[] = $keyCallback;
 
@@ -289,20 +292,20 @@ trait TReadable
     /**
      * Return all items in collection where value in $arrays
      */
-    public function intersectValues(iterable ...$arrays): data\IReadable
+    public function intersectValues(iterable ...$arrays): IReadable
     {
         return new static(array_intersect(
             $this->items,
-            ...data\Arr::iterablesToArrays(...$arrays)
+            ...Arr::iterablesToArrays(...$arrays)
         ));
     }
 
     /**
      * IntersectValues with custom value comparator
      */
-    public function intersectValuesBy(callable $valueCallback, iterable ...$arrays): data\IReadable
+    public function intersectValuesBy(callable $valueCallback, iterable ...$arrays): IReadable
     {
-        $args = data\Arr::iterablesToArrays(...$arrays);
+        $args = Arr::iterablesToArrays(...$arrays);
         $args[] = $valueCallback;
 
         return new static(array_uintersect(
@@ -314,20 +317,20 @@ trait TReadable
     /**
      * Return all items in collection where key in $arrays
      */
-    public function intersectKeys(iterable ...$arrays): data\IReadable
+    public function intersectKeys(iterable ...$arrays): IReadable
     {
         return new static(array_intersect_key(
             $this->items,
-            ...data\Arr::iterablesToArrays(...$arrays)
+            ...Arr::iterablesToArrays(...$arrays)
         ));
     }
 
     /**
      * IntersectKeys with custom key comparator
      */
-    public function intersectKeysBy(callable $keyCallback, iterable ...$arrays): data\IReadable
+    public function intersectKeysBy(callable $keyCallback, iterable ...$arrays): IReadable
     {
-        $args = data\Arr::iterablesToArrays(...$arrays);
+        $args = Arr::iterablesToArrays(...$arrays);
         $args[] = $keyCallback;
 
         return new static(array_intersect_ukey(
@@ -340,7 +343,7 @@ trait TReadable
     /**
      * Return subset of collection where callback returns true
      */
-    public function filter(callable $callback=null): data\IReadable
+    public function filter(callable $callback=null): IReadable
     {
         if ($callback) {
             return new static(array_filter($this->items, $callback, ARRAY_FILTER_USE_BOTH));
@@ -352,19 +355,19 @@ trait TReadable
     /**
      * Combine collection with passed arrays via callback
      */
-    public function map(callable $callback, iterable ...$arrays): data\IReadable
+    public function map(callable $callback, iterable ...$arrays): IReadable
     {
         return new static(array_map(
             $callback,
             $this->items,
-            ...data\Arr::iterablesToArrays(...$arrays)
+            ...Arr::iterablesToArrays(...$arrays)
         ));
     }
 
     /**
      * Loop through collection to build new collection
      */
-    public function mapSelf(callable $callback): data\IReadable
+    public function mapSelf(callable $callback): IReadable
     {
         $func = new \ReflectionFunction($callback);
 
@@ -444,7 +447,7 @@ trait TReadable
     /**
      * Combine a column with optional key column into single array
      */
-    public function pluck(string $valueKey, string $indexKey=null): data\IReadable
+    public function pluck(string $valueKey, string $indexKey=null): IReadable
     {
         return new static(array_column($this->items, $valueKey, $indexKey));
     }

@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace df\core\service;
 
 use df;
-use df\core;
+use df\core\event\Dispatcher;
 
 class Container implements IContainer
 {
@@ -587,10 +587,10 @@ class Container implements IContainer
     /**
      * Prepare event dispatcher
      */
-    protected function events(): core\event\Dispatcher
+    protected function events(): Dispatcher
     {
         if (!$this->events) {
-            $this->events = new core\event\Dispatcher();
+            $this->events = new Dispatcher();
         }
 
         return $this->events;

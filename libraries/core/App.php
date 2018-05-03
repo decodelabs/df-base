@@ -14,10 +14,16 @@ use df\core\env\EnvServiceProvider;
 use df\core\error\ErrorServiceProvider;
 use df\core\error\Handler;
 
-use df\core\kernel;
-use df\lang;
+use df\core\ILoader;
+use df\core\loader\Composer as ComposerLoader;
 
-use df\http;
+use df\core\kernel\IHttp as IHttpKernel;
+use df\core\kernel\IConsole as IConsoleKernel;
+
+use df\http\HttpKernel;
+use df\clip\ConsoleKernel;
+
+use df\http\middleware;
 use df\http\HttpServiceProvider;
 
 use Composer\Autoload\ClassLoader;
@@ -36,9 +42,9 @@ class App extends Container implements IApp
     const MIDDLEWARE = [];
 
     const DEFAULT_MIDDLEWARE = [
-        http\middleware\GlobalRequests::class => -99,
+        middleware\GlobalRequests::class => -99,
         // user
-        http\middleware\HelloWorld::class => 99
+        middleware\HelloWorld::class => 99
     ];
 
 
@@ -93,7 +99,7 @@ class App extends Container implements IApp
         $this->bindShared(ClassLoader::class, $loader);
 
         /* Register the main loader handler */
-        $this->bindShared(core\ILoader::class, core\loader\Composer::class);
+        $this->bindShared(ILoader::class, ComposerLoader::class);
     }
 
     /**
@@ -101,7 +107,7 @@ class App extends Container implements IApp
      */
     protected function registerHttpKernel(): void
     {
-        $this->bindShared(kernel\IHttp::class, df\http\HttpKernel::class);
+        $this->bindShared(IHttpKernel::class, HttpKernel::class);
     }
 
     /**
@@ -109,7 +115,7 @@ class App extends Container implements IApp
      */
     protected function registerConsoleKernel(): void
     {
-        $this->bindShared(kernel\IConsole::class, df\clip\ConsoleKernel::class);
+        $this->bindShared(IConsoleKernel::class, ConsoleKernel::class);
     }
 
 

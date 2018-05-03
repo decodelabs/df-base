@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace df\lang\dumper;
 
 use df;
-use df\lang;
+use df\lang\IDumper;
 
 class Handler
 {
@@ -16,7 +16,7 @@ class Handler
         return new Symfony();
     }
 
-    public static function getDumper(): lang\IDumper
+    public static function getDumper(): IDumper
     {
         if (!defined('df\\BOOTSTRAPPED')) {
             return self::createGeneric();

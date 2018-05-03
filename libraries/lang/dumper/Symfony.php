@@ -7,7 +7,8 @@ declare(strict_types=1);
 namespace df\lang\dumper;
 
 use df;
-use df\lang;
+use df\lang\IDumper;
+use df\lang\stack\Trace;
 
 use Symfony\Component\VarDumper\VarDumper;
 use Symfony\Component\VarDumper\Cloner;
@@ -15,7 +16,7 @@ use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 use Symfony\Component\VarDumper\Caster;
 
-class Symfony implements lang\IDumper
+class Symfony implements IDumper
 {
     /**
      * Register self with Symfony
@@ -68,7 +69,7 @@ class Symfony implements lang\IDumper
      */
     public function dump(...$vars): void
     {
-        $trace = lang\stack\Trace::create();
+        $trace = Trace::create();
 
         foreach ($trace as $frame) {
             if (substr($frame->getFunctionName(), 0, 4) != 'dump'

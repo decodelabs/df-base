@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\core\service;
 
 use df;
-use df\core;
 use df\core\IContainer;
 
 class Group extends Binding

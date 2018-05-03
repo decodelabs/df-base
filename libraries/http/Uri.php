@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\http;
 
 use df;
-use df\http;
 use df\link\IUri;
 use df\data\Tree;
 

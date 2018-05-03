@@ -6,7 +6,6 @@
 namespace df\lang\constraint;
 
 use df;
-use df\lang;
 
 interface INullable
 {

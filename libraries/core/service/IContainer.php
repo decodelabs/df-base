@@ -6,7 +6,6 @@
 namespace df\core\service;
 
 use df;
-use df\core;
 
 use Psr\Container\ContainerInterface;
 

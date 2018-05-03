@@ -7,7 +7,8 @@ declare(strict_types=1);
 namespace df\data\arrayCollection;
 
 use df;
-use df\data;
+use df\data\IReadable;
+use df\data\IHashMap;
 
 trait THashMap
 {
@@ -17,7 +18,7 @@ trait THashMap
     /**
      * Get all keys in array, enforce string formatting
      */
-    public function getKeys(): data\IReadable
+    public function getKeys(): IReadable
     {
         return new static(array_map('strval', array_keys($this->items)));
     }
@@ -48,7 +49,7 @@ trait THashMap
     /**
      * Direct set a value
      */
-    public function set(string $key, $value): data\IHashMap
+    public function set(string $key, $value): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items[$key] = $value;
@@ -114,7 +115,7 @@ trait THashMap
     /**
      * Remove all values associated with $keys
      */
-    public function remove(string ...$keys): data\IHashMap
+    public function remove(string ...$keys): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_diff_key($output->items, array_flip($keys));
@@ -124,7 +125,7 @@ trait THashMap
     /**
      * Remove all values not associated with $keys
      */
-    public function keep(string ...$keys): data\IHashMap
+    public function keep(string ...$keys): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_intersect_key($output->items, array_flip($keys));
@@ -148,7 +149,7 @@ trait THashMap
     /**
      * Reset all values
      */
-    public function clear(): data\IHashMap
+    public function clear(): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = [];
@@ -158,7 +159,7 @@ trait THashMap
     /**
      * Remove all keys
      */
-    public function clearKeys(): data\IHashMap
+    public function clearKeys(): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_values($output->items);
@@ -169,20 +170,20 @@ trait THashMap
     /**
      * Collapse multi dimensional array to flat
      */
-    public function collapse(bool $unique=false, bool $removeNull=false): data\IHashMap
+    public function collapse(bool $unique=false, bool $removeNull=false): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = data\Arr::collapse($output->items, true, $unique, $removeNull);
+        $output->items = Arr::collapse($output->items, true, $unique, $removeNull);
         return $output;
     }
 
     /**
      * Collapse without the keys
      */
-    public function collapseValues(bool $unique=false, bool $removeNull=false): data\IHashMap
+    public function collapseValues(bool $unique=false, bool $removeNull=false): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = data\Arr::collapse($output->items, false, $unique, $removeNull);
+        $output->items = Arr::collapse($output->items, false, $unique, $removeNull);
         return $output;
     }
 
@@ -215,7 +216,7 @@ trait THashMap
     /**
      * Switch key case for all entries
      */
-    public function changeKeyCase(int $case=CASE_LOWER): data\IHashMap
+    public function changeKeyCase(int $case=CASE_LOWER): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_change_key_case($output->items, $case);
@@ -226,11 +227,11 @@ trait THashMap
     /**
      * Map values of collection to $keys
      */
-    public function combineWithKeys(iterable $keys): data\IHashMap
+    public function combineWithKeys(iterable $keys): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
 
-        if (false !== ($result = array_combine(data\Arr::iterableToArray($keys), $output->items))) {
+        if (false !== ($result = array_combine(Arr::iterableToArray($keys), $output->items))) {
             $output->items = $result;
         }
 
@@ -240,11 +241,11 @@ trait THashMap
     /**
      * Map $values to values of collection as keys
      */
-    public function combineWithValues(iterable $values): data\IHashMap
+    public function combineWithValues(iterable $values): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
 
-        if (false !== ($result = array_combine($output->items, data\Arr::iterableToArray($values)))) {
+        if (false !== ($result = array_combine($output->items, Arr::iterableToArray($values)))) {
             $output->items = $result;
         }
 
@@ -255,7 +256,7 @@ trait THashMap
     /**
      * Replace all values with $value
      */
-    public function fill($value): data\IHashMap
+    public function fill($value): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_fill_keys(array_keys($output->items), $value);
@@ -265,7 +266,7 @@ trait THashMap
     /**
      * Flip keys and values
      */
-    public function flip(): data\IHashMap
+    public function flip(): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_flip($output->items);
@@ -276,20 +277,20 @@ trait THashMap
     /**
      * Merge all passed collections into one
      */
-    public function merge(iterable ...$arrays): data\IHashMap
+    public function merge(iterable ...$arrays): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = array_merge($output->items, ...data\Arr::iterablesToArrays(...$arrays));
+        $output->items = array_merge($output->items, ...Arr::iterablesToArrays(...$arrays));
         return $output;
     }
 
     /**
      * Merge EVERYTHING :D
      */
-    public function mergeRecursive(iterable ...$arrays): data\IHashMap
+    public function mergeRecursive(iterable ...$arrays): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = array_merge_recursive($output->items, ...data\Arr::iterablesToArrays(...$arrays));
+        $output->items = array_merge_recursive($output->items, ...Arr::iterablesToArrays(...$arrays));
         return $output;
     }
 
@@ -297,20 +298,20 @@ trait THashMap
     /**
      * Like merge, but replaces.. obvs
      */
-    public function replace(iterable ...$arrays): data\IHashMap
+    public function replace(iterable ...$arrays): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = array_replace($output->items, ...data\Arr::iterablesToArrays(...$arrays));
+        $output->items = array_replace($output->items, ...Arr::iterablesToArrays(...$arrays));
         return $output;
     }
 
     /**
      * Replace EVERYTHING :D
      */
-    public function replaceRecursive(iterable ...$arrays): data\IHashMap
+    public function replaceRecursive(iterable ...$arrays): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
-        $output->items = array_replace_recursive($output->items, ...data\Arr::iterablesToArrays(...$arrays));
+        $output->items = array_replace_recursive($output->items, ...Arr::iterablesToArrays(...$arrays));
         return $output;
     }
 
@@ -319,7 +320,7 @@ trait THashMap
     /**
      * Remove $offet + $length items
      */
-    public function removeSlice(int $offset, int $length=null, data\IHashMap &$removed=null): data\IHashMap
+    public function removeSlice(int $offset, int $length=null, IHashMap &$removed=null): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
 
@@ -337,7 +338,7 @@ trait THashMap
     /**
      * Like removeSlice, but leaves a present behind
      */
-    public function replaceSlice(int $offset, int $length=null, iterable $replacement, data\IHashMap &$removed=null): data\IHashMap
+    public function replaceSlice(int $offset, int $length=null, iterable $replacement, IHashMap &$removed=null): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
 
@@ -346,7 +347,7 @@ trait THashMap
         }
 
         $removed = new static(
-            array_splice($output->items, $offset, $length, data\Arr::iterableToArray($replacement))
+            array_splice($output->items, $offset, $length, Arr::iterableToArray($replacement))
         );
 
         return $output;
@@ -356,7 +357,7 @@ trait THashMap
     /**
      * Remove duplicates from collection
      */
-    public function unique(int $flags=SORT_STRING): data\IHashMap
+    public function unique(int $flags=SORT_STRING): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         $output->items = array_unique($output->items, $flags);
@@ -367,7 +368,7 @@ trait THashMap
     /**
      * Iterate each entry
      */
-    public function walk(callable $callback, $data=null): data\IHashMap
+    public function walk(callable $callback, $data=null): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         array_walk($output->items, $callback, $data);
@@ -377,7 +378,7 @@ trait THashMap
     /**
      * Iterate everything
      */
-    public function walkRecursive(callable $callback, $data=null): data\IHashMap
+    public function walkRecursive(callable $callback, $data=null): IHashMap
     {
         $output = static::MUTABLE ? $this : $this->copy();
         array_walk_recursive($output->items, $callback, $data);

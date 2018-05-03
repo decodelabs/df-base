@@ -7,8 +7,15 @@ declare(strict_types=1);
 namespace df\core\error;
 
 use df;
+
 use df\core;
-use df\core\error;
+
+use df\core\error\IHandler;
+use df\core\error\Handler;
+
+use df\core\error\IReporter;
+use df\core\error\reporter\Whoops;
+
 use df\core\service\IContainer;
 use df\core\service\IProvider;
 
@@ -20,8 +27,8 @@ class ErrorServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
-            error\IHandler::class,
-            error\IReporter::class
+            IHandler::class,
+            IReporter::class
         ];
     }
 
@@ -30,7 +37,7 @@ class ErrorServiceProvider implements IProvider
      */
     public function registerServices(IContainer $app): void
     {
-        $app->bindShared(error\IHandler::class, error\Handler::class);
-        $app->bind(error\IReporter::class, error\reporter\Whoops::class);
+        $app->bindShared(IHandler::class, Handler::class);
+        $app->bind(IReporter::class, Whoops::class);
     }
 }

@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace df\http\middleware;
 
 use df;
-use df\http;
+use df\http\response\Text as TextResponse;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,7 +22,7 @@ class GlobalRequests implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         if ($request->getMethod() === 'OPTIONS' && $request->getRequestTarget() === '*') {
-            return new http\response\Text('', 200, [
+            return new TextResponse('', 200, [
                 'allow' => 'OPTIONS,GET,HEAD,POST,PUT,DELETE'
             ]);
         }

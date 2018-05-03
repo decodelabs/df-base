@@ -7,8 +7,6 @@ declare(strict_types=1);
 namespace df\http\response;
 
 use df;
-use df\http;
-
 use df\http\message\Stream as MessageStream;
 
 class Xml extends Stream

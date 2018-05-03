@@ -6,7 +6,8 @@
 namespace df;
 
 use df;
-use df\lang;
+use df\lang\stack\Frame;
+use df\lang\stack\Trace;
 
 interface IError
 {
@@ -16,6 +17,6 @@ interface IError
     public function setHttpCode(?int $code);
     public function getHttpCode(): ?int;
 
-    public function getStackFrame(): lang\stack\Frame;
-    public function getStackTrace(): lang\stack\Trace;
+    public function getStackFrame(): Frame;
+    public function getStackTrace(): Trace;
 }

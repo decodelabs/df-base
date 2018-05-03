@@ -7,9 +7,10 @@ declare(strict_types=1);
 namespace df\core\error\reporter;
 
 use df;
-use df\core;
 
-class Dump implements core\error\IReporter
+use df\core\error\IReporter;
+
+class Dump implements IReporter
 {
     /**
      * Report a caught exception

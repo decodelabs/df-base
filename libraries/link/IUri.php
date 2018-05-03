@@ -6,7 +6,6 @@
 namespace df\link;
 
 use df;
-use df\link;
 use df\data\Tree;
 
 use Psr\Http\Message\UriInterface;

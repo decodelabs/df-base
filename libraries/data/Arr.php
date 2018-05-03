@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\data;
 
 use df;
-use df\data;
 
 class Arr
 {

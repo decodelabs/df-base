@@ -7,7 +7,8 @@ declare(strict_types=1);
 namespace df\lang\error;
 
 use df;
-use df\lang;
+use df\lang\stack\Frame;
+use df\lang\stack\Trace;
 
 /**
  * Main root exception inheritance
@@ -86,7 +87,7 @@ trait TError
     /**
      * Get first call from trace
      */
-    public function getStackFrame(): lang\stack\Frame
+    public function getStackFrame(): Frame
     {
         return $this->getStackTrace()->getFirstCall();
     }
@@ -94,10 +95,10 @@ trait TError
     /**
      * Generate a StackTrace object from Exception trace
      */
-    public function getStackTrace(): lang\stack\Trace
+    public function getStackTrace(): Trace
     {
         if (!$this->stackTrace) {
-            $this->stackTrace = lang\stack\Trace::createFromException($this, $this->rewind + 2);
+            $this->stackTrace = Trace::createFromException($this, $this->rewind + 2);
         }
 
         return $this->stackTrace;

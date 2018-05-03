@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\core\error;
 
 use df;
-use df\core;
 
 class Handler implements IHandler
 {

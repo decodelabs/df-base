@@ -7,13 +7,15 @@ declare(strict_types=1);
 namespace df\flex;
 
 use df;
-use df\flex;
-use df\data;
-use df\lang;
 
-class Text implements \IteratorAggregate, data\ICollection, \ArrayAccess, \Countable, lang\IPipe
+use df\lang\IPipe;
+use df\lang\TPipe;
+
+use df\data\ICollection;
+
+class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable, IPipe
 {
-    use lang\TPipe;
+    use TPipe;
 
     protected $encoding;
     protected $text;
@@ -1246,7 +1248,7 @@ class Text implements \IteratorAggregate, data\ICollection, \ArrayAccess, \Count
     /**
      * Duplicate collection, can change type if needed
      */
-    public function copy(): data\ICollection
+    public function copy(): ICollection
     {
         return clone $this;
     }

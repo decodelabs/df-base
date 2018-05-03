@@ -7,7 +7,8 @@ declare(strict_types=1);
 namespace df\http;
 
 use df;
-use df\http;
+use df\http\pipeline\IDispatcher;
+use df\http\response\ISender;
 use df\core\IApp;
 use df\core\kernel\IHttp;
 
@@ -51,7 +52,7 @@ class HttpKernel implements IHttp
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $dispatcher = $this->app[http\pipeline\IDispatcher::class];
+        $dispatcher = $this->app[IDispatcher::class];
         $dispatcher->queueList($this->app->getGlobalMiddleware());
         return $dispatcher->handle($request);
     }
@@ -61,7 +62,7 @@ class HttpKernel implements IHttp
      */
     public function sendResponse(ServerRequestInterface $request, ResponseInterface $response): void
     {
-        $this->app[http\response\ISender::class]->sendResponse($request, $response);
+        $this->app[ISender::class]->sendResponse($request, $response);
     }
 
     /**

@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\lang\stack;
 
 use df;
-use df\lang;
 
 class Trace implements \IteratorAggregate
 {
@@ -130,7 +129,7 @@ class Trace implements \IteratorAggregate
         if (!isset($this->frames[0])) {
             return null;
         }
-        
+
         return $this->frames[0]->getLine();
     }
 

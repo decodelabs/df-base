@@ -7,7 +7,9 @@ declare(strict_types=1);
 namespace df\data\arrayCollection;
 
 use df;
-use df\data;
+
+use df\data\Arr;
+use df\data\ICollection;
 
 trait TCollection
 {
@@ -20,7 +22,7 @@ trait TCollection
      */
     public function __construct(iterable $items)
     {
-        $this->items = data\Arr::iterableToArray($items);
+        $this->items = Arr::iterableToArray($items);
     }
 
 
@@ -44,7 +46,7 @@ trait TCollection
     /**
      * Duplicate collection, can change type if needed
      */
-    public function copy(): data\ICollection
+    public function copy(): ICollection
     {
         return clone $this;
     }

@@ -7,7 +7,8 @@ declare(strict_types=1);
 namespace df\core\env;
 
 use df;
-use df\core;
+
+use df\core\env\IConfig;
 use df\core\service\IContainer;
 use df\core\service\IProvider;
 
@@ -19,7 +20,7 @@ class EnvServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
-            core\env\IConfig::class
+            IConfig::class
         ];
     }
 
@@ -28,8 +29,8 @@ class EnvServiceProvider implements IProvider
      */
     public function registerServices(IContainer $app): void
     {
-        $app->bindShared(core\env\IConfig::class, function ($app) {
-            return core\env\config\DotIni::loadFile(df\BASE_PATH.'/.env');
+        $app->bindShared(IConfig::class, function ($app) {
+            return namespace\config\DotIni::loadFile(df\BASE_PATH.'/.env');
         });
     }
 }

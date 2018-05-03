@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace df\lang\stack;
 
 use df;
-use df\lang;
 
 /**
  * Represents a single entry in a stack trace

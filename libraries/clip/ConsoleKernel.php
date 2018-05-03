@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace df\clip;
 
 use df;
-use df\clip;
+use df\core\IApp;
 use df\core\kernel\IConsole;
 
 class ConsoleKernel implements IConsole
@@ -17,7 +17,7 @@ class ConsoleKernel implements IConsole
     /**
      * Setup with ref to $app
      */
-    public function __construct(core\IApp $app)
+    public function __construct(IApp $app)
     {
         $this->app = $app;
     }

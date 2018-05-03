@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace df;
 
 use df;
-use df\lang;
+use df\lang\error\Factory;
 
 /**
  * This is just a facade.
@@ -19,7 +19,7 @@ class Error
 
     public static function __callStatic(string $method, array $args): IError
     {
-        return lang\error\Factory::create(
+        return Factory::create(
             static::TYPE,
             explode(',', $method),
             ...$args

@@ -7,8 +7,7 @@ declare(strict_types=1);
 namespace df\http\request;
 
 use df;
-use df\http;
-
+use df\http\Uri;
 use df\http\message\UploadedFile;
 
 use Psr\Http\Message\ServerRequestInterface;
@@ -164,7 +163,7 @@ class Factory
         $path = array_shift($parts);
         $query = array_shift($parts);
 
-        return http\Uri::create(
+        return Uri::create(
             $this->extractScheme($server, $headers),
             null,
             null,

@@ -6,7 +6,6 @@
 namespace df\data;
 
 use df;
-use df\data;
 
 interface ISequence extends IReadable, ISortable
 {
