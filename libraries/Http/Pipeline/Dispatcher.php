@@ -53,15 +53,18 @@ class Dispatcher implements IDispatcher
      */
     public function queueType(string $type): IDispatcher
     {
-        $middleware = $this->app->newInstanceOf($type);
+        $ref = new \ReflectionClass($type);
 
-        if (!$middleware instanceof MiddlewareInterface) {
+        if (!$ref->implementsInterface('Psr\Http\Server\MiddlewareInterface')) {
             throw Df\Error::EImplementation(
                 'Queued middleware "'.$type.'" does not implement MiddlewareInterface'
             );
         }
 
-        return $this->queue($middleware);
+        return $this->queueCallable(function ($request, $handler) use ($type) {
+            $middleware = $this->app->newInstanceOf($type);
+            return $middleware->process($request, $handler);
+        });
     }
 
     /**
@@ -105,6 +108,14 @@ class Dispatcher implements IDispatcher
         }
 
         return $middleware->process($request, $this);
+    }
+
+    /**
+     * Passthrough for callbacks
+     */
+    public function __invoke(ServerRequestInterface $request): ResponseInterface
+    {
+        return $this->handle($request);
     }
 
 

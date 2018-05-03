@@ -25,6 +25,9 @@ use Df\Http\Kernel as HttpKernel;
 use Df\Http\ServiceProvider as HttpServiceProvider;
 use Df\Http\Middleware;
 
+use Df\Arch\ServiceProvider as ArchServiceProvider;
+use Df\Arch\Pipeline\IHandler as ArchHandler;
+
 use Composer\Autoload\ClassLoader;
 
 class App extends Container implements IApp
@@ -35,15 +38,16 @@ class App extends Container implements IApp
     const DEFAULT_PROVIDERS = [
         EnvServiceProvider::class,
         ErrorServiceProvider::class,
-        HttpServiceProvider::class
+        HttpServiceProvider::class,
+        ArchServiceProvider::class
     ];
 
     const MIDDLEWARE = [];
 
     const DEFAULT_MIDDLEWARE = [
-        Middleware\GlobalRequests::class => -99,
+        //Middleware\GlobalRequests::class => -99,
         // user
-        Middleware\HelloWorld::class => 99
+        ArchHandler::class => 99
     ];
 
 

@@ -427,13 +427,9 @@ class Container implements IContainer
      */
     public function newInstanceOf(string $type, array $params=[]): object
     {
-        if (isset($this->aliases[$type])) {
-            $type = $this->aliases[$type];
-        }
-
-        if (isset($this->bindings[$type])) {
-            $binding = clone $this->bindings[$type];
-        } else {
+        try {
+            $binding = clone $this->getBinding($type);
+        } catch (namespace\ENotFound $e) {
             $binding = new Binding($this, $type, $type, false);
         }
 

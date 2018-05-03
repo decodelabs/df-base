@@ -325,7 +325,7 @@ class Uri implements IUri
         $output = clone $this;
         $output->host = $host;
 
-        return $this;
+        return $output;
     }
 
     /**
@@ -365,11 +365,6 @@ class Uri implements IUri
     public function withPort($port): UriInterface
     {
         $port = $this->preparePort($port);
-
-        if ($port === $this->port) {
-            return $this;
-        }
-
         $output = clone $this;
         $output->port = $port;
 

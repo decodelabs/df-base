@@ -252,6 +252,17 @@ class ServerRequest implements ServerRequestInterface
     }
 
     /**
+     * Add to attribute list
+     */
+    public function addAttributes(array $attributes): ServerRequestInterface
+    {
+        $output = clone $this;
+        $output->attributes = array_merge($this->attributes, $attributes);
+
+        return $output;
+    }
+
+    /**
      * Get attribute list
      */
     public function getAttributes(): array

@@ -30,9 +30,7 @@ class CallableMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $response = ($this->callable)($request, function ($request) use ($handler) {
-            return $handler->handle($request);
-        });
+        $response = ($this->callable)($request, $handler);
 
         if (!$response instanceof ResponseInterface) {
             throw Df\Error::EImplementation(
