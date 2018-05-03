@@ -4,11 +4,11 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\error\reporter;
+namespace Df\Core\Error\Reporter;
 
-use df;
+use Df;
 
-use df\core\error\IReporter;
+use Df\Core\Error\IReporter;
 
 class Dump implements IReporter
 {

@@ -4,20 +4,18 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\error;
+namespace Df\Core\Error;
 
-use df;
+use Df;
 
-use df\core;
+use Df\Core\Error\IHandler;
+use Df\Core\Error\Handler;
 
-use df\core\error\IHandler;
-use df\core\error\Handler;
+use Df\Core\Error\IReporter;
+use Df\Core\Error\Reporter\Whoops;
 
-use df\core\error\IReporter;
-use df\core\error\reporter\Whoops;
-
-use df\core\service\IContainer;
-use df\core\service\IProvider;
+use Df\Core\Service\IContainer;
+use Df\Core\Service\IProvider;
 
 class ServiceProvider implements IProvider
 {

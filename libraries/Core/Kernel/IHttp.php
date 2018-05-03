@@ -3,11 +3,10 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\core\kernel;
+namespace Df\Core\Kernel;
 
-use df;
-
-use df\http\response\ISender;
+use Df;
+use Df\Http\Response\ISender;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

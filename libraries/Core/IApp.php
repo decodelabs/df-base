@@ -3,10 +3,10 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\core;
+namespace Df\core;
 
-use df;
-use df\core\service\IContainer;
+use Df;
+use Df\Core\Service\IContainer;
 
 interface IApp extends IContainer
 {

@@ -4,11 +4,11 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\pipeline;
+namespace Df\Http\Pipeline;
 
-use df;
+use Df;
 
-use df\core\IApp;
+use Df\Core\IApp;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -56,7 +56,7 @@ class Dispatcher implements IDispatcher
         $middleware = $this->app->newInstanceOf($type);
 
         if (!$middleware instanceof MiddlewareInterface) {
-            throw df\Error::EImplementation(
+            throw Df\Error::EImplementation(
                 'Queued middleware "'.$type.'" does not implement MiddlewareInterface'
             );
         }
@@ -77,7 +77,7 @@ class Dispatcher implements IDispatcher
             } elseif (is_string($middleware)) {
                 $this->queueType($middleware);
             } else {
-                throw df\Error::EInvalidArgument(
+                throw Df\Error::EInvalidArgument(
                     'Unexpected / invalid middleware type',
                     null,
                     $middleware
@@ -98,7 +98,7 @@ class Dispatcher implements IDispatcher
         next($this->queue);
 
         if (!$middleware) {
-            throw df\Error::ENotFound([
+            throw Df\Error::ENotFound([
                 'message' => 'Reached the end of the middleware queue without a response',
                 'http' => 404
             ]);

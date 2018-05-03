@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\loader;
+namespace Df\Core\Loader;
 
-use df;
-use df\core\ILoader;
+use Df;
+use Df\Core\ILoader;
 
 use Composer\Autoload\ClassLoader;
 
@@ -57,12 +57,12 @@ class Composer implements ILoader
         }
 
         foreach (static::APEX as $folder) {
-            $this->autoload->setPsr4('df\\apex\\'.$folder.'\\', array_map(function ($path) use ($folder) {
+            $this->autoload->setPsr4('Df\\Apex\\'.ucfirst($folder).'\\', array_map(function ($path) use ($folder) {
                 return $path.'/'.$folder;
             }, $this->apexPaths));
         }
 
-        $this->autoload->setPsr4('df\\', $this->libraryPaths);
+        $this->autoload->setPsr4('Df\\', $this->libraryPaths);
     }
 
 

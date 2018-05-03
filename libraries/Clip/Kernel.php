@@ -4,11 +4,11 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\clip;
+namespace Df\Clip;
 
-use df;
-use df\core\IApp;
-use df\core\kernel\IConsole;
+use Df;
+use Df\Core\IApp;
+use Df\Core\Kernel\IConsole;
 
 class Kernel implements IConsole
 {
@@ -27,6 +27,6 @@ class Kernel implements IConsole
      */
     public function run(): void
     {
-        df\incomplete();
+        Df\incomplete();
     }
 }

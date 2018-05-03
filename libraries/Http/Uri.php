@@ -4,11 +4,11 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http;
+namespace Df\Http;
 
-use df;
-use df\link\IUri;
-use df\data\Tree;
+use Df;
+use Df\Link\IUri;
+use Df\Data\Tree;
 
 use Psr\Http\Message\UriInterface;
 
@@ -76,7 +76,7 @@ class Uri implements IUri
         $parts = parse_url($uri);
 
         if ($parts === false) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Unable to parse uri',
                 null,
                 $uri
@@ -140,7 +140,7 @@ class Uri implements IUri
         }
 
         if (!isset(self::SCHEMES[$scheme])) {
-            throw df\Error::{'EInvalidArgument'}(
+            throw Df\Error::{'EInvalidArgument'}(
                 'Scheme "'.$scheme.'" is unsupported'
             );
         }
@@ -386,7 +386,7 @@ class Uri implements IUri
         }
 
         if (!is_numeric($port)) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid port: '.$port
             );
         }
@@ -394,7 +394,7 @@ class Uri implements IUri
         $port = (int)$port;
 
         if ($port < 1 || $port > 65535) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid port: '.$port
             );
         }
@@ -464,13 +464,13 @@ class Uri implements IUri
         }
 
         if (strpos($path, '?') !== false) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid path, must not contain query string'
             );
         }
 
         if (strpos($path, '#') !== false) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid path, must not contain fragment'
             );
         }
@@ -535,7 +535,7 @@ class Uri implements IUri
         }
 
         if (strpos($query, '#') !== false) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid query string - must not contain fragment'
             );
         }

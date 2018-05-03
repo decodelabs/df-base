@@ -4,9 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\lang\error;
+namespace Df\Lang\Error;
 
-use df;
+use Df;
+use Df\IError;
 
 class Factory
 {
@@ -124,7 +125,7 @@ class Factory
     /**
      * Generate a context specific, message oriented throwable error
      */
-    public static function create(?string $type, array $interfaces=[], $message, ?array $params=[], $data=null): df\IError
+    public static function create(?string $type, array $interfaces=[], $message, ?array $params=[], $data=null): IError
     {
         if (is_array($message)) {
             $params = $message;
@@ -155,7 +156,7 @@ class Factory
     /**
      * Build exception object
      */
-    protected function build(string $message, array $interfaces): df\IError
+    protected function build(string $message, array $interfaces): IError
     {
         $this->params['rewind'] = $rewind = max((int)($this->params['rewind'] ?? 0), 0);
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $rewind + static::REWIND);
@@ -169,7 +170,7 @@ class Factory
 
             if (!empty($this->namespace)) {
                 if (false !== strpos($this->namespace, 'class@anon')) {
-                    $this->namespace = '\\df';
+                    $this->namespace = '\\Df';
                 } else {
                     $parts = explode('\\', $this->namespace);
                     $className = array_pop($parts);
@@ -179,7 +180,7 @@ class Factory
         }
 
         if (empty($this->namespace)) {
-            $this->namespace = '\\df';
+            $this->namespace = '\\Df';
         }
 
         $this->buildDefinitions($interfaces);
@@ -215,14 +216,14 @@ class Factory
         $namespace = ltrim($this->namespace, '\\');
         $namespaces = [$namespace];
         $directType = null;
-        $this->traits[] = 'df\\lang\\error\\TError';
+        $this->traits[] = 'Df\\lang\\error\\TError';
 
         // Create initial interface list
         foreach ($interfaces as $i => $interface) {
             $direct = false !== strpos($interface, '\\');
 
             if (false !== strpos($interface, '/')) {
-                $interface = 'df\\'.str_replace('/', '\\', ltrim($interface, '/'));
+                $interface = 'Df\\'.str_replace('/', '\\', ltrim($interface, '/'));
             }
 
             $interface = ltrim($interface, '\\');
@@ -256,7 +257,7 @@ class Factory
         }
 
         if (empty($this->interfaces)) {
-            $this->interfaces['df\\IError'] = [];
+            $this->interfaces['Df\\IError'] = [];
         }
 
 
@@ -302,7 +303,7 @@ class Factory
             $standard = static::STANDARD[$name];
 
             if (isset($standard['extend'])) {
-                $standard['extend'] = ['df\\'.$standard['extend']];
+                $standard['extend'] = ['Df\\'.$standard['extend']];
             }
 
             $this->interfaces[$interface] = $standard;
@@ -333,16 +334,16 @@ class Factory
 
 
     /**
-     * Create an interface tree back down to df ns root
+     * Create an interface tree back down to Df ns root
      */
     protected function extractNamespaceInterfaces(string $namespace): void
     {
         $parts = explode('\\', $namespace);
         $parts = array_slice($parts, 1, 3);
-        $parent = 'df';
+        $parent = 'Df';
 
         foreach ($parts as $part) {
-            $first = $parent == 'df';
+            $first = $parent == 'Df';
             $ins = $parent.'\\'.$part;
             $interface = $ins.'\\IError';
 
@@ -357,7 +358,7 @@ class Factory
      */
     protected function defineInterface(string $interface, array $info): void
     {
-        $parent = '\\df\\IError';
+        $parent = '\\Df\\IError';
 
         if (isset($info['extend'])) {
             $parent = [];
@@ -375,7 +376,7 @@ class Factory
                     $standard = static::STANDARD[$name];
 
                     if (isset($standard['extend'])) {
-                        $standard['extend'] = ['df\\'.$standard['extend']];
+                        $standard['extend'] = ['Df\\'.$standard['extend']];
                     }
 
                     $this->defineInterface($extend, $standard);

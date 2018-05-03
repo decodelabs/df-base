@@ -3,9 +3,9 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\data;
+namespace Df\Data;
 
-use df;
+use Df;
 
 interface IValueProvider
 {

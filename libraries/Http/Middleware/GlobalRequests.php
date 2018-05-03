@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\middleware;
+namespace Df\Http\Middleware;
 
-use df;
-use df\http\response\Text as TextResponse;
+use Df;
+use Df\Http\Response\Text as TextResponse;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

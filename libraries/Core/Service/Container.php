@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\service;
+namespace Df\core\service;
 
-use df;
-use df\core\event\Dispatcher;
+use Df;
+use Df\Core\Event\Dispatcher;
 
 class Container implements IContainer
 {
@@ -33,7 +33,7 @@ class Container implements IContainer
     public function registerProvider(string $provider): void
     {
         if (!class_exists($provider, true)) {
-            throw df\Error::{'EImplementation,ENotFound'}(
+            throw Df\Error::{'EImplementation,ENotFound'}(
                 'Service provider '.$provider.' could not be found'
             );
         }
@@ -339,7 +339,7 @@ class Container implements IContainer
             }
         }
 
-        throw df\Error::{
+        throw Df\Error::{
             'ENotFound,Psr\\Container\\NotFoundExceptionInterface'
         }(
             $type.' has not been bound'

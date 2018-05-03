@@ -3,9 +3,9 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\lang\constraint;
+namespace Df\Lang\Constraint;
 
-use df;
+use Df;
 
 interface INullable
 {

@@ -4,13 +4,13 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http;
+namespace Df\Http;
 
-use df;
-use df\http\pipeline\IDispatcher;
-use df\http\response\ISender;
-use df\core\IApp;
-use df\core\kernel\IHttp;
+use Df;
+use Df\Http\Pipeline\IDispatcher;
+use Df\Http\Response\ISender;
+use Df\Core\IApp;
+use Df\Core\Kernel\IHttp;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

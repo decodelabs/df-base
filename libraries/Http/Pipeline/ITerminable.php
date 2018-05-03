@@ -3,9 +3,9 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\http\pipeline;
+namespace Df\Http\Pipeline;
 
-use df;
+use Df;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

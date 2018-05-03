@@ -3,10 +3,10 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\link;
+namespace Df\Link;
 
-use df;
-use df\data\Tree;
+use Df;
+use Df\Data\Tree;
 
 use Psr\Http\Message\UriInterface;
 

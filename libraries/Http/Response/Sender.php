@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\response;
+namespace Df\Http\Response;
 
-use df;
+use Df;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -85,7 +85,7 @@ class Sender implements ISender
     public function sendResponse(ServerRequestInterface $request, ResponseInterface $response): void
     {
         if (headers_sent()) {
-            throw df\Error::ERuntime('Cannot send response, headers already sent');
+            throw Df\Error::ERuntime('Cannot send response, headers already sent');
         }
 
         $status = $response->getStatusCode();
@@ -122,7 +122,7 @@ class Sender implements ISender
 
         // Debug time
         if ($this->sendDebug) {
-            header('X-Request-Time: '.number_format((microtime(true) - df\START) * 1000, 2).' ms', false, $status);
+            header('X-Request-Time: '.number_format((microtime(true) - Df\START) * 1000, 2).' ms', false, $status);
         }
 
 

@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\env;
+namespace Df\Core\Env;
 
-use df;
+use Df;
 
 class Validator implements IValidator
 {
@@ -131,7 +131,7 @@ class Validator implements IValidator
     public function checkEmpty(): IValidator
     {
         if (!$this->isEmpty()) {
-            throw df\Error::EUnexpectedValue($this->name.' env value is empty');
+            throw Df\Error::EUnexpectedValue($this->name.' env value is empty');
         }
 
         return $this;
@@ -143,7 +143,7 @@ class Validator implements IValidator
     public function checkBool(): IValidator
     {
         if (!$this->isBool()) {
-            throw df\Error::EUnexpectedValue(
+            throw Df\Error::EUnexpectedValue(
                 $this->name.' env value is not a boolean',
                 null,
                 $this->value
@@ -159,7 +159,7 @@ class Validator implements IValidator
     public function checkInt(): IValidator
     {
         if (!$this->isInt()) {
-            throw df\Error::EUnexpectedValue(
+            throw Df\Error::EUnexpectedValue(
                 $this->name.' env value is not an integer',
                 null,
                 $this->value
@@ -175,7 +175,7 @@ class Validator implements IValidator
     public function checkFloat(): IValidator
     {
         if (!$this->isFloat()) {
-            throw df\Error::EUnexpectedValue(
+            throw Df\Error::EUnexpectedValue(
                 $this->name.' env value is not an float',
                 null,
                 $this->value
@@ -191,7 +191,7 @@ class Validator implements IValidator
     public function checkIn(...$values): IValidator
     {
         if (!$this->isIn($values)) {
-            throw df\Error::EUnexpectedValue(
+            throw Df\Error::EUnexpectedValue(
                 $this->name.' env value is not one of: '.implode(', ', $values),
                 null,
                 $this->value

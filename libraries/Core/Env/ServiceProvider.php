@@ -4,13 +4,13 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\env;
+namespace Df\Core\Env;
 
-use df;
+use Df;
 
-use df\core\env\IConfig;
-use df\core\service\IContainer;
-use df\core\service\IProvider;
+use Df\Core\Env\IConfig;
+use Df\Core\Service\IContainer;
+use Df\Core\Service\IProvider;
 
 class ServiceProvider implements IProvider
 {
@@ -30,7 +30,7 @@ class ServiceProvider implements IProvider
     public function registerServices(IContainer $app): void
     {
         $app->bindShared(IConfig::class, function ($app) {
-            return namespace\config\DotIni::loadFile(df\BASE_PATH.'/.env');
+            return namespace\Config\DotIni::loadFile(df\BASE_PATH.'/.env');
         });
     }
 }

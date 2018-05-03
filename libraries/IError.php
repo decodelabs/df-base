@@ -3,11 +3,11 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df;
+namespace Df;
 
-use df;
-use df\lang\stack\Frame;
-use df\lang\stack\Trace;
+use Df;
+use Df\Lang\Stack\Frame;
+use Df\Lang\Stack\Trace;
 
 interface IError
 {

@@ -4,11 +4,11 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\request;
+namespace Df\Http\Request;
 
-use df;
-use df\http\Uri;
-use df\http\message\UploadedFile;
+use Df;
+use Df\Http\Uri;
+use Df\Http\Message\UploadedFile;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
@@ -85,7 +85,7 @@ class Factory
             } elseif (is_array($value)) {
                 $output[$key] = $this->prepareFiles($value);
             } else {
-                throw df\EInvalidArgument('Invalid $_FILES array', null, $files);
+                throw Df\Error::EInvalidArgument('Invalid $_FILES array', null, $files);
             }
         }
 
@@ -251,7 +251,7 @@ class Factory
         }
 
         if (!preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $output, $matches)) {
-            throw df\Error::EUnexpectedValue(
+            throw Df\Error::EUnexpectedValue(
                 'Unrecognized HTTP protocal version: '.$output
             );
         }

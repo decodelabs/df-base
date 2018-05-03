@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\lang\stack;
+namespace Df\Lang\Stack;
 
-use df;
+use Df;
 
 class Trace implements \IteratorAggregate
 {
@@ -37,7 +37,7 @@ class Trace implements \IteratorAggregate
 
         if ($rewind) {
             if ($rewind > count($trace) - 1) {
-                throw df\Error::EOutOfRange('Stack rewind out of stack frame range', [
+                throw Df\Error::EOutOfRange('Stack rewind out of stack frame range', [
                     'data' => [
                         'rewind' => $rewind,
                         'trace' => $trace
@@ -80,8 +80,8 @@ class Trace implements \IteratorAggregate
     {
         foreach ($frames as $frame) {
             if (!$frame instanceof Frame) {
-                throw df\Error::EUnexpectedValue([
-                    'message' => 'Trace frame is not an instance of df\\lang\\stack\\Frame',
+                throw Df\Error::EUnexpectedValue([
+                    'message' => 'Trace frame is not an instance of Df\\Lang\\Stack\\Frame',
                     'data' => $frame
                 ]);
             }
@@ -167,12 +167,12 @@ class Trace implements \IteratorAggregate
 
         foreach ($frames as $i => $frame) {
             if ($i === 0) {
-                $output[($count + 1).': df\\Error()'] =
-                    df\stripBasePath($frame->getFile()).' : '.$frame->getLine();
+                $output[($count + 1).': Df\\Error()'] =
+                    Df\stripBasePath($frame->getFile()).' : '.$frame->getLine();
             }
 
             $output[($count - $i).': '.$frame->getSignature(true)] =
-                df\stripBasePath($frame->getCallingFile()).' : '.$frame->getCallingLine();
+                Df\stripBasePath($frame->getCallingFile()).' : '.$frame->getCallingLine();
         }
 
         return $output;

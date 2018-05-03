@@ -3,9 +3,9 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\core\service;
+namespace Df\Core\Service;
 
-use df;
+use Df;
 
 interface IProvider
 {

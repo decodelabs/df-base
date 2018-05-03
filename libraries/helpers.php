@@ -11,7 +11,7 @@ declare(strict_types=1);
  */
 namespace
 {
-    use df\lang\dumper\Handler;
+    use Df\Lang\Dumper\Handler as DumpHandler;
     use Symfony\Component\VarDumper\VarDumper;
 
     if (!function_exists('dd')) {
@@ -20,7 +20,7 @@ namespace
          */
         function dd(...$vars): void
         {
-            Handler::dumpDie(...$vars);
+            DumpHandler::dumpDie(...$vars);
         }
     }
 
@@ -30,27 +30,27 @@ namespace
          */
         function dump(...$vars): void
         {
-            Handler::dump(...$vars);
+            DumpHandler::dump(...$vars);
         }
     } elseif (class_exists(VarDumper::class)) {
-        VarDumper::setHandler([Handler::class, 'dump']);
+        VarDumper::setHandler([DumpHandler::class, 'dump']);
     }
 }
 
 
 /**
- * df helper
+ * Df helper
  */
-namespace df
+namespace Df
 {
 
-    use df;
-    use df\core\IApp;
-    use df\lang\error\Factory as ErrorFactory;
+    use Df;
+    use Df\Core\IApp;
+    use Df\Lang\Error\Factory as ErrorFactory;
 
     use Composer\Autoload\ClassLoader;
 
-    define('df\\START', microtime(true));
+    define('Df\\START', microtime(true));
 
 
     /**
@@ -62,7 +62,7 @@ namespace df
         static $started;
 
         if ($started) {
-            throw new \RuntimeException('df has already been bootstrapped');
+            throw new \RuntimeException('Df has already been bootstrapped');
         }
 
         $started = true;
@@ -76,16 +76,16 @@ namespace df
         }
 
         /* Make basePath available globally */
-        define('df\\BASE_PATH', $basePath);
+        define('Df\\BASE_PATH', $basePath);
 
         /* Manually load App class from base path */
         if (file_exists($basePath.'/App.php')) {
             require_once $basePath.'/App.php';
         }
 
-        $app = df\app();
+        $app = Df\app();
         $app->bootstrap();
-        define('df\\BOOTSTRAPPED', true);
+        define('Df\\BOOTSTRAPPED', true);
 
         return $app;
     }
@@ -99,10 +99,10 @@ namespace df
         static $app;
 
         if (!isset($app)) {
-            if (class_exists('df\apex\App', true)) {
-                $app = new df\apex\App();
+            if (class_exists('Df\Apex\App', true)) {
+                $app = new Df\Apex\App();
             } else {
-                $app = new df\core\App();
+                $app = new Df\Core\App();
             }
         }
 
@@ -117,7 +117,7 @@ namespace df
     {
         $frame = lang\stack\Frame::create(1);
 
-        throw df\Error::EImplementation(
+        throw Df\Error::EImplementation(
             $frame->getSignature().' has not been completed yet!'
         );
     }
@@ -141,11 +141,11 @@ namespace df
      */
     function stripBasePath(?string $path): ?string
     {
-        if (!defined('df\\BASE_PATH') || $path === null) {
+        if (!defined('Df\\BASE_PATH') || $path === null) {
             return $path;
         }
 
-        $parts = explode(df\BASE_PATH, $path, 2);
+        $parts = explode(Df\BASE_PATH, $path, 2);
         return array_pop($parts);
     }
 }

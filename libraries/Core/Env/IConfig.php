@@ -3,9 +3,9 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\core\env;
+namespace Df\Core\Env;
 
-use df;
+use Df;
 
 interface IConfig extends \ArrayAccess
 {

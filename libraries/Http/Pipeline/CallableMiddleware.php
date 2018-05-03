@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\pipeline;
+namespace Df\Http\Pipeline;
 
-use df;
+use Df;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,7 +35,7 @@ class CallableMiddleware implements MiddlewareInterface
         });
 
         if (!$response instanceof ResponseInterface) {
-            throw df\Error::EImplementation(
+            throw Df\Error::EImplementation(
                 'Callable middleware did not return a ResponseInterface instance'
             );
         }

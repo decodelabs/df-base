@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\response;
+namespace Df\Http\Response;
 
-use df;
-use df\http\message\TMessage;
+use Df;
+use Df\Http\Message\TMessage;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -152,7 +152,7 @@ class Stream implements ResponseInterface
     protected function prepareStatusCode(int $code): int
     {
         if (!isset(static::CODES[$code])) {
-            throw df\EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid HTTP status code: '.$code
             );
         }

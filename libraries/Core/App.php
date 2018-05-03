@@ -4,27 +4,26 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core;
+namespace Df\Core;
 
-use df;
-use df\core;
+use Df;
 
-use df\core\service\Container;
-use df\core\env\ServiceProvider as EnvServiceProvider;
-use df\core\error\ServiceProvider as ErrorServiceProvider;
-use df\core\error\Handler as ErrorHandler;
+use Df\Core\Service\Container;
+use Df\Core\Env\ServiceProvider as EnvServiceProvider;
+use Df\Core\Error\ServiceProvider as ErrorServiceProvider;
+use Df\Core\Error\Handler as ErrorHandler;
 
-use df\core\ILoader;
-use df\core\loader\Composer as ComposerLoader;
+use Df\Core\ILoader;
+use Df\Core\Loader\Composer as ComposerLoader;
 
-use df\core\kernel\IHttp as IHttpKernel;
-use df\core\kernel\IConsole as IConsoleKernel;
+use Df\Core\Kernel\IHttp as IHttpKernel;
+use Df\Core\Kernel\IConsole as IConsoleKernel;
 
-use df\http\Kernel as HttpKernel;
-use df\clip\Kernel as ConsoleKernel;
+use Df\Clip\Kernel as ConsoleKernel;
 
-use df\http\ServiceProvider as HttpServiceProvider;
-use df\http\middleware;
+use Df\Http\Kernel as HttpKernel;
+use Df\Http\ServiceProvider as HttpServiceProvider;
+use Df\Http\Middleware;
 
 use Composer\Autoload\ClassLoader;
 
@@ -42,9 +41,9 @@ class App extends Container implements IApp
     const MIDDLEWARE = [];
 
     const DEFAULT_MIDDLEWARE = [
-        middleware\GlobalRequests::class => -99,
+        Middleware\GlobalRequests::class => -99,
         // user
-        middleware\HelloWorld::class => 99
+        Middleware\HelloWorld::class => 99
     ];
 
 
@@ -95,7 +94,7 @@ class App extends Container implements IApp
     {
         /* Add the generic composer autoloader to the container
          * before doing anything else so stuff can be loaded */
-        $loader = require df\BASE_PATH.'/vendor/autoload.php';
+        $loader = require Df\BASE_PATH.'/vendor/autoload.php';
         $this->bindShared(ClassLoader::class, $loader);
 
         /* Register the main loader handler */
@@ -160,7 +159,7 @@ class App extends Container implements IApp
      */
     public function getBasePath(): string
     {
-        return df\BASE_PATH;
+        return Df\BASE_PATH;
     }
 
     /**
@@ -168,7 +167,7 @@ class App extends Container implements IApp
      */
     public function getVendorPath(): string
     {
-        return df\BASE_PATH.'/vendor';
+        return Df\BASE_PATH.'/vendor';
     }
 
     /**
@@ -176,7 +175,7 @@ class App extends Container implements IApp
      */
     public function getPublicPath(): string
     {
-        return df\BASE_PATH.'/public';
+        return Df\BASE_PATH.'/public';
     }
 
 

@@ -4,14 +4,14 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\data\arrayCollection;
+namespace Df\Data\ArrayCollection;
 
-use df;
+use Df;
 
-use df\data\Arr;
-use df\data\IReadable;
+use Df\Data\Arr;
+use Df\Data\IReadable;
 
-use df\lang\TPipe;
+use Df\Lang\TPipe;
 
 trait TReadable
 {

@@ -4,13 +4,13 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\data;
+namespace Df\Data;
 
-use df;
+use Df;
 
 class Sequence implements \IteratorAggregate, ISequence
 {
-    use namespace\arrayCollection\TSequence;
+    use namespace\ArrayCollection\TSequence;
 
     const MUTABLE = false;
 }

@@ -4,11 +4,11 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\data\arrayCollection;
+namespace Df\Data\ArrayCollection;
 
-use df;
-use df\data\IReadable;
-use df\data\IHashMap;
+use Df;
+use Df\Data\IReadable;
+use Df\Data\IHashMap;
 
 trait THashMap
 {

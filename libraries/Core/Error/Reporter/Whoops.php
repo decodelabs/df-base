@@ -4,11 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\error\reporter;
+namespace Df\Core\Error\Reporter;
 
-use df;
-
-use df\core\error\IReporter;
+use Df;
+use Df\Core\Error\IReporter;
 
 use Whoops\Run;
 use Whoops\Handler\PrettyPageHandler;

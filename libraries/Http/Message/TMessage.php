@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\message;
+namespace Df\Http\Message;
 
-use df;
+use Df;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
@@ -85,7 +85,7 @@ trait TMessage
     protected function prepareProtocolVersion(?string $version): string
     {
         if (!preg_match('#^(1\.[01]|2)$#', (string)$version)) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid HTTP protocol version: '.$version,
                 null,
                 $version
@@ -147,7 +147,7 @@ trait TMessage
     public function withHeader($name, $value): MessageInterface
     {
         if (!$this->isHeaderNameValid($name)) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid header name: '.$name
             );
         }
@@ -173,7 +173,7 @@ trait TMessage
     public function withAddedHeader($name, $value): MessageInterface
     {
         if (!$this->isHeaderNameValid($name)) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid header name: '.$name
             );
         }
@@ -213,7 +213,7 @@ trait TMessage
 
         foreach ($input as $name => $value) {
             if (!$this->isHeaderNameValid($name)) {
-                throw df\Error::EInvalidArgument(
+                throw Df\Error::EInvalidArgument(
                     'Invalid header name: '.$name
                 );
             }
@@ -237,7 +237,7 @@ trait TMessage
 
         return array_map(function ($value) {
             if (!$this->isHeaderValueValid($value)) {
-                throw df\Error::EInvalidArgument(
+                throw Df\Error::EInvalidArgument(
                     'Invalid header value',
                     null,
                     $value

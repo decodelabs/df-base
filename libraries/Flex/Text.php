@@ -4,14 +4,14 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\flex;
+namespace Df\flex;
 
-use df;
+use Df;
 
-use df\lang\IPipe;
-use df\lang\TPipe;
+use Df\Lang\IPipe;
+use Df\Lang\TPipe;
 
-use df\data\ICollection;
+use Df\Data\ICollection;
 
 class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable, IPipe
 {
@@ -179,7 +179,7 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
      */
     public function offsetSet($index, $value)
     {
-        throw df\Error::EImplementation(
+        throw Df\Error::EImplementation(
             'Immutable flex\\Text does not support array-access setting'
         );
     }
@@ -197,7 +197,7 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
      */
     public function offsetUnset($index)
     {
-        throw df\Error::EImplementation(
+        throw Df\Error::EImplementation(
             'Immutable flex\\Text does not support array-access unset'
         );
     }

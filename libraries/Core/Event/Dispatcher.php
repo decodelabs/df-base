@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\event;
+namespace Df\Core\Event;
 
-use df;
+use Df;
 
 class Dispatcher
 {

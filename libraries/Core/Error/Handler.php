@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\error;
+namespace Df\Core\Error;
 
-use df;
+use Df;
 
 class Handler implements IHandler
 {
@@ -40,7 +40,7 @@ class Handler implements IHandler
     public function handleException(\Throwable $exception): void
     {
         try {
-            $app = df\app();
+            $app = Df\app();
             $app->bindOnce(IReporter::class, namespace\reporter\Dump::class);
             $reporter = $app[IReporter::class];
         } catch (\Throwable $e) {

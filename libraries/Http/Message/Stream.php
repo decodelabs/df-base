@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\message;
+namespace Df\Http\Message;
 
-use df;
+use Df;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
@@ -77,11 +77,11 @@ class Stream implements StreamInterface
     public function tell(): int
     {
         if ($this->resource === null) {
-            throw df\Error::ERuntime('Cannot tell stream position, resource has been detached');
+            throw Df\Error::ERuntime('Cannot tell stream position, resource has been detached');
         }
 
         if (false === ($output = ftell($this->resource))) {
-            throw df\Error::ERuntime('Unable to tell stream position');
+            throw Df\Error::ERuntime('Unable to tell stream position');
         }
 
         return $output;
@@ -118,17 +118,17 @@ class Stream implements StreamInterface
     public function seek($offset, $whence=SEEK_SET): void
     {
         if ($this->resource === null) {
-            throw df\Error::ERuntime('Cannot seek stream position, resource has been detached');
+            throw Df\Error::ERuntime('Cannot seek stream position, resource has been detached');
         }
 
         if (!$this->isSeekable()) {
-            throw df\Error::ERuntime('Stream is not seekable');
+            throw Df\Error::ERuntime('Stream is not seekable');
         }
 
         $result = fseek($this->resource, $offset, $whence);
 
         if ($result !== 0) {
-            throw df\Error::ERuntime('Stream seeking failed');
+            throw Df\Error::ERuntime('Stream seeking failed');
         }
     }
 
@@ -167,17 +167,17 @@ class Stream implements StreamInterface
     public function write($string)
     {
         if ($this->resource === null) {
-            throw df\Error::ERuntime('Cannot write to stream, resource has been detached');
+            throw Df\Error::ERuntime('Cannot write to stream, resource has been detached');
         }
 
         if (!$this->isWritable()) {
-            throw df\Error::ERuntime('Stream is not writable');
+            throw Df\Error::ERuntime('Stream is not writable');
         }
 
         $output = fwrite($this->resource, $string);
 
         if ($output === false) {
-            throw df\Error::ERuntime('Writing to stream failed');
+            throw Df\Error::ERuntime('Writing to stream failed');
         }
 
         return (int)$output;
@@ -204,17 +204,17 @@ class Stream implements StreamInterface
     public function read($length): string
     {
         if ($this->resource === null) {
-            throw df\Error::ERuntime('Cannot read from stream, resource has been detached');
+            throw Df\Error::ERuntime('Cannot read from stream, resource has been detached');
         }
 
         if (!$this->isReadable()) {
-            throw df\Error::ERuntime('Stream is not readable');
+            throw Df\Error::ERuntime('Stream is not readable');
         }
 
         $output = fread($this->resource, $length);
 
         if ($output === false) {
-            throw df\Error::ERuntime('Reading from stream failed');
+            throw Df\Error::ERuntime('Reading from stream failed');
         }
 
         return $output;
@@ -226,13 +226,13 @@ class Stream implements StreamInterface
     public function getContents(): string
     {
         if (!$this->isReadable()) {
-            throw df\Error::ERuntime('Stream is not readable');
+            throw Df\Error::ERuntime('Stream is not readable');
         }
 
         $output = stream_get_contents($this->resource);
 
         if ($output === false) {
-            throw df\Error::ERuntime('Reading from stream failed');
+            throw Df\Error::ERuntime('Reading from stream failed');
         }
 
         return $output;
@@ -280,7 +280,7 @@ class Stream implements StreamInterface
             try {
                 $stream = fopen($stream, $mode);
             } catch (\ErrorException $e) {
-                throw df\Error::EInvalidArgument([
+                throw Df\Error::EInvalidArgument([
                     'message' => 'Invalid HTTP body stream',
                     'data' => $stream,
                     'previous' => $e
@@ -289,7 +289,7 @@ class Stream implements StreamInterface
         }
 
         if (!is_resource($stream)) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid HTTP body stream',
                 null,
                 $stream

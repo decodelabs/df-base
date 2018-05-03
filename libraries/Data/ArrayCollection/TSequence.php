@@ -4,13 +4,13 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\data\arrayCollection;
+namespace Df\Data\ArrayCollection;
 
-use df;
+use Df;
 
-use df\data\Arr;
-use df\data\IReadable;
-use df\data\ISequence;
+use Df\Data\Arr;
+use Df\Data\IReadable;
+use Df\Data\ISequence;
 
 trait TSequence
 {
@@ -46,7 +46,7 @@ trait TSequence
             $key += count($this->items);
 
             if ($key < 0) {
-                throw df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
+                throw Df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
             }
         }
 
@@ -121,7 +121,7 @@ trait TSequence
                 $key += $count;
 
                 if ($key < 0) {
-                    throw df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
+                    throw Df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
                 }
             }
 
@@ -145,7 +145,7 @@ trait TSequence
                 $key += $count;
 
                 if ($key < 0) {
-                    throw df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
+                    throw Df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
                 }
             }
 
@@ -169,7 +169,7 @@ trait TSequence
                 $key += $count;
 
                 if ($key < 0) {
-                    throw df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
+                    throw Df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
                 }
             }
 
@@ -193,7 +193,7 @@ trait TSequence
                 $key += $count;
 
                 if ($key < 0) {
-                    throw df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
+                    throw Df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
                 }
             }
 
@@ -532,7 +532,7 @@ trait TSequence
             $key += count($this->items);
 
             if ($key < 0) {
-                throw df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
+                throw Df\Exception::EOutOfBounds('Index '.$key.' is not accessible', null, $this);
             }
         }
 

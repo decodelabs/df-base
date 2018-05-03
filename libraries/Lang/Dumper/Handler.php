@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\lang\dumper;
+namespace Df\Lang\Dumper;
 
-use df;
-use df\lang\IDumper;
+use Df;
+use Df\Lang\IDumper;
 
 class Handler
 {
@@ -18,10 +18,10 @@ class Handler
 
     public static function getDumper(): IDumper
     {
-        if (!defined('df\\BOOTSTRAPPED')) {
+        if (!defined('Df\\BOOTSTRAPPED')) {
             return self::createGeneric();
         } else {
-            $app = df\app();
+            $app = Df\app();
 
             if ($app->has('lang.dumper')) {
                 return $app['lang.dumper'];

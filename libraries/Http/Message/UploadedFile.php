@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\message;
+namespace Df\Http\Message;
 
-use df;
+use Df;
 
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\StreamInterface;
@@ -60,7 +60,7 @@ class UploadedFile implements UploadedFileInterface
         $this->size = $size;
 
         if (!isset(static::ERRORS[$error])) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid uploaded file status: '.$error
             );
         }
@@ -110,19 +110,19 @@ class UploadedFile implements UploadedFileInterface
     public function moveTo($targetPath): void
     {
         if ($moved) {
-            throw df\Error::ERuntime(
+            throw Df\Error::ERuntime(
                 'File has already been moved'
             );
         }
 
         if ($this->error !== UPLOAD_ERR_OK) {
-            throw df\Error::ERuntime(
+            throw Df\Error::ERuntime(
                 'Cannot move file: '.static::ERRORS[$this->error]
             );
         }
 
         if (empty($targetPath = (string)$targetPath)) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid upload file target path'
             );
         }
@@ -130,7 +130,7 @@ class UploadedFile implements UploadedFileInterface
         $targetDir = dirname($targetPath);
 
         if (!is_dir($targetDir) || !is_writable($targetDir)) {
-            throw df\Error::ERuntime(
+            throw Df\Error::ERuntime(
                 'Target directory doesn\'t exist: '.$targetDir
             );
         }
@@ -141,7 +141,7 @@ class UploadedFile implements UploadedFileInterface
             $this->writeFile($targetPath);
         } else {
             if (false === move_uploaded_file($this->file, $targetPath)) {
-                throw df\Error::ERuntime(
+                throw Df\Error::ERuntime(
                     'Moving uploaded file failed'
                 );
             }
@@ -156,7 +156,7 @@ class UploadedFile implements UploadedFileInterface
     protected function writeFile(string $targetPath): void
     {
         if (false === ($fp = fopen($targetPath, 'wb+'))) {
-            throw df\Error::ERuntime(
+            throw Df\Error::ERuntime(
                 'Target path is not writable'
             );
         }
@@ -177,13 +177,13 @@ class UploadedFile implements UploadedFileInterface
     public function getStream(): StreamInterface
     {
         if ($this->error !== UPLOAD_ERR_OK) {
-            throw df\Error::ERuntime(
+            throw Df\Error::ERuntime(
                 'Stream not available: '.static::ERRORS[$this->error]
             );
         }
 
         if ($this->moved) {
-            throw df\Error::ERuntime(
+            throw Df\Error::ERuntime(
                 'Stream not available, file has already been moved'
             );
         }

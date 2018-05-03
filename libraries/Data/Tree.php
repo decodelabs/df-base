@@ -4,11 +4,11 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\data;
+namespace Df\Data;
 
-use df;
-use df\data\Arr;
-use df\data\IHashMap;
+use Df;
+use Df\Data\Arr;
+use Df\Data\IHashMap;
 
 class Tree implements \IteratorAggregate, IHashMap, IValueProvider
 {

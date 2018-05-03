@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\lang\constraint;
+namespace Df\lang\Constraint;
 
-use df;
+use Df;
 
 trait TDisableable
 {

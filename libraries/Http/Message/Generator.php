@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\message;
+namespace Df\Http\Message;
 
-use df;
+use Df;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
@@ -30,7 +30,7 @@ class Generator implements StreamInterface
         }
 
         if (!$iterator instanceof \Iterator) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid iterator passed as response'
             );
         }
@@ -76,7 +76,7 @@ class Generator implements StreamInterface
      */
     public function seek($offset, $whence=SEEK_SET): void
     {
-        throw df\Error::ERuntime('Iterators cannot seek');
+        throw Df\Error::ERuntime('Iterators cannot seek');
     }
 
     /**
@@ -84,7 +84,7 @@ class Generator implements StreamInterface
      */
     public function rewind(): void
     {
-        throw df\Error::ERuntime('Iterators cannot seek');
+        throw Df\Error::ERuntime('Iterators cannot seek');
     }
 
     /**
@@ -100,7 +100,7 @@ class Generator implements StreamInterface
      */
     public function write($string): void
     {
-        throw df\Error::ERuntime('Iterators cannot be written to');
+        throw Df\Error::ERuntime('Iterators cannot be written to');
     }
 
     /**
@@ -119,11 +119,11 @@ class Generator implements StreamInterface
     public function read($length): string
     {
         if ($this->iterator === null) {
-            throw df\Error::ERuntime('Cannot read from stream, resource has been detached');
+            throw Df\Error::ERuntime('Cannot read from stream, resource has been detached');
         }
 
         if ($this->eof) {
-            throw df\Error::ERuntime('Cannot read from stream, iterator has completed');
+            throw Df\Error::ERuntime('Cannot read from stream, iterator has completed');
         }
 
 
@@ -162,11 +162,11 @@ class Generator implements StreamInterface
     public function getContents(): string
     {
         if ($this->iterator === null) {
-            throw df\Error::ERuntime('Cannot read from stream, resource has been detached');
+            throw Df\Error::ERuntime('Cannot read from stream, resource has been detached');
         }
 
         if ($this->eof) {
-            throw df\Error::ERuntime('Cannot read from stream, iterator has completed');
+            throw Df\Error::ERuntime('Cannot read from stream, iterator has completed');
         }
 
         $output = '';

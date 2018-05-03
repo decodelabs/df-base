@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\response;
+namespace Df\Http\Response;
 
-use df;
-use df\http\message\Stream as MessageStream;
+use Df;
+use Df\Http\Message\Stream as MessageStream;
 
 class Xml extends Stream
 {

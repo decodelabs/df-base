@@ -4,11 +4,11 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\lang\dumper;
+namespace Df\Lang\Dumper;
 
-use df;
-use df\lang\IDumper;
-use df\lang\stack\Trace;
+use Df;
+use Df\Lang\IDumper;
+use Df\Lang\Stack\Trace;
 
 use Symfony\Component\VarDumper\VarDumper;
 use Symfony\Component\VarDumper\Cloner;
@@ -80,9 +80,9 @@ class Symfony implements IDumper
 
 
         $attrs = [
-            'time' => self::formatMicrotime(microtime(true) - df\START),
+            'time' => self::formatMicrotime(microtime(true) - Df\START),
             'memory' => self::formatFilesize(memory_get_usage()),
-            'location' => df\stripBasePath($frame->getCallingFile()).' : '.$frame->getCallingLine()
+            'location' => Df\stripBasePath($frame->getCallingFile()).' : '.$frame->getCallingLine()
         ];
 
         if ('cli' === PHP_SAPI) {

@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\request;
+namespace Df\Http\Request;
 
-use df;
-use df\http\message\TRequest;
+use Df;
+use Df\Http\Message\TRequest;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -209,7 +209,7 @@ class ServerRequest implements ServerRequestInterface
             }
 
             if (!$file instanceof UploadedFileInterface) {
-                throw df\Error::EInvalidArgument(
+                throw Df\Error::EInvalidArgument(
                     'Invalid uploaded file array - files must be instances of UploadedFileInterface'
                 );
             }

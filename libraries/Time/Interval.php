@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\time;
+namespace Df\Time;
 
-use df;
+use Df;
 
 use Carbon\CarbonInterval;
 

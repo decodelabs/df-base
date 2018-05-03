@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\lang\stack;
+namespace Df\Lang\Stack;
 
-use df;
+use Df;
 
 /**
  * Represents a single entry in a stack trace
@@ -34,7 +34,7 @@ class Frame
         $data = debug_backtrace();
 
         if ($rewind >= count($data) - 1) {
-            throw df\Error::EOutOfRange('Stack rewind of stack frame range');
+            throw Df\Error::EOutOfRange('Stack rewind of stack frame range');
         }
 
         if ($rewind) {

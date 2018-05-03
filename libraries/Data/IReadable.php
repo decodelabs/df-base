@@ -3,10 +3,10 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace df\data;
+namespace Df\Data;
 
-use df;
-use df\lang\IPipe;
+use Df;
+use Df\Lang\IPipe;
 
 /**
  * All methods returning IReadable MUST be immutable,

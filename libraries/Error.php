@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df;
+namespace Df;
 
-use df;
-use df\lang\error\Factory;
+use Df;
+use Df\Lang\Error\Factory;
 
 /**
  * This is just a facade.

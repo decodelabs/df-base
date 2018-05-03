@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\service;
+namespace Df\Core\Service;
 
-use df;
+use Df;
 
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -34,7 +34,7 @@ class Binding implements IBinding
         $this->container = $container;
 
         if (!interface_exists($type, true) && !class_exists($type, true)) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Binding type must be a valid interface'
             );
         }
@@ -71,7 +71,7 @@ class Binding implements IBinding
     {
         $parts = explode('\\', $type);
 
-        if (array_shift($parts) !== 'df') {
+        if (array_shift($parts) !== 'Df') {
             return null;
         }
 
@@ -108,7 +108,7 @@ class Binding implements IBinding
                     return $this->buildType($target);
                 };
             } else {
-                throw df\Error::{
+                throw Df\Error::{
                     'EInvalidArgument,Psr\\Container\\NotFoundExceptionInterface'
                 }(
                     'Binding target for '.$this->type.' cannot be converted to a factory'
@@ -162,7 +162,7 @@ class Binding implements IBinding
     public function alias(string $alias): IBinding
     {
         if (false !== strpos($alias, '\\')) {
-            throw df\Error::{
+            throw Df\Error::{
                 'EInvalidArgument,Psr\Container\ContainerExceptionInterface'
             }(
                 'Aliases must not contain \\ character',
@@ -177,7 +177,7 @@ class Binding implements IBinding
 
         if ($this->container->hasAlias($alias)
         && $this->container->getAliasedType($alias) !== $this->type) {
-            throw df\Error::{
+            throw Df\Error::{
                 'ELogic,Psr\Container\ContainerExceptionInterface'
             }(
                 'Alias "'.$alias.'" has already been bound'
@@ -392,7 +392,7 @@ class Binding implements IBinding
             $output .= 'type : '.$this->target;
         } elseif ($this->target instanceof \Closure) {
             $ref = new \ReflectionFunction($this->target);
-            $output .= 'closure @ '.df\stripBasePath($ref->getFileName()).' : '.$ref->getStartLine();
+            $output .= 'closure @ '.Df\stripBasePath($ref->getFileName()).' : '.$ref->getStartLine();
         } else {
             $output .= 'null';
         }
@@ -411,7 +411,7 @@ class Binding implements IBinding
         }
 
         if (!$instance instanceof $this->type) {
-            throw df\Error::{
+            throw Df\Error::{
                 'ELogic,Psr\\Container\\ContainerExceptionInterface'
             }(
                 'Binding instance does not implement type '.$this->type,
@@ -433,7 +433,7 @@ class Binding implements IBinding
         $reflector = new \ReflectionClass($type);
 
         if (!$reflector->isInstantiable()) {
-            throw df\Error::{
+            throw Df\Error::{
                 'ELogic,Psr\\Container\\ContainerExceptionInterface'
             }(
                 'Binding target '.$type.' cannot be instantiated'
@@ -466,7 +466,7 @@ class Binding implements IBinding
             } elseif ($param->isDefaultValueAvailable()) {
                 $args[] = $param->getDefaultValue();
             } else {
-                throw df\Error::{
+                throw Df\Error::{
                     'ELogic,Psr\\Container\\ContainerExceptionInterface'
                 }(
                     'Binding target '.$type.' cannot be instantiated'

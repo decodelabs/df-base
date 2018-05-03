@@ -4,19 +4,18 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http;
+namespace Df\Http;
 
-use df;
+use Df;
 
-use df\core\service\IContainer;
-use df\core\service\IProvider;
+use Df\Core\Service\IContainer;
+use Df\Core\Service\IProvider;
 
-use df\http;
-use df\http\request\Factory;
-use df\http\response\Sender;
-use df\http\response\ISender;
-use df\http\pipeline\Dispatcher;
-use df\http\pipeline\IDispatcher;
+use Df\Http\Request\Factory;
+use Df\Http\Response\Sender;
+use Df\Http\Response\ISender;
+use Df\Http\pipeline\Dispatcher;
+use Df\Http\pipeline\IDispatcher;
 
 use Psr\Http\Message\ServerRequestInterface;
 

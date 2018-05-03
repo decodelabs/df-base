@@ -4,15 +4,15 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\core\env\config;
+namespace Df\Core\Env\Config;
 
-use df;
+use Df;
 
-use df\core\env\IConfig;
-use df\core\env\IValidator;
+use Df\Core\Env\IConfig;
+use Df\Core\Env\IValidator;
 
-use df\lang\IPipe;
-use df\lang\TPipe;
+use Df\Lang\IPipe;
+use Df\Lang\TPipe;
 
 class DotIni implements IConfig, IPipe
 {
@@ -26,7 +26,7 @@ class DotIni implements IConfig, IPipe
     public static function loadFile(string $path): IConfig
     {
         if (!is_readable($path) || !is_file($path)) {
-            throw df\Error::{'ENotFound'}('Ini file could not be read', null, $path);
+            throw Df\Error::{'ENotFound'}('Ini file could not be read', null, $path);
         }
 
         return new self(parse_ini_file($path));
@@ -40,7 +40,7 @@ class DotIni implements IConfig, IPipe
     {
         foreach ($data as $key => $value) {
             if (!is_scalar($value)) {
-                throw df\Error::EUnexpectedValue(
+                throw Df\Error::EUnexpectedValue(
                     'Env value '.$key.' is not a scalar',
                     null,
                     $value
@@ -188,7 +188,7 @@ class DotIni implements IConfig, IPipe
         }
 
         if (!empty($failed)) {
-            throw df\Error('Env key(s) '.implode(', ', $failed).' have not been set');
+            throw Df\Error('Env key(s) '.implode(', ', $failed).' have not been set');
         }
 
         return $this;

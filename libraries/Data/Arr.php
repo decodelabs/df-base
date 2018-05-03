@@ -4,9 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\data;
+namespace Df\Data;
 
-use df;
+use Df;
 
 class Arr
 {
@@ -132,7 +132,7 @@ class Arr
     public static function getRandom(array $array)
     {
         if (empty($array)) {
-            throw df\Error::EUnderflow('Cannot pick random, array is empty');
+            throw Df\Error::EUnderflow('Cannot pick random, array is empty');
         }
 
         return $array[array_rand($array)];
@@ -150,7 +150,7 @@ class Arr
         }
 
         if ($number > $count) {
-            throw df\Error::EUnderflow('Cannot random slice '.$number.' items, only '.$count.' items in array');
+            throw Df\Error::EUnderflow('Cannot random slice '.$number.' items, only '.$count.' items in array');
         }
 
         return self::intersectKeys($array, (array)array_rand($array, $number));

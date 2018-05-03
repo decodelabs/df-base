@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\http\message;
+namespace Df\Http\Message;
 
-use df;
-use df\http\Uri;
+use Df;
+use Df\Http\Uri;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -34,7 +34,7 @@ trait TRequest
         $method = strtoupper($method);
 
         if (!$this->isValidMethod($method)) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid HTTP method: '.$method
             );
         }
@@ -103,7 +103,7 @@ trait TRequest
     public function withRequestTarget($target): RequestInterface
     {
         if (preg_match('/\s/', $target)) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Request target must not contain spaces'
             );
         }
@@ -140,7 +140,7 @@ trait TRequest
         $method = strtoupper($method);
 
         if (!$this->isValidMethod($method)) {
-            throw df\Error::EInvalidArgument(
+            throw Df\Error::EInvalidArgument(
                 'Invalid HTTP method: '.$method
             );
         }

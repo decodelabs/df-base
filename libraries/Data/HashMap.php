@@ -4,13 +4,13 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\data;
+namespace Df\Data;
 
-use df;
+use Df;
 
 class HashMap implements \IteratorAggregate, IHashMap
 {
-    use namespace\arrayCollection\THashMap;
+    use namespace\ArrayCollection\THashMap;
 
     const MUTABLE = false;
 }

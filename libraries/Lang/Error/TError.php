@@ -4,11 +4,11 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace df\lang\error;
+namespace Df\Lang\Error;
 
-use df;
-use df\lang\stack\Frame;
-use df\lang\stack\Trace;
+use Df;
+use Df\Lang\Stack\Frame;
+use Df\Lang\Stack\Trace;
 
 /**
  * Main root exception inheritance
@@ -133,7 +133,7 @@ trait TError
         }
 
         $output['types'] = array_merge($types, array_values(class_implements($this)));
-        $output['file'] = df\stripBasePath($this->file).' : '.$this->line;
+        $output['file'] = Df\stripBasePath($this->file).' : '.$this->line;
 
 
         // Trace
