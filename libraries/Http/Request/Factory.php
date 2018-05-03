@@ -184,7 +184,7 @@ class Factory
         $output = 'http';
         $headers = array_change_key_case($headers, CASE_LOWER);
 
-        if (($server['HTTP'] ?? null) !== 'off' ||
+        if (($server['HTTPS'] ?? 'off') !== 'off' ||
             ($headers['x-forwarded-proto'] ?? null) === 'https') {
             $output = 'https';
         }
