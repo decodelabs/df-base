@@ -10,7 +10,7 @@ use df;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-interface IDispatcher extends RequestHandlerInterface
+interface IDispatcher extends RequestHandlerInterface, ITerminable
 {
     public function queue(MiddlewareInterface $middleware): IDispatcher;
     public function queueCallable(callable $callable): IDispatcher;

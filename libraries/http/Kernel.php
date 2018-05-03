@@ -18,13 +18,17 @@ use Psr\Http\Message\ServerRequestInterface;
 class Kernel implements IHttp
 {
     protected $app;
+    protected $dispatcher;
+    protected $sender;
 
     /**
      * Setup with ref to $app
      */
-    public function __construct(IApp $app)
+    public function __construct(IApp $app, IDispatcher $dispatcher, ISender $sender)
     {
         $this->app = $app;
+        $this->dispatcher = $dispatcher;
+        $this->sender = $sender;
     }
 
     /**
@@ -52,9 +56,8 @@ class Kernel implements IHttp
      */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $dispatcher = $this->app[IDispatcher::class];
-        $dispatcher->queueList($this->app->getGlobalMiddleware());
-        return $dispatcher->handle($request);
+        $this->dispatcher->queueList($this->app->getGlobalMiddleware());
+        return $this->dispatcher->handle($request);
     }
 
     /**
@@ -62,7 +65,7 @@ class Kernel implements IHttp
      */
     public function sendResponse(ServerRequestInterface $request, ResponseInterface $response): void
     {
-        $this->app[ISender::class]->sendResponse($request, $response);
+        $this->sender->sendResponse($request, $response);
     }
 
     /**
@@ -70,8 +73,7 @@ class Kernel implements IHttp
      */
     public function terminate(ServerRequestInterface $request, ResponseInterface $response): void
     {
-        // TODO: terminate middleware
-
+        $this->dispatcher->terminate($request, $response);
         $this->app->terminate();
         exit;
     }

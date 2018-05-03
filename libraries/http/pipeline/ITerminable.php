@@ -1,0 +1,16 @@
+<?php
+/**
+ * This file is part of the Decode Framework
+ * @license http://opensource.org/licenses/MIT
+ */
+namespace df\http\pipeline;
+
+use df;
+
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
+interface ITerminable
+{
+    public function terminate(ServerRequestInterface $request, ResponseInterface $response): void;
+}

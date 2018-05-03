@@ -106,4 +106,17 @@ class Dispatcher implements IDispatcher
 
         return $middleware->process($request, $this);
     }
+
+
+    /**
+     * Shutdown middleware
+     */
+    public function terminate(ServerRequestInterface $request, ResponseInterface $response): void
+    {
+        foreach ($this->queue as $middleware) {
+            if ($middleware instanceof ITerminable) {
+                $middleware->terminate($request, $response);
+            }
+        }
+    }
 }
