@@ -18,10 +18,9 @@ use df\http\response\ISender;
 use df\http\pipeline\Dispatcher;
 use df\http\pipeline\IDispatcher;
 
-
 use Psr\Http\Message\ServerRequestInterface;
 
-class HttpServiceProvider implements IProvider
+class ServiceProvider implements IProvider
 {
     /**
      * Get list of provided classes

@@ -12,7 +12,7 @@ use df\core\env\IConfig;
 use df\core\service\IContainer;
 use df\core\service\IProvider;
 
-class EnvServiceProvider implements IProvider
+class ServiceProvider implements IProvider
 {
     /**
      * Get list of provided classes

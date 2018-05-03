@@ -15,7 +15,7 @@ use df\core\kernel\IHttp;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class HttpKernel implements IHttp
+class Kernel implements IHttp
 {
     protected $app;
 

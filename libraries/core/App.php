@@ -10,8 +10,8 @@ use df;
 use df\core;
 
 use df\core\service\Container;
-use df\core\env\EnvServiceProvider;
-use df\core\error\ErrorServiceProvider;
+use df\core\env\ServiceProvider as EnvServiceProvider;
+use df\core\error\ServiceProvider as ErrorServiceProvider;
 use df\core\error\Handler as ErrorHandler;
 
 use df\core\ILoader;
@@ -20,11 +20,11 @@ use df\core\loader\Composer as ComposerLoader;
 use df\core\kernel\IHttp as IHttpKernel;
 use df\core\kernel\IConsole as IConsoleKernel;
 
-use df\http\HttpKernel;
-use df\clip\ConsoleKernel;
+use df\http\Kernel as HttpKernel;
+use df\clip\Kernel as ConsoleKernel;
 
+use df\http\ServiceProvider as HttpServiceProvider;
 use df\http\middleware;
-use df\http\HttpServiceProvider;
 
 use Composer\Autoload\ClassLoader;
 

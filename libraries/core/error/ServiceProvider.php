@@ -19,7 +19,7 @@ use df\core\error\reporter\Whoops;
 use df\core\service\IContainer;
 use df\core\service\IProvider;
 
-class ErrorServiceProvider implements IProvider
+class ServiceProvider implements IProvider
 {
     /**
      * Get list of provided classes

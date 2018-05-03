@@ -10,7 +10,7 @@ use df;
 use df\core\IApp;
 use df\core\kernel\IConsole;
 
-class ConsoleKernel implements IConsole
+class Kernel implements IConsole
 {
     protected $app;
 
