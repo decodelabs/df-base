@@ -47,6 +47,7 @@ namespace Df
     use Df;
     use Df\Core\IApp;
     use Df\Lang\Error\Factory as ErrorFactory;
+    use Df\Lang\Stack\Frame as StackFrame;
 
     use Composer\Autoload\ClassLoader;
 
@@ -115,7 +116,7 @@ namespace Df
      */
     function incomplete(): void
     {
-        $frame = lang\stack\Frame::create(1);
+        $frame = StackFrame::create(1);
 
         throw Df\Error::EImplementation(
             $frame->getSignature().' has not been completed yet!'
