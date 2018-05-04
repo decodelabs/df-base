@@ -21,6 +21,12 @@ class AreaMap
      */
     public function __construct(string $area, string $uri)
     {
+        if (!preg_match('/^\*|[a-z]+$/', $area)) {
+            throw Df\Error::EInvalidArgument(
+                'Invalid area in area map: '.$area
+            );
+        }
+
         $this->area = ltrim($area, '~');
         $this->uri = $uri;
     }

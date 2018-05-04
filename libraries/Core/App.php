@@ -9,6 +9,7 @@ namespace Df\Core;
 use Df;
 
 use Df\Core\Service\Container;
+use Df\Core\Config\ServiceProvider as ConfigServiceProvider;
 use Df\Core\Env\ServiceProvider as EnvServiceProvider;
 use Df\Core\Error\ServiceProvider as ErrorServiceProvider;
 use Df\Core\Error\Handler as ErrorHandler;
@@ -37,6 +38,7 @@ class App extends Container implements IApp
 
     const DEFAULT_PROVIDERS = [
         EnvServiceProvider::class,
+        ConfigServiceProvider::class,
         ErrorServiceProvider::class,
         HttpServiceProvider::class,
         ArchServiceProvider::class
