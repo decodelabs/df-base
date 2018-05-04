@@ -37,7 +37,6 @@ class App extends Container implements IApp
     const PROVIDERS = [];
 
     const DEFAULT_PROVIDERS = [
-        EnvServiceProvider::class,
         ConfigServiceProvider::class,
         ErrorServiceProvider::class,
         HttpServiceProvider::class,

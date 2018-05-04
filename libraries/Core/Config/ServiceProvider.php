@@ -19,6 +19,7 @@ class ServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
+            IEnv::class,
             IRepository::class
         ];
     }
@@ -28,7 +29,32 @@ class ServiceProvider implements IProvider
      */
     public function registerServices(IContainer $app): void
     {
-        $app->bindShared(IRepository::class, function ($app) {
+        // Env
+        $app->bindShared(IEnv::class, function ($app) {
+            $path = $app->getBasePath().'/.env';
+
+            if (!is_readable($path) || !is_file($path)) {
+                throw Df\Error::{'ENotFound'}('Ini file could not be read', null, $path);
+            }
+
+            $data = parse_ini_file($path);
+
+            if (!isset($data['IDENTITY'])) {
+                throw Df\Error::EUnexpectedValue(
+                    'Env data does not define an IDENTITY'
+                );
+            }
+
+            $identity = $data['IDENTITY'];
+            unset($data['IDENTITY']);
+
+            return new Env($identity, $data);
+        });
+
+
+
+        // Config
+        $app->bindShared(IRepository::class, function ($app, IEnv $env) {
             // TODO: load this from loader
             $config = [
                 'arch' => [
@@ -38,6 +64,10 @@ class ServiceProvider implements IProvider
                         'shared' => 'df.test:8080/test/df-playground-/~{name-test}/{stuff}',
                         'devtools' => 'devtools.df.test:8080/test/df-playground-/'
                     ]
+                ],
+                'http' => [
+                    'sendfile' => 'x-sendfile',
+                    'manualChunk' => true
                 ]
             ];
 

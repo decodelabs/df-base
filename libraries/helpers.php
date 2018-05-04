@@ -46,6 +46,7 @@ namespace Df
 
     use Df;
     use Df\Core\IApp;
+    use Df\Core\Config\IEnv;
     use Df\Lang\Error\Factory as ErrorFactory;
     use Df\Lang\Stack\Frame as StackFrame;
 
@@ -108,6 +109,46 @@ namespace Df
         }
 
         return $app;
+    }
+
+    /**
+     * Get env config value
+     */
+    function env(): IEnv
+    {
+        return Df\app()[IEnv::class];
+    }
+
+    /**
+     * Get env config value
+     */
+    function envString(string $key, string $default=null): ?string
+    {
+        return Df\app()[IEnv::class]->get($key, $default);
+    }
+
+    /**
+     * Get env config value as bool
+     */
+    function envBool(string $key, bool $default=null): ?bool
+    {
+        return Df\app()[IEnv::class]->getBool($key, $default);
+    }
+
+    /**
+     * Get env config value as int
+     */
+    function envInt(string $key, int $default=null): ?int
+    {
+        return Df\app()[IEnv::class]->getInt($key, $default);
+    }
+
+    /**
+     * Get env config value as float
+     */
+    function envFloat(string $key, float $default=null): ?float
+    {
+        return Df\app()[IEnv::class]->getFloat($key, $default);
     }
 
 

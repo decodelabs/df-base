@@ -47,6 +47,14 @@ class ServiceProvider implements IProvider
         $app->bind(IDispatcher::class, Dispatcher::class);
 
         // Response sender
-        $app->bind(ISender::class, Sender::class);
+        $app->bind(ISender::class, Sender::class)
+            ->prepareWith(function ($sender, $app) {
+                $config = $app['core.config.repository'];
+
+                $sender->setSendfileHeader($config['http.sendfile']);
+                $sender->setManualChunk($config['http.manualChunk']);
+
+                return $sender;
+            });
     }
 }

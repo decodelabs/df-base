@@ -4,40 +4,27 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Core\Env\Config;
+namespace Df\Core\Config;
 
 use Df;
-
-use Df\Core\Env\IConfig;
-use Df\Core\Env\IValidator;
 
 use Df\Lang\IPipe;
 use Df\Lang\TPipe;
 
-class DotIni implements IConfig, IPipe
+class Env implements IEnv, IPipe
 {
     use TPipe;
 
+    protected $identity;
     protected $data = [];
-
-    /**
-     * Load the ini file
-     */
-    public static function loadFile(string $path): IConfig
-    {
-        if (!is_readable($path) || !is_file($path)) {
-            throw Df\Error::{'ENotFound'}('Ini file could not be read', null, $path);
-        }
-
-        return new self(parse_ini_file($path));
-    }
-
 
     /**
      * Construct with ini data
      */
-    public function __construct(array $data)
+    public function __construct(string $identity, array $data)
     {
+        $this->identity = $identity;
+
         foreach ($data as $key => $value) {
             if (!is_scalar($value)) {
                 throw Df\Error::EUnexpectedValue(
@@ -51,6 +38,13 @@ class DotIni implements IConfig, IPipe
         }
     }
 
+    /**
+     * Get env identity, used for loading env specific config
+     */
+    public function getIdentity(): string
+    {
+        return $this->identity;
+    }
 
 
     /**
@@ -129,7 +123,7 @@ class DotIni implements IConfig, IPipe
     /**
      * Set a value
      */
-    public function set(string $key, string $value): IConfig
+    public function set(string $key, string $value): IEnv
     {
         $this->data[$key] = $value;
         return $this;
@@ -138,7 +132,7 @@ class DotIni implements IConfig, IPipe
     /**
      * Set a map of values
      */
-    public function setMap(array $map): IConfig
+    public function setMap(array $map): IEnv
     {
         foreach ($map as $key => $value) {
             $this->set($key, $value);
@@ -150,7 +144,7 @@ class DotIni implements IConfig, IPipe
     /**
      * Remove a value
      */
-    public function remove(string ...$keys): IConfig
+    public function remove(string ...$keys): IEnv
     {
         foreach ($keys as $key) {
             unset($this->data[$key]);
@@ -177,7 +171,7 @@ class DotIni implements IConfig, IPipe
     /**
      * Cry if keys aren't set
      */
-    public function checkExists(string ...$keys): IConfig
+    public function checkExists(string ...$keys): IEnv
     {
         $failed = [];
 
@@ -193,15 +187,6 @@ class DotIni implements IConfig, IPipe
 
         return $this;
     }
-
-    /**
-     * Open a validator
-     */
-    public function __get(string $key): IValidator
-    {
-        return new Validator($key, $this->get($key));
-    }
-
 
 
 
@@ -235,15 +220,5 @@ class DotIni implements IConfig, IPipe
     public function offsetUnset($key): void
     {
         $this->remove($key);
-    }
-
-
-
-    /**
-     * Debug
-     */
-    public function __debugInfo(): array
-    {
-        return $this->data;
     }
 }

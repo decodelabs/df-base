@@ -368,7 +368,11 @@ class Binding implements IBinding
      */
     public function newInstance(): object
     {
-        $output = $this->factory->__invoke($this->container);
+        $reflector = new \ReflectionFunction($this->factory);
+        $params = $reflector->getParameters();
+        $args = $this->prepareArgs($params);
+
+        $output = $this->factory->__invoke(...$args);
         $output = $this->prepareInstance($output);
 
         return $output;
@@ -448,9 +452,20 @@ class Binding implements IBinding
         }
 
         $params = $constructor->getParameters();
+        $args = $this->prepareArgs($params);
+
+        return $reflector->newInstanceArgs($args);
+    }
+
+
+    /**
+     * Get params for function
+     */
+    protected function prepareArgs(array $params): array
+    {
         $args = [];
 
-        foreach ($params as $param) {
+        foreach ($params as $i => $param) {
             if (array_key_exists($param->name, $this->params)) {
                 $args[] = $this->params[$param->name];
                 continue;
@@ -468,6 +483,8 @@ class Binding implements IBinding
                 }
             } elseif ($param->isDefaultValueAvailable()) {
                 $args[] = $param->getDefaultValue();
+            } elseif ($i === 0) {
+                $args[] = $this->container;
             } else {
                 throw Df\Error::{
                     'ELogic,Psr\\Container\\ContainerExceptionInterface'
@@ -477,7 +494,7 @@ class Binding implements IBinding
             }
         }
 
-        return $reflector->newInstanceArgs($args);
+        return $args;
     }
 
 
