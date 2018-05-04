@@ -504,13 +504,13 @@ class Container implements IContainer
                 }
             } elseif ($reflector->isDefaultValueAvailable()) {
                 $args[] = $reflector->getDefaultValue();
-            } elseif ($i === 0) {
+            } elseif ($i === 0 && $reflector->name === 'app') {
                 $args[] = $this;
             } else {
                 throw Df\Error::{
                     'ELogic,Psr\\Container\\ContainerExceptionInterface'
                 }(
-                    'Binding target '.$type.' cannot be instantiated'
+                    'Binding param $'.$reflector->name.' cannot be resolved'
                 );
             }
         }
