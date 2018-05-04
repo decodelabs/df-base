@@ -694,7 +694,7 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
     public function trim(string $chars=null): Text
     {
         $chars = $chars ? preg_quote($chars) : '[:space:]';
-        return $this->regexReplace('^['.$chars.']+|['.$chars.']+\$', '');
+        return $this->regexReplace('^['.$chars.']+|['.$chars.']+$', '');
     }
 
     /**
@@ -703,7 +703,7 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
     public function trimLeft(string $chars=null): Text
     {
         $chars = $chars ? preg_quote($chars) : '[:space:]';
-        return $this->regexReplace('['.$chars.']+\$', '');
+        return $this->regexReplace('^['.$chars.']+', '');
     }
 
     /**
@@ -712,7 +712,7 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
     public function trimRight(string $chars=null): Text
     {
         $chars = $chars ? preg_quote($chars) : '[:space:]';
-        return $this->regexReplace('^['.$chars.']+', '');
+        return $this->regexReplace('['.$chars.']+$', '');
     }
 
 
@@ -782,7 +782,7 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
     /**
      * Convert to lowercase
      */
-    public function toLower(): Text
+    public function toLowerCase(): Text
     {
         return new static(
             mb_strtolower($this->text, $this->encoding),
@@ -796,8 +796,8 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
     public function firstToLowerCase(): Text
     {
         return new static(
-            mb_strtolower(mb_substr($this->text, 0, 1, $this->_encoding)).
-                mb_substr($this->text, 1, mb_strlen($this->text, $this->_encoding), $this->_encoding),
+            mb_strtolower(mb_substr($this->text, 0, 1, $this->encoding)).
+                mb_substr($this->text, 1, mb_strlen($this->text, $this->encoding), $this->encoding),
             $this->encoding
         );
     }
@@ -836,8 +836,8 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
     public function firstToUpperCase(): Text
     {
         return new static(
-            mb_strtoupper(mb_substr($this->text, 0, 1, $this->_encoding)).
-                mb_substr($this->text, 1, mb_strlen($this->text, $this->_encoding), $this->_encoding),
+            mb_strtoupper(mb_substr($this->text, 0, 1, $this->encoding)).
+                mb_substr($this->text, 1, mb_strlen($this->text, $this->encoding), $this->encoding),
             $this->encoding
         );
     }
@@ -1002,6 +1002,12 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
 
         if ($output === -1) {
             return null;
+        }
+
+        if (!is_int($output)) {
+            throw Df\Error::ERange(
+                'Alpha to numeric string overflowed int max'
+            );
         }
 
         return $output;
