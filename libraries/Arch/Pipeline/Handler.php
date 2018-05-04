@@ -18,6 +18,7 @@ class Handler implements IHandler
 {
     protected $app;
     protected $areaMaps = [];
+    protected $routerPackages = [];
     protected $routers = [];
 
     /**
@@ -60,32 +61,36 @@ class Handler implements IHandler
 
 
 
+    /**
+     * Set list of packages to load routers from
+     */
+    public function setRouterPackages(array $packages): IHandler
+    {
+        $this->routerPackages = $packages;
+        return $this;
+    }
+
 
     /**
      * Load routers from list of packages
      */
-    public function loadRouters(array $packages): IHandler
+    public function loadRouters(string $area): IHandler
     {
-        $class = '\\Df\\Apex\\Http\\'.ucfirst($area).'\\'.ucfirst($package).'Router';
+        $this->routers[$area] = [];
 
-        if (!class_exists($class, true)) {
-            return $this;
+        foreach ($this->routerPackages as $package) {
+            $class = '\\Df\\Apex\\Http\\'.ucfirst($area).'\\'.ucfirst($package).'Router';
+
+            if (!class_exists($class, true)) {
+                continue;
+            }
+
+            $this->routers[$area][] = new $class();
         }
 
-        $router = new $class();
-        $this->addRouter($router);
-
         return $this;
     }
 
-    /**
-     * Add router to the stack
-     */
-    public function addRouter(Router $router): IHandler
-    {
-        $this->routers[get_class($router)] = $router;
-        return $this;
-    }
 
 
 
@@ -157,7 +162,11 @@ class Handler implements IHandler
         $method = $request->getMethod();
         $route = null;
 
-        foreach ($this->routers as $router) {
+        if (!isset($this->routers[$area])) {
+            $this->loadRouters($area);
+        }
+
+        foreach ($this->routers[$area] as $router) {
             if ($route = $router->matchIn($method, $path)) {
                 break;
             }

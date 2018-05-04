@@ -36,8 +36,14 @@ class ServiceProvider implements IProvider
     {
         $app->bindShared(IHandler::class, Handler::class)
             ->prepareWith(function ($handler, $app) {
+                // Area maps
                 $config = $app[Repository::class];
                 $handler->loadAreaMaps($config->arch->areaMaps->toArray());
+
+                // Routers
+                $packages = $app['core.loader']->getLoadedPackages();
+                $handler->setRouterPackages($packages);
+
                 return $handler;
             });
     }
