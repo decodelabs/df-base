@@ -21,8 +21,8 @@ trait TRequest
     protected $uri;
 
     private static $methods = [
-        'OPTIONS', 'GET', 'HEAD', 'POST',
-        'PUT', 'DELETE', 'TRACE', 'CONNECT'
+        'OPTIONS', 'GET', 'HEAD', 'POST', 'PUT',
+        'DELETE', 'PATCH', 'TRACE', 'CONNECT'
     ];
 
 
