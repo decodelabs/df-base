@@ -12,17 +12,29 @@ use Psr\Http\Message\ServerRequestInterface;
 
 abstract class Router
 {
+    protected $routes = [];
+
     /**
      * Load routes into collection
      */
-    abstract public function setup(): void;
+    abstract protected function setup(): void;
 
 
     /**
      * Convert Http request to arch uri
      */
-    public function routeIn(string $method, string $path): IRoute
+    public function matchIn(string $method, string $path): ?IRoute
     {
-        dd($this, $method, $path);
+        if (empty($this->routes)) {
+            $this->setup();
+        }
+
+        foreach ($this->routes as $route) {
+            if ($output = $route->matchIn($method, $path)) {
+                return $output;
+            }
+        }
+
+        return null;
     }
 }

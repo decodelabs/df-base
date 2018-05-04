@@ -18,6 +18,7 @@ class Handler implements IHandler
 {
     protected $app;
     protected $areaMaps = [];
+    protected $routers = [];
 
     /**
      * Construct with app
@@ -56,6 +57,37 @@ class Handler implements IHandler
         $this->areaMaps[$area] = $map;
         return $this;
     }
+
+
+
+
+    /**
+     * Load routers from list of packages
+     */
+    public function loadRouters(array $packages): IHandler
+    {
+        $class = '\\Df\\Apex\\Http\\'.ucfirst($area).'\\'.ucfirst($package).'Router';
+
+        if (!class_exists($class, true)) {
+            return $this;
+        }
+
+        $router = new $class();
+        $this->addRouter($router);
+
+        return $this;
+    }
+
+    /**
+     * Add router to the stack
+     */
+    public function addRouter(Router $router): IHandler
+    {
+        $this->routers[get_class($router)] = $router;
+        return $this;
+    }
+
+
 
 
     /**
@@ -122,21 +154,11 @@ class Handler implements IHandler
 
 
         // Load and test routes
-        $packages = $this->app['core.loader']->getLoadedPackages();
         $method = $request->getMethod();
         $route = null;
 
-        foreach ($packages as $package) {
-            $class = '\\Df\\Apex\\Http\\'.ucfirst($area).'\\'.ucfirst($package).'Router';
-
-            if (!class_exists($class, true)) {
-                continue;
-            }
-
-            $router = new $class();
-            $router->setup();
-
-            if ($route = $router->routeIn($method, $path)) {
+        foreach ($this->routers as $router) {
+            if ($route = $router->matchIn($method, $path)) {
                 break;
             }
         }
