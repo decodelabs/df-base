@@ -6,8 +6,9 @@
 namespace Df\Core\Config;
 
 use Df;
-use Df\Data\ITree;
+use Df\Core\IApp;
 
-interface IRepository extends ITree
+interface ILoader
 {
+    public function loadConfig(IApp $app): Repository;
 }

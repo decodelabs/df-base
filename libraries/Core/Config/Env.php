@@ -11,7 +11,7 @@ use Df;
 use Df\Lang\IPipe;
 use Df\Lang\TPipe;
 
-class Env implements IEnv, IPipe
+class Env implements \ArrayAccess, IPipe
 {
     use TPipe;
 
@@ -123,7 +123,7 @@ class Env implements IEnv, IPipe
     /**
      * Set a value
      */
-    public function set(string $key, string $value): IEnv
+    public function set(string $key, string $value): Env
     {
         $this->data[$key] = $value;
         return $this;
@@ -132,7 +132,7 @@ class Env implements IEnv, IPipe
     /**
      * Set a map of values
      */
-    public function setMap(array $map): IEnv
+    public function setMap(array $map): Env
     {
         foreach ($map as $key => $value) {
             $this->set($key, $value);
@@ -144,7 +144,7 @@ class Env implements IEnv, IPipe
     /**
      * Remove a value
      */
-    public function remove(string ...$keys): IEnv
+    public function remove(string ...$keys): Env
     {
         foreach ($keys as $key) {
             unset($this->data[$key]);
@@ -171,7 +171,7 @@ class Env implements IEnv, IPipe
     /**
      * Cry if keys aren't set
      */
-    public function checkExists(string ...$keys): IEnv
+    public function checkExists(string ...$keys): Env
     {
         $failed = [];
 

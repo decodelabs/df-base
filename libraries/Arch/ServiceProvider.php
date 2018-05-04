@@ -12,7 +12,7 @@ use Df\Arch\Pipeline\AreaMap;
 use Df\Arch\Pipeline\IHandler;
 use Df\Arch\Pipeline\Handler;
 
-use Df\Core\Config\IRepository;
+use Df\Core\Config\Repository;
 
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
@@ -36,7 +36,7 @@ class ServiceProvider implements IProvider
     {
         $app->bindShared(IHandler::class, Handler::class)
             ->prepareWith(function ($handler, $app) {
-                $config = $app[IRepository::class];
+                $config = $app[Repository::class];
                 $handler->loadAreaMaps($config->arch->areaMaps->toArray());
                 return $handler;
             });

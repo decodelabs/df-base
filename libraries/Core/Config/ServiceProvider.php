@@ -8,6 +8,9 @@ namespace Df\Core\Config;
 
 use Df;
 
+use Df\Core\Config\Loader\PhpArray;
+use Df\Core\Config\EnvLoader\DotIni;
+
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
 
@@ -19,8 +22,8 @@ class ServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
-            IEnv::class,
-            IRepository::class
+            Env::class,
+            Repository::class
         ];
     }
 
@@ -30,48 +33,20 @@ class ServiceProvider implements IProvider
     public function registerServices(IContainer $app): void
     {
         // Env
-        $app->bindShared(IEnv::class, function ($app) {
-            $path = $app->getBasePath().'/.env';
+        $app->bindOnce(IEnvLoader::class, DotIni::class)
+            ->inject('path', $app->getBasePath().'/.env');
 
-            if (!is_readable($path) || !is_file($path)) {
-                throw Df\Error::{'ENotFound'}('Ini file could not be read', null, $path);
-            }
-
-            $data = parse_ini_file($path);
-
-            if (!isset($data['IDENTITY'])) {
-                throw Df\Error::EUnexpectedValue(
-                    'Env data does not define an IDENTITY'
-                );
-            }
-
-            $identity = $data['IDENTITY'];
-            unset($data['IDENTITY']);
-
-            return new Env($identity, $data);
+        $app->bindShared(Env::class, function ($app, IEnvLoader $loader) {
+            return $loader->loadEnvConfig($app);
         });
 
 
 
         // Config
-        $app->bindShared(IRepository::class, function ($app, IEnv $env) {
-            // TODO: load this from loader
-            $config = [
-                'arch' => [
-                    'areaMaps' => [
-                        '*' => 'df.test:8080/test/df-playground-/',
-                        'admin' => 'df.test:8080/test/df-playground-/admin/',
-                        'shared' => 'df.test:8080/test/df-playground-/~{name-test}/{stuff}',
-                        'devtools' => 'devtools.df.test:8080/test/df-playground-/'
-                    ]
-                ],
-                'http' => [
-                    'sendfile' => 'x-sendfile',
-                    'manualChunk' => true
-                ]
-            ];
+        $app->bindOnce(ILoader::class, PhpArray::class);
 
-            return new Repository($config);
+        $app->bindShared(Repository::class, function ($app, ILoader $loader) {
+            return $loader->loadConfig($app);
         });
     }
 }

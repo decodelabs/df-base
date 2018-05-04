@@ -99,7 +99,7 @@ class Container implements IContainer
     public function bindOnce(string $type, $target=null, callable $callback=null): IBinding
     {
         if (isset($this->bindings[$type])) {
-            return $this->bindings[$type];
+            return new Binding($this, $type, $target);
         }
 
         $binding = $this->bind($type, $target);

@@ -46,7 +46,7 @@ namespace Df
 
     use Df;
     use Df\Core\IApp;
-    use Df\Core\Config\IEnv;
+    use Df\Core\Config\Env;
     use Df\Lang\Error\Factory as ErrorFactory;
     use Df\Lang\Stack\Frame as StackFrame;
 
@@ -114,9 +114,9 @@ namespace Df
     /**
      * Get env config value
      */
-    function env(): IEnv
+    function env(): Env
     {
-        return Df\app()[IEnv::class];
+        return Df\app()[Env::class];
     }
 
     /**
@@ -124,7 +124,7 @@ namespace Df
      */
     function envString(string $key, string $default=null): ?string
     {
-        return Df\app()[IEnv::class]->get($key, $default);
+        return Df\app()[Env::class]->get($key, $default);
     }
 
     /**
@@ -132,7 +132,7 @@ namespace Df
      */
     function envBool(string $key, bool $default=null): ?bool
     {
-        return Df\app()[IEnv::class]->getBool($key, $default);
+        return Df\app()[Env::class]->getBool($key, $default);
     }
 
     /**
@@ -140,7 +140,7 @@ namespace Df
      */
     function envInt(string $key, int $default=null): ?int
     {
-        return Df\app()[IEnv::class]->getInt($key, $default);
+        return Df\app()[Env::class]->getInt($key, $default);
     }
 
     /**
@@ -148,7 +148,7 @@ namespace Df
      */
     function envFloat(string $key, float $default=null): ?float
     {
-        return Df\app()[IEnv::class]->getFloat($key, $default);
+        return Df\app()[Env::class]->getFloat($key, $default);
     }
 
 
