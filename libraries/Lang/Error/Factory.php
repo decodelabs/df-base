@@ -106,7 +106,7 @@ class Factory
             ]
     ];
 
-    const REWIND = 4;
+    const REWIND = 5;
 
     private static $instances = [];
 
@@ -160,7 +160,8 @@ class Factory
     {
         $this->params['rewind'] = $rewind = max((int)($this->params['rewind'] ?? 0), 0);
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, $rewind + static::REWIND);
-        $key = $rewind + static::REWIND - 1;
+        $lastTrace = array_pop($trace);
+        $key = $rewind + static::REWIND - 2;
 
         if (isset($this->params['namespace'])) {
             $this->namespace = $this->params['namespace'];
@@ -197,14 +198,12 @@ class Factory
             self::$instances[$hash] = eval($this->exceptionDef);
         }
 
-        $trace = array_pop($trace);
-
         if (!isset($this->params['file'])) {
-            $this->params['file'] = $trace['file'] ?? null;
+            $this->params['file'] = $lastTrace['file'] ?? null;
         }
 
         if (!isset($this->params['line'])) {
-            $this->params['line'] = $trace['line'] ?? null;
+            $this->params['line'] = $lastTrace['line'] ?? null;
         }
 
         return new self::$instances[$hash]($message, $this->params);
@@ -307,6 +306,10 @@ class Factory
             }
 
             $this->interfaces[$interface] = $standard;
+
+            if (count($parts) > 1) {
+                $this->interfaces['Df\\'.$name] = $standard;
+            }
 
             if ($this->type === null && isset($standard['type'])) {
                 $this->type = $standard['type'];
