@@ -7,15 +7,14 @@ declare(strict_types=1);
 namespace Df\Data;
 
 use Df;
-use Df\Data\Arr;
-use Df\Data\IHashMap;
+use Df\Flex\Input\Sanitizer;
 
-class Tree implements \IteratorAggregate, IHashMap, IValueProvider
+class Tree implements \IteratorAggregate, ITree
 {
-    use namespace\arrayCollection\THashMap;
-    use namespace\arrayCollection\TMutableHashMap;
+    use namespace\ArrayCollection\THashMap;
 
     const MUTABLE = true;
+    const KEY_SEPARATOR = null;
 
     protected $value;
 
@@ -63,23 +62,6 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     }
 
     /**
-     * Set value by dot access
-     */
-    public function setDot(string $key, $value, string $separator='.'): IHashMap
-    {
-        $node = $this->getDot($key, $separator);
-
-        if (is_iterable($value)) {
-            $node->clear()->merge($value);
-        } else {
-            $node->setValue($value);
-        }
-
-        return $this;
-    }
-
-
-    /**
      * Get node
      */
     public function __get(string $key): IHashMap
@@ -90,21 +72,6 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
 
         return $this->items[$key];
     }
-
-    /**
-     * Get value by dot access
-     */
-    public function getDot(string $key, string $separator='.')
-    {
-        $node = $this;
-
-        foreach (explode($separator, $key) as $part) {
-            $node = $node->{$part};
-        }
-
-        return $node;
-    }
-
 
     /**
      * Check for node
@@ -126,15 +93,106 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
 
 
     /**
+     * Set value by dot access
+     */
+    public function setNode(string $key, $value): ITree
+    {
+        $node = $this->getNode($key);
+
+        if (is_iterable($value)) {
+            $node->clear()->merge($value);
+        } else {
+            $node->setValue($value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get node by dot access
+     */
+    public function getNode(string $key): ITree
+    {
+        if (static::KEY_SEPARATOR === null) {
+            return $this->__get($key);
+        }
+
+        $node = $this;
+
+        foreach (explode(static::KEY_SEPARATOR, $key) as $part) {
+            $node = $node->__get($part);
+        }
+
+        return $node;
+    }
+
+    /**
+     * True if any provided keys exist as a node
+     */
+    public function hasNode(string ...$keys): bool
+    {
+        if (static::KEY_SEPARATOR === null) {
+            foreach ($keys as $key) {
+                if (isset($this->items[$key])) {
+                    return true;
+                }
+            }
+        } else {
+            foreach ($keys as $key) {
+                $node = $this;
+
+                foreach (explode(static::KEY_SEPARATOR, $key) as $part) {
+                    if (!$node->__isset($part)) {
+                        continue 2;
+                    }
+
+                    $node = $node->__get($part);
+                }
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * True if all provided keys exist as a node
+     */
+    public function hasAllNodes(string ...$keys): bool
+    {
+        if (static::KEY_SEPARATOR === null) {
+            foreach ($keys as $key) {
+                if (!isset($this->items[$key])) {
+                    return false;
+                }
+            }
+        } else {
+            foreach ($keys as $key) {
+                $node = $this;
+
+                foreach (explode(static::KEY_SEPARATOR, $key) as $part) {
+                    if (!$node->__isset($part)) {
+                        return false;
+                    }
+
+                    $node = $node->__get($part);
+                }
+            }
+        }
+
+        return true;
+    }
+
+
+
+
+    /**
      * Get value
      */
     public function get(string $key)
     {
-        if (!isset($this->items[$key])) {
-            return null;
-        }
-
-        return $this->items[$key]->getValue();
+        return $this->getNode($key)->getValue();
     }
 
     /**
@@ -142,7 +200,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
      */
     public function set(string $key, $value): IHashMap
     {
-        $this->__get($key)->setValue($value);
+        $this->getNode($key)->setValue($value);
         return $this;
     }
 
@@ -151,9 +209,27 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
      */
     public function has(string ...$keys): bool
     {
-        foreach ($keys as $key) {
-            if (isset($this->items[$key]) && $this->items[$key]->hasValue()) {
-                return true;
+        if (static::KEY_SEPARATOR === null) {
+            foreach ($keys as $key) {
+                if (isset($this->items[$key]) && $this->items[$key]->hasValue()) {
+                    return true;
+                }
+            }
+        } else {
+            foreach ($keys as $key) {
+                $node = $this;
+
+                foreach (explode(static::KEY_SEPARATOR, $key) as $part) {
+                    if (!$node->__isset($part)) {
+                        continue 2;
+                    }
+
+                    $node = $node->__get($part);
+                }
+
+                if ($node->hasValue()) {
+                    return true;
+                }
             }
         }
 
@@ -165,9 +241,27 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
      */
     public function hasAll(string ...$keys): bool
     {
-        foreach ($keys as $key) {
-            if (!(isset($this->items[$key]) && $this->items[$key]->hasValue())) {
-                return false;
+        if (static::KEY_SEPARATOR === null) {
+            foreach ($keys as $key) {
+                if (!(isset($this->items[$key]) && $this->items[$key]->hasValue())) {
+                    return false;
+                }
+            }
+        } else {
+            foreach ($keys as $key) {
+                $node = $this;
+
+                foreach (explode(static::KEY_SEPARATOR, $key) as $part) {
+                    if (!$node->__isset($part)) {
+                        return false;
+                    }
+
+                    $node = $node->__get($part);
+                }
+
+                if (!$node->hasValue()) {
+                    return false;
+                }
             }
         }
 
@@ -231,11 +325,10 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
                 $this->items[] = new static(null, $value);
             }
         } else {
-            $key = (string)$key;
-            $this->__set($key, $value);
+            $node->set((string)$key, $value);
         }
 
-        return $this;
+        return $node;
     }
 
     /**
@@ -243,11 +336,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
      */
     public function offsetGet($key)
     {
-        if (!isset($this->items[$key])) {
-            return null;
-        }
-
-        return $this->items[$key]->getValue();
+        return $this->getNode($key)->getValue();
     }
 
     /**
@@ -255,11 +344,25 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
      */
     public function offsetExists($key)
     {
-        if (!isset($this->items[$key])) {
-            return null;
-        }
+        return $this->getNode($key)->hasValue();
+    }
 
-        return $this->items[$key]->hasValue();
+
+
+    /**
+     * Get node and return value sanitizer
+     */
+    public function sanitize(string $key): Sanitizer
+    {
+        return $this->getNode($key)->sanitizeValue();
+    }
+
+    /**
+     * Return new Sanitizer with node value
+     */
+    public function sanitizeValue(): Sanitizer
+    {
+        return new Sanitizer($this->getValue());
     }
 
 
@@ -338,7 +441,7 @@ class Tree implements \IteratorAggregate, IHashMap, IValueProvider
     /**
      * From query string
      */
-    public static function createFromDelimitedString(string $string, string $setDelimiter='&', string $valueDelimiter='='): Tree
+    public static function createFromDelimitedString(string $string, string $setDelimiter='&', string $valueDelimiter='='): ITree
     {
         $output = new static();
         $parts = explode($setDelimiter, $string);
