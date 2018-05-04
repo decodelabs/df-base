@@ -410,7 +410,7 @@ class Binding implements IBinding
     protected function prepareInstance(object $instance): object
     {
         foreach ($this->preparators as $callback) {
-            $instance = $callback($instance, $this);
+            $instance = $callback($instance, $this->container);
         }
 
         if (!$instance instanceof $this->type) {
