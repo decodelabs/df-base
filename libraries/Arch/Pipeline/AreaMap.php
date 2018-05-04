@@ -21,7 +21,7 @@ class AreaMap
      */
     public function __construct(string $area, string $uri)
     {
-        $this->area = $area;
+        $this->area = ltrim($area, '~');
         $this->uri = $uri;
     }
 

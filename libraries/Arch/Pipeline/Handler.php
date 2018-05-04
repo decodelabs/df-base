@@ -57,8 +57,10 @@ class Handler implements IHandler
             return $handler->handle($request);
         }
 
+        $area = $request->getUri()->getHost();
+
         // TODO: route to Arch Request
-        dd($request);
+        dd($request, $area);
     }
 
 
