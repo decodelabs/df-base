@@ -9,6 +9,7 @@ namespace Df\Arch\Pipeline;
 use Df;
 
 use Df\Core\IApp;
+use Df\Http\Response\Redirect;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -129,7 +130,7 @@ class Handler implements IHandler
 
         // Map original uri to an area mount
         $uri = $request->getUri();
-        $url = $uri->getAuthority().$uri->getPath();
+        $url = $uri->getAuthority().rawurldecode($uri->getPath());
         $path = null;
         $params = [];
 
@@ -168,14 +169,39 @@ class Handler implements IHandler
 
         foreach ($this->routers[$area] as $router) {
             if ($route = $router->matchIn($method, $path)) {
-                break;
+                $route->mergeParams($params);
+                return $route->dispatch($request, $this->app);
             }
         }
 
-        if ($route === null) {
-            return null;
+
+        // No match, try with or without trailing slash
+        if (substr($path, -1) == '/') {
+            $path = substr($path, 0, -1);
+            $cut = true;
+        } else {
+            $path .= '/';
+            $cut = false;
         }
 
-        return $route->dispatch($request);
+        foreach ($this->routers[$area] as $router) {
+            if ($route = $router->matchIn($method, $path)) {
+                // TODO: route out properly
+                $uri = $request->getUri();
+                $newPath = $uri->getPath();
+
+                if ($cut) {
+                    $newPath = substr($newPath, 0, -1);
+                } else {
+                    $newPath .= '/';
+                }
+
+                return new Redirect($uri->withPath($newPath));
+            }
+        }
+
+
+        // Fail
+        return null;
     }
 }
