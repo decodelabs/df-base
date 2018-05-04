@@ -53,6 +53,8 @@ interface IContainer extends ContainerInterface, \ArrayAccess
     public function clear(): IContainer;
 
     public function newInstanceOf(string $type, array $params=[]): object;
+    public function buildInstanceOf(string $type, array $params=[]): object;
+    public function call(callable $function, array $params=[]);
 
     public function forgetInstance(string $type): IBinding;
     public function forgetAllInstances(): IContainer;

@@ -106,7 +106,7 @@ class Binding implements IBinding
 
             if (is_string($target)) {
                 $target = function () use ($target) {
-                    return $this->buildType($target);
+                    return $this->container->buildInstanceOf($target, $this->params);
                 };
             } else {
                 throw Df\Error::{
@@ -368,11 +368,7 @@ class Binding implements IBinding
      */
     public function newInstance(): object
     {
-        $reflector = new \ReflectionFunction($this->factory);
-        $params = $reflector->getParameters();
-        $args = $this->prepareArgs($params);
-
-        $output = $this->factory->__invoke(...$args);
+        $output = $this->container->call($this->factory, $this->params);
         $output = $this->prepareInstance($output);
 
         return $output;
@@ -429,72 +425,6 @@ class Binding implements IBinding
 
         $this->container->triggerAfterResolving($this, $instance);
         return $instance;
-    }
-
-
-    /**
-     * Build an instanceof $type
-     */
-    protected function buildType(string $type): object
-    {
-        $reflector = new \ReflectionClass($type);
-
-        if (!$reflector->isInstantiable()) {
-            throw Df\Error::{
-                'ELogic,Psr\\Container\\ContainerExceptionInterface'
-            }(
-                'Binding target '.$type.' cannot be instantiated'
-            );
-        }
-
-        if (!$constructor = $reflector->getConstructor()) {
-            return $reflector->newInstance();
-        }
-
-        $params = $constructor->getParameters();
-        $args = $this->prepareArgs($params);
-
-        return $reflector->newInstanceArgs($args);
-    }
-
-
-    /**
-     * Get params for function
-     */
-    protected function prepareArgs(array $params): array
-    {
-        $args = [];
-
-        foreach ($params as $i => $param) {
-            if (array_key_exists($param->name, $this->params)) {
-                $args[] = $this->params[$param->name];
-                continue;
-            }
-
-            if (null !== ($class = $param->getClass())) {
-                try {
-                    $args[] = $this->container->get($class->name);
-                } catch (NotFoundExceptionInterface $e) {
-                    if ($param->isOptional()) {
-                        $args[] = $param->getDefaultValue();
-                    } else {
-                        throw $e;
-                    }
-                }
-            } elseif ($param->isDefaultValueAvailable()) {
-                $args[] = $param->getDefaultValue();
-            } elseif ($i === 0) {
-                $args[] = $this->container;
-            } else {
-                throw Df\Error::{
-                    'ELogic,Psr\\Container\\ContainerExceptionInterface'
-                }(
-                    'Binding target '.$type.' cannot be instantiated'
-                );
-            }
-        }
-
-        return $args;
     }
 
 

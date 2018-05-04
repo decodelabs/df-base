@@ -442,6 +442,82 @@ class Container implements IContainer
         return $binding->newInstance();
     }
 
+    /**
+     * Create new instance of type, no looking up bindinh
+     */
+    public function buildInstanceOf(string $type, array $params=[]): object
+    {
+        $reflector = new \ReflectionClass($type);
+
+        if (!$reflector->isInstantiable()) {
+            throw Df\Error::{
+                'ELogic,Psr\\Container\\ContainerExceptionInterface'
+            }(
+                'Binding target '.$type.' cannot be instantiated'
+            );
+        }
+
+        if (!$constructor = $reflector->getConstructor()) {
+            return $reflector->newInstance();
+        }
+
+        $paramReflectors = $constructor->getParameters();
+        $args = $this->prepareArgs($paramReflectors, $params);
+
+        return $reflector->newInstanceArgs($args);
+    }
+
+    /**
+     * Call any function with injected params
+     */
+    public function call(callable $function, array $params=[])
+    {
+        $reflector = new \ReflectionFunction($function);
+        $paramReflectors = $reflector->getParameters();
+        $args = $this->prepareArgs($paramReflectors, $params);
+
+        return call_user_func_array($function, $args);
+    }
+
+    /**
+     * Get params for function
+     */
+    protected function prepareArgs(array $paramReflectors, array $params): array
+    {
+        $args = [];
+
+        foreach ($paramReflectors as $i => $reflector) {
+            if (array_key_exists($reflector->name, $params)) {
+                $args[] = $params[$reflector->name];
+                continue;
+            }
+
+            if (null !== ($class = $reflector->getClass())) {
+                try {
+                    $args[] = $this->get($class->name);
+                } catch (NotFoundExceptionInterface $e) {
+                    if ($reflector->isOptional()) {
+                        $args[] = $reflector->getDefaultValue();
+                    } else {
+                        throw $e;
+                    }
+                }
+            } elseif ($reflector->isDefaultValueAvailable()) {
+                $args[] = $reflector->getDefaultValue();
+            } elseif ($i === 0) {
+                $args[] = $this;
+            } else {
+                throw Df\Error::{
+                    'ELogic,Psr\\Container\\ContainerExceptionInterface'
+                }(
+                    'Binding target '.$type.' cannot be instantiated'
+                );
+            }
+        }
+
+        return $args;
+    }
+
 
 
     /**
