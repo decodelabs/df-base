@@ -46,6 +46,11 @@ class Container implements IContainer
      */
     public function registerProviderInstance(IProvider $provider): void
     {
+        if (defined(get_class($provider).'::AUTO_REGISTER') && $provider::AUTO_REGISTER) {
+            $provider->registerServices($this);
+            return;
+        }
+
         $types = $provider::getProvidedServices();
 
         foreach ($types as $type) {

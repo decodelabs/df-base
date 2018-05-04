@@ -19,6 +19,8 @@ use Df\Core\Service\IProvider;
 
 class ServiceProvider implements IProvider
 {
+    const AUTO_REGISTER = true;
+
     /**
      * Get list of provided classes
      */
