@@ -10,6 +10,7 @@ use Df;
 interface ILoader
 {
     public function loadPackages(array $packages): void;
+    public function getLoadedPackages(): array;
 
     public function getBasePath(): string;
     public function getVendorPath(): string;

@@ -47,7 +47,7 @@ class App extends Container implements IApp
 
     const DEFAULT_MIDDLEWARE = [
         //Middleware\GlobalRequests::class => -99,
-        // user
+        // self::MIDDLEWARE
         ArchHandler::class => 99
     ];
 
@@ -66,7 +66,7 @@ class App extends Container implements IApp
         /* The loader needs to be set up manually before
          * everything else to ensure custom classes are found */
         $this->registerLoaderServices();
-        $this['core.loader']->loadPackages($this::PACKAGES);
+        $this[ILoader::class]->loadPackages($this::PACKAGES);
 
         /* Load up all the available providers */
         $this->registerProviders(...$this::DEFAULT_PROVIDERS);
@@ -75,9 +75,6 @@ class App extends Container implements IApp
         /* Load kernels */
         $this->registerHttpKernel();
         $this->registerConsoleKernel();
-
-        /* Register error handler */
-        ErrorHandler::register($this['core.error.handler']);
     }
 
 

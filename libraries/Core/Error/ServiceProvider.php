@@ -37,5 +37,7 @@ class ServiceProvider implements IProvider
     {
         $app->bindShared(IHandler::class, Handler::class);
         $app->bind(IReporter::class, Whoops::class);
+
+        Handler::register($app[IHandler::class]);
     }
 }

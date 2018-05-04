@@ -8,14 +8,24 @@ namespace Df\Arch\Pipeline;
 
 use Df;
 
+use Df\Core\IApp;
+
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 class Handler implements IHandler
 {
+    protected $app;
     protected $areaMaps = [];
 
+    /**
+     * Construct with app
+     */
+    public function __construct(IApp $app)
+    {
+        $this->app = $app;
+    }
 
     /**
      * Load list of string maps
@@ -53,23 +63,20 @@ class Handler implements IHandler
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        if (!$request = $this->mapRequest($request)) {
+        if (!$response = $this->routeIn($request)) {
             return $handler->handle($request);
         }
 
-        $area = $request->getUri()->getHost();
-
-        // TODO: route to Arch Request
-        dd($request, $area);
+        return $response;
     }
 
 
     /**
-     * Map request input request to an area via a matched base path
-     * The resulting request abstracts the input URL across multiple environments
+     * Build list of routes and dispatch
      */
-    protected function mapRequest(ServerRequestInterface $request): ?ServerRequestInterface
+    public function routeIn(ServerRequestInterface $request): ?ResponseInterface
     {
+        // Make sure area maps make sense
         if (empty($this->areaMaps)) {
             throw Df\Error::ELogic(
                 'No area maps have been defined'
@@ -82,13 +89,17 @@ class Handler implements IHandler
             );
         }
 
+
+        // Map original uri to an area mount
         $uri = $request->getUri();
         $url = $uri->getAuthority().$uri->getPath();
+        $path = null;
+        $params = [];
 
         foreach (array_reverse($this->areaMaps) as $area => $map) {
-            if (null !== ($outUri = $map->matches($url, $params))) {
+            if (null !== ($path = $map->matches($url, $params))) {
                 if ($area === '*') {
-                    if (preg_match('#^/~([^/]+)(/.*)?$#', $outUri, $matches)) {
+                    if (preg_match('#^/~([^/]+)(/.*)?$#', $path, $matches)) {
                         $area = $matches[1];
                     } else {
                         if (isset($this->areaMaps['front'])) {
@@ -99,23 +110,41 @@ class Handler implements IHandler
                     }
                 }
 
-                $newUri = $uri
-                    ->withHost($area)
-                    ->withPort(null)
-                    ->withPath($outUri);
-
-                $newRequest = $request
-                    ->withUri($newUri)
-                    ->withRequestTarget($outUri);
-
-                foreach ($params as $key => $value) {
-                    $newRequest = $newRequest->withAttribute($key, $value);
-                }
-
-                return $newRequest;
+                break;
             }
         }
 
-        return null;
+
+        // No path? domain didn't match, move along
+        if ($path === null) {
+            return null;
+        }
+
+
+        // Load and test routes
+        $packages = $this->app['core.loader']->getLoadedPackages();
+        $method = $request->getMethod();
+        $route = null;
+
+        foreach ($packages as $package) {
+            $class = '\\Df\\Apex\\Http\\'.ucfirst($area).'\\'.ucfirst($package).'Router';
+
+            if (!class_exists($class, true)) {
+                continue;
+            }
+
+            $router = new $class();
+            $router->setup();
+
+            if ($route = $router->routeIn($method, $path)) {
+                break;
+            }
+        }
+
+        if ($route === null) {
+            return null;
+        }
+
+        return $route->dispatch($request);
     }
 }

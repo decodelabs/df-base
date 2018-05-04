@@ -23,6 +23,8 @@ class Composer implements ILoader
     protected $apexPaths = [];
     protected $libraryPaths = [];
 
+    protected $packages = [];
+
     protected $autoload;
 
 
@@ -55,6 +57,9 @@ class Composer implements ILoader
             $this->apexPaths[] = $this->vendorPath.'/decodelabs/df-'.$package;
             $this->libraryPaths[] = $this->vendorPath.'/decodelabs/df-'.$package.'/libraries';
         }
+        
+        $this->packages = array_reverse($packages);
+        $this->packages[] = 'app';
 
         foreach (static::APEX as $folder) {
             $this->autoload->setPsr4('Df\\Apex\\'.ucfirst($folder).'\\', array_map(function ($path) use ($folder) {
@@ -63,6 +68,15 @@ class Composer implements ILoader
         }
 
         $this->autoload->setPsr4('Df\\', $this->libraryPaths);
+    }
+
+
+    /**
+     * List of ordered package names
+     */
+    public function getLoadedPackages(): array
+    {
+        return $this->packages;
     }
 
 
