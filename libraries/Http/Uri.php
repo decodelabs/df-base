@@ -285,7 +285,7 @@ class Uri implements IUri
         }
 
         return preg_replace_callback(
-            '/(?:[^%'.self::VALID_CHARACTERS.self::DELIMITERS.']+|%(?![A-Fa-f0-9]{2}))/u',
+            '#(?:[^%'.self::VALID_CHARACTERS.self::DELIMITERS.']+|%(?![A-Fa-f0-9]{2}))#u',
             function ($matches) {
                 return rawurlencode($matches[0]);
             },
@@ -471,7 +471,7 @@ class Uri implements IUri
         }
 
         $path = preg_replace_callback(
-            '/(?:[^'.self::VALID_CHARACTERS.')(:@&=\+\$,\/;%]+|%(?![A-Fa-f0-9]{2}))/u',
+            '#(?:[^'.self::VALID_CHARACTERS.')(:@&=\+\$,/;%]+|%(?![A-Fa-f0-9]{2}))#u',
             function ($matches) {
                 return rawurlencode($matches[0]);
             },

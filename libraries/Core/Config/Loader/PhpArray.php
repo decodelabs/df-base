@@ -18,7 +18,7 @@ class PhpArray implements ILoader
     const CONFIG = [
         'arch' => [
             'areaMaps' => [
-                '*' => 'http://df.test:8080/test/df-playground-/',
+                '*' => 'df.test:8080/test/df-playground-/',
                 'admin' => 'df.test:8080/test/df-playground-/admin/',
                 'shared' => 'df.test:8080/test/df-playground-/~{name-test}/{stuff}',
                 'devtools' => 'devtools.df.test:8080/test/df-playground-/'

@@ -74,7 +74,7 @@ abstract class Router
         }
 
         [,$match] = explode('://', $match);
-        $pattern = '#^[^\:]+\://'.preg_quote($match).'$#';
+        $pattern = '#^[^:]+://'.preg_quote($match).'$#';
 
         foreach ($this->routes as $id => $route) {
             if (preg_match($pattern, $id)) {

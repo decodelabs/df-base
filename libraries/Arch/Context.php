@@ -8,6 +8,8 @@ namespace Df\Arch;
 
 use Df;
 use Df\Core\IApp;
+use Df\Arch\Uri as ArchUri;
+use Df\Http\Uri as HttpUri;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -38,5 +40,16 @@ class Context
         }
 
         dd($name);
+    }
+
+
+
+    /**
+     * Temporary uri router
+     */
+    public function uri($uri): HttpUri
+    {
+        $handler = $this->app['arch.pipeline.handler'];
+        return $handler->routeOut(ArchUri::instance($uri));
     }
 }
