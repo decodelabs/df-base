@@ -613,6 +613,8 @@ class Uri implements IUri
 
         $output = clone $this;
         $output->fragment = $fragment;
+
+        return $output;
     }
 
     /**

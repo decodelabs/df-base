@@ -8,10 +8,14 @@ namespace Df\Arch\Pipeline;
 
 use Df;
 
+use Df\Arch\Uri as ArchUri;
+use Df\Http\Uri as HttpUri;
+
 class AreaMap
 {
     protected $area;
     protected $uri;
+    protected $scheme;
 
     protected $pattern;
     protected $matchKeys = [];
@@ -28,6 +32,18 @@ class AreaMap
         }
 
         $this->area = ltrim($area, '~');
+
+        $parts = explode('://', $uri, 2);
+        $uri = array_pop($parts);
+
+        if (!empty($parts)) {
+            $this->scheme = strtolower(array_shift($parts));
+        }
+
+        if (empty($this->scheme)) {
+            $this->scheme = 'http';
+        }
+
         $this->uri = $uri;
     }
 
@@ -46,6 +62,14 @@ class AreaMap
     public function getUri(): string
     {
         return $this->uri;
+    }
+
+    /**
+     * Get scheme
+     */
+    public function getScheme(): string
+    {
+        return $this->scheme;
     }
 
 
@@ -100,5 +124,31 @@ class AreaMap
         }
 
         return $matches['path'] ?? '/';
+    }
+
+
+    /**
+     * Convert arch uri + rewritten path to Http Uri
+     */
+    public function routeOut(ArchUri $request, string $path): HttpUri
+    {
+        $query = $request->getQuery();
+
+        $output = preg_replace_callback('#{([a-zA-Z0-9\-_]+)([/\?]*)}#', function ($matches) use ($query, $request) {
+            $value = $query[$matches[1]];
+            unset($query[$matches[1]]);
+
+            if ($value == '') {
+                throw Df\Error::EUnexpectedValue(
+                    'Route out '.$request.' requires "'.$matches[1].'" in the query'
+                );
+            }
+
+            return $value;
+        }, $this->uri);
+
+        return (new HttpUri($this->scheme.'://'.$output.$path))
+            ->withQuery($query->toDelimitedString())
+            ->withFragment($request->getFragment());
     }
 }

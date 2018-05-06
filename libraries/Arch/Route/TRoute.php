@@ -25,19 +25,10 @@ use Psr\Http\Message\ServerRequestInterface;
 
 trait TRoute
 {
-    protected $area;
     protected $path;
     protected $pattern;
     protected $params = [];
     protected $matchKeys = [];
-
-    /**
-     * Get route area
-     */
-    public function getRouteArea(): string
-    {
-        return $this->area;
-    }
 
 
     /**
@@ -47,6 +38,30 @@ trait TRoute
     {
         $this->params = array_merge($params, $this->params);
         return $this;
+    }
+
+
+    /**
+     * Convert arch uri to http uri path string
+     */
+    public function routeOut(Uri $uri): string
+    {
+        $query = $uri->getQuery();
+
+        $path = preg_replace_callback('#{([a-zA-Z0-9\-_]+)([/\?]*)}#', function ($matches) use ($query, $uri) {
+            $value = $query[$matches[1]];
+            unset($query[$matches[1]]);
+
+            if ($value == '') {
+                throw Df\Error::EUnexpectedValue(
+                    'Route out '.$uri.' requires "'.$matches[1].'" in the query'
+                );
+            }
+
+            return $value;
+        }, $this->path);
+
+        return $path;
     }
 
 
@@ -106,7 +121,7 @@ trait TRoute
         $this->matchKeys = [];
         $pattern = '/'.ltrim($this->path, '/');
 
-        $pattern = preg_replace_callback('/{([a-zA-Z0-9\-_]+)([\/\?]*)}/', function ($matches) {
+        $pattern = preg_replace_callback('#{([a-zA-Z0-9\-_]+)([/\?]*)}#', function ($matches) {
             $rep = 'r'.count($this->params);
             $key = $matches[1];
             $greedy = $optional = false;

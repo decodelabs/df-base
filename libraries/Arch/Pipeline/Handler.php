@@ -9,7 +9,11 @@ namespace Df\Arch\Pipeline;
 use Df;
 
 use Df\Core\IApp;
+
+use Df\Arch\Uri as ArchUri;
 use Df\Arch\Context;
+
+use Df\Http\Uri as HttpUri;
 use Df\Http\Response\Redirect;
 
 use Psr\Http\Message\ResponseInterface;
@@ -129,9 +133,11 @@ class Handler implements IHandler
         }
 
 
+
         // Map original uri to an area mount
         $uri = $request->getUri();
         $url = $uri->getAuthority().rawurldecode($uri->getPath());
+        $scheme = $uri->getScheme();
         $path = null;
         $params = [];
 
@@ -147,6 +153,14 @@ class Handler implements IHandler
 
                         $area = 'front';
                     }
+                }
+
+                // Make sure scheme matches
+                $mapScheme = $map->getScheme();
+
+                if ($mapScheme !== $scheme && $mapScheme === 'https') {
+                    $redirect = $uri->withScheme($map->getScheme());
+                    return new Redirect($redirect);
                 }
 
                 break;
@@ -180,6 +194,7 @@ class Handler implements IHandler
         if (!isset($this->routers[$area])) {
             $this->loadRouters($area);
         }
+
 
         foreach ($this->routers[$area] as $router) {
             if ($route = $router->matchIn($method, $path)) {
@@ -219,5 +234,43 @@ class Handler implements IHandler
 
         // Fail
         return null;
+    }
+
+
+    /**
+     * Convert internat request uri to HTTP uri
+     */
+    public function routeOut(ArchUri $uri): HttpUri
+    {
+        $area = $uri->getArea();
+        $route = null;
+
+        if (!isset($this->routers[$area])) {
+            $this->loadRouters($area);
+        }
+
+        foreach ($this->routers[$area] as $router) {
+            if ($route = $router->matchOut($uri)) {
+                break;
+            }
+        }
+
+        if (!$route) {
+            throw Df\Error::EUnexpectedValue(
+                'Arch uri '.$uri.' did not match any routes'
+            );
+        }
+
+        $map = $this->areaMaps[$area] ?? $this->areaMaps['*'] ?? null;
+
+        if (!$map) {
+            throw Df\Error::ERuntime(
+                'No matching area maps to route out uri: '.$uri
+            );
+        }
+
+        $uri = clone $uri;
+        $path = $route->routeOut($uri);
+        return $map->routeOut($uri, $path);
     }
 }

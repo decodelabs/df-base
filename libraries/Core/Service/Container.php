@@ -444,14 +444,12 @@ class Container implements IContainer
      */
     public function newInstanceOf(string $type, array $params=[]): object
     {
-        if ($binding = $this->lookupBinding($type)) {
-            $binding = clone $binding;
-        } else {
+        if (!$binding = $this->lookupBinding($type)) {
             $binding = new Binding($this, $type, $type, false);
         }
 
         $binding->addParams($params);
-        return $binding->newInstance();
+        return $binding->getInstance();
     }
 
     /**

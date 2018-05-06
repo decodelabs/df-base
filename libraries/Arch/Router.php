@@ -7,6 +7,8 @@ declare(strict_types=1);
 namespace Df\Arch;
 
 use Df;
+
+use Df\Arch\Uri as ArchUri;
 use Df\Arch\Route\Named as NamedRoute;
 use Df\Arch\Route\Node as NodeRoute;
 use Df\Arch\Route\View as ViewRoute;
@@ -48,6 +50,44 @@ abstract class Router
 
         return null;
     }
+
+
+    /**
+     * Match arch Uri against list of routes
+     */
+    public function matchOut(ArchUri $uri): ?IRoute
+    {
+        if (empty($this->routes)) {
+            $this->setup();
+        }
+
+        $match = $uri->getRouteId();
+
+        if (isset($this->routes[$match])) {
+            return clone $this->routes[$match];
+        }
+
+        $type = $uri->getRouteType();
+
+        if ($type !== 'any') {
+            return null;
+        }
+
+        [,$match] = explode('://', $match);
+        $pattern = '#^[^\:]+\://'.preg_quote($match).'$#';
+
+        foreach ($this->routes as $id => $route) {
+            if (preg_match($pattern, $id)) {
+                $this->routes['any://'.$match] = $route;
+                return clone $route;
+            }
+        }
+
+        return null;
+    }
+
+
+
 
 
     /**

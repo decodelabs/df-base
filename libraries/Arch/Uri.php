@@ -43,6 +43,26 @@ class Uri implements \ArrayAccess
         return $output;
     }
 
+    /**
+     * Ensure value is a Uri
+     */
+    public static function instance($value): Uri
+    {
+        if (is_string($value)) {
+            return new static($value);
+        }
+
+        if ($value instanceof static) {
+            return $value;
+        }
+
+        throw Df\Error::EInvalidArgument(
+            'Invalid Arch Uri instance',
+            null,
+            $value
+        );
+    }
+
 
     /**
      * Init as string
@@ -67,6 +87,10 @@ class Uri implements \ArrayAccess
 
         if (substr($path, 0, 1) != '~') {
             $path = '~front/'.$path;
+        }
+
+        if (empty($scheme)) {
+            $scheme = 'any';
         }
 
         $uri = $scheme.'://'.$path;
@@ -98,6 +122,14 @@ class Uri implements \ArrayAccess
         }
 
         throw Df\Error::ELogic('Arch\\Uri does not have member "'.$part.'"');
+    }
+
+    /**
+     * Ensure query gets cloned
+     */
+    public function __clone()
+    {
+        $this->query = clone $this->query;
     }
 
 
@@ -208,11 +240,6 @@ class Uri implements \ArrayAccess
     public function getRouteId(): string
     {
         $output = $this->routeType.'://';
-
-        if ($this->area !== 'front') {
-            $output .= '~'.$this->area.'/';
-        }
-
         $output .= ltrim($this->path, '/');
         return $output;
     }
