@@ -9,7 +9,7 @@ namespace Df\Arch\Node;
 use Df;
 use Df\Arch\Context;
 
-trait TContext
+trait TContextProxy
 {
     protected $context;
 

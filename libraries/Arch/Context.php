@@ -26,7 +26,7 @@ class Context
     {
         $this->app = $app;
         $this->request = $request;
-        $this->httpRequest = $httpRequest ?? $app['http.request.server'];
+        $this->httpRequest = $httpRequest ?? $app[ServerRequestInterface::class];
     }
 
 
@@ -39,6 +39,7 @@ class Context
             return $this->{$name};
         }
 
+        // TODO: load helper
         dd($name);
     }
 
