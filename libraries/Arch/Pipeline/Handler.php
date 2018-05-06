@@ -9,6 +9,7 @@ namespace Df\Arch\Pipeline;
 use Df;
 
 use Df\Core\IApp;
+use Df\Arch\Context;
 use Df\Http\Response\Redirect;
 
 use Psr\Http\Message\ResponseInterface;
@@ -86,7 +87,7 @@ class Handler implements IHandler
                 continue;
             }
 
-            $this->routers[$area][] = new $class();
+            $this->routers[$area][] = new $class($area);
         }
 
         return $this;
@@ -159,6 +160,19 @@ class Handler implements IHandler
         }
 
 
+        // Add params a attributes
+        $request = $request->withAttribute('area', $area);
+
+        foreach ($params as $key => $value) {
+            $request = $request->withAttribute($key, $value);
+        }
+
+
+
+        // Use this instance as global http request
+        $this->app->{'http.request.server'}->setInstance($request);
+
+
         // Load and test routes
         $method = $request->getMethod();
         $route = null;
@@ -169,8 +183,10 @@ class Handler implements IHandler
 
         foreach ($this->routers[$area] as $router) {
             if ($route = $router->matchIn($method, $path)) {
-                $route->mergeParams($params);
-                return $route->dispatch($request, $this->app);
+                $uri = $route->buildUri($request);
+                $context = new Context($this->app, $uri, $request);
+
+                return $route->dispatch($context);
             }
         }
 

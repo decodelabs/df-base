@@ -7,13 +7,23 @@ declare(strict_types=1);
 namespace Df\Arch;
 
 use Df;
-use Df\Arch\Route\Named;
-use Df\Arch\Route\Node;
-use Df\Arch\Route\View;
+use Df\Arch\Route\Named as NamedRoute;
+use Df\Arch\Route\Node as NodeRoute;
+use Df\Arch\Route\View as ViewRoute;
 
 abstract class Router
 {
+    protected $area;
     protected $routes = [];
+
+    /**
+     * Init with area string
+     */
+    public function __construct(string $area)
+    {
+        $this->area = $area;
+    }
+
 
     /**
      * Load routes into collection
@@ -43,7 +53,7 @@ abstract class Router
     /**
      * Bind a named route to OPTIONS method
      */
-    public function options(string $path, $name, callable $runner=null): IRoute
+    public function options(string $path, $name, callable $runner=null): NamedRoute
     {
         return $this->name(['OPTIONS'], $path, $name, $runner);
     }
@@ -51,7 +61,7 @@ abstract class Router
     /**
      * Bind a named route to GET method
      */
-    public function get(string $path, $name, callable $runner=null): IRoute
+    public function get(string $path, $name, callable $runner=null): NamedRoute
     {
         return $this->name(['GET', 'HEAD'], $path, $name, $runner);
     }
@@ -59,7 +69,7 @@ abstract class Router
     /**
      * Bind a named route to POST method
      */
-    public function post(string $path, $name, callable $runner=null): IRoute
+    public function post(string $path, $name, callable $runner=null): NamedRoute
     {
         return $this->name(['POST'], $path, $name, $runner);
     }
@@ -67,7 +77,7 @@ abstract class Router
     /**
      * Bind a named route to PUT method
      */
-    public function put(string $path, $name, callable $runner=null): IRoute
+    public function put(string $path, $name, callable $runner=null): NamedRoute
     {
         return $this->name(['PUT'], $path, $name, $runner);
     }
@@ -75,7 +85,7 @@ abstract class Router
     /**
      * Bind a named route to DELETE method
      */
-    public function delete(string $path, $name, callable $runner=null): IRoute
+    public function delete(string $path, $name, callable $runner=null): NamedRoute
     {
         return $this->name(['DELETE'], $path, $name, $runner);
     }
@@ -83,7 +93,7 @@ abstract class Router
     /**
      * Bind a named route to PATCH method
      */
-    public function patch(string $path, $name, callable $runner=null): IRoute
+    public function patch(string $path, $name, callable $runner=null): NamedRoute
     {
         return $this->name(['PATCH'], $path, $name, $runner);
     }
@@ -91,7 +101,7 @@ abstract class Router
     /**
      * Bind a named route to any method
      */
-    public function any(string $path, $name, callable $runner=null): IRoute
+    public function any(string $path, $name, callable $runner=null): NamedRoute
     {
         return $this->name(null, $path, $name, $runner);
     }
@@ -99,7 +109,7 @@ abstract class Router
     /**
      * Bind a named route
      */
-    public function name(?array $methods, string $path, $name, callable $runner=null): IRoute
+    public function name(?array $methods, string $path, $name, callable $runner=null): NamedRoute
     {
         if ($runner === null) {
             if (is_callable($name)) {
@@ -112,6 +122,27 @@ abstract class Router
             }
         }
 
-        return $this->routes[] = new Named($methods, $path, $name, $runner);
+        return $this->addRoute(new NamedRoute($methods, $path, $name, $runner));
+    }
+
+
+
+    /**
+     * Bind path to node handler
+     */
+    public function node(string $path, string $node): NodeRoute
+    {
+        return $this->addRoute(new NodeRoute($path, $node));
+    }
+
+
+
+    /**
+     * Add a new route to the list
+     */
+    public function addRoute(IRoute $route): IRoute
+    {
+        $id = $route->getRouteType().'://'.ltrim($route->getRoutePath(), '/');
+        return $this->routes[$id] = $route;
     }
 }

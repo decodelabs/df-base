@@ -29,8 +29,12 @@ class Binding implements IBinding
     /**
      * Create new instance referencing base container
      */
-    public function __construct(IContainer $container, string $type, $target, bool $autoAlias=true)
-    {
+    public function __construct(
+        IContainer $container,
+        string $type,
+        $target,
+        bool $autoAlias=true
+    ) {
         $this->container = $container;
 
         if (!interface_exists($type, true) && !class_exists($type, true)) {
@@ -293,7 +297,7 @@ class Binding implements IBinding
     public function addParams(array $params): IBinding
     {
         foreach ($params as $key => $value) {
-            $this->inject($name, $value);
+            $this->inject($key, $value);
         }
 
         return $this;

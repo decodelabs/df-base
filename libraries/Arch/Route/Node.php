@@ -11,30 +11,25 @@ use Df\Core\IApp;
 
 use Df\Arch\IRoute;
 use Df\Arch\Context;
-use Df\Arch\Uri;
 
 use Df\Http\Response\Stream;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Named implements IRoute
+class Node implements IRoute
 {
     use TRoute;
 
-    protected $name;
-    protected $methods = [];
-    protected $runner;
+    protected $nodePath;
 
     /**
-     * Init with name and methods
+     * Init with request path and node path
      */
-    public function __construct(?array $methods, string $path, string $name, callable $runner)
+    public function __construct(string $path, string $nodePath)
     {
-        $this->name = $name;
         $this->path = $path;
-        $this->methods = $methods;
-        $this->runner = $runner;
+        $this->nodePath = ltrim($nodePath, '/');
     }
 
 
@@ -43,7 +38,7 @@ class Named implements IRoute
      */
     public function getRouteType(): string
     {
-        return 'name';
+        return 'node';
     }
 
     /**
@@ -51,7 +46,7 @@ class Named implements IRoute
      */
     public function getRoutePath(): string
     {
-        return $this->name;
+        return $this->nodePath;
     }
 
 
@@ -60,25 +55,38 @@ class Named implements IRoute
      */
     public function matchIn(string $method, string $requestPath): ?IRoute
     {
-        if ($this->methods !== null && !in_array($method, $this->methods)) {
-            return null;
-        }
-
         return $this->matchPath($requestPath);
     }
-
 
     /**
      * Dispatch to response
      */
     public function dispatch(Context $context): ResponseInterface
     {
-        $params = array_merge($context->httpRequest->getAttributes(), $this->params, [
+        $path = ltrim($context->request->path, '/');
+
+        if (substr($path, -1) == '/') {
+            $path .= 'index';
+        }
+
+        $parts = explode('/', $path);
+        $parts = array_map('ucfirst', $parts);
+        $class = '\\Df\\Apex\\Http\\'.ucfirst($context->request->area).'\\'.implode('\\', $parts).'Node';
+
+        if (!class_exists($class, true)) {
+            throw Df\Error::ENotFound([
+                'message' => 'Node not found: '.$context->request,
+                'http' => 404,
+                'data' => $context->request
+            ]);
+        }
+
+        $node = $context->app->newInstanceOf($class, [
             'route' => $this,
             'context' => $context
         ]);
 
-        $output = $context->app->call($this->runner, $params);
+        $output = $node->dispatch();
         return $this->normalizeResponse($output, $context->app);
     }
 }

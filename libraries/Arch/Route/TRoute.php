@@ -9,6 +9,7 @@ namespace Df\Arch\Route;
 use Df;
 use Df\Core\IApp;
 use Df\Arch\IRoute;
+use Df\Arch\Uri;
 
 use Df\Data\IArrayProvider;
 
@@ -20,13 +21,24 @@ use Df\Http\Response\Redirect;
 
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 trait TRoute
 {
+    protected $area;
     protected $path;
     protected $pattern;
     protected $params = [];
     protected $matchKeys = [];
+
+    /**
+     * Get route area
+     */
+    public function getRouteArea(): string
+    {
+        return $this->area;
+    }
+
 
     /**
      * Mix in params from area maps
@@ -35,6 +47,23 @@ trait TRoute
     {
         $this->params = array_merge($params, $this->params);
         return $this;
+    }
+
+
+    /**
+     * Get internal URI representation of request URI
+     */
+    public function buildUri(ServerRequestInterface $request): Uri
+    {
+        $area = $request->getAttribute('area', 'front');
+        $attributes = $request->getAttributes();
+        unset($attributes['area']);
+
+        $output = new Uri($this->getRouteType().'://~'.$area.'/'.ltrim($this->getRoutePath(), '/'));
+        $output->setQuery($request->getUri()->getQuery());
+        $output->query->merge(array_merge($attributes, $this->params));
+
+        return $output;
     }
 
 
@@ -56,7 +85,13 @@ trait TRoute
         $output = clone $this;
 
         foreach ($output->matchKeys as $rep => $key) {
-            $output->params[$key[0]] = $matches[$rep];
+            $value = $matches[$rep];
+
+            if ($value === '') {
+                $value = null;
+            }
+
+            $output->params[$key[0]] = $value;
         }
 
         return $output;
@@ -71,19 +106,18 @@ trait TRoute
         $this->matchKeys = [];
         $pattern = '/'.ltrim($this->path, '/');
 
-        $pattern = preg_replace_callback('/{([a-zA-Z0-9\-_\/\?]*?)}/', function ($matches) {
+        $pattern = preg_replace_callback('/{([a-zA-Z0-9\-_]+)([\/\?]*)}/', function ($matches) {
             $rep = 'r'.count($this->params);
             $key = $matches[1];
             $greedy = $optional = false;
 
-            if (substr($key, -1) == '/') {
-                $key = substr($key, 0, -1);
-                $greedy = true;
-            }
-
-            if (substr($key, -1) == '?') {
-                $key = substr($key, 0, -1);
-                $optional = true;
+            if (isset($matches[2])) {
+                foreach (str_split($matches[2]) as $modifier) {
+                    switch ($modifier) {
+                        case '/': $greedy = true; break;
+                        case '?': $optional = true; break;
+                    }
+                }
             }
 
             if (array_key_exists($key, $this->params)) {
@@ -143,6 +177,10 @@ trait TRoute
                 200,
                 ['content-type' => 'text/plain; charset=utf-8',]
             );
+        }
+
+        if ($output instanceof ResponseInterface) {
+            return $output;
         }
 
         if ($output instanceof UriInterface) {

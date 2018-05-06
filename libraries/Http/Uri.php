@@ -676,7 +676,7 @@ class Uri implements IUri
     public function __debugInfo(): array
     {
         return [
-            '' => $this->__toString()
+            'str' => $this->__toString()
         ];
     }
 }

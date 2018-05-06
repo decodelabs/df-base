@@ -14,7 +14,7 @@ class Tree implements \IteratorAggregate, ITree
     use namespace\ArrayCollection\THashMap;
 
     const MUTABLE = true;
-    const KEY_SEPARATOR = null;
+    const KEY_SEPARATOR = '.';
 
     protected $value;
 
@@ -450,9 +450,13 @@ class Tree implements \IteratorAggregate, ITree
             $valueParts = explode($valueDelimiter, trim($part), 2);
 
             $key = str_replace(['[', ']'], ['.', ''], urldecode(array_shift($valueParts)));
-            $value = urldecode(array_shift($valueParts));
+            $value = array_shift($valueParts);
 
-            $output->setDot($key, $value);
+            if ($value !== null) {
+                $value = urldecode($value);
+            }
+
+            $output->setNode($key, $value);
         }
 
         return $output;

@@ -328,6 +328,22 @@ class Container implements IContainer
      */
     public function getBinding(string $type): IBinding
     {
+        if ($binding = $this->lookupBinding($type)) {
+            return $binding;
+        }
+
+        throw Df\Error::{
+            'ENotFound,Psr\\Container\\NotFoundExceptionInterface'
+        }(
+            $type.' has not been bound'
+        );
+    }
+
+    /**
+     * Look up binding without throwing an error
+     */
+    protected function lookupBinding(string $type): ?IBinding
+    {
         if (isset($this->aliases[$type])) {
             $type = $this->aliases[$type];
         }
@@ -344,11 +360,7 @@ class Container implements IContainer
             }
         }
 
-        throw Df\Error::{
-            'ENotFound,Psr\\Container\\NotFoundExceptionInterface'
-        }(
-            $type.' has not been bound'
-        );
+        return null;
     }
 
     /**
@@ -432,9 +444,9 @@ class Container implements IContainer
      */
     public function newInstanceOf(string $type, array $params=[]): object
     {
-        try {
-            $binding = clone $this->getBinding($type);
-        } catch (namespace\ENotFound $e) {
+        if ($binding = $this->lookupBinding($type)) {
+            $binding = clone $binding;
+        } else {
             $binding = new Binding($this, $type, $type, false);
         }
 
