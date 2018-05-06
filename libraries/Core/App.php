@@ -24,10 +24,10 @@ use Df\Clip\Kernel as ConsoleKernel;
 
 use Df\Http\Kernel as HttpKernel;
 use Df\Http\ServiceProvider as HttpServiceProvider;
-use Df\Http\Middleware;
 
 use Df\Arch\ServiceProvider as ArchServiceProvider;
 use Df\Arch\Pipeline\IHandler as ArchHandler;
+use Df\Arch\Middleware\ErrorHandler as ErrorMiddleware;
 
 use Composer\Autoload\ClassLoader;
 
@@ -46,7 +46,7 @@ class App extends Container implements IApp
     const MIDDLEWARE = [];
 
     const DEFAULT_MIDDLEWARE = [
-        //Middleware\GlobalRequests::class => -99,
+        ErrorMiddleware::class => -99,
         // self::MIDDLEWARE
         ArchHandler::class => 99
     ];
