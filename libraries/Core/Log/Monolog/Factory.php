@@ -88,8 +88,8 @@ class Factory implements IFactory
             case 'errorlog':
                 return [$this->createErrorLogHandler($name, $config)];
 
-            case 'chromePhp':
-                return [$this->createChromePhpHandler($name, $config)];
+            case 'monolog':
+                return [$this->createMonologHandler($name, $config)];
 
             default:
                 return [$this->createDailyHandler($name, new Repository())];
@@ -193,12 +193,11 @@ class Factory implements IFactory
     /**
      * Create chrome php channel
      */
-    protected function createChromePhpHandler(string $name, Repository $config): HandlerInterface
+    protected function createMonologHandler(string $name, Repository $config): HandlerInterface
     {
-        return new ChromePHPHandler(
-            $config['level'] ?? Monolog::DEBUG,
-            $config['bubble'] ?? true
-        );
+        $type = $config['handler'];
+        $params = $config->params->toArray();
+        return $this->app->newInstanceOf($type, $params);
     }
 
 
