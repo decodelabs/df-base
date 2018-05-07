@@ -25,7 +25,10 @@
 
         "nesbot/carbon": "~1.21",
         "ramsey/uuid": "^3.7",
-        "symfony/var-dumper": "~4.0"
+        "symfony/var-dumper": "~4.0",
+
+        "paragonie/halite": "^4",
+        "paragonie/sodium_compat": "^1"
     },
     "autoload": {
         "psr-4": {
