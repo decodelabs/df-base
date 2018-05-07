@@ -34,7 +34,7 @@ class ServiceProvider implements IProvider
     {
         // Env
         $app->bindOnce(IEnvLoader::class, DotIni::class)
-            ->inject('path', $app->getBasePath().'/.env');
+            ->inject('path', $app->getBasePath().'/private/.env');
 
         $app->bindShared(Env::class, function ($app, IEnvLoader $loader) {
             return $loader->loadEnvConfig($app);

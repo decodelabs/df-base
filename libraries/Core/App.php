@@ -13,6 +13,7 @@ use Df\Core\Config\ServiceProvider as ConfigServiceProvider;
 use Df\Core\Env\ServiceProvider as EnvServiceProvider;
 use Df\Core\Error\ServiceProvider as ErrorServiceProvider;
 use Df\Core\Error\Handler as ErrorHandler;
+use Df\Core\Crypt\ServiceProvider as CryptServiceProvider;
 
 use Df\Core\ILoader;
 use Df\Core\Loader\Composer as ComposerLoader;
@@ -38,6 +39,7 @@ class App extends Container implements IApp
 
     const DEFAULT_PROVIDERS = [
         ConfigServiceProvider::class,
+        CryptServiceProvider::class,
         ErrorServiceProvider::class,
         HttpServiceProvider::class,
         ArchServiceProvider::class
