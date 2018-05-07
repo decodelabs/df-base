@@ -82,7 +82,7 @@ class Binding implements IBinding
         $name = array_pop($parts);
         $parts = array_map('lcfirst', $parts);
 
-        if (interface_exists($type)) {
+        if ($name{0} === 'I' && interface_exists($type)) {
             $name = substr($name, 1);
         }
 
