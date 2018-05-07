@@ -7,7 +7,7 @@ namespace Df\Core\Error;
 
 use Df;
 
-interface IReporter
+interface IRenderer
 {
-    public function reportException(\Throwable $exception);
+    public function renderException(\Throwable $exception);
 }

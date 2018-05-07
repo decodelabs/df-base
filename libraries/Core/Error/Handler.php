@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Df\Core\Error;
 
 use Df;
-use Df\Core\Error\Reporter\Dump as DumpReporter;
+use Df\Core\Error\Renderer\Dump as DumpRenderer;
 
 class Handler implements IHandler
 {
@@ -42,13 +42,13 @@ class Handler implements IHandler
     {
         try {
             $app = Df\app();
-            $app->bindOnce(IReporter::class, DumpReporter::class);
-            $reporter = $app[IReporter::class];
+            $app->bindOnce(IRenderer::class, DumpRenderer::class);
+            $renderer = $app[IRenderer::class];
         } catch (\Throwable $e) {
             dd($e, $exception);
         }
 
-        $reporter->reportException($exception);
+        $renderer->renderException($exception);
     }
 
     /**

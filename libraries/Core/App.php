@@ -82,6 +82,7 @@ class App extends Container implements IApp
 
     /**
      * Setup basic PHP platform defaults
+     * These may all be overridden by config later on
      */
     protected function setPlatformDefaults(): void
     {

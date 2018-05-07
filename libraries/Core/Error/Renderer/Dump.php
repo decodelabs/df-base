@@ -4,18 +4,18 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Core\Error\Reporter;
+namespace Df\Core\Error\Renderer;
 
 use Df;
 
-use Df\Core\Error\IReporter;
+use Df\Core\Error\IRenderer;
 
-class Dump implements IReporter
+class Dump implements IRenderer
 {
     /**
      * Report a caught exception
      */
-    public function reportException(\Throwable $exception)
+    public function renderException(\Throwable $exception)
     {
         while (ob_get_level()) {
             ob_end_clean();
