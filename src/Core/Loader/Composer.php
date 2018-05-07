@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Df\Core\Loader;
 
 use Df;
+use Df\Core\IApp;
 use Df\Core\ILoader;
 
 use Composer\Autoload\ClassLoader;
@@ -16,6 +17,8 @@ class Composer implements ILoader
     const APEX = [
         'http', 'themes'
     ];
+
+    protected $appLibraries = false;
 
     protected $vendorPath;
     protected $basePath;
@@ -31,13 +34,14 @@ class Composer implements ILoader
     /**
      * Construct with default Composer ClassLoader
      */
-    public function __construct(ClassLoader $autoload)
+    public function __construct(IApp $app, ClassLoader $autoload)
     {
         $reflection = new \ReflectionClass(ClassLoader::class);
         $this->vendorPath = dirname(dirname($reflection->getFileName()));
         $this->basePath = dirname($this->vendorPath);
 
         $this->autoload = $autoload;
+        $this->appLibraries = $app::LOAD_APP_LIBRARIES;
     }
 
 
@@ -51,13 +55,16 @@ class Composer implements ILoader
         $packages = array_unique($packages);
 
         $this->apexPaths = [$this->basePath];
-        $this->libraryPaths = [$this->basePath.'/libraries'];
+
+        if ($this->appLibraries) {
+            $this->libraryPaths = [$this->basePath.'/libraries'];
+        }
 
         foreach ($packages as $package) {
             $this->apexPaths[] = $this->vendorPath.'/decodelabs/df-'.$package;
-            $this->libraryPaths[] = $this->vendorPath.'/decodelabs/df-'.$package.'/libraries';
+            $this->libraryPaths[] = $this->vendorPath.'/decodelabs/df-'.$package.'/src';
         }
-        
+
         $this->packages = array_reverse($packages);
         $this->packages[] = 'app';
 

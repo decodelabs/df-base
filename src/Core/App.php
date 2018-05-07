@@ -55,6 +55,8 @@ class App extends Container implements IApp
         ArchHandler::class => 99
     ];
 
+    const LOAD_APP_LIBRARIES = false;
+
 
     /**
      * Setup initial state
