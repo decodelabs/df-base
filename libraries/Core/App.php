@@ -185,6 +185,24 @@ class App extends Container implements IApp
         return Df\BASE_PATH.'/public';
     }
 
+    /**
+     * Get storage path
+     */
+    public function getStoragePath(): string
+    {
+        return Df\BASE_PATH.'/storage';
+    }
+
+
+    /**
+     * Get app name from config
+     */
+    public function getAppName(): string
+    {
+        // TODO: actually source the name from config!
+        return 'DF App';
+    }
+
 
     /**
      * Tidy things up before exiting

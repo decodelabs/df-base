@@ -12,6 +12,7 @@ use Psr\Log\LoggerInterface;
 interface ILogger extends LoggerInterface
 {
     public function addChannel(string $name, LoggerInterface $channel): ILogger;
+    public function setDefaultChannel(string $name): ILogger;
     public function onChannel(string $name): LoggerInterface;
     public function removeChannel(string $name): ILogger;
     public function clearChannels(): ILogger;

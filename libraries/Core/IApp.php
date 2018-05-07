@@ -17,6 +17,9 @@ interface IApp extends IContainer
     public function getBasePath(): string;
     public function getVendorPath(): string;
     public function getPublicPath(): string;
+    public function getStoragePath(): string;
+
+    public function getAppName(): string;
 
     public function terminate(): void;
 }

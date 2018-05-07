@@ -10,7 +10,11 @@ use Df;
 use Df\Core\ILogger;
 use Df\Core\Config\Repository;
 
+use Psr\Log\LoggerInterface;
+
 interface IFactory
 {
-    public function createLoggerFromConfig(Repository $config): ILogger;
+    public function loadChannel(string $name): LoggerInterface;
+    public function createChannel(string $name, string $type, Repository $config): LoggerInterface;
+    public function createEmergencyChannel(string $name=null): LoggerInterface;
 }

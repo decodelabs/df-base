@@ -8,6 +8,7 @@ namespace Df\Core\Log;
 
 use Df;
 use Df\Core\ILogger;
+use Df\Core\Log\IFactory;
 
 use Psr\Log\LoggerTrait;
 use Psr\Log\LoggerInterface;
@@ -28,8 +29,18 @@ class Logger implements ILogger
         'emergency' => LogLevel::EMERGENCY,
     ];
 
+    protected $default;
     protected $channels = [];
+    protected $factory;
 
+    /**
+     * Init with factory
+     */
+    public function __construct(IFactory $factory, string $default=null)
+    {
+        $this->factory = $factory;
+        $this->default = $default ?? 'default';
+    }
 
     /**
      * Register a channel (instanceof Psr\Log\LoggerInterface)
@@ -37,6 +48,20 @@ class Logger implements ILogger
     public function addChannel(string $name, LoggerInterface $channel): ILogger
     {
         $this->channels[$name] = $channel;
+
+        if (!isset($this->default)) {
+            $this->default = $name;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set existing channel as default
+     */
+    public function setDefaultChannel(string $name): ILogger
+    {
+        $this->default = $name;
         return $this;
     }
 
@@ -46,9 +71,17 @@ class Logger implements ILogger
     public function onChannel(string $name): LoggerInterface
     {
         if (!isset($this->channels[$name])) {
-            throw Df\Error::ENotFound(
-                'Logger channel "'.$name.'" has not been defined'
-            );
+            try {
+                $channel = $this->factory->loadChannel($name);
+            } catch (\Throwable $e) {
+                $channel = $this->factory->createEmergencyChannel();
+
+                $channel->emergency('Loading of channel "'.$name.'" failed - falling back on emergency logger', [
+                    'exception' => $e
+                ]);
+            }
+
+            $this->addChannel($name, $channel);
         }
 
         return $this->channels[$name];
@@ -60,6 +93,11 @@ class Logger implements ILogger
     public function removeChannel(string $name): ILogger
     {
         unset($this->channels[$name]);
+
+        if ($this->default === $name) {
+            $this->default = key($this->channels);
+        }
+
         return $this;
     }
 
@@ -69,6 +107,7 @@ class Logger implements ILogger
     public function clearChannels(): ILogger
     {
         $this->channels = [];
+        $this->default = null;
         return $this;
     }
 
@@ -84,8 +123,6 @@ class Logger implements ILogger
             );
         }
 
-        foreach ($this->channels as $channel) {
-            $channel->log($level, $message, $context);
-        }
+        $this->onChannel($this->default)->log($level, $message, $context);
     }
 }

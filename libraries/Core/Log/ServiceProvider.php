@@ -9,6 +9,7 @@ namespace Df\Core\Log;
 use Df;
 
 use Df\Core\ILogger;
+use Df\Core\Log\Logger;
 use Df\Core\Log\Monolog\Factory as MonologFactory;
 
 use Df\Core\Service\IContainer;
@@ -34,11 +35,6 @@ class ServiceProvider implements IProvider
     {
         $app->bind(IFactory::class, MonologFactory::class);
 
-        $app->bindShared(ILogger::class, function ($app) {
-            $config = $app['core.config.repository']->logging;
-            $factory = $app[IFactory::class];
-
-            return $factory->createLoggerFromConfig($config);
-        });
+        $app->bindShared(ILogger::class, Logger::class);
     }
 }
