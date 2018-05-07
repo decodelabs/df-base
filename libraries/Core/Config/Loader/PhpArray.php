@@ -24,6 +24,9 @@ class PhpArray implements ILoader
                 'devtools' => 'devtools.df.test:8080/test/df-playground-/'
             ]
         ],
+        'crypt' => [
+            'algo' => PASSWORD_DEFAULT
+        ],
         'http' => [
             'sendfile' => 'x-sendfile',
             'manualChunk' => true
