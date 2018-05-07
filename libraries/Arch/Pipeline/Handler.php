@@ -217,7 +217,6 @@ class Handler implements IHandler
 
         foreach ($this->routers[$area] as $router) {
             if ($route = $router->matchIn($method, $path)) {
-                // TODO: route out properly
                 $uri = $request->getUri();
                 $newPath = $uri->getPath();
 
