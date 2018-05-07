@@ -12,7 +12,8 @@ use Df\Core\Error\IHandler;
 use Df\Core\Error\Handler;
 
 use Df\Core\Error\IReporter;
-use Df\Core\Error\Reporter\Whoops;
+use Df\Core\Error\Reporter\Whoops as WhoopsReporter;
+use Df\Core\Error\Reporter\Dump as DumpReporter;
 
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
@@ -38,7 +39,12 @@ class ServiceProvider implements IProvider
     public function registerServices(IContainer $app): void
     {
         $app->bindShared(IHandler::class, Handler::class);
-        $app->bind(IReporter::class, Whoops::class);
+
+        if (class_exists(\Whoops\Run::class, true)) {
+            $app->bind(IReporter::class, Whoops::class);
+        } else {
+            $app->bind(IReporter::class, Dump::class);
+        }
 
         Handler::register($app[IHandler::class]);
     }
