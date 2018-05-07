@@ -18,6 +18,7 @@ use Df\Core\Log\ServiceProvider as LogServiceProvider;
 
 use Df\Core\ILoader;
 use Df\Core\Loader\Composer as ComposerLoader;
+use Df\Core\Loader\Bundle;
 
 use Df\Core\Kernel\IHttp as IHttpKernel;
 use Df\Core\Kernel\IConsole as IConsoleKernel;
@@ -35,7 +36,7 @@ use Composer\Autoload\ClassLoader;
 
 class App extends Container implements IApp
 {
-    const PACKAGES = [];
+    const BUNDLES = [];
     const PROVIDERS = [];
 
     const DEFAULT_PROVIDERS = [
@@ -72,7 +73,7 @@ class App extends Container implements IApp
         /* The loader needs to be set up manually before
          * everything else to ensure custom classes are found */
         $this->registerLoaderServices();
-        $this[ILoader::class]->loadPackages($this::PACKAGES);
+        $this[ILoader::class]->loadBundles($this::BUNDLES);
 
         /* Load up all the available providers */
         $this->registerProviders(...$this::DEFAULT_PROVIDERS);
@@ -108,6 +109,11 @@ class App extends Container implements IApp
 
         /* Register the main loader handler */
         $this->bindShared(ILoader::class, ComposerLoader::class);
+
+        /* Register app folder as bundle */
+        Bundle::register('app', PHP_INT_MAX, [
+            'apex.http' => $this->getBasePath().'/http'
+        ]);
     }
 
     /**

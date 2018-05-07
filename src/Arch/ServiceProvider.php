@@ -42,8 +42,8 @@ class ServiceProvider implements IProvider
                 $handler->loadAreaMaps($config->arch->areaMaps->toArray());
 
                 // Routers
-                $packages = $app[ILoader::class]->getLoadedPackages();
-                $handler->setRouterPackages($packages);
+                $bundles = $app[ILoader::class]->getLoadedBundles();
+                $handler->setRouterBundles($bundles);
 
                 return $handler;
             });

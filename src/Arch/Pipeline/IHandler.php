@@ -20,7 +20,7 @@ interface IHandler extends MiddlewareInterface
     public function loadAreaMaps(array $maps): IHandler;
     public function addAreaMap(AreaMap $map): IHandler;
 
-    public function setRouterPackages(array $packages): IHandler;
+    public function setRouterBundles(array $bundles): IHandler;
     public function loadRouters(string $area): IHandler;
 
     public function routeIn(ServerRequestInterface $request): ?ResponseInterface;

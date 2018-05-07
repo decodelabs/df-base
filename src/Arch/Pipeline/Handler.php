@@ -24,7 +24,7 @@ class Handler implements IHandler
 {
     protected $app;
     protected $areaMaps = [];
-    protected $routerPackages = [];
+    protected $routerBundles = [];
     protected $routers = [];
 
     /**
@@ -70,9 +70,9 @@ class Handler implements IHandler
     /**
      * Set list of packages to load routers from
      */
-    public function setRouterPackages(array $packages): IHandler
+    public function setRouterBundles(array $bundles): IHandler
     {
-        $this->routerPackages = $packages;
+        $this->routerBundles = $bundles;
         return $this;
     }
 
@@ -84,8 +84,8 @@ class Handler implements IHandler
     {
         $this->routers[$area] = [];
 
-        foreach ($this->routerPackages as $package) {
-            $class = '\\Df\\Apex\\Http\\'.ucfirst($area).'\\'.ucfirst($package).'Router';
+        foreach ($this->routerBundles as $bundle) {
+            $class = '\\Df\\Apex\\Http\\'.ucfirst($area).'\\'.ucfirst($bundle->getName()).'Router';
 
             if (!class_exists($class, true)) {
                 continue;
@@ -146,6 +146,7 @@ class Handler implements IHandler
                 if ($area === '*') {
                     if (preg_match('#^/~([^/]+)(/.*)?$#', $path, $matches)) {
                         $area = $matches[1];
+                        $path = $matches[2] ?? '/';
                     } else {
                         if (isset($this->areaMaps['front'])) {
                             continue;
@@ -166,7 +167,6 @@ class Handler implements IHandler
                 break;
             }
         }
-
 
         // No path? domain didn't match, move along
         if ($path === null) {
@@ -194,7 +194,6 @@ class Handler implements IHandler
         if (!isset($this->routers[$area])) {
             $this->loadRouters($area);
         }
-
 
         foreach ($this->routers[$area] as $router) {
             if ($route = $router->matchIn($method, $path)) {

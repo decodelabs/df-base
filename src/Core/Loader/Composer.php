@@ -23,10 +23,8 @@ class Composer implements ILoader
     protected $vendorPath;
     protected $basePath;
 
-    protected $apexPaths = [];
-    protected $libraryPaths = [];
-
-    protected $packages = [];
+    protected $bundles = [];
+    protected $bundlePaths = [];
 
     protected $autoload;
 
@@ -48,42 +46,37 @@ class Composer implements ILoader
     /**
      * Take a list of package names and install them into the loader
      */
-    public function loadPackages(array $packages): void
+    public function loadBundles(array $bundles): void
     {
-        $packages = array_reverse($packages);
-        $packages[] = 'base';
-        $packages = array_unique($packages);
+        // Sort bundle list
+        $this->bundles = Bundle::getRegistered();
 
-        $this->apexPaths = [$this->basePath];
+        uasort($this->bundles, function ($a, $b) {
+            return $b->getPriority() <=> $a->getPriority();
+        });
 
-        if ($this->appLibraries) {
-            $this->libraryPaths = [$this->basePath.'/libraries'];
+
+        // Extract bundle paths
+        foreach ($this->bundles as $name => $bundle) {
+            foreach ($bundle->getPaths() as $pathName => $path) {
+                // Add to loader
+                $parts = array_map('ucfirst', explode('.', $pathName));
+                $namespace = 'Df\\'.implode('\\', $parts).'\\';
+                $this->autoload->addPsr4($namespace, [$path]);
+
+                // Add to path list
+                $this->bundlePaths[implode('/', $parts)][] = $path;
+            }
         }
-
-        foreach ($packages as $package) {
-            $this->apexPaths[] = $this->vendorPath.'/decodelabs/df-'.$package;
-            $this->libraryPaths[] = $this->vendorPath.'/decodelabs/df-'.$package.'/src';
-        }
-
-        $this->packages = array_reverse($packages);
-        $this->packages[] = 'app';
-
-        foreach (static::APEX as $folder) {
-            $this->autoload->setPsr4('Df\\Apex\\'.ucfirst($folder).'\\', array_map(function ($path) use ($folder) {
-                return $path.'/'.$folder;
-            }, $this->apexPaths));
-        }
-
-        $this->autoload->setPsr4('Df\\', $this->libraryPaths);
     }
 
 
     /**
      * List of ordered package names
      */
-    public function getLoadedPackages(): array
+    public function getLoadedBundles(): array
     {
-        return $this->packages;
+        return $this->bundles;
     }
 
 

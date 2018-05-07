@@ -9,12 +9,9 @@ use Df;
 
 interface ILoader
 {
-    public function loadPackages(array $packages): void;
-    public function getLoadedPackages(): array;
+    public function loadBundles(array $bundles): void;
+    public function getLoadedBundles(): array;
 
     public function getBasePath(): string;
     public function getVendorPath(): string;
-
-    public function getApexPaths(): array;
-    public function getLibraryPaths(): array;
 }
