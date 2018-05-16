@@ -16,13 +16,14 @@ interface IChannel
     public function read(int $length): ?string;
     public function readAll(): ?string;
     public function readLine(): ?string;
-    public function readTo(IWriter $writer): void;
+    public function writeTo(IChannel $writer): void;
 
     public function isWritable(): bool;
     public function write(string $data, int $length=null): int;
     public function writeLine(string $data=''): int;
     public function writeBuffer(string &$buffer, int $length): int;
-    public function writeFrom(IReader $reader): void;
 
+    public function eof(): bool;
     public function close(): void;
+    public function getResource();
 }

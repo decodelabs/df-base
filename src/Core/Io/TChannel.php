@@ -46,8 +46,8 @@ trait TChannel
         $this->checkReadable();
         $data = null;
 
-        while (null !== ($chunk = $this->readChunk(4096))) {
-            $data .= $chunk;
+        while (!$this->eof()) {
+            $data .= $this->read(8192);
         }
 
         return $data;
@@ -56,12 +56,12 @@ trait TChannel
     /**
      * Transfer available data to a write instance
      */
-    public function readTo(IWriter $writer): void
+    public function writeTo(IChannel $writer): void
     {
         $this->checkReadable();
 
-        while (null !== ($chunk = $this->read(4096))) {
-            $writer->write($chunk);
+        while (!$this->eof()) {
+            $writer->write($this->read(8192));
         }
     }
 
@@ -70,7 +70,7 @@ trait TChannel
      */
     protected function checkReadable(): void
     {
-        if (!$this->isReadable()) {
+        if (!$this->getResource() || !$this->isReadable()) {
             throw Df\Error::ERuntime('Reading has been shut down');
         }
     }
@@ -106,23 +106,11 @@ trait TChannel
     }
 
     /**
-     * Transfer data from reader
-     */
-    public function writeFrom(IReader $reader): void
-    {
-        $this->checkWritable();
-
-        while (null !== ($chunk = $reader->read(4096))) {
-            $this->write($chunk);
-        }
-    }
-
-    /**
      * Check the resource is readable and throw exception if not
      */
     protected function checkWritable(): void
     {
-        if (!$this->isWritable()) {
+        if (!$this->getResource() || !$this->isWritable()) {
             throw Df\Error::ERuntime('Writing has been shut down');
         }
     }

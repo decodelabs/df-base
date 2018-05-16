@@ -13,6 +13,7 @@ class Stream implements IChannel
     use TChannel;
 
     protected $resource;
+    protected $mode = null;
     protected $readable = null;
     protected $writable = null;
 
@@ -24,6 +25,8 @@ class Stream implements IChannel
         if (!$this->resource = fopen($path, $mode)) {
             throw Df\Error::EIo('Unable to open stream');
         }
+
+        $this->mode = $mode;
     }
 
     /**
@@ -31,6 +34,10 @@ class Stream implements IChannel
      */
     public function setBlocking(bool $flag): void
     {
+        if (!$this->resource) {
+            throw Df\Error::ELogic('Cannot set blocking, resource not open');
+        }
+
         stream_set_blocking($this->resource, $flag);
     }
 
@@ -57,10 +64,10 @@ class Stream implements IChannel
         }
 
         if ($this->readable === null) {
-            $meta = stream_get_meta_data($this->resource);
-            $mode = $meta['mode'];
-
-            $this->readable = (strstr($mode, 'r') || strstr($mode, '+'));
+            $this->readable = (
+                strstr($this->mode, 'r') ||
+                strstr($this->mode, '+')
+            );
         }
 
         return $this->readable;
@@ -118,15 +125,12 @@ class Stream implements IChannel
         }
 
         if ($this->writable === null) {
-            $meta = stream_get_meta_data($this->resource);
-            $mode = $meta['mode'];
-
             $this->writable = (
-                strstr($mode, 'x') ||
-                strstr($mode, 'w') ||
-                strstr($mode, 'c') ||
-                strstr($mode, 'a') ||
-                strstr($mode, '+')
+                strstr($this->mode, 'x') ||
+                strstr($this->mode, 'w') ||
+                strstr($this->mode, 'c') ||
+                strstr($this->mode, 'a') ||
+                strstr($this->mode, '+')
             );
         }
 
@@ -148,6 +152,18 @@ class Stream implements IChannel
     }
 
     /**
+     * Has this stream ended?
+     */
+    public function eof(): bool
+    {
+        if (!$this->resource) {
+            return true;
+        }
+
+        return feof($this->resource);
+    }
+
+    /**
      * Close the stream
      */
     public function close(): void
@@ -160,8 +176,9 @@ class Stream implements IChannel
         }
 
         $this->resource = null;
-        $this->readable = false;
-        $this->writable = false;
+        $this->mode = null;
+        $this->readable = null;
+        $this->writable = null;
     }
 
     /**
@@ -170,5 +187,13 @@ class Stream implements IChannel
     public function getResource()
     {
         return $this->resource;
+    }
+
+    /**
+     * Get mode stream was opened with
+     */
+    public function getIoMode(): ?string
+    {
+        return $this->mode;
     }
 }
