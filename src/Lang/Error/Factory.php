@@ -81,6 +81,10 @@ class Factory
                 'type' => 'UnexpectedValueException'
             ],
 
+            'EIo' => [
+                'extend' => 'ERuntime'
+            ],
+
             'EBadRequest' => [
                 'extend' => 'ERuntime',
                 'http' => 400
