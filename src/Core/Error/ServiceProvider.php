@@ -41,9 +41,9 @@ class ServiceProvider implements IProvider
         $app->bindShared(IHandler::class, Handler::class);
 
         if (class_exists(\Whoops\Run::class, true)) {
-            $app->bind(IRenderer::class, Whoops::class);
+            $app->bind(IRenderer::class, WhoopsRenderer::class);
         } else {
-            $app->bind(IRenderer::class, Dump::class);
+            $app->bind(IRenderer::class, DumpRenderer::class);
         }
 
         Handler::register($app[IHandler::class]);
