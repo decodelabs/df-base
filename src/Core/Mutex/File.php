@@ -32,10 +32,11 @@ class File implements ILock
      */
     protected function acquireLock(bool $blocking): bool
     {
-        if (!$this->file->isOpen()) {
-            $this->file->open('c');
+        if ($this->file->exists()) {
+            return false;
         }
-        
+
+        $this->file->open('c');
         return $this->file->lockExclusive(true);
     }
 
@@ -45,5 +46,6 @@ class File implements ILock
     protected function releaseLock(): void
     {
         $this->file->unlock()->close();
+        $this->file->delete();
     }
 }

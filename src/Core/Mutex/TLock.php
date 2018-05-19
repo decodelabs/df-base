@@ -69,7 +69,6 @@ trait TLock
             ($blocking || microtime(true) < $end)
         ) {
             usleep(50000);
-            $t++;
         }
 
         return $locked;
