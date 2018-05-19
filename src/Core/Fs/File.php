@@ -191,45 +191,33 @@ class File extends Stream implements IFile
     /**
      * Attempt to shared lock file
      */
-    public function lock(bool $nonBlocking=false): IFile
+    public function lock(bool $nonBlocking=false): bool
     {
         if ($this->resource === null) {
             throw Df\Error::EIo('Cannot lock file, file not open', null, $this);
         }
 
         if ($nonBlocking) {
-            $result = flock($this->resource, LOCK_SH | LOCK_NB);
+            return flock($this->resource, LOCK_SH | LOCK_NB);
         } else {
-            $result = flock($this->resource, LOCK_SH);
+            return flock($this->resource, LOCK_SH);
         }
-
-        if (!$result) {
-            throw Df\Error::EIo('Unable to lock file', null, $this);
-        }
-
-        return $this;
     }
 
     /**
      * Attempt to exclusive lock file
      */
-    public function lockExclusive(bool $nonBlocking=false): IFile
+    public function lockExclusive(bool $nonBlocking=false): bool
     {
         if ($this->resource === null) {
             throw Df\Error::EIo('Cannot lock file, file not open', null, $this);
         }
 
         if ($nonBlocking) {
-            $result = flock($this->resource, LOCK_EX | LOCK_NB);
+            return flock($this->resource, LOCK_EX | LOCK_NB);
         } else {
-            $result = flock($this->resource, LOCK_EX);
+            return flock($this->resource, LOCK_EX);
         }
-
-        if (!$result) {
-            throw Df\Error::EIo('Unable to lock file');
-        }
-
-        return $this;
     }
 
     /**

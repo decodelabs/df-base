@@ -25,8 +25,8 @@ interface IFile extends INode, IChannel
     public function setOwner(int $owner): IFile;
     public function setGroup(int $group): IFile;
 
-    public function lock(bool $nonBlocking=false): IFile;
-    public function lockExclusive(bool $nonBlocking=false): IFile;
+    public function lock(bool $nonBlocking=false): bool;
+    public function lockExclusive(bool $nonBlocking=false): bool;
     public function unlock(): IFile;
 
     public function seek(int $offet, int $whence=SEEK_SET): IFile;
