@@ -239,4 +239,12 @@ class Formatter
 
         return (new Text($string))->alphaToNumeric();
     }
+
+    /**
+     * String to boolean
+     */
+    public static function toBoolean(string $text): bool
+    {
+        return (new Text($string))->toBoolean();
+    }
 }

@@ -913,7 +913,7 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
     /**
      * Convert text value to boolean
      */
-    public function toBoolean(): bol
+    public function toBoolean(): bool
     {
         switch ($text = strtolower(trim($this->text))) {
             case 'false':
