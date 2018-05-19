@@ -323,7 +323,7 @@ class Uri implements \ArrayAccess
         } elseif (empty($query)) {
             return new Tree();
         } elseif (is_string($query)) {
-            return Tree::createFromDelimitedString($query);
+            return Tree::fromDelimitedString($query);
         }
 
         return new Tree($query);

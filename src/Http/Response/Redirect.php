@@ -19,7 +19,7 @@ class Redirect extends Stream
     public function __construct(UriInterface $uri, int $status=200, array $headers=[])
     {
         parent::__construct(
-            MessageStream::createFromString('', 'wb+'),
+            MessageStream::fromString('', 'wb+'),
             $status,
             $this->injectDefaultHeaders([
                 'location' => [(string)$uri]

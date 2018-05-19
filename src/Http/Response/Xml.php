@@ -17,7 +17,7 @@ class Xml extends Stream
     public function __construct(string $xml, int $status=200, array $headers=[])
     {
         parent::__construct(
-            MessageStream::createFromString($xml, 'wb+'),
+            MessageStream::fromString($xml, 'wb+'),
             $status,
             $this->injectDefaultHeaders([
                 'content-type' => 'application/xml; charset=utf-8',

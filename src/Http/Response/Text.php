@@ -17,7 +17,7 @@ class Text extends Stream
     public function __construct(string $text, int $status=200, array $headers=[])
     {
         parent::__construct(
-            MessageStream::createFromString($text, 'wb+'),
+            MessageStream::fromString($text, 'wb+'),
             $status,
             $this->injectDefaultHeaders([
                 'content-type' => 'text/plain; charset=utf-8',

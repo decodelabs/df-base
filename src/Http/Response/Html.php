@@ -17,7 +17,7 @@ class Html extends Stream
     public function __construct(string $html, int $status=200, array $headers=[])
     {
         parent::__construct(
-            MessageStream::createFromString($html, 'wb+'),
+            MessageStream::fromString($html, 'wb+'),
             $status,
             $this->injectDefaultHeaders([
                 'content-type' => 'text/html; charset=utf-8',

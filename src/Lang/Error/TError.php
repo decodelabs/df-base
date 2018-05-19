@@ -98,7 +98,7 @@ trait TError
     public function getStackTrace(): Trace
     {
         if (!$this->stackTrace) {
-            $this->stackTrace = Trace::createFromException($this, $this->rewind + 2);
+            $this->stackTrace = Trace::fromException($this, $this->rewind + 2);
         }
 
         return $this->stackTrace;

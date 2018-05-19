@@ -39,7 +39,7 @@ class ErrorHandler implements MiddlewareInterface
             $trace = $e->getStackTrace();
         } else {
             $http = 500;
-            $trace = Trace::createFromBacktrace($e->getTrace());
+            $trace = Trace::fromArray($e->getTrace());
         }
 
         // TODO: return a response!

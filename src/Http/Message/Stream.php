@@ -35,7 +35,7 @@ class Stream implements StreamInterface
     /**
      * Create from string
      */
-    public static function createFromString(string $content, string $mode='r+'): StreamInterface
+    public static function fromString(string $content, string $mode='r+'): StreamInterface
     {
         $output = self::createTemp($mode);
         $output->write($content);

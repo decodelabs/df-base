@@ -441,7 +441,7 @@ class Tree implements \IteratorAggregate, ITree
     /**
      * From query string
      */
-    public static function createFromDelimitedString(string $string, string $setDelimiter='&', string $valueDelimiter='='): ITree
+    public static function fromDelimitedString(string $string, string $setDelimiter='&', string $valueDelimiter='='): ITree
     {
         $output = new static();
         $parts = explode($setDelimiter, $string);

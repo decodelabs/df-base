@@ -19,7 +19,7 @@ class Factory
     /**
      * Generate ServerRequest from global environment variables
      */
-    public function createFromEnvironment(
+    public function fromEnvironment(
         array $server=null,
         array $query=null,
         array $body=null,

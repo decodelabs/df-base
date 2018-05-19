@@ -19,7 +19,7 @@ class Json extends Stream
         $json = json_encode($data, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_UNESCAPED_SLASHES);
 
         parent::__construct(
-            MessageStream::createFromString($json, 'wb+'),
+            MessageStream::fromString($json, 'wb+'),
             $status,
             $this->injectDefaultHeaders([
                 'content-type' => 'application/json'

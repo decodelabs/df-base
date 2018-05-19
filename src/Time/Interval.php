@@ -15,15 +15,18 @@ class Interval extends CarbonInterval
     /**
      * Ensure input is either instance of Interval or null
      */
-    public static function normalizeInstance($duration): ?Interval
+    public static function instance($duration): ?Interval
     {
         if ($duration === null) {
+            return null;
+        } elseif ($duration instanceof Interval) {
+            return $duration;
         } elseif (is_int($duration)) {
             return static::seconds($duration);
         } elseif (is_string($duration)) {
             return static::fromString($duration);
         } elseif ($duration instanceof \DateInterval) {
-            return static::instance($duration);
+            return parent::instance($duration);
         } elseif (is_array($duration)) {
             return static::create(...$duration);
         } else {

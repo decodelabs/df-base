@@ -580,7 +580,7 @@ class Uri implements IUri
      */
     public function getQueryTree(): Tree
     {
-        return Tree::createFromDelimitedString($this->query);
+        return Tree::fromDelimitedString($this->query);
     }
 
 

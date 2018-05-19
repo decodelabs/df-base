@@ -40,7 +40,7 @@ class ServiceProvider implements IProvider
     {
         // Server request
         $app->bindShared(ServerRequestInterface::class, function ($app) {
-            return (new Factory())->createFromEnvironment();
+            return (new Factory())->fromEnvironment();
         })->alias('http.request.server');
 
         // Dispatcher

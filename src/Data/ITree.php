@@ -29,7 +29,7 @@ interface ITree extends IHashMap, IValueProvider
     public function isValue($value, bool $strict): bool;
 
 
-    public static function createFromDelimitedString(string $string, string $setDelimiter='&', string $valueDelimiter='='): ITree;
+    public static function fromDelimitedString(string $string, string $setDelimiter='&', string $valueDelimiter='='): ITree;
     public function toDelimitedString(string $setDelimiter='&', string $valueDelimiter='='): string;
     public function toDelimitedSet(bool $urlEncode=false, string $prefix=null): array;
 

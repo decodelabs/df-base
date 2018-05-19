@@ -15,9 +15,9 @@ class Trace implements \IteratorAggregate
     /**
      * Extract trace from exception and build
      */
-    public static function createFromException(\Throwable $e, int $rewind=0): Trace
+    public static function fromException(\Throwable $e, int $rewind=0): Trace
     {
-        return self::createFromBacktrace($e->getTrace(), $rewind);
+        return self::fromArray($e->getTrace(), $rewind);
     }
 
     /**
@@ -25,13 +25,13 @@ class Trace implements \IteratorAggregate
      */
     public static function create(int $rewind=0): Trace
     {
-        return self::createFromBacktrace(debug_backtrace(), $rewind + 1);
+        return self::fromArray(debug_backtrace(), $rewind + 1);
     }
 
     /**
      * Take a trace array and convert to objects
      */
-    public static function createFromBacktrace(array $trace, int $rewind=0): Trace
+    public static function fromArray(array $trace, int $rewind=0): Trace
     {
         $last = null;
 
