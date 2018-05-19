@@ -18,6 +18,7 @@ use Df\Http\Response\Stream;
 use Df\Http\Response\Text;
 use Df\Http\Response\Json;
 use Df\Http\Response\Redirect;
+use Df\Http\Response\IProxy;
 
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -192,6 +193,10 @@ trait TRoute
                 200,
                 ['content-type' => 'text/plain; charset=utf-8',]
             );
+        }
+
+        if ($output instanceof IProxy) {
+            $output = $output->toHttpResponse();
         }
 
         if ($output instanceof ResponseInterface) {
