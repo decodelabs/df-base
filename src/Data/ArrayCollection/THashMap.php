@@ -9,6 +9,7 @@ namespace Df\Data\ArrayCollection;
 use Df;
 use Df\Data\IReadable;
 use Df\Data\IHashMap;
+use Df\Data\Arr;
 
 trait THashMap
 {
