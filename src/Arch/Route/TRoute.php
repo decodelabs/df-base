@@ -12,10 +12,12 @@ use Df\Arch\IRoute;
 use Df\Arch\Uri;
 
 use Df\Data\IArrayProvider;
+use Df\Html\IContainer as HtmlContainer;
 
 use Df\Http\Message\Generator;
 use Df\Http\Response\Stream;
 use Df\Http\Response\Text;
+use Df\Http\Response\Html;
 use Df\Http\Response\Json;
 use Df\Http\Response\Redirect;
 use Df\Http\Response\IProxy;
@@ -205,6 +207,10 @@ trait TRoute
 
         if ($output instanceof UriInterface) {
             return new Redirect($output);
+        }
+
+        if ($output instanceof HtmlContainer) {
+            return new Html((string)$output);
         }
 
         if ($output instanceof IArrayProvider) {
