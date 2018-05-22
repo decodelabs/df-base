@@ -1,0 +1,419 @@
+<?php
+/**
+ * This file is part of the Decode Framework
+ * @license http://opensource.org/licenses/MIT
+ */
+declare(strict_types=1);
+namespace Df\Core\Cache;
+
+use Df;
+use Df\Core\Cache\Driver\PhpArray;
+
+use Psr\Cache\CacheItemInterface;
+use Psr\Cache\InvalidArgumentException as CacheInvalidArgumentException;
+
+class Store implements IStore
+{
+    protected $driver;
+    protected $namespace;
+    protected $deferred = [];
+
+    /**
+     * Init with namespace and driver
+     */
+    public function __construct(string $namespace, IDriver $driver=null)
+    {
+        if (!$driver) {
+            $driver = new PhpArray();
+        }
+
+        $this->driver = $driver;
+
+        if ($namespace === '') {
+            throw Df\Error::EInvalidArgument('Invalid empty cache namespace');
+        }
+
+        $this->namespace = $namespace;
+    }
+
+    /**
+     * Get active driver
+     */
+    public function getDriver(): IDriver
+    {
+        return $this->driver;
+    }
+
+    /**
+     * Get active namespace
+     */
+    public function getNamespace(): string
+    {
+        return $this->namespace;
+    }
+
+
+    /**
+     * Fetches a value from the cache.
+     */
+    public function get($key, $default=null)
+    {
+        $item = $this->wrapSimpleErrors(function () use ($key) {
+            return $this->getItem($key);
+        });
+
+        if ($item->isHit()) {
+            return $item->get();
+        } else {
+            return $default;
+        }
+    }
+
+    /**
+     * Retrive item object, regardless of hit or miss
+     */
+    public function getItem($key): CacheItemInterface
+    {
+        $key = $this->validateKey($key);
+
+        if (isset($this->deferred[$key])) {
+            return clone $this->deferred[$key];
+        }
+
+        return new Item($this, $key);
+    }
+
+    /**
+     * Obtains multiple cache items by their unique keys.
+     */
+    public function getMultiple($keys, $default=null): iterable
+    {
+        $items = $this->wrapSimpleErrors(function () use ($keys) {
+            return $this->getItems($this->normalizeKeyList($keys));
+        });
+
+        return (function (iterable $items, $default=null) {
+            foreach ($items as $key => $item) {
+                if ($item->isHit()) {
+                    yield $key => $item->get();
+                } else {
+                    yield $key => $default;
+                }
+            }
+        })($items, $default);
+    }
+
+    /**
+     * Retrieve a list of items
+     */
+    public function getItems(array $keys=[]): iterable
+    {
+        $output = [];
+
+        foreach ($keys as $key) {
+            $item = $this->getItem($key);
+            $output[$item->getKey()] = $item;
+        }
+
+        return $output;
+    }
+
+    /**
+     * Determines whether an item is present in the cache.
+     */
+    public function has($key, string ...$keys): bool
+    {
+        $keys = func_get_args();
+
+        return $this->wrapSimpleErrors(function () use ($keys) {
+            foreach ($keys as $key) {
+                if ($this->hasItem($key)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+    }
+
+    /**
+     * Confirms if the cache contains specified cache item.
+     */
+    public function hasItem($key): bool
+    {
+        return $this->getItem($key)->isHit();
+    }
+
+    /**
+     * Deletes all items in the pool.
+     */
+    public function clear(): bool
+    {
+        $this->deferred = [];
+        return $this->driver->clearAll($this->namespace);
+    }
+
+    /**
+     * Forget things that have been deferred
+     */
+    public function clearDeferred(): bool
+    {
+        $this->deferred = [];
+        return true;
+    }
+
+    /**
+     * Delete an item from the cache by its unique key.
+     */
+    public function delete($key, string ...$keys): bool
+    {
+        $keys = func_get_args();
+        return $this->wrapSimpleErrors(function () use ($keys) {
+            return $this->deleteItems($keys);
+        });
+    }
+
+    /**
+     * Removes the item from the pool.
+     */
+    public function deleteItem($key, string ...$keys): bool
+    {
+        return $this->deleteItems(func_get_args());
+    }
+
+    /**
+     * Deletes multiple cache items in a single operation.
+     */
+    public function deleteMultiple($key, string ...$keys): bool
+    {
+        $keys = func_get_args();
+        return $this->wrapSimpleErrors(function () use ($keys) {
+            return $this->deleteItems($this->normalizeKeyList($keys));
+        });
+    }
+
+    /**
+     * Removes multiple items from the pool.
+     */
+    public function deleteItems(array $keys): bool
+    {
+        $output = true;
+
+        foreach ($keys as $key) {
+            $key = $this->validateKey($key);
+            unset($this->deferred[$key]);
+
+            $this->commit();
+
+            if (!$this->driver->delete($this->namespace, $key)) {
+                $output = false;
+            }
+        }
+
+        return $output;
+    }
+
+    /**
+     * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
+     */
+    public function set($key, $value, $ttl=null): bool
+    {
+        $item = $this->wrapSimpleErrors(function () use ($key, $ttl) {
+            $item = $this->getItem($key);
+            return $item->expiresAfter($ttl);
+        });
+
+        $item->set($value);
+        return $this->save($item);
+    }
+
+    /**
+     * Persists a cache item immediately.
+     */
+    public function save(CacheItemInterface $item): bool
+    {
+        if (!$item instanceof IItem) {
+            throw Df\Error::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
+                'Cache items must implement Df\\Core\\Cache\\IItem',
+                null,
+                $item
+            );
+        }
+
+        return $item->save();
+    }
+
+    /**
+     * Sets a cache item to be persisted later.
+     */
+    public function saveDeferred(CacheItemInterface $item): bool
+    {
+        $this->deferred[$item->getKey()] = $item;
+        return true;
+    }
+
+    /**
+     * Persists a set of key => value pairs in the cache, with an optional TTL.
+     */
+    public function setMultiple($values, $ttl=null)
+    {
+        $values = $this->normalizeKeyList($values);
+
+        return $this->wrapSimpleErrors(function () use ($values, $ttl) {
+            $items = $this->getItems(array_keys($values));
+            $success = true;
+
+            foreach ($items as $key => $item) {
+                $item->set($values[$key]);
+                $item->expiresAfter($ttl);
+                $success = $success && $this->saveDeferred($item);
+            }
+
+            return $success && $this->commit();
+        });
+    }
+
+    /**
+     * Persists any deferred cache items.
+     */
+    public function commit(): bool
+    {
+        $output = true;
+
+        foreach ($this->deferred as $key => $item) {
+            if (!$item->save()) {
+                $output = false;
+            }
+        }
+
+        $this->deferred = [];
+        return $output;
+    }
+
+
+    /**
+     * Shortcut set
+     */
+    public function __set(string $key, $value)
+    {
+        $this->set($key, $value);
+    }
+
+    /**
+     * Shortcut getItem()
+     */
+    public function __get(string $key)
+    {
+        return $this->getItem($key);
+    }
+
+    /**
+     * Shortcut hasItem()
+     */
+    public function __isset(string $key): bool
+    {
+        return $this->hasItem($key);
+    }
+
+    /**
+     * Shortcut delete item
+     */
+    public function __unset(string $key)
+    {
+        $this->deleteItem($key);
+    }
+
+
+    /**
+     * Shortcut set()
+     */
+    public function offsetSet($key, $value)
+    {
+        $this->set($key, $value);
+    }
+
+    /**
+     * Shortcut get()
+     */
+    public function offsetGet($key)
+    {
+        return $this->get($key);
+    }
+
+    /**
+     * Shortcut has()
+     */
+    public function offsetExists($key): bool
+    {
+        return $this->has($key);
+    }
+
+    /**
+     * Shortcut delete()
+     */
+    public function offsetUnset($key)
+    {
+        $this->delete($key);
+    }
+
+    /**
+     * Validate single key
+     */
+    protected function validateKey($key): string
+    {
+        if (!is_string($key) || !isset($key{0})) {
+            throw Df\Error::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
+                'Cache key must be a string',
+                null,
+                $key
+            );
+        }
+
+        if (preg_match('|[\{\}\(\)/\\\@\:]|', $key)) {
+            throw Df\Error::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
+                'Cache key must not contain reserved extension characters: {}()/\@:',
+                null,
+                $key
+            );
+        }
+
+        return $key;
+    }
+
+    /**
+     * Normalize iterable key list
+     */
+    protected function normalizeKeyList($keys): ?array
+    {
+        if (!is_array($keys)) {
+            if (!$keys instanceof \Traversable) {
+                throw Df\Error::{'EInvalidArgument,Psr\\SimpleCache\\InvalidArgumentException'}(
+                    'Invalid cache keys',
+                    null,
+                    $keys
+                );
+            }
+
+            $keys = iterator_to_array($keys);
+        }
+
+        return $keys;
+    }
+
+
+
+    /**
+     * Wrap simple errors
+     */
+    protected function wrapSimpleErrors(callable $func)
+    {
+        try {
+            return $func();
+        } catch (CacheInvalidArgumentException $e) {
+            throw Df\Error::{'EInvalidArgument,Psr\\SimpleCache\\InvalidArgumentException'}(
+                $e->getMessage(),
+                ['previous' => $e]
+            );
+        }
+    }
+}
