@@ -13,6 +13,8 @@ class Apcu implements IDriver
 {
     use TKeyGen;
 
+    const KEY_SEPARATOR = '::';
+
     /**
      * Store item data
      */
@@ -53,7 +55,12 @@ class Apcu implements IDriver
     {
         do {
             $empty = true;
-            $it = new \APCUIterator($this->createKey($namespace, $key, true), APC_ITER_KEY, 100);
+
+            $it = new \APCUIterator(
+                $this->createRegexKey($namespace, $key),
+                APC_ITER_KEY,
+                100
+            );
 
             foreach ($it as $item) {
                 $empty = false;
@@ -71,7 +78,12 @@ class Apcu implements IDriver
     {
         do {
             $empty = true;
-            $it = new \APCUIterator($this->createKey($namespace, null, true), APC_ITER_KEY, 100);
+            
+            $it = new \APCUIterator(
+                $this->createRegexKey($namespace, null),
+                APC_ITER_KEY,
+                100
+            );
 
             foreach ($it as $item) {
                 $empty = false;
@@ -116,16 +128,7 @@ class Apcu implements IDriver
      */
     public function deleteLock(string $namespace, string $key): bool
     {
-        do {
-            $empty = true;
-            $it = new \APCUIterator($this->createLockKey($namespace, $key, true), APC_ITER_KEY, 100);
-
-            foreach ($it as $item) {
-                $empty = false;
-                apcu_delete($item['key']);
-            }
-        } while (!$empty);
-
-        return true;
+        $key = $this->createLockKey($namespace, $key);
+        return apcu_delete($key);
     }
 }

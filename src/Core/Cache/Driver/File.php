@@ -151,12 +151,13 @@ class File implements IDriver
      */
     public function delete(string $namespace, string $key): bool
     {
-        $key = $this->parseKey($namespace, $key);
+        $key = $this->inspectKey($namespace, $key);
         $root = $this->hashKey($key['key']);
 
         if ($key['children']) {
             $this->dir->deleteDir($root);
         }
+
         if ($key['self']) {
             $this->dir->deleteFile($root.static::EXTENSION);
         }
@@ -169,7 +170,7 @@ class File implements IDriver
      */
     public function clearAll(string $namespace): bool
     {
-        $key = $this->parseKey($namespace, null);
+        $key = $this->inspectKey($namespace, null);
         $root = $this->hashKey($key['key']);
         $this->dir->deleteDir($root);
         return true;

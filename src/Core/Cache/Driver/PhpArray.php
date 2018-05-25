@@ -14,6 +14,8 @@ class PhpArray implements IDriver
 {
     use TKeyGen;
 
+    const KEY_SEPARATOR = '::';
+
     protected $values = [];
     protected $locks = [];
 
@@ -42,7 +44,7 @@ class PhpArray implements IDriver
      */
     public function delete(string $namespace, string $key): bool
     {
-        $regex = $this->createKey($namespace, $key, true);
+        $regex = $this->createRegexKey($namespace, $key);
 
         foreach ($this->values as $key => $value) {
             if (preg_match($regex, $key)) {
@@ -58,7 +60,7 @@ class PhpArray implements IDriver
      */
     public function clearAll(string $namespace): bool
     {
-        $regex = $this->createKey($namespace, null, true);
+        $regex = $this->createRegexKey($namespace, null);
 
         foreach ($this->values as $key => $value) {
             if (preg_match($regex, $key)) {

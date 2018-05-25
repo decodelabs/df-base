@@ -33,8 +33,6 @@ trait TKeyGen
      */
     protected function parseKey(string $namespace, ?string $key): array
     {
-        $separator = static::KEY_SEPARATOR ?? '::';
-        $output = $this->prefix.$separator.$namespace.$separator;
         $children = false;
         $self = true;
 
@@ -48,56 +46,69 @@ trait TKeyGen
                     $key = substr($key, 0, -1);
                 }
             }
-
-            $key = str_replace('.', $separator, $key);
-            $output .= $key.$separator;
         }
 
         return [
-            'key' => $output,
+            'normal' => $key,
             'children' => $children,
             'self' => $self
         ];
     }
 
     /**
+     * Create basic key
+     */
+    protected function createKey(string $namespace, ?string $key): string
+    {
+        $man = $this->parseKey($namespace, $key);
+
+        if ($man['children']) {
+            throw Df\Error::EInvalidArgument('Invalid cache key', null, $key);
+        }
+
+        return $this->buildKey($namespace, $man['normal']);
+    }
+
+    /**
+     * Create basic key and merge with manifest
+     */
+    protected function inspectKey(string $namespace, ?string $key): array
+    {
+        $man = $this->parseKey($namespace, $key);
+        $man['key'] = $this->buildKey($namespace, $man['normal']);
+        return $man;
+    }
+
+
+    /**
      * Create an internal key
      */
-    protected function createKey(string $namespace, ?string $key, bool $regex=false): string
+    protected function createRegexKey(string $namespace, ?string $key): string
     {
-        $separator = static::KEY_SEPARATOR ?? '::';
-        $all = false;
+        $man = $this->parseKey($namespace, $key);
+        $output = $this->buildKey($namespace, $man['normal']);
+        $output = '/^'.preg_quote($output);
+
+        if ($man['self'] && $man['children']) {
+            $output .= '.*';
+        } elseif ($man['children']) {
+            $output .= '.+';
+        }
+
+        $output .= '$/';
+        return $output;
+    }
+
+    /**
+     * Build key string
+     */
+    protected function buildKey(string $namespace, ?string $key): string
+    {
+        $separator = static::KEY_SEPARATOR;
         $output = $this->prefix.$separator.$namespace.$separator;
 
         if ($key !== null) {
-            if (substr($key, -1) == '*') {
-                $all = '.*';
-                $key = substr($key, 0, -1);
-
-                if (substr($key, -1) == '.') {
-                    $all = '.+';
-                    $key = substr($key, 0, -1);
-                }
-            }
-
-            $key = str_replace('.', $separator, $key);
-            $output .= $key.$separator;
-        }
-
-        if ($regex) {
-            $output = '/^'.preg_quote($output);
-        }
-
-        if ($all) {
-            if (!$regex) {
-                throw Df\Error::EInvalidArgument('Invalid cache key', null, $key);
-            }
-
-            $output .= $all;
-        }
-
-        if ($regex) {
-            $output .= '$/';
+            $output .= str_replace('.', $separator, $key).$separator;
         }
 
         return $output;
@@ -106,15 +117,11 @@ trait TKeyGen
     /**
      * Create an internal lock key
      */
-    protected function createLockKey(string $namespace, string $key, bool $regex=false): string
+    protected function createLockKey(string $namespace, string $key): string
     {
-        $separator = static::KEY_SEPARATOR ?? '::';
+        $separator = static::KEY_SEPARATOR;
         $key = str_replace('.', $separator, $key);
-        $output = $this->prefix.$separator.$namespace.$separator.'!lock:'.$key.$separator;
-
-        if ($regex) {
-            $output = '/'.preg_quote($output).'/';
-        }
+        $output = $this->prefix.'!lock'.$separator.md5($namespace.$separator.$key);
 
         return $output;
     }
