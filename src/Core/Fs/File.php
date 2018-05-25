@@ -245,8 +245,10 @@ class File extends Stream implements IFile
         $closeData = $closeAfter = false;
 
         if (!$data instanceof IChannel) {
-            $data = new File('php://temp', 'w+');
-            $data->write($data);
+            $file = new File('php://temp', 'w+');
+            $file->write((string)$data);
+            $file->seek(0);
+            $data = $file;
             $closeData = true;
         }
 
@@ -260,7 +262,10 @@ class File extends Stream implements IFile
             $this->open('w');
         }
 
-        $this->lockExclusive();
+        if (!$this->lockExclusive()) {
+            throw Df\Error::EIo('Unable to lock file for writing', null, $this);
+        }
+
         $this->truncate();
         $data->writeTo($this);
         $this->unlock();
@@ -288,7 +293,10 @@ class File extends Stream implements IFile
             $this->open('r');
         }
 
-        $this->lock();
+        if (!$this->lock()) {
+            throw Df\Error::EIo('Unable to lock file for reading', null, $this);
+        }
+
         $this->seek(0);
         $output = (string)$this->readAll();
         $this->unlock();

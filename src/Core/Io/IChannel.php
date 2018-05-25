@@ -19,8 +19,8 @@ interface IChannel
     public function writeTo(IChannel $writer): void;
 
     public function isWritable(): bool;
-    public function write(string $data, int $length=null): int;
-    public function writeLine(string $data=''): int;
+    public function write(?string $data, int $length=null): int;
+    public function writeLine(?string $data=''): int;
     public function writeBuffer(string &$buffer, int $length): int;
 
     public function eof(): bool;

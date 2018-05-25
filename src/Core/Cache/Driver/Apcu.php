@@ -8,7 +8,6 @@ namespace Df\Core\Cache\Driver;
 
 use Df;
 use Df\Core\Cache\IDriver;
-use Df\Core\Cache\IItem;
 
 class Apcu implements IDriver
 {

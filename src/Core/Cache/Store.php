@@ -18,6 +18,11 @@ class Store implements IStore
     protected $namespace;
     protected $deferred = [];
 
+    protected $pileUpPolicy = Item::PREEMPT;
+    protected $preemptTime = 30;
+    protected $sleepTime = 500;
+    protected $sleepAttempts = 10;
+
     /**
      * Init with namespace and driver
      */
@@ -213,6 +218,24 @@ class Store implements IStore
         return $output;
     }
 
+
+    /**
+     * Get item, if miss, set $key as result of $generator
+     */
+    public function fetch(string $key, callable $generator)
+    {
+        $item = $this->getItem($key);
+
+        if ($item->isMiss()) {
+            $item->lock();
+            $value = $generator($item, $this);
+            $item->set($value)->save();
+        }
+
+        return $item->get();
+    }
+
+
     /**
      * Persists data in the cache, uniquely referenced by a key with an optional expiration TTL time.
      */
@@ -355,6 +378,133 @@ class Store implements IStore
     {
         $this->delete($key);
     }
+
+
+
+    /**
+     * Set pile up policy to ignore
+     */
+    public function pileUpIgnore(): IStore
+    {
+        $this->pileUpPolicy = Item::IGNORE;
+        return $this;
+    }
+
+    /**
+     * Set pile up policy to preempt
+     */
+    public function pileUpPreempt(int $preemptTime=null): IStore
+    {
+        $this->pileUpPolicy = Item::PREEMPT;
+
+        if ($preemptTime !== null) {
+            $this->preemptTime = $preemptTime;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set pile up policy to sleep
+     */
+    public function pileUpSleep(int $time=null, int $attempts=null): IStore
+    {
+        $this->pileUpPolicy = Item::SLEEP;
+
+        if ($time !== null) {
+            $this->sleepTime = $time;
+        }
+
+        if ($attempts !== null) {
+            $this->sleepAttempts = $attempts;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set pile up policy to return value
+     */
+    public function pileUpValue(): IStore
+    {
+        $this->pileUpPolicy = Item::VALUE;
+        return $this;
+    }
+
+
+    /**
+     * Set pile up policy
+     */
+    public function setPileUpPolicy(string $policy): IStore
+    {
+        $this->pileUpPolicy = $policy;
+        return $this;
+    }
+
+    /**
+     * Get pile up policy
+     */
+    public function getPileUpPolicy(): string
+    {
+        return $this->pileUpPolicy;
+    }
+
+
+    /**
+     * Replace preempt time
+     */
+    public function setPreemptTime(int $preemptTime): IStore
+    {
+        $this->preemptTime = $preemptTime;
+        return $this;
+    }
+
+    /**
+     * Get preempt time
+     */
+    public function getPreemptTime(): int
+    {
+        return $this->preemptTime;
+    }
+
+
+    /**
+     * Replace sleep time
+     */
+    public function setSleepTime(int $time): IStore
+    {
+        $this->sleepTime = $time;
+        return $this;
+    }
+
+    /**
+     * Get sleep time
+     */
+    public function getSleepTime(): int
+    {
+        return $this->sleepTime;
+    }
+
+    /**
+     * Replace sleep attempts
+     */
+    public function setSleepAttempts(int $attempts): IStore
+    {
+        $this->sleepAttempts = $attempts;
+        return $this;
+    }
+
+    /**
+     * Get sleep attempts
+     */
+    public function getSleepAttempts(): int
+    {
+        return $this->sleepAttempts;
+    }
+
+
+
+
 
     /**
      * Validate single key

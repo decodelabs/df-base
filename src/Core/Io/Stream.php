@@ -140,14 +140,14 @@ class Stream implements IChannel
     /**
      * Write ?$length bytes to resource
      */
-    public function write(string $data, int $length=null): int
+    public function write(?string $data, int $length=null): int
     {
         $this->checkWritable();
 
         if ($length !== null) {
-            return fwrite($this->resource, $data, $length);
+            return fwrite($this->resource, (string)$data, $length);
         } else {
-            return fwrite($this->resource, $data);
+            return fwrite($this->resource, (string)$data);
         }
     }
 

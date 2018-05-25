@@ -30,10 +30,10 @@ class Item implements IItem
     protected $expiration;
     protected $locked = false;
 
-    protected $pileUpPolicy = self::PREEMPT;
-    protected $preemptTime = 30;
-    protected $sleepTime = 500;
-    protected $sleepAttempts = 10;
+    protected $pileUpPolicy = null;
+    protected $preemptTime = null;
+    protected $sleepTime = null;
+    protected $sleepAttempts = null;
     protected $fallbackValue = null;
 
     /**
@@ -257,7 +257,7 @@ class Item implements IItem
      */
     public function getPileUpPolicy(): string
     {
-        return $this->pileUpPolicy;
+        return $this->pileUpPolicy ?? $this->store->getPileUpPolicy();
     }
 
 
@@ -275,7 +275,7 @@ class Item implements IItem
      */
     public function getPreemptTime(): int
     {
-        return $this->preemptTime;
+        return $this->preemptTime ?? $this->store->getPreemptTime();
     }
 
 
@@ -293,7 +293,7 @@ class Item implements IItem
      */
     public function getSleepTime(): int
     {
-        return $this->sleepTime;
+        return $this->sleepTime ?? $this->store->getSleepTime();
     }
 
     /**
@@ -310,7 +310,7 @@ class Item implements IItem
      */
     public function getSleepAttempts(): int
     {
-        return $this->sleepAttempts;
+        return $this->sleepAttempts ?? $this->store->getSleepAttempts();
     }
 
 
@@ -474,20 +474,31 @@ class Item implements IItem
             $this->isHit = true;
             $this->value = $res[0];
             $this->expiration = Date::instance($res[1]);
+
+            if ($this->expiration && $this->expiration->timestamp < $time) {
+                $this->isHit = false;
+                $this->value = null;
+
+                $driver->delete(
+                    $this->store->getNamespace(),
+                    $this->key
+                );
+            }
         }
 
         $this->fetched = true;
+        $policy = $this->getPileUpPolicy();
 
-        if ($this->pileUpPolicy === self::IGNORE) {
+        if ($policy === self::IGNORE) {
             return;
         }
 
         $ttl = $this->expiration ? $this->expiration->timestamp - $time : null;
 
         if ($this->isHit) {
-            if ($this->pileUpPolicy === self::PREEMPT
+            if ($policy === self::PREEMPT
             && $ttl > 0
-            && $ttl < $this->preemptTime) {
+            && $ttl < $this->getPreemptTime()) {
                 $lockExp = $driver->fetchLock(
                     $this->store->getNamespace(),
                     $this->key
@@ -515,7 +526,7 @@ class Item implements IItem
             return;
         }
 
-        $options = array_unique([$this->pileUpPolicy, self::VALUE, self::SLEEP]);
+        $options = array_unique([$policy, self::VALUE, self::SLEEP]);
 
         foreach ($options as $option) {
             switch ($option) {
@@ -529,13 +540,14 @@ class Item implements IItem
                     break;
 
                 case self::SLEEP:
-                    if (($attempts = $this->sleepAttempts) < 1) {
+                    if (($attempts = $this->getSleepAttempts()) < 1) {
                         return;
                     }
 
+                    $time = $this->getSleepTime();
 
                     while ($attempts > 0) {
-                        usleep($this->sleepTime * 1000);
+                        usleep($time * 1000);
                         $attempts--;
 
                         $res = $driver->fetch(
