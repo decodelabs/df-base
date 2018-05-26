@@ -121,7 +121,19 @@ class File extends Stream implements IFile
             strstr($this->mode, '+');
 
         if ($isWrite && !$this->exists()) {
-            (new Dir(dirname($this->path)))->ensureExists();
+            $mkDir = true;
+
+            if (false !== strpos($this->path, '://')) {
+                $parts = explode('://', $this->path, 2);
+
+                if ($parts[0] !== 'file') {
+                    $mkDir = false;
+                }
+            }
+
+            if ($mkDir) {
+                (new Dir(dirname($this->path)))->ensureExists();
+            }
         }
 
         if (!$this->resource = fopen($this->path, $mode)) {
