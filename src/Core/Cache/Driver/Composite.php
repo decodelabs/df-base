@@ -9,10 +9,27 @@ namespace Df\Core\Cache\Driver;
 use Df;
 use Df\Core\Cache\IDriver;
 use Df\Core\Cache\IItem;
+use Df\Core\Config\Repository;
 
 class Composite implements IDriver
 {
     protected $drivers = [];
+
+    /**
+     * Can this be loaded?
+     */
+    public static function isAvailable(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Attempt to load an instance from config
+     */
+    public static function fromConfig(Repository $config): ?IDriver
+    {
+        return new static();
+    }
 
     /**
      * Init with drivers
@@ -124,5 +141,16 @@ class Composite implements IDriver
         }
 
         return $output;
+    }
+
+
+    /**
+     * Delete EVERYTHING in this store
+     */
+    public function purge(): void
+    {
+        foreach (array_reverse($this->drivers) as $driver) {
+            $driver->purge();
+        }
     }
 }

@@ -9,9 +9,26 @@ namespace Df\Core\Cache\Driver;
 use Df;
 use Df\Core\Cache\IDriver;
 use Df\Core\Cache\IItem;
+use Df\Core\Config\Repository;
 
 class BlackHole implements IDriver
 {
+    /**
+     * Can this be loaded?
+     */
+    public static function isAvailable(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Attempt to load an instance from config
+     */
+    public static function fromConfig(Repository $config): ?IDriver
+    {
+        return new static();
+    }
+
     /**
      * Store item data
      */
@@ -68,5 +85,14 @@ class BlackHole implements IDriver
     public function deleteLock(string $namespace, string $key): bool
     {
         return true;
+    }
+
+
+    /**
+     * Delete EVERYTHING in this store
+     */
+    public function purge(): void
+    {
+        // whatever
     }
 }

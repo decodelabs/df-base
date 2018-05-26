@@ -6,9 +6,13 @@
 namespace Df\Core\Cache;
 
 use Df;
+use Df\Core\Config\Repository;
 
 interface IDriver
 {
+    public static function isAvailable(): bool;
+    public static function fromConfig(Repository $config): ?IDriver;
+
     public function store(string $namespace, string $key, $value, int $created, ?int $expires): bool;
     public function fetch(string $namespace, string $key): ?array;
     public function delete(string $namespace, string $key): bool;
@@ -17,4 +21,6 @@ interface IDriver
     public function storeLock(string $namespace, string $key, int $expires): bool;
     public function fetchLock(string $namespace, string $key): ?int;
     public function deleteLock(string $namespace, string $key): bool;
+
+    public function purge(): void;
 }

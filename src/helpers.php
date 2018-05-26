@@ -164,6 +164,15 @@ namespace Df
         );
     }
 
+
+    /**
+     * Log an exception... somewhere :)
+     */
+    function logException(\Throwable $e): void
+    {
+        // We can deal with this later...........
+    }
+
     /**
      * Direct facade for generating IError based exceptions
      */

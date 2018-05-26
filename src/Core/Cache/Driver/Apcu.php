@@ -8,12 +8,30 @@ namespace Df\Core\Cache\Driver;
 
 use Df;
 use Df\Core\Cache\IDriver;
+use Df\Core\Config\Repository;
 
 class Apcu implements IDriver
 {
     use TKeyGen;
 
     const KEY_SEPARATOR = '::';
+
+    /**
+     * Can this be loaded?
+     */
+    public static function isAvailable(): bool
+    {
+        return extension_loaded('apcu');
+    }
+
+    /**
+     * Attempt to load an instance from config
+     */
+    public static function fromConfig(Repository $config): ?IDriver
+    {
+        return new self();
+    }
+
 
     /**
      * Store item data
@@ -78,7 +96,7 @@ class Apcu implements IDriver
     {
         do {
             $empty = true;
-            
+
             $it = new \APCUIterator(
                 $this->createRegexKey($namespace, null),
                 APC_ITER_KEY,
@@ -130,5 +148,14 @@ class Apcu implements IDriver
     {
         $key = $this->createLockKey($namespace, $key);
         return apcu_delete($key);
+    }
+
+
+    /**
+     * Delete EVERYTHING in this store
+     */
+    public function purge(): void
+    {
+        apcu_clear_cache();
     }
 }

@@ -8,6 +8,7 @@ namespace Df\Core\Cache\Driver;
 
 use Df;
 use Df\Core\Cache\IDriver;
+use Df\Core\Config\Repository;
 
 use Predis\Client;
 use Predis\ClientInterface;
@@ -19,6 +20,26 @@ class Predis implements IDriver
     const KEY_SEPARATOR = '::';
 
     protected $predis;
+
+    /**
+     * Can this be loaded?
+     */
+    public static function isAvailable(): bool
+    {
+        return class_exists(Client::class);
+    }
+
+    /**
+     * Attempt to load an instance from config
+     */
+    public static function fromConfig(Repository $config): ?IDriver
+    {
+        if (isset($config->host) || isset($config->path)) {
+            return new static(new Client($config->toArray()));
+        }
+
+        return static::createLocal();
+    }
 
     /**
      * Create a local instance of Memcached
@@ -160,5 +181,15 @@ class Predis implements IDriver
     protected function getPathIndex(string $pathKey): int
     {
         return (int)$this->predis->get($pathKey);
+    }
+
+
+
+    /**
+     * Delete EVERYTHING in this store
+     */
+    public function purge(): void
+    {
+        $this->predis->flushdb();
     }
 }

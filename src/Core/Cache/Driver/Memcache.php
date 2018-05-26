@@ -8,6 +8,7 @@ namespace Df\Core\Cache\Driver;
 
 use Df;
 use Df\Core\Cache\IDriver;
+use Df\Core\Config\Repository;
 
 class Memcache implements IDriver
 {
@@ -16,6 +17,26 @@ class Memcache implements IDriver
     const KEY_SEPARATOR = '::';
 
     protected $memcached;
+
+    /**
+     * Can this be loaded?
+     */
+    public static function isAvailable(): bool
+    {
+        return extension_loaded('memcached');
+    }
+
+    /**
+     * Attempt to load an instance from config
+     */
+    public static function fromConfig(Repository $config): ?IDriver
+    {
+        if (isset($config->servers) && !$config->servers->isEmpty()) {
+            return self::create($config->servers->toArray());
+        }
+
+        return self::createLocal();
+    }
 
     /**
      * Create a local instance of Memcached
@@ -152,5 +173,15 @@ class Memcache implements IDriver
     protected function getPathIndex(string $pathKey): int
     {
         return (int)$this->memcached->get($pathKey);
+    }
+
+
+
+    /**
+     * Delete EVERYTHING in this store
+     */
+    public function purge(): void
+    {
+        $this->memcached->flush();
     }
 }

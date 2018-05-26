@@ -14,6 +14,7 @@ use Df\Core\Env\ServiceProvider as EnvServiceProvider;
 use Df\Core\Error\ServiceProvider as ErrorServiceProvider;
 use Df\Core\Error\Handler as ErrorHandler;
 use Df\Core\Crypt\ServiceProvider as CryptServiceProvider;
+use Df\Core\Cache\ServiceProvider as CacheServiceProvider;
 use Df\Core\Log\ServiceProvider as LogServiceProvider;
 
 use Df\Core\ILoader;
@@ -44,6 +45,7 @@ class App extends Container implements IApp
         CryptServiceProvider::class,
         ErrorServiceProvider::class,
         LogServiceProvider::class,
+        CacheServiceProvider::class,
         HttpServiceProvider::class,
         ArchServiceProvider::class
     ];

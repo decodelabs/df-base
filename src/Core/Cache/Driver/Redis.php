@@ -8,6 +8,7 @@ namespace Df\Core\Cache\Driver;
 
 use Df;
 use Df\Core\Cache\IDriver;
+use Df\Core\Config\Repository;
 
 class Redis implements IDriver
 {
@@ -16,6 +17,28 @@ class Redis implements IDriver
     const KEY_SEPARATOR = '::';
 
     protected $redis;
+
+    /**
+     * Can this be loaded?
+     */
+    public static function isAvailable(): bool
+    {
+        return extension_loaded('redis');
+    }
+
+    /**
+     * Attempt to load an instance from config
+     */
+    public static function fromConfig(Repository $config): ?IDriver
+    {
+        if (isset($config->host)) {
+            $redis = new \Redis();
+            $redis->pconnect($config['host'], $config['port'], $config['timeout']);
+            return new static($redis);
+        }
+
+        return static::createLocal();
+    }
 
     /**
      * Create a local instance of Memcached
@@ -34,6 +57,19 @@ class Redis implements IDriver
     {
         $this->generatePrefix();
         $this->redis = $redis;
+    }
+
+    /**
+     * Ensure redis is closed
+     */
+    public function __destruct()
+    {
+        if ($this->redis instanceof \Redis) {
+            try {
+                $this->redis->close();
+            } catch (\RedisException $e) {
+            }
+        }
     }
 
 
@@ -159,5 +195,14 @@ class Redis implements IDriver
     protected function getPathIndex(string $pathKey): int
     {
         return (int)$this->redis->get($pathKey);
+    }
+
+
+    /**
+     * Delete EVERYTHING in this store
+     */
+    public function purge(): void
+    {
+        $this->redis->flushDb();
     }
 }

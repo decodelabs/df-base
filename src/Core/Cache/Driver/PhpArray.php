@@ -9,6 +9,7 @@ namespace Df\Core\Cache\Driver;
 use Df;
 use Df\Core\Cache\IDriver;
 use Df\Core\Cache\IItem;
+use Df\Core\Config\Repository;
 
 class PhpArray implements IDriver
 {
@@ -18,6 +19,22 @@ class PhpArray implements IDriver
 
     protected $values = [];
     protected $locks = [];
+
+    /**
+     * Can this be loaded?
+     */
+    public static function isAvailable(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Attempt to load an instance from config
+     */
+    public static function fromConfig(Repository $config): ?IDriver
+    {
+        return new static();
+    }
 
     /**
      * Store item data
@@ -98,5 +115,15 @@ class PhpArray implements IDriver
     {
         unset($this->locks[$namespace][$key]);
         return true;
+    }
+
+
+    /**
+     * Delete EVERYTHING in this store
+     */
+    public function purge(): void
+    {
+        $this->values = [];
+        $this->locks = [];
     }
 }

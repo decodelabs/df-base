@@ -10,6 +10,7 @@ use Df;
 use Df\Core\Cache\IDriver;
 use Df\Core\Fs;
 use Df\Core\Fs\IFile;
+use Df\Core\Config\Repository;
 
 class File implements IDriver
 {
@@ -21,6 +22,34 @@ class File implements IDriver
     protected $dir;
     protected $dirPerms = 0770;
     protected $filePerms = 0660;
+
+    /**
+     * Can this be loaded?
+     */
+    public static function isAvailable(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Attempt to load an instance from config
+     */
+    public static function fromConfig(Repository $config): ?IDriver
+    {
+        $name = lcfirst((new \ReflectionClass(get_called_class()))->getShortName());
+        $path = $config['path'] ?? Df\BASE_PATH.'/storage/local/cache@'.$name;
+        $output = new static($path);
+
+        if (isset($config->dirPerms)) {
+            $output->setDirPermissions((int)$config['dirPerms']);
+        }
+
+        if (isset($config->filePerms)) {
+            $output->setFilePerms((int)$config['filePerms']);
+        }
+
+        return $output;
+    }
 
     /**
      * Init with base path
@@ -261,5 +290,15 @@ class File implements IDriver
         }
 
         return implode(static::KEY_SEPARATOR, $parts);
+    }
+
+
+
+    /**
+     * Delete EVERYTHING in this store
+     */
+    public function purge(): void
+    {
+        $this->dir->delete();
     }
 }
