@@ -27,6 +27,13 @@ class PhpArray implements ILoader
         'http' => [
             'sendfile' => 'x-sendfile',
             'manualChunk' => true
+        ],
+        'cache' => [
+            'stores' => [
+                'default' => [
+                    'driver' => 'Apcu'
+                ]
+            ]
         ]
     ];
 

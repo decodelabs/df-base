@@ -67,7 +67,7 @@ class Manager
             $config = clone $this->config->stores->{$name};
 
             try {
-                if ($driver = $this->loadDriver($conf['driver'], $config)) {
+                if ($driver = $this->loadDriver($config['driver'], $config)) {
                     return $driver;
                 }
             } catch (\Throwable $e) {
