@@ -129,11 +129,15 @@ class Factory
     /**
      * Generate a context specific, message oriented throwable error
      */
-    public static function create(?string $type, array $interfaces=[], $message, ?array $params=[], $data=null): IError
+    public static function create(?string $type, array $interfaces=[], $message=null, ?array $params=[], $data=null): IError
     {
         if (is_array($message)) {
             $params = $message;
-            $message = $message['message'] ?? 'Undefined error';
+            $message = $message['message'] ?? null;
+        }
+
+        if ($message === null) {
+            $message = 'Undefined error';
         }
 
         if ($params === null) {
