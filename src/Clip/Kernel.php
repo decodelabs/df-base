@@ -15,18 +15,18 @@ use Df\Clip\IRequest;
 use Df\Clip\ITask;
 use Df\Clip\IDispatcher;
 
+use Df\Clip\Shell\Std;
+
 class Kernel implements IConsole
 {
     protected $app;
-    protected $dispatcher;
 
     /**
      * Setup with ref to $app
      */
-    public function __construct(IApp $app, IDispatcher $dispatcher)
+    public function __construct(IApp $app)
     {
         $this->app = $app;
-        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -53,9 +53,8 @@ class Kernel implements IConsole
      */
     public function handle(IRequest $request): int
     {
-        $this->dispatcher->handle($request);
-        return $this->dispatcher->getStatus();
-        
+        $context = new Context($this->app, $request, $shell = new Std());
+
         $parts = array_map('ucfirst', explode('/', $request->getPath()));
         $class = '\\Df\\Apex\\Clip\\'.implode('\\', $parts).'Task';
 
@@ -66,14 +65,22 @@ class Kernel implements IConsole
             ]);
         }
 
-        $task = $this->app->newInstanceOf($class, [], ITask::class);
-        $res = $task->dispatch();
+        $task = $this->app->newInstanceOf($class, [
+            'context' => $context,
+        ], ITask::class);
 
-        foreach ($res as $outType => $output) {
-            echo $output."\n";
+        $res = $task->dispatch();
+        $status = null;
+
+        if (is_int($res)) {
+            $status = $res;
+        } elseif ($res !== null) {
+            $shell->render($res);
         }
 
-        $status = $res->getReturn();
+        if ($res instanceof \Generator) {
+            $status = $res->getReturn();
+        }
 
         if (!is_int($status)) {
             $status = 0;

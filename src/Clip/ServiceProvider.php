@@ -21,8 +21,7 @@ class ServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
-            IRequest::class,
-            IDispatcher::class
+            IRequest::class
         ];
     }
 
@@ -35,8 +34,5 @@ class ServiceProvider implements IProvider
         $app->bindShared(IRequest::class, function ($app) {
             return (new Factory())->fromEnvironment();
         })->alias('clip.request');
-
-        // Dispatcher
-        $app->bind(IDispatcher::class, Dispatcher::class);
     }
 }
