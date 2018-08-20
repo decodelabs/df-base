@@ -9,5 +9,6 @@ use Df;
 
 interface IRenderer
 {
+    public static function isLoadable(): bool;
     public function renderException(\Throwable $exception);
 }

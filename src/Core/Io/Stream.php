@@ -20,13 +20,18 @@ class Stream implements IChannel
     /**
      * Init with stream path
      */
-    public function __construct(string $path, string $mode='a+')
+    public function __construct($path, string $mode='a+')
     {
-        if (!$this->resource = fopen($path, $mode)) {
-            throw Df\Error::EIo('Unable to open stream');
-        }
+        if (is_resource($path)) {
+            $this->resource = $path;
+            $this->mode = stream_get_meta_data($this->resource)['mode'];
+        } else {
+            if (!$this->resource = fopen($path, $mode)) {
+                throw Df\Error::EIo('Unable to open stream');
+            }
 
-        $this->mode = $mode;
+            $this->mode = $mode;
+        }
     }
 
     /**

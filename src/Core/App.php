@@ -25,6 +25,7 @@ use Df\Core\Kernel\IHttp as IHttpKernel;
 use Df\Core\Kernel\IConsole as IConsoleKernel;
 
 use Df\Clip\Kernel as ConsoleKernel;
+use Df\Clip\ServiceProvider as ClipServiceProvider;
 
 use Df\Http\Kernel as HttpKernel;
 use Df\Http\ServiceProvider as HttpServiceProvider;
@@ -40,12 +41,17 @@ class App extends Container implements IApp
     const BUNDLES = [];
     const PROVIDERS = [];
 
+    const APEX = [
+        'clip', 'http'
+    ];
+
     const DEFAULT_PROVIDERS = [
         ConfigServiceProvider::class,
         CryptServiceProvider::class,
         ErrorServiceProvider::class,
         LogServiceProvider::class,
         CacheServiceProvider::class,
+        ClipServiceProvider::class,
         HttpServiceProvider::class,
         ArchServiceProvider::class
     ];
@@ -113,9 +119,13 @@ class App extends Container implements IApp
         $this->bindShared(ILoader::class, ComposerLoader::class);
 
         /* Register app folder as bundle */
-        Bundle::register('app', PHP_INT_MAX, [
-            'apex.http' => $this->getBasePath().'/http'
-        ]);
+        $paths = [];
+
+        foreach (static::APEX as $key) {
+            $paths['apex.'.$key] = $this->getBasePath().'/'.$key;
+        }
+
+        Bundle::register('app', PHP_INT_MAX, $paths);
     }
 
     /**

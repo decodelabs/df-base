@@ -4,10 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Arch\Node;
+namespace Df\Plug;
 
 use Df;
-use Df\Arch\Context;
 
 trait TContextProxy
 {
@@ -16,7 +15,7 @@ trait TContextProxy
     /**
      * Init with context
      */
-    public function __construct(Context $context)
+    public function __construct(IContext $context)
     {
         $this->context = $context;
     }

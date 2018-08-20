@@ -36,7 +36,7 @@ class Kernel implements IHttp
      */
     public function run(): void
     {
-        $request = $this->prepareServerRequest();
+        $request = $this->prepareRequest();
         $response = $this->handle($request);
 
         $this->sendResponse($request, $response);
@@ -46,7 +46,7 @@ class Kernel implements IHttp
     /**
      * Generate the server request to work from
      */
-    public function prepareServerRequest(): ServerRequestInterface
+    public function prepareRequest(): ServerRequestInterface
     {
         return $this->app[ServerRequestInterface::class];
     }

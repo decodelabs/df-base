@@ -14,10 +14,6 @@ use Composer\Autoload\ClassLoader;
 
 class Composer implements ILoader
 {
-    const APEX = [
-        'http', 'themes'
-    ];
-
     protected $appLibraries = false;
 
     protected $vendorPath;

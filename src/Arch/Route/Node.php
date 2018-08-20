@@ -10,6 +10,7 @@ use Df;
 use Df\Core\IApp;
 
 use Df\Arch\IRoute;
+use Df\Arch\INode;
 use Df\Arch\Context;
 
 use Df\Http\Response\Stream;
@@ -84,7 +85,7 @@ class Node implements IRoute
         $node = $context->app->newInstanceOf($class, [
             'route' => $this,
             'context' => $context
-        ]);
+        ], INode::class);
 
         $output = $node->dispatch();
         return $this->normalizeResponse($output, $context->app);

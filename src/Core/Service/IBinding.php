@@ -40,6 +40,7 @@ interface IBinding
     public function setInstance(object $instance): IBinding;
     public function forgetInstance(): IBinding;
     public function getInstance(): object;
+    public function hasInstance(): bool;
     public function newInstance(): object;
     public function getGroupInstances(): array;
     public function describeInstance();

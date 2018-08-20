@@ -15,6 +15,6 @@ use Psr\Http\Server\RequestHandlerInterface;
 interface IHttp extends RequestHandlerInterface, ISender
 {
     public function run(): void;
-    public function prepareServerRequest(): ServerRequestInterface;
+    public function prepareRequest(): ServerRequestInterface;
     public function terminate(ServerRequestInterface $request, ResponseInterface $response): void;
 }

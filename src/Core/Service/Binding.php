@@ -368,6 +368,14 @@ class Binding implements IBinding
     }
 
     /**
+     * Does this binding have a concrete instance?
+     */
+    public function hasInstance(): bool
+    {
+        return $this->instance !== null;
+    }
+
+    /**
      * Create a new instance
      */
     public function newInstance(): object

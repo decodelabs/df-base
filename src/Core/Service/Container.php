@@ -442,20 +442,21 @@ class Container implements IContainer
     /**
      * Create a new instanceof $type
      */
-    public function newInstanceOf(string $type, array $params=[]): object
+    public function newInstanceOf(string $type, array $params=[], string ...$interfaces): object
     {
         if (!$binding = $this->lookupBinding($type)) {
             $binding = new Binding($this, $type, $type, false);
         }
 
         $binding->addParams($params);
-        return $binding->getInstance();
+        $output = $binding->getInstance();
+        return $this->testInterfaces($output, ...$interfaces);
     }
 
     /**
      * Create new instance of type, no looking up bindinh
      */
-    public function buildInstanceOf(string $type, array $params=[]): object
+    public function buildInstanceOf(string $type, array $params=[], string ...$interfaces): object
     {
         $reflector = new \ReflectionClass($type);
 
@@ -474,7 +475,24 @@ class Container implements IContainer
         $paramReflectors = $constructor->getParameters();
         $args = $this->prepareArgs($paramReflectors, $params);
 
-        return $reflector->newInstanceArgs($args);
+        $output = $reflector->newInstanceArgs($args);
+        return $this->testInterfaces($output, ...$interfaces);
+    }
+
+    /**
+     * Test object for interfaces
+     */
+    protected function testInterfaces(object $object, string ...$interfaces): object
+    {
+        foreach ($interfaces as $interface) {
+            if (!$object instanceof $interface) {
+                throw Df\Error::EImplementation(
+                    'Binding target does not implement '.$interface
+                );
+            }
+        }
+
+        return $object;
     }
 
     /**

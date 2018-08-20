@@ -13,6 +13,15 @@ use Df\Core\Error\IRenderer;
 class Dump implements IRenderer
 {
     /**
+     * Can this renderer be loaded?
+     */
+    public static function isLoadable(): bool
+    {
+        return true;
+    }
+
+
+    /**
      * Report a caught exception
      */
     public function renderException(\Throwable $exception)
