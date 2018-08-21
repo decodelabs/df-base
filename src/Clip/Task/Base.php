@@ -10,15 +10,43 @@ use Df;
 
 use Df\Clip\ITask;
 use Df\Clip\ICommand;
+use Df\Clip\Context;
 use Df\Clip\Command\IRequest;
 
 use Df\Plug\TContextProxy;
+use Df\Flex\Formatter;
 
 abstract class Base implements ITask
 {
     use TContextProxy;
 
     protected $args = [];
+
+
+    /**
+     * Load a task
+     */
+    public static function load(Context $context): ITask
+    {
+        $parts = array_map(
+            [Formatter::class, 'id'],
+            explode('/', $context->request->getPath())
+        );
+        
+        $class = '\\Df\\Apex\\Clip\\'.implode('\\', $parts).'Task';
+
+        if (!class_exists($class, true)) {
+            throw Df\Error::ENotFound([
+                'message' => 'Task not found: '.$request->getPath(),
+                'data' => $request
+            ]);
+        }
+
+        return $context->app->newInstanceOf($class, [
+            'context' => $context,
+        ], ITask::class);
+    }
+
 
     /**
      * Set parsed arg list

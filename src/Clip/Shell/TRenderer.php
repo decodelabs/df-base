@@ -95,6 +95,10 @@ trait TRenderer
                 $newLine = false;
             }
 
+            if (false !== strpos($mods, '^')) {
+                $newLine = 2;
+            }
+
             if (preg_match('/([>]+)/', $mods, $matches)) {
                 $count = strlen($matches[1]);
                 $output = str_repeat("\t", $count).$output;
@@ -128,12 +132,20 @@ trait TRenderer
         if ($isError) {
             if ($newLine) {
                 $this->writeErrorLine($output);
+
+                if ($newLine === 2) {
+                    $this->writeErrorLine();
+                }
             } else {
                 $this->writeError($output);
             }
         } else {
             if ($newLine) {
                 $this->writeLine($output);
+
+                if ($newLine === 2) {
+                    $this->writeLine();
+                }
             } else {
                 $this->write($output);
             }

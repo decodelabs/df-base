@@ -12,6 +12,7 @@ use Df\Core\IApp;
 use Df\Core\Kernel\IConsole;
 
 use Df\Clip\ITask;
+use Df\Clip\Task\Base;
 use Df\Clip\Command\Factory;
 use Df\Clip\Command\IRequest;
 
@@ -54,24 +55,10 @@ class Kernel implements IConsole
     public function handle(IRequest $request): int
     {
         $context = new Context($this->app, $request, $shell = new Std());
-
-        $parts = array_map('ucfirst', explode('/', $request->getPath()));
-        $class = '\\Df\\Apex\\Clip\\'.implode('\\', $parts).'Task';
-
-        if (!class_exists($class, true)) {
-            throw Df\Error::ENotFound([
-                'message' => 'Task not found: '.$request->getPath(),
-                'data' => $request
-            ]);
-        }
+        $task = Base::load($context);
 
         $factory = $this->app[Factory::class];
         $command = $factory->requestToCommand($request);
-
-        $task = $this->app->newInstanceOf($class, [
-            'context' => $context,
-        ], ITask::class);
-
         $task->setup($command);
 
         try {

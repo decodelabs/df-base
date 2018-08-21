@@ -10,6 +10,7 @@ use Df;
 use Df\Clip\ITask;
 use Df\Clip\Task\Base;
 use Df\Clip\ICommand;
+use Df\Clip\Context;
 use Df\Clip\Command\Factory;
 
 class HelpTask extends Base
@@ -29,20 +30,13 @@ class HelpTask extends Base
      */
     public function dispatch()
     {
-        $parts = array_map('ucfirst', explode('/', $path = $this['path']));
-        $class = '\\Df\\Apex\\Clip\\'.implode('\\', $parts).'Task';
-
-        if (!class_exists($class, true)) {
-            $this->error('Task not found: '.$path);
-            return 2;
-        }
+        $request = $this->request->withPath($this['path'])
+            ->withCommandParams([]);
+        $context = new Context($this->app, $request, $this->shell);
+        $task = Base::load($context);
 
         $factory = $this->app[Factory::class];
-        $command = $factory->newCommand($path);
-
-        $task = $this->app->newInstanceOf($class, [
-            'context' => $this->context,
-        ], ITask::class);
+        $command = $factory->newCommand($request->getPath());
 
         $task->setup($command);
         $command->renderHelp($this->shell);

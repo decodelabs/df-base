@@ -32,6 +32,14 @@ class Context implements IContext
     }
 
     /**
+     * Clone children
+     */
+    public function __clone()
+    {
+        $this->request = clone $this->request;
+    }
+
+    /**
      * Pass calls through to shell
      */
     public function __call(string $method, array $args)
