@@ -309,7 +309,7 @@ class Command implements ICommand
             $name = '--'.$arg->getName();
 
             if (null !== ($shortcut = $arg->getShortcut())) {
-                $name = '-'.$shortcut.'|'.$name;
+                $name .= ' | -'.$shortcut;
             }
 
             $shell->render($name, '+magenta|bold');
