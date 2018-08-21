@@ -243,7 +243,7 @@ class Formatter
     /**
      * String to boolean
      */
-    public static function toBoolean(string $text): bool
+    public static function toBoolean(string $string): bool
     {
         return (new Text($string))->toBoolean();
     }

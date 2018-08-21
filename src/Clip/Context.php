@@ -18,6 +18,10 @@ use Df\Clip\IContext;
 use Psr\Log\LoggerTrait;
 use Psr\Log\LogLevel;
 
+use Df\Clip\Input\Question;
+use Df\Clip\Input\Password;
+use Df\Clip\Input\Confirmation;
+
 class Context implements IContext
 {
     use TContext;
@@ -123,5 +127,52 @@ class Context implements IContext
         }
 
         return strtr($message, $replace);
+    }
+
+
+
+
+    /**
+     * Clear screen and move cursor to top
+     */
+    public function clearScreen(): IContext
+    {
+        $this->shell->writeLine("\e[H\e[2J");
+        return $this;
+    }
+
+    /**
+     * Write a tab to the console
+     */
+    public function tab(int $count=1): IContext
+    {
+        $this->shell->write(str_repeat("\t", $count));
+        return $this;
+    }
+
+
+
+    /**
+     * Ask a question
+     */
+    public function ask(string $message, string $default=null): IInput
+    {
+        return new Question($this, $message, $default);
+    }
+
+    /**
+     * Ask for password
+     */
+    public function askPassword(string $message): IInput
+    {
+        return new Password($this, $message);
+    }
+
+    /**
+     * Ask for confirmation
+     */
+    public function confirm(string $message, bool $default=null): IInput
+    {
+        return new Confirmation($this, $message, $default);
     }
 }

@@ -38,6 +38,7 @@ class Styles
 
     const OPTIONS = [
         'bold' => [1, 22],
+        'dim' => [2, 22],
         'underline' => [4, 24],
         'blink' => [5, 25],
         'reverse' => [7, 27],
@@ -107,19 +108,17 @@ class Styles
     /**
      * Add style info to message
      */
-    public function format(string $message, string $fgColor, string $bgColor=null, string ...$options): string
+    public function format(string $message, ?string $fgColor, ?string $bgColor=null, string ...$options): string
     {
-        if ($bgColor === null) {
-            $bgColor = 'default';
+        if ($fgColor !== null) {
+            $setCodes[] = static::FG_COLORS[$fgColor];
+            $unsetCodes[] = static::FG_COLORS['reset'];
         }
 
-        $fgCode = static::FG_COLORS[$fgColor];
-        $fgReset = static::FG_COLORS['reset'];
-        $bgCode = static::BG_COLORS[$bgColor];
-        $bgReset = static::BG_COLORS['reset'];
-
-        $setCodes = [$fgCode, $bgCode];
-        $unsetCodes = [$fgReset, $bgReset];
+        if ($bgColor !== null) {
+            $setCodes[] = static::BG_COLORS[$bgColor];
+            $unsetCodes[] = static::BG_COLORS['reset'];
+        }
 
         foreach ($options as $option) {
             $setCodes[] = static::OPTIONS[$option][0];
