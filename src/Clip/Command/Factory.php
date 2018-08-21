@@ -4,10 +4,14 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Clip\Request;
+namespace Df\Clip\Command;
 
 use Df;
-use Df\Clip\IRequest;
+
+use Df\Clip\ICommand;
+use Df\Clip\Command;
+use Df\Clip\Command\IRequest;
+use Df\Clip\Command\CliRequest;
 
 class Factory
 {
@@ -38,5 +42,23 @@ class Factory
     {
         // Do anything that needs to be done here
         return $server;
+    }
+
+
+    /**
+     * Convert request to bare command
+     */
+    public function requestToCommand(IRequest $request): ICommand
+    {
+        return $this->newCommand($request->getPath());
+    }
+
+    /**
+     * Create a new bare command
+     */
+    public function newCommand(string $path): ICommand
+    {
+        return (new Command($path))
+            ->addArgument('--h|help', 'Get help for this task');
     }
 }

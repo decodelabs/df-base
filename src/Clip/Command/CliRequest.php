@@ -4,10 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Clip\Request;
+namespace Df\Clip\Command;
 
 use Df;
-use Df\Clip\IRequest;
 
 class CliRequest implements IRequest
 {

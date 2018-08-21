@@ -11,9 +11,9 @@ use Df;
 use Df\Core\IApp;
 use Df\Core\Kernel\IConsole;
 
-use Df\Clip\IRequest;
 use Df\Clip\ITask;
-use Df\Clip\IDispatcher;
+use Df\Clip\Command\Factory;
+use Df\Clip\Command\IRequest;
 
 use Df\Clip\Shell\Std;
 
@@ -65,9 +65,32 @@ class Kernel implements IConsole
             ]);
         }
 
+        $factory = $this->app[Factory::class];
+        $command = $factory->requestToCommand($request);
+
         $task = $this->app->newInstanceOf($class, [
             'context' => $context,
         ], ITask::class);
+
+        $task->setup($command);
+
+        try {
+            $args = $command->apply($request);
+        } catch (EUnexpectedValue $e) {
+            $shell->writeLine();
+            $shell->render($e->getMessage(), 'error');
+            $command->renderHelp($shell);
+
+            return 1;
+        }
+
+        $task->setArgs($args);
+
+        if ($args['help'] ?? false) {
+            $command->renderHelp($shell);
+            return 0;
+        }
+
 
         $res = $task->dispatch();
         $status = null;

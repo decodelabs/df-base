@@ -11,7 +11,8 @@ use Df;
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
 
-use Df\Clip\Request\Factory;
+use Df\Clip\Command\Factory;
+use Df\Clip\Command\IRequest;
 
 class ServiceProvider implements IProvider
 {
@@ -21,6 +22,7 @@ class ServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
+            Factory::class,
             IRequest::class
         ];
     }
@@ -30,9 +32,12 @@ class ServiceProvider implements IProvider
      */
     public function registerServices(IContainer $app): void
     {
+        // Factory
+        $app->bindShared(Factory::class);
+
         // Request
-        $app->bindShared(IRequest::class, function ($app) {
-            return (new Factory())->fromEnvironment();
+        $app->bindShared(IRequest::class, function ($app, Factory $factory) {
+            return $factory->fromEnvironment();
         })->alias('clip.request');
     }
 }

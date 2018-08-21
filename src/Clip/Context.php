@@ -8,8 +8,8 @@ namespace Df\Clip;
 
 use Df;
 use Df\Core\IApp;
-use Df\Clip\IRequest;
 use Df\Clip\IShell;
+use Df\Clip\Command\IRequest;
 
 use Df\Plug\TContext;
 use Df\Plug\IContext;

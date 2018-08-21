@@ -8,17 +8,43 @@ namespace Df\Apex\Clip;
 
 use Df;
 use Df\Clip\ITask;
-use Df\Plug\TContextProxy;
+use Df\Clip\Task\Base;
+use Df\Clip\ICommand;
+use Df\Clip\Command\Factory;
 
-class HelpTask implements ITask
+class HelpTask extends Base
 {
-    use TContextProxy;
+    /**
+     * Prepare command
+     */
+    public function setup(ICommand $command): void
+    {
+        $command
+            ->setHelp('Get instructions for any task in your app')
+            ->addArgument('path=help', 'Path to the target task');
+    }
 
     /**
      * Execute
      */
     public function dispatch()
     {
-        dd($this->request);
+        $parts = array_map('ucfirst', explode('/', $path = $this['path']));
+        $class = '\\Df\\Apex\\Clip\\'.implode('\\', $parts).'Task';
+
+        if (!class_exists($class, true)) {
+            $this->error('Task not found: '.$path);
+            return 2;
+        }
+
+        $factory = $this->app[Factory::class];
+        $command = $factory->newCommand($path);
+
+        $task = $this->app->newInstanceOf($class, [
+            'context' => $this->context,
+        ], ITask::class);
+
+        $task->setup($command);
+        $command->renderHelp($this->shell);
     }
 }
