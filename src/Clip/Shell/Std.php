@@ -12,8 +12,6 @@ use Df\Clip\IShell;
 
 class Std implements IShell
 {
-    use TRenderer;
-
     protected $in;
     protected $out;
     protected $error;

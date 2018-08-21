@@ -7,7 +7,7 @@ namespace Df\Clip;
 
 use Df;
 
-use Df\Clip\IShell;
+use Df\Clip\IContext;
 use Df\Clip\Command\IArgument;
 use Df\Clip\Command\IRequest;
 
@@ -27,5 +27,5 @@ interface ICommand
     public function clearArguments(): ICommand;
 
     public function apply(IRequest $request): array;
-    public function renderHelp(IShell $shell): void;
+    public function renderHelp(IContext $context): void;
 }

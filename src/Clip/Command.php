@@ -8,7 +8,7 @@ namespace Df\Clip;
 
 use Df;
 
-use Df\Clip\IShell;
+use Df\Clip\IContext;
 use Df\Clip\Command\IArgument;
 use Df\Clip\Command\Argument;
 use Df\Clip\Command\IRequest;
@@ -267,21 +267,21 @@ class Command implements ICommand
     /**
      * Render help text
      */
-    public function renderHelp(IShell $shell): void
+    public function renderHelp(IContext $context): void
     {
-        $shell->writeLine();
-        $shell->render($this->path, '+yellow|bold');
-        $shell->render(' - ', '+');
-        $shell->render($this->help, 'bold');
+        $context->writeLine();
+        $context->render($this->path, '+yellow|bold');
+        $context->render(' - ', '+');
+        $context->render($this->help, 'bold');
 
-        $shell->writeLine();
+        $context->writeLine();
 
         foreach ($this->arguments as $arg) {
             if ($arg->isNamed()) {
                 continue;
             }
 
-            $this->renderArg($shell, $arg);
+            $this->renderArg($context, $arg);
         }
 
         foreach ($this->arguments as $arg) {
@@ -289,22 +289,22 @@ class Command implements ICommand
                 continue;
             }
 
-            $this->renderArg($shell, $arg);
+            $this->renderArg($context, $arg);
         }
     }
 
-    private function renderArg(IShell $shell, IArgument $arg)
+    private function renderArg(IContext $context, IArgument $arg)
     {
         if (!$arg->isNamed()) {
-            $shell->render($arg->getName(), '+cyan|bold');
+            $context->render($arg->getName(), '+cyan|bold');
 
             if ($default = $arg->getDefaultValue()) {
-                $shell->render(' [=', '+');
-                $shell->render($default, '+green');
-                $shell->render(']', '+');
+                $context->render(' [=', '+');
+                $context->render($default, '+green');
+                $context->render(']', '+');
             }
 
-            $shell->writeLine();
+            $context->writeLine();
         } else {
             $name = '--'.$arg->getName();
 
@@ -312,28 +312,28 @@ class Command implements ICommand
                 $name .= ' | -'.$shortcut;
             }
 
-            $shell->render($name, '+magenta|bold');
+            $context->render($name, '+magenta|bold');
 
             if (!$arg->isBoolean()) {
                 if ($pattern = $arg->getPattern()) {
-                    $shell->render('<', '+');
-                    $shell->render($pattern, '+yellow');
-                    $shell->render('>', '+');
+                    $context->render('<', '+');
+                    $context->render($pattern, '+yellow');
+                    $context->render('>', '+');
                 } elseif ($default = $arg->getDefaultValue()) {
-                    $shell->render('[=', '+');
-                    $shell->render($default, '+green');
-                    $shell->render(']', '+');
+                    $context->render('[=', '+');
+                    $context->render($default, '+green');
+                    $context->render(']', '+');
                 } else {
-                    $shell->render('<', '+');
-                    $shell->render('value', '+cyan');
-                    $shell->render('>', '+');
+                    $context->render('<', '+');
+                    $context->render('value', '+cyan');
+                    $context->render('>', '+');
                 }
             }
 
-            $shell->writeLine();
+            $context->writeLine();
         }
 
-        $shell->render($arg->getDescription(), '>white|bold');
-        $shell->writeLine();
+        $context->render($arg->getDescription(), '>white|bold');
+        $context->writeLine();
     }
 }

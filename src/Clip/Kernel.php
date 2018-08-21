@@ -65,8 +65,8 @@ class Kernel implements IConsole
             $args = $command->apply($request);
         } catch (EUnexpectedValue $e) {
             $shell->writeLine();
-            $shell->render($e->getMessage(), 'error');
-            $command->renderHelp($shell);
+            $context->render($e->getMessage(), 'error');
+            $command->renderHelp($context);
 
             return 1;
         }
@@ -74,7 +74,7 @@ class Kernel implements IConsole
         $task->setArgs($args);
 
         if ($args['help'] ?? false) {
-            $command->renderHelp($shell);
+            $command->renderHelp($context);
             return 0;
         }
 
@@ -85,7 +85,7 @@ class Kernel implements IConsole
         if (is_int($res)) {
             $status = $res;
         } elseif ($res !== null) {
-            $shell->render($res);
+            $context->render($res);
         }
 
         if ($res instanceof \Generator) {

@@ -7,15 +7,10 @@ namespace Df\Clip;
 
 use Df;
 
-use Psr\Log\LoggerInterface;
-
-interface IShell extends LoggerInterface
+interface IShell
 {
     public function getWidth(): int;
     public function canColor(): bool;
-
-    public function render($output, ?string $modifier=null): void;
-    public function style(string $message, string $fgColor, string $bgColor=null, string ...$options): string;
 
     public function write(string $message): void;
     public function writeLine(?string $message=null): void;

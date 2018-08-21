@@ -39,6 +39,6 @@ class HelpTask extends Base
         $command = $factory->newCommand($request->getPath());
 
         $task->setup($command);
-        $command->renderHelp($this->shell);
+        $command->renderHelp($context);
     }
 }
