@@ -17,6 +17,8 @@ class ProgressBar
     protected $min = 0;
     protected $max = 100;
 
+    protected $started = false;
+
     protected $context;
 
     /**
@@ -89,7 +91,7 @@ class ProgressBar
      */
     public function advance(float $value): ProgressBar
     {
-        $this->context->write("\r");
+        //$this->context->write("\r");
         $width = min($this->context->getWidth(), 80);
 
         if ($value < $this->min) {
@@ -100,7 +102,7 @@ class ProgressBar
             $value = $this->max;
         }
 
-        $space = $width - 12;
+        $space = $width - 9;
         $percent = ($value - $this->min) / ($this->max - $this->min);
         $chars = ceil($percent * $space);
 
@@ -110,9 +112,24 @@ class ProgressBar
             $color = '+green|bold';
         }
 
+
+        if ($this->started) {
+            $this->context->write("\r");
+            $this->context->write("\e[2A");
+        } else {
+            $this->context->write("\r");
+            $this->started = true;
+        }
+
+        $this->context->render(str_repeat('-', $width), 'white|bold');
+        $this->context->render('| ', '+white|bold');
+
         $this->context->render(str_repeat(self::FULL, (int)$chars), $color);
         $this->context->render(str_repeat(self::EMPTY, (int)($space - $chars)), '+dim');
         $this->context->render(str_pad(ceil($percent * 100).'%', 5, ' ', STR_PAD_LEFT), '+white|bold');
+
+        $this->context->render(' |', 'white|bold');
+        $this->context->render(str_repeat('-', $width), '+white');
 
         return $this;
     }
