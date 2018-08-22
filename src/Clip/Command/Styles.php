@@ -193,6 +193,14 @@ class Styles
     }
 
     /**
+     * Extract string
+     */
+    public function extractString(string $style): array
+    {
+        return $this->extract(explode('|', $style));
+    }
+
+    /**
      * Extract a stored array
      */
     public function extract(array $styles): array

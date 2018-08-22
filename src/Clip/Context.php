@@ -22,13 +22,13 @@ use Df\Clip\Input\Question;
 use Df\Clip\Input\Password;
 use Df\Clip\Input\Confirmation;
 
+use Df\Clip\Widget\Spinner;
+use Df\Clip\Widget\ProgressBar;
+
 class Context implements IContext
 {
     use TContext;
     use LoggerTrait;
-
-
-
 
     protected $request;
     protected $shell;
@@ -155,7 +155,7 @@ class Context implements IContext
     /**
      * Ask a question
      */
-    public function ask(string $message, string $default=null): IInput
+    public function ask(string $message, string $default=null): Question
     {
         return new Question($this, $message, $default);
     }
@@ -163,7 +163,7 @@ class Context implements IContext
     /**
      * Ask for password
      */
-    public function askPassword(string $message): IInput
+    public function askPassword(string $message): Password
     {
         return new Password($this, $message);
     }
@@ -171,8 +171,26 @@ class Context implements IContext
     /**
      * Ask for confirmation
      */
-    public function confirm(string $message, bool $default=null): IInput
+    public function confirm(string $message, bool $default=null): Confirmation
     {
         return new Confirmation($this, $message, $default);
+    }
+
+
+
+    /**
+     * Show progress indicator
+     */
+    public function spinner(string $style=null): Spinner
+    {
+        return new Spinner($this, $style);
+    }
+
+    /**
+     * Show progress bar
+     */
+    public function progressBar(float $min=0, float $max=100): ProgressBar
+    {
+        return new ProgressBar($this, $min, $max);
     }
 }

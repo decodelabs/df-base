@@ -12,6 +12,12 @@ use Df\Clip\IInput;
 
 use Psr\Log\LoggerInterface;
 
+use Df\Clip\Input\Question;
+use Df\Clip\Input\Password;
+use Df\Clip\Input\Confirmation;
+
+use Df\Clip\Widget\Spinner;
+
 interface IContext extends IPlugContext, LoggerInterface
 {
     public function render($output, ?string $modifier=null): void;
@@ -21,7 +27,10 @@ interface IContext extends IPlugContext, LoggerInterface
     public function tab(int $count=1): IContext;
 
     // Input
-    public function ask(string $message, string $default=null): IInput;
-    public function askPassword(string $message): IInput;
-    public function confirm(string $message, bool $default=null): IInput;
+    public function ask(string $message, string $default=null): Question;
+    public function askPassword(string $message): Password;
+    public function confirm(string $message, bool $default=null): Confirmation;
+
+    // Widgets
+    public function spinner(string $style=null): Spinner;
 }

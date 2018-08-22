@@ -7,11 +7,10 @@ declare(strict_types=1);
 namespace Df\Clip\Input;
 
 use Df;
-use Df\Clip\IInput;
 use Df\Clip\IContext;
 use Df\Flex\Formatter;
 
-class Confirmation implements IInput
+class Confirmation
 {
     protected $message;
     protected $showOptions = true;
@@ -41,7 +40,7 @@ class Confirmation implements IInput
     /**
      * Should options be shown?
      */
-    public function setShowOptions(bool $show): IInput
+    public function setShowOptions(bool $show): Confirmation
     {
         $this->showOptinos = $show;
         return $this;
@@ -59,7 +58,7 @@ class Confirmation implements IInput
     /**
      * Set default value
      */
-    public function setDefaultValue(?bool $default): IInput
+    public function setDefaultValue(?bool $default): Confirmation
     {
         $this->default = $default;
         return $this;

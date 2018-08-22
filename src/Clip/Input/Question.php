@@ -7,10 +7,9 @@ declare(strict_types=1);
 namespace Df\Clip\Input;
 
 use Df;
-use Df\Clip\IInput;
 use Df\Clip\IContext;
 
-class Question implements IInput
+class Question
 {
     protected $message;
     protected $options = [];
@@ -42,7 +41,7 @@ class Question implements IInput
     /**
      * Set available options
      */
-    public function setOptions(string ...$options): IInput
+    public function setOptions(string ...$options): Question
     {
         $this->options = $options;
         return $this;
@@ -59,7 +58,7 @@ class Question implements IInput
     /**
      * Should options be shown?
      */
-    public function setShowOptions(bool $show): IInput
+    public function setShowOptions(bool $show): Question
     {
         $this->showOptinos = $show;
         return $this;
@@ -77,7 +76,7 @@ class Question implements IInput
     /**
      * Set strict
      */
-    public function setStrict(bool $strict): IInput
+    public function setStrict(bool $strict): Question
     {
         $this->strict = $strict;
         return $this;
@@ -95,7 +94,7 @@ class Question implements IInput
     /**
      * Set default value
      */
-    public function setDefaultValue(?string $default): IInput
+    public function setDefaultValue(?string $default): Question
     {
         $this->default = $default;
         return $this;
