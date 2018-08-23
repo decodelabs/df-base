@@ -99,7 +99,7 @@ class Factory
             ],
             'ENotFound' => [
                 'extend' => 'ERuntime',
-                'http' => 404
+                //'http' => 404
             ],
             'EComponentUnavailable' => [
                 'extend' => 'ERuntime'

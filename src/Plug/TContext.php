@@ -8,6 +8,8 @@ namespace Df\Plug;
 
 use Df;
 use Df\Core\IApp;
+use Df\Plug\IHelper;
+use Df\Plug\IGlobalHelper;
 
 trait TContext
 {
@@ -30,8 +32,32 @@ trait TContext
             return $this->{$name};
         }
 
-        // TODO: load helper
-        dd($name);
+
+        return $this->{$name} = $this->loadHelper($name);
+    }
+
+    /**
+     * Load helper
+     */
+    public function loadHelper(string $name): IHelper
+    {
+        $class = '\\Df\\Plug\\'.ucfirst($name);
+
+        if (!class_exists($class, true)) {
+            throw Df\Error::ENotFound([
+                'Helper '.$name.' could not be found'
+            ]);
+        }
+
+        $output = $this->app->newInstanceOf($class, [
+            'context' => $this
+        ], IHelper::class);
+
+        if ($output instanceof IGlobalHelper) {
+            $this->app->bindShared($class, $output);
+        }
+
+        return $output;
     }
 
     /**
