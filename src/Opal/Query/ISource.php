@@ -9,6 +9,6 @@ use Df;
 
 interface ISource
 {
-    public function getQuerySourceId();
-    public function getDefaultQueryAlias();
+    public function getQuerySourceId(): string;
+    public function getDefaultQueryAlias(): string;
 }

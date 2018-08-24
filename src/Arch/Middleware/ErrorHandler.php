@@ -43,6 +43,7 @@ class ErrorHandler implements MiddlewareInterface
         }
 
         // TODO: return a response!
-        dd($e->getMessage(), 'HTTP: '.$http, $trace);
+        throw $e;
+        //dd($e->getMessage(), 'HTTP: '.$http, $trace);
     }
 }

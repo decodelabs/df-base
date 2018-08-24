@@ -1,0 +1,18 @@
+<?php
+/**
+ * This file is part of the Decode Framework
+ * @license http://opensource.org/licenses/MIT
+ */
+declare(strict_types=1);
+namespace Df\Opal\Query\Builder;
+
+use Df;
+use Df\Opal\Query\IField;
+
+trait TRelations
+{
+    protected function lookupRelationField(string &$fieldName, ?IField $queryField=null)
+    {
+        Df\incomplete();
+    }
+}

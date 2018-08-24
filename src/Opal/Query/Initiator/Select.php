@@ -9,6 +9,8 @@ namespace Df\Opal\Query\Initiator;
 use Df;
 use Df\Core\IApp;
 
+use Df\Mesh\Job\TTransactionAware;
+
 use Df\Opal\Query\IInitiator;
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Source\Manager as SourceManager;
@@ -21,9 +23,13 @@ class Select implements
     IFromSource
 {
     use TFieldCollector;
+    use TTransactionAware;
+    use TFromSource;
 
     protected $distinct = false;
-    protected $parent;
+    protected $parentQuery;
+    protected $subQueryMode;
+    protected $derivationParent;
     protected $app;
 
     /**
@@ -57,11 +63,55 @@ class Select implements
 
 
     /**
+     * Use as subquery
+     */
+    public function asSubQuery(IBuilder $parent, string $mode): IInitiator
+    {
+        return $this->setParentQuery($parent)
+            ->setSubQueryMode($mode);
+    }
+
+    /**
+     * Set parent query
+     */
+    public function setParentQuery(?IBuilder $parent): IInitiator
+    {
+        $this->parentQuery = $parent;
+        return $this;
+    }
+
+    /**
+     * Get parent query
+     */
+    public function getParentQuery(): ?IBuilder
+    {
+        return $this->parentQuery;
+    }
+
+    /**
+     * Set sub query mode
+     */
+    public function setSubQueryMode(?string $mode): IInitiator
+    {
+        $this->subQueryMode = $mode;
+        return $this;
+    }
+
+    /**
+     * Get sub query mode
+     */
+    public function getSubQueryMode(): ?string
+    {
+        return $this->subQueryMode;
+    }
+
+
+    /**
      * Set derivation parent
      */
     public function setDerivationParent(?IInitiator $parent): IInitiator
     {
-        $this->parent = $parent;
+        $this->derivationParent = $parent;
         return $this;
     }
 
@@ -70,16 +120,17 @@ class Select implements
      */
     public function getDerivationParent(): ?IInitiator
     {
-        return $this->parent;
+        return $this->derivationParent;
     }
 
 
     /**
-     * Set source and
+     * Set source and alias
      */
     public function from($source, string $alias=null): IBuilder
     {
         $manager = new SourceManager($this->app);
+        $manager->setTransaction($this->transaction);
         $source = $manager->normalizeSource($source);
 
         $reference = new Reference($source, $alias);
@@ -89,35 +140,10 @@ class Select implements
             $reference->selectField($field);
         }
 
-        return new SelectBuilder($manager, $reference);
-    }
-
-
-    /**
-     * Select from subquery
-     */
-    public function fromSelect(string ...$fields): Select
-    {
-        $output = new self($this->app, $fields);
-        $output->setDerivationParent($this);
-        return $output;
-    }
-
-    /**
-     * Select from distinct subquery
-     */
-    public function fromSelectDistinct(string ...$fields): Select
-    {
-        $output = new self($this->app, $fields, true);
-        $output->setDerivationParent($this);
-        return $output;
-    }
-
-    /**
-     * Select from union subquery
-     */
-    public function fromUnion(): Union
-    {
-        Df\incomplete();
+        return (new SelectBuilder($manager, $reference))
+            ->setDistinct($this->distinct)
+            ->setParentQuery($this->parentQuery)
+            ->setSubQueryMode($this->subQueryMode)
+            ->setDerivationParent($this->derivationParent);
     }
 }

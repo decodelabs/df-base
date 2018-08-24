@@ -7,6 +7,14 @@ namespace Df\Opal\Query;
 
 use Df;
 
-interface IBuilder
+use Df\Mesh\Job\ITransactionAware;
+
+use Df\Opal\Query\Source\Reference;
+use Df\Opal\Query\Source\Manager;
+
+interface IBuilder extends ITransactionAware
 {
+    public function getSourceManager(): Manager;
+    public function getPrimarySourceReference(): Reference;
+    public function getPrimarySource(): ISource;
 }

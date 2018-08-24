@@ -83,25 +83,55 @@ class Reference
      */
     public function selectField(string $field): IField
     {
-        $factory = new Factory();
-        $field = $factory->fromString($field, $this);
-        $alias = $field->getAlias();
-
-        if (isset($this->fields[$alias]) && !$this->fields[$alias]->matches($field)) {
-            throw Df\Error::EUnexpectedValue('Another field has already been aliased as '.$alias);
-        }
+        $field = (new Factory())->fromString($field, $this);
 
         if ($field instanceof Wildcard && ($sourceFields = $this->getSourceFields())) {
             foreach ($sourceFields as $sourceField) {
                 $this->selectField($sourceField);
             }
         } else {
-            $this->fields[$alias] = $field;
+            $this->registerField($field);
         }
 
         return $field;
     }
 
+    /**
+     * Direct register field
+     */
+    public function registerField(IField $field): Reference
+    {
+        $alias = $field->getAlias();
+
+        if (isset($this->fields[$alias]) && !$this->fields[$alias]->matches($field)) {
+            throw Df\Error::EUnexpectedValue('Another field has already been aliased as '.$alias);
+        }
+
+        $this->fields[$field->getAlias()] = $field;
+        return $this;
+    }
+
+
+    /**
+     * Get list of fields
+     */
+    public function getFields(): array
+    {
+        return $this->fields;
+    }
+
+
+    /**
+     * Render to pseudo SQL string
+     */
+    public function __toString(): string
+    {
+        if ($this->source instanceof Derived) {
+            return '('.str_replace("\n", "\n  ", $this->source).') as '.$this->getAlias();
+        }
+
+        return $this->getId().' as '.$this->getAlias();
+    }
 
 
     /**

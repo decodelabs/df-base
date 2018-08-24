@@ -7,6 +7,8 @@ namespace Df\Opal\Query;
 
 use Df;
 
-interface IInitiator
+use Df\Mesh\Job\ITransactionAware;
+
+interface IInitiator extends ITransactionAware
 {
 }
