@@ -47,9 +47,14 @@ class Derived implements IComposedSource
      */
     public function getFieldNames(): array
     {
-        Df\incomplete('Extract output fields from manager');
+        $manager = $this->query->getSourceManager();
+        $output = [];
 
-        return $this->query->getOutputManifest()->getFieldNames();
+        foreach ($manager->getReferences() as $reference) {
+            $output = array_merge(array_keys($reference->getFields()));
+        }
+
+        return array_unique($output);
     }
 
 

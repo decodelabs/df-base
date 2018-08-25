@@ -11,6 +11,7 @@ use Df\Opal\Query\ISource;
 use Df\Opal\Query\IComposedSource;
 
 use Df\Opal\Query\IField;
+use Df\Opal\Query\Field\INamed as INamedField;
 use Df\Opal\Query\Field\Wildcard;
 use Df\Opal\Query\Field\Factory;
 
@@ -77,6 +78,31 @@ class Reference
     }
 
 
+    /**
+     * Lookup or select field by name
+     */
+    public function findFieldByName(string $name, bool $create=false): ?IField
+    {
+        foreach ($this->fields as $field) {
+            if ($field instanceof INamedField && $field->getName() === $name) {
+                return $field;
+            }
+        }
+
+        if ($create) {
+            return (new Factory())->fromString($name, $this);
+        }
+
+        return null;
+    }
+
+    /**
+     * Lookup or select field by alias
+     */
+    public function findFieldByAlias(string $alias): ?IField
+    {
+        return $this->fields[$alias] ?? null;
+    }
 
     /**
      * Register field

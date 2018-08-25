@@ -3,19 +3,16 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace Df\Opal\Query;
+namespace Df\Opal\Query\Clause;
 
 use Df;
-
-use Df\Mesh\Job\ITransactionAware;
-
-use Df\Opal\Query\Source\Reference;
+use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Source\Manager;
+use Df\Opal\Query\Source\Reference;
 
-interface IBuilder extends ITransactionAware
+interface IFacade
 {
     public function getSourceManager(): Manager;
     public function getPrimarySourceReference(): Reference;
-    public function getPrimarySource(): ISource;
     public function getPrimarySourceAlias(): string;
 }

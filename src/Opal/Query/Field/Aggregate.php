@@ -11,18 +11,24 @@ use Df\Opal\Query\Source\Reference;
 
 use Df\Opal\Query\IField;
 
-class Intrinsic implements IField, INamed
+class Aggregate implements IField
 {
-    protected $name;
+    const FUNCTIONS = [
+        'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'HAS'
+    ];
+
+    protected $type;
+    protected $inner;
     protected $alias;
     protected $sourceReference;
 
     /**
      * Init with source, name and alias
      */
-    public function __construct(Reference $sourceReference, string $name, ?string $alias=null)
+    public function __construct(Reference $sourceReference, string $type, string $inner, string $alias)
     {
-        $this->name = $name;
+        $this->type = $type;
+        $this->inner = $inner;
         $this->sourceReference = $sourceReference;
 
         if ($alias === null) {
@@ -38,14 +44,6 @@ class Intrinsic implements IField, INamed
     public function getAlias(): string
     {
         return $this->alias;
-    }
-
-    /**
-     * Get name
-     */
-    public function getName(): string
-    {
-        return $this->name;
     }
 
     /**
@@ -66,8 +64,9 @@ class Intrinsic implements IField, INamed
             return false;
         }
 
-        return $field->getName() === $this->name
-            && $field->getAlias() === $this->alias;
+        return $field->type === $this->type
+            && $field->inner === $this->inner
+            && $field->alias === $this->alias;
     }
 
     /**
@@ -75,6 +74,6 @@ class Intrinsic implements IField, INamed
      */
     public function __toString(): string
     {
-        return $this->sourceReference->getAlias().'.'.$this->name.' as '.$this->alias;
+        return $this->type.'('.$this->inner.') as '.$this->alias;
     }
 }

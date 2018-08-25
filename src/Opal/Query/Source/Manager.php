@@ -14,6 +14,7 @@ use Df\Mesh\Job\ITransactionAdapter;
 use Df\Mesh\Job\ITransactionAware;
 use Df\Mesh\Job\TTransactionAware;
 
+use Df\Opal\Query\IField;
 use Df\Opal\Query\ISource;
 use Df\Opal\Query\Source\Reference;
 
@@ -164,5 +165,98 @@ class Manager implements ITransactionAware
         }
 
         return $this;
+    }
+
+
+
+    /**
+     * Find local field by string reference
+     */
+    public function findLocalField(string $name): IField
+    {
+        $parts = explode('.', $name, 2);
+        $fieldName = array_pop($parts);
+        $sourceAlias = array_shift($parts);
+
+        if ($field = $this->lookupLocalField($sourceAlias, $fieldName, $possible)) {
+            return $field;
+        }
+
+        if ($possible) {
+            return $possible->findField($fieldName);
+        }
+
+        throw Df\Error::EUnexpectedValue(
+            'Field '.$name.' could not be found in current query'
+        );
+    }
+
+    /**
+     * Find foreign field by string reference
+     */
+    public function findForeignField(string $name): IField
+    {
+        $parts = explode('.', $name, 2);
+        $fieldName = array_pop($parts);
+        $sourceAlias = array_shift($parts);
+
+        if ($field = $this->lookupForeignField($sourceAlias, $fieldName, $possible)) {
+            return $field;
+        }
+
+        if ($possible) {
+            return $possible->findField($fieldName);
+        }
+
+        throw Df\Error::EUnexpectedValue(
+            'Field '.$name.' could not be found in current query'
+        );
+    }
+
+
+    /**
+     * Lookup local field
+     */
+    protected function lookupLocalField(?string $sourceAlias, string $name, ?Reference &$possible=null): ?IField
+    {
+        if ($sourceAlias !== null) {
+            if (isset($this->references[$sourceAlias])) {
+                return $this->references[$sourceAlias]->findFieldByName($name);
+            } else {
+                return null;
+            }
+        }
+
+        foreach ($this->references as $reference) {
+            if ($field = $reference->findFieldByAlias($name)) {
+                return $field;
+            } elseif (null !== ($fields = $reference->getSourceFields())) {
+                if (in_array($name, $fields)) {
+                    return $reference->findFieldByName($name, true);
+                }
+            } else {
+                if (!$possible) {
+                    $possible = $reference;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Lookup foreign field
+     */
+    protected function lookupForeignField(?string $sourceAlias, string $name, ?Reference &$possible=null): ?IField
+    {
+        if ($field = $this->lookupLocalField($sourceAlias, $name, $possible)) {
+            return $field;
+        }
+
+        if ($this->parent && ($field = $this->parent->lookupForeignField($sourceAlias, $name, $possible))) {
+            return $field;
+        }
+
+        return null;
     }
 }

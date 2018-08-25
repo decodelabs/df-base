@@ -16,14 +16,15 @@ trait TParentAware
 {
     protected $subQueryMode;
     protected $parentQuery;
+    protected $applicator;
 
     /**
      * Use as subquery
      */
-    public function asSubQuery(IBuilder $parent, string $mode): IParentAware
+    public function asSubQuery(IBuilder $parent, string $mode, ?callable $applicator=null): IParentAware
     {
         return $this->setParentQuery($parent)
-            ->setSubQueryMode($mode);
+            ->setSubQueryMode($mode, $applicator);
     }
 
     /**
@@ -54,9 +55,10 @@ trait TParentAware
     /**
      * Set sub query mode
      */
-    public function setSubQueryMode(?string $mode): IParentAware
+    public function setSubQueryMode(?string $mode, ?callable $applicator=null): IParentAware
     {
         $this->subQueryMode = $mode;
+        $this->applicator = $applicator;
         return $this;
     }
 

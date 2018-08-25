@@ -30,6 +30,7 @@ class Select implements
     protected $parentQuery;
     protected $subQueryMode;
     protected $derivationParent;
+    protected $applicator;
     protected $app;
 
     /**
@@ -65,10 +66,10 @@ class Select implements
     /**
      * Use as subquery
      */
-    public function asSubQuery(IBuilder $parent, string $mode): IInitiator
+    public function asSubQuery(IBuilder $parent, string $mode, ?callable $applicator=null): IInitiator
     {
         return $this->setParentQuery($parent)
-            ->setSubQueryMode($mode);
+            ->setSubQueryMode($mode, $applicator);
     }
 
     /**
@@ -91,9 +92,10 @@ class Select implements
     /**
      * Set sub query mode
      */
-    public function setSubQueryMode(?string $mode): IInitiator
+    public function setSubQueryMode(?string $mode, ?callable $applicator=null): IInitiator
     {
         $this->subQueryMode = $mode;
+        $this->applicator = $applicator;
         return $this;
     }
 
@@ -143,7 +145,7 @@ class Select implements
         return (new SelectBuilder($manager, $reference))
             ->setDistinct($this->distinct)
             ->setParentQuery($this->parentQuery)
-            ->setSubQueryMode($this->subQueryMode)
+            ->setSubQueryMode($this->subQueryMode, $this->applicator)
             ->setDerivationParent($this->derivationParent);
     }
 }

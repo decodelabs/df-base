@@ -11,8 +11,32 @@ use Df\Opal\Query\IField;
 
 trait TRelations
 {
+    /*
     protected function lookupRelationField(string &$fieldName, ?IField $queryField=null)
     {
         Df\incomplete();
+    }
+    */
+
+    /**
+     * Get manifest for relation
+     */
+    protected function lookupRelationManifest(string $fieldName): array
+    {
+        Df\incomplete();
+        $sourceManager = $this->getSourceManager();
+
+        return [
+            'local' => [
+                'source' => $this->getPrimarySource(),
+                'field' => 'id'
+            ],
+            'bridgeLocal' => null,
+            'bridgeForeign' => null,
+            'foreign' => [
+                'source' => $foreignSource,
+                'field' => 'jam'
+            ]
+        ];
     }
 }

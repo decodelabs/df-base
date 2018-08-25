@@ -13,12 +13,12 @@ use Df\Opal\Query\Source\Reference;
 
 interface IParentAware extends IBuilder
 {
-    public function asSubQuery(IBuilder $parent, string $mode): IParentAware;
+    public function asSubQuery(IBuilder $parent, string $mode, ?callable $applicator=null): IParentAware;
 
     public function setParentQuery(?IBuilder $parent): IParentAware;
     public function getParentQuery(): ?IBuilder;
 
-    public function setSubQueryMode(?string $mode): IParentAware;
+    public function setSubQueryMode(?string $mode, ?callable $applicator=null): IParentAware;
     public function getSubQueryMode(): ?string;
 
     public function getParentSourceManager(): ?Manager;

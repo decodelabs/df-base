@@ -16,6 +16,8 @@ use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;
 
 use Df\Opal\Query\IBuilder;
+use Df\Opal\Query\Clause\WhereGroup;
+use Df\Opal\Query\Clause\HavingGroup;
 
 class Select implements
     IBuilder,
@@ -24,7 +26,9 @@ class Select implements
     ICorrelated,
     IDerivable,
     IExtendable,
-    IJoinable
+    IJoinable,
+    IWhereClauseProvider,
+    IHavingClauseProvider
 {
     use TSources;
     use TParentAware;
@@ -34,6 +38,8 @@ class Select implements
     use TDerivable;
     use TExtendable;
     use TJoinable;
+    use TWhereClauseProvider;
+    use THavingClauseProvider;
 
 
     protected $distinct = false;
@@ -103,6 +109,45 @@ class Select implements
     }
 
 
+    /**
+     * Complete clause subquery
+     */
+    public function endClause(): IBuilder
+    {
+        if (!$parent = $this->getParentQuery()) {
+            throw Df\Error::ELogic('Query does not have a parent to be aliased into');
+        }
+
+        if (!$this->applicator) {
+            throw Df\Error::ELogic('Correlated subquery does not have a clause generator applicator');
+        }
+
+        switch ($mode = $this->getSubQueryMode()) {
+            case 'where':
+                if (!$parent instanceof IWhereClauseProvider) {
+                    throw Df\Error::ELogic('Parent query is not a where clause provider');
+                }
+
+                $parent->addWhereClause(($this->applicator)($this));
+                break;
+
+            case 'having':
+                if (!$parent instanceof IHavingClauseProvider) {
+                    throw Df\Error::ELogic('Parent query is not a having clause provider');
+                }
+
+                $parent->addHavingClause(($this->applicator)($this));
+                break;
+
+            default:
+                throw Df\Error::ELogic('Select query is not in recognized clause mode: '.$mode);
+        }
+
+
+        return $parent;
+    }
+
+
 
     /**
      * Render as pseudo SQL
@@ -123,6 +168,16 @@ class Select implements
 
         foreach ($this->joins as $join) {
             $output .= '  '.str_replace("\n", "\n  ", (string)$join)."\n";
+        }
+
+        if (!empty($where = $this->getWhereClauses())) {
+            $group = new WhereGroup($this, false, $where);
+            $output .= '  WHERE '.$group."\n";
+        }
+
+        if (!empty($having = $this->getHavingClauses())) {
+            $group = new HavingGroup($this, false, $having);
+            $output .= '  HAVING '.$group."\n";
         }
 
         return $output;

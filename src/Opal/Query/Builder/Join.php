@@ -13,13 +13,16 @@ use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;
 
 use Df\Opal\Query\IBuilder;
+use Df\Opal\Query\Clause\WhereGroup;
 
 class Join implements
     IBuilder,
-    IParentAware
+    IParentAware,
+    IWhereClauseProvider
 {
     use TSources;
     use TParentAware;
+    use TWhereClauseProvider;
 
     protected $type;
     protected $sourceReference;
@@ -116,7 +119,10 @@ class Join implements
     {
         $output = strtoupper($this->type).' JOIN '.$this->sourceReference;
 
-        // TODO: on clauses
+        if (!empty($where = $this->getWhereClauses())) {
+            $group = new WhereGroup($this, false, $where);
+            $output .= "\n".'  ON '.$group;
+        }
 
         return $output;
     }

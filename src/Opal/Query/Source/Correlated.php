@@ -32,7 +32,7 @@ class Correlated implements IComposedSource
      */
     public function getQuerySourceId(): string
     {
-        return 'derived('.$this->source->getQuerySourceId().','.$this->name.')';
+        return 'correlated('.$this->source->getQuerySourceId().','.$this->name.')';
     }
 
     /**
@@ -48,9 +48,7 @@ class Correlated implements IComposedSource
      */
     public function getFieldNames(): array
     {
-        Df\incomplete('Extract output fields from manager');
-
-        return $this->query->getOutputManifest()->getFieldNames();
+        return [$this->name];
     }
 
     /**

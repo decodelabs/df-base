@@ -29,6 +29,7 @@ class Factory
             $alias = null;
         }
 
+
         // Intrinsic
         if (preg_match('/^(([^()].+)\.)?([^()]+)$/', $field, $matches)) {
             $source = $this->normalizeSource($matches[2], $source, $sourceManager);
@@ -38,6 +39,17 @@ class Factory
                 return new Wildcard($source);
             } else {
                 return new Intrinsic($source, $name, $alias);
+            }
+        }
+
+        // Function
+        if (preg_match('/^([a-zA-Z0-9_]+) *\((.*)\)$/', $field, $matches)) {
+            $func = strtoupper($matches[1]);
+
+            if (in_array($func, Aggregate::FUNCTIONS)) {
+                return new Aggregate($source, $func, $matches[2], $alias);
+            } else {
+                return new Macro($source, $func, $matches[2], $alias);
             }
         }
 

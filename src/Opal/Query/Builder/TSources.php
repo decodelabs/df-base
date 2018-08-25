@@ -22,6 +22,14 @@ trait TSources
     }
 
     /**
+     * Get alias of primary source
+     */
+    public function getPrimarySourceAlias(): string
+    {
+        return $this->getPrimarySourceReference()->getAlias();
+    }
+
+    /**
      * Pass transaction through to source mananger
      */
     public function setTransaction(?ITransaction $transaction): ITransactionAware
