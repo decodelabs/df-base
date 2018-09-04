@@ -28,7 +28,9 @@ class Select implements
     IExtendable,
     IJoinable,
     IWhereClauseProvider,
-    IHavingClauseProvider
+    IHavingClauseProvider,
+
+    INestable
 {
     use TSources;
     use TParentAware;
@@ -40,6 +42,8 @@ class Select implements
     use TJoinable;
     use TWhereClauseProvider;
     use THavingClauseProvider;
+
+    use TNestable;
 
 
     protected $distinct = false;
@@ -178,6 +182,10 @@ class Select implements
         if (!empty($having = $this->getHavingClauses())) {
             $group = new HavingGroup($this, false, $having);
             $output .= '  HAVING '.$group."\n";
+        }
+
+        foreach ($this->getNests() as $nest) {
+            $output .= '  '.str_replace("\n", "\n  ", (string)$nest)."\n";
         }
 
         return $output;

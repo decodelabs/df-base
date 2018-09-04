@@ -8,6 +8,7 @@ namespace Df\Opal\Query\Clause;
 
 use Df;
 use Df\Opal\Query\IField;
+use Df\Opal\Query\Field\INamed as INamedField;
 
 class Field extends Base
 {
@@ -41,6 +42,18 @@ class Field extends Base
             $operator = '!'.$operator;
         }
 
-        return '`'.$this->field.'` '.$operator.' '.$this->foreign;
+        if ($this->field instanceof INamedField) {
+            $local = '`'.$this->field.'`';
+        } else {
+            $local = '*'.$this->field->getAlias();
+        }
+
+        if ($this->field instanceof INamedField) {
+            $foreign = '`'.$this->foreign.'`';
+        } else {
+            $foreign = '*'.$this->foreign->getAlias();
+        }
+
+        return $local.' '.$operator.' '.$foreign;
     }
 }

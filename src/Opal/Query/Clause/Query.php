@@ -8,6 +8,7 @@ namespace Df\Opal\Query\Clause;
 
 use Df;
 use Df\Opal\Query\IField;
+use Df\Opal\Query\Field\INamed as INamedField;
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Builder\Select as SelectBuilder;
 
@@ -43,7 +44,13 @@ class Query extends Base
             $operator = '!'.$operator;
         }
 
-        $output = '`'.$this->field.'` '.$operator.' (';
+        if ($this->field instanceof INamedField) {
+            $fieldName = '`'.$this->field.'`';
+        } else {
+            $fieldName = '*'.$this->field->getAlias();
+        }
+
+        $output = $fieldName.' '.$operator.' (';
         $output .= str_replace("\n", "\n    ", $this->query)."\n";
         $output .= '    )';
 

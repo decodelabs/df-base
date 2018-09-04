@@ -17,6 +17,7 @@ use Df\Mesh\Job\TTransactionAware;
 use Df\Opal\Query\IField;
 use Df\Opal\Query\ISource;
 use Df\Opal\Query\Source\Reference;
+use Df\Opal\Query\Field\Virtual as VirtualField;
 
 class Manager implements ITransactionAware
 {
@@ -167,6 +168,30 @@ class Manager implements ITransactionAware
         return $this;
     }
 
+
+
+    /**
+     * Find field and wrap with secondary alias
+     */
+    public function realiasField(string $field): IField
+    {
+        if (preg_match('/(.+) as ([^ ]+)$/', $field, $matches)) {
+            $name = $matches[1];
+            $alias = $matches[2];
+        } else {
+            $name = $field;
+            $alias = null;
+        }
+
+        $field = $this->findForeignField($name);
+
+        return new VirtualField(
+            $field->getSourceReference(),
+            $field->getAlias(),
+            $alias ?? $field->getAlias(),
+            [$field]
+        );
+    }
 
 
     /**
