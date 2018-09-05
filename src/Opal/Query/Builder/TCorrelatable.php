@@ -24,6 +24,7 @@ trait TCorrelatable
                 $this->getSourceManager()->getApp(),
                 [$field]
             ))
+            ->setAliasPrefix(uniqid('cfs_'))
             ->asSubQuery($this, 'correlation');
     }
 
@@ -78,7 +79,8 @@ trait TCorrelatable
     {
         $reference = new Reference(
             $source = new CorrelatedSource($subQuery, $alias),
-            $alias
+            $alias,
+            $subQuery->getPrimarySourceReference()->getPrefix()
         );
 
         $field = new CorrelationField($reference, $alias);

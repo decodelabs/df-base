@@ -182,6 +182,7 @@ trait THavingFacade
                 [$foreign],
                 $distinct
             ))
+            ->setAliasPrefix(uniqid('hcs_'))
             ->asSubQuery($this, 'having', function ($select) use ($local, $operator, $or) {
                 return (new Factory($this))->createQueryClause(
                     $local,

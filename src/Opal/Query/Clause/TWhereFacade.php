@@ -221,6 +221,7 @@ trait TWhereFacade
                 [$foreign],
                 $distinct
             ))
+            ->setAliasPrefix(uniqid('wcs_'))
             ->asSubQuery($this, 'where', function ($select) use ($local, $operator, $or) {
                 return (new Factory($this))->createQueryClause(
                     $local,

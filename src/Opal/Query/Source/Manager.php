@@ -219,13 +219,13 @@ class Manager implements ITransactionAware
     /**
      * Find foreign field by string reference
      */
-    public function findForeignField(string $name): IField
+    public function findForeignField(string $name, string $ignoreAlias=null): IField
     {
         $parts = explode('.', $name, 2);
         $fieldName = array_pop($parts);
         $sourceAlias = array_shift($parts);
 
-        if ($field = $this->lookupForeignField($sourceAlias, $fieldName, $possible)) {
+        if ($field = $this->lookupForeignField($sourceAlias, $fieldName, $possible, $ignoreAlias)) {
             return $field;
         }
 
@@ -242,7 +242,7 @@ class Manager implements ITransactionAware
     /**
      * Lookup local field
      */
-    protected function lookupLocalField(?string $sourceAlias, string $name, ?Reference &$possible=null): ?IField
+    protected function lookupLocalField(?string $sourceAlias, string $name, ?Reference &$possible=null, string $ignoreAlias=null): ?IField
     {
         if ($sourceAlias !== null) {
             if (isset($this->references[$sourceAlias])) {
@@ -252,7 +252,11 @@ class Manager implements ITransactionAware
             }
         }
 
-        foreach ($this->references as $reference) {
+        foreach ($this->references as $refAlias => $reference) {
+            if ($refAlias === $ignoreAlias) {
+                continue;
+            }
+
             if ($field = $reference->findFieldByAlias($name)) {
                 return $field;
             } elseif (null !== ($fields = $reference->getSourceFields())) {
@@ -272,9 +276,9 @@ class Manager implements ITransactionAware
     /**
      * Lookup foreign field
      */
-    protected function lookupForeignField(?string $sourceAlias, string $name, ?Reference &$possible=null): ?IField
+    protected function lookupForeignField(?string $sourceAlias, string $name, ?Reference &$possible=null, string $ignoreAlias=null): ?IField
     {
-        if ($field = $this->lookupLocalField($sourceAlias, $name, $possible)) {
+        if ($field = $this->lookupLocalField($sourceAlias, $name, $possible, $ignoreAlias)) {
             return $field;
         }
 

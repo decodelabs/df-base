@@ -10,6 +10,27 @@ use Df;
 
 trait TFromSource
 {
+    protected $aliasPrefix;
+
+
+    /**
+     * Set alias prefix
+     */
+    public function setAliasPrefix(?string $prefix): IFromSource
+    {
+        $this->aliasPrefix = $prefix;
+        return $this;
+    }
+
+    /**
+     * Get alias prefix;
+     */
+    public function getAliasPrefix(): ?string
+    {
+        return $this->aliasPrefix;
+    }
+
+
     /**
      * Select from subquery
      */
@@ -17,6 +38,7 @@ trait TFromSource
     {
         return (new Select($this->app, $fields))
             ->setParentQuery($this->parentQuery)
+            ->setAliasPrefix(uniqid('dss_'))
             ->setSubQueryMode('derivation')
             ->setDerivationParent($this);
     }
@@ -28,6 +50,7 @@ trait TFromSource
     {
         return (new Select($this->app, $fields, true))
             ->setParentQuery($this->parentQuery)
+            ->setAliasPrefix(uniqid('dss_'))
             ->setSubQueryMode('derivation')
             ->setDerivationParent($this);
     }

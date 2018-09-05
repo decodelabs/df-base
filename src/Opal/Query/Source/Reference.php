@@ -20,13 +20,14 @@ class Reference
     protected $fields = [];
 
     protected $alias;
+    protected $prefix;
     protected $source;
     protected $sourceFields;
 
     /**
      * Init with source and alias
      */
-    public function __construct(ISource $source, string $alias=null)
+    public function __construct(ISource $source, string $alias=null, string $prefix=null)
     {
         $this->source = $source;
 
@@ -35,6 +36,7 @@ class Reference
         }
 
         $this->alias = $alias;
+        $this->prefix = $prefix;
     }
 
     /**
@@ -51,6 +53,28 @@ class Reference
     public function getAlias(): string
     {
         return $this->alias;
+    }
+
+    /**
+     * Get alias prefix
+     */
+    public function getPrefix(): ?string
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * Get prefixed alias
+     */
+    public function getPrefixedAlias(): string
+    {
+        $alias = $this->getAlias();
+
+        if ($this->prefix !== null) {
+            $alias = $this->prefix.':'.$alias;
+        }
+
+        return $alias;
     }
 
     /**
@@ -170,10 +194,12 @@ class Reference
     public function __toString(): string
     {
         if ($this->isDerived()) {
-            return '('.str_replace("\n", "\n  ", $this->source).') as '.$this->getAlias();
+            $output = '('.str_replace("\n", "\n  ", $this->source).')';
+        } else {
+            $output = $this->getId();
         }
 
-        return $this->getId().' as '.$this->getAlias();
+        return $output.' as '.$this->getPrefixedAlias();
     }
 
 

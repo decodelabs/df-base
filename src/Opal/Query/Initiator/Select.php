@@ -135,7 +135,7 @@ class Select implements
         $manager->setTransaction($this->transaction);
         $source = $manager->normalizeSource($source);
 
-        $reference = new Reference($source, $alias);
+        $reference = new Reference($source, $alias, $this->getAliasPrefix());
         $manager->addReference($reference);
 
         foreach ($this->fields as $field) {

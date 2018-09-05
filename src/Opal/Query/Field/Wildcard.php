@@ -56,6 +56,6 @@ class Wildcard implements IField
      */
     public function __toString(): string
     {
-        return $this->sourceReference->getAlias().'.*';
+        return $this->sourceReference->getPrefixedAlias().'.*';
     }
 }

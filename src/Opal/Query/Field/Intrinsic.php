@@ -75,6 +75,6 @@ class Intrinsic implements IField, INamed
      */
     public function __toString(): string
     {
-        return $this->sourceReference->getAlias().'.'.$this->name.' as '.$this->alias;
+        return $this->sourceReference->getPrefixedAlias().'.'.$this->name.' as '.$this->alias;
     }
 }

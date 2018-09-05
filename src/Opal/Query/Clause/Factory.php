@@ -47,7 +47,11 @@ class Factory
     {
         $sourceManager = $this->facade->getSourceManager();
         $field = $sourceManager->findLocalField($field);
-        $foreign = $sourceManager->findForeignField($foreign);
+
+        $foreign = $sourceManager->findForeignField(
+            $foreign,
+            $field->getSourceReference()->getAlias()
+        );
 
         return new Field($field, $operator, $foreign, $or);
     }
