@@ -26,6 +26,7 @@ class Nest implements
     use TParentAware;
 
     protected $name;
+    protected $copy = false;
     protected $fields = [];
     protected $keyFields;
 
@@ -156,6 +157,28 @@ class Nest implements
         return $this->name;
     }
 
+
+
+    /**
+     * Mark instruction as a copy
+     */
+    public function setCopy(bool $copy): INested
+    {
+        $this->copy = $copy;
+        return $this;
+    }
+
+    /**
+     * Do we copy or move?
+     */
+    public function isCopy(): bool
+    {
+        return $this->copy;
+    }
+
+
+
+
     /**
      * Alias of endNest()
      */
@@ -163,6 +186,17 @@ class Nest implements
     {
         return $this->endNest($name);
     }
+
+
+    /**
+     * End nest and mark as copy
+     */
+    public function asCopy(string $name): INestable
+    {
+        return $this->setCopy(true)
+            ->endNest($name);
+    }
+
 
     /**
      * End nest instruction and register
@@ -186,12 +220,18 @@ class Nest implements
      */
     public function __toString(): string
     {
-        $output = 'NEST'."\n";
+        $output = 'NEST';
+
+        if ($this->copy) {
+            $output .= ' COPY';
+        }
+
+        $output .= "\n";
         $fields = $keys = [];
 
         foreach ($this->fields as $field) {
             if ($field instanceof INamedField) {
-                $fieldName = '`'.$field.'`';
+                $fieldName = (string)$field;
             } else {
                 $fieldName = '*'.$field->getAlias();
             }
@@ -203,7 +243,7 @@ class Nest implements
 
         foreach ($this->keyFields as $field) {
             if ($field instanceof INamedField) {
-                $fieldName = '`'.$field.'`';
+                $fieldName = (string)$field;
             } else {
                 $fieldName = '*'.$field->getAlias();
             }

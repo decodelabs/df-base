@@ -146,13 +146,30 @@ class Reference
         return $this->fields;
     }
 
+    /**
+     * Is source derived?
+     */
+    public function isDerived(): bool
+    {
+        return $this->source instanceof Derived ||
+            $this->source instanceof Correlated;
+    }
+
+    /**
+     * Is source correlated?
+     */
+    public function isCorrelated(): bool
+    {
+        return $this->source instanceof Correlated;
+    }
+
 
     /**
      * Render to pseudo SQL string
      */
     public function __toString(): string
     {
-        if ($this->source instanceof Derived) {
+        if ($this->isDerived()) {
             return '('.str_replace("\n", "\n  ", $this->source).') as '.$this->getAlias();
         }
 

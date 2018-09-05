@@ -77,6 +77,12 @@ class Virtual implements IField, INamed
      */
     public function __toString(): string
     {
-        return $this->sourceReference->getAlias().'.'.$this->name.' as '.$this->alias;
+        if ($this->sourceReference->isDerived()) {
+            $output = '*'.$this->sourceReference->getAlias();
+        } else {
+            $output = $this->sourceReference->getAlias().'.'.$this->name;
+        }
+
+        return $output.' as '.$this->alias;
     }
 }

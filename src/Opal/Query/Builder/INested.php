@@ -18,6 +18,10 @@ interface INested extends IBuilder
     public function setName(string $name): INested;
     public function getName(): string;
 
+    public function setCopy(bool $copy): INested;
+    public function isCopy(): bool;
+
     public function as(string $name): INestable;
+    public function asCopy(string $name): INestable;
     public function endNest(string $name): INestable;
 }
