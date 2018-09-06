@@ -30,6 +30,8 @@ class Select implements
     IWhereClauseProvider,
     IHavingClauseProvider,
 
+    IStackable,
+    IStackedData,
     INestable
 {
     use TSources;
@@ -43,6 +45,8 @@ class Select implements
     use TWhereClauseProvider;
     use THavingClauseProvider;
 
+    use TStackable;
+    use TStackedData;
     use TNestable;
 
 
@@ -106,6 +110,9 @@ class Select implements
 
             case 'derivation':
                 return $this->endDerivation($alias);
+
+            case 'stack':
+                return $this->asMany($alias);
 
             default:
                 throw Df\Error::ELogic('Query does not have a parent to be aliased into');
@@ -182,6 +189,10 @@ class Select implements
         if (!empty($having = $this->getHavingClauses())) {
             $group = new HavingGroup($this, false, $having);
             $output .= '  HAVING '.$group."\n";
+        }
+
+        foreach ($this->getStacks() as $stack) {
+            $output .= '  '.str_replace("\n", "\n  ", (string)$stack)."\n";
         }
 
         foreach ($this->getNests() as $nest) {

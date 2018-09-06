@@ -10,11 +10,25 @@ use Df;
 use Df\Core\IApp;
 use Df\Plug\IHelper;
 
+use Df\Opal\Query\IReadFacade;
+use Df\Opal\Query\IWriteFacade;
 use Df\Opal\Query\IBuilder;
-use Df\Opal\Query\Initiator\Select as SelectInitiator;
-use Df\Opal\Query\Builder\Select as SelectBuilder;
 
-class Data implements IHelper
+use Df\Opal\Query\Initiator\Select as SelectInitiator;
+use Df\Opal\Query\Initiator\Fetch as FetchInitiator;
+use Df\Opal\Query\Initiator\Union as UnionInitiator;
+
+use Df\Opal\Query\Initiator\Insert as InsertInitiator;
+use Df\Opal\Query\Initiator\BatchInsert as BatchInsertInitiator;
+use Df\Opal\Query\Initiator\Replace as ReplaceInitiator;
+use Df\Opal\Query\Initiator\BatchReplace as BatchReplaceInitiator;
+use Df\Opal\Query\Initiator\Update as UpdateInitiator;
+use Df\Opal\Query\Initiator\Delete as DeleteInitiator;
+
+class Data implements
+    IHelper,
+    IReadFacade,
+    IWriteFacade
 {
     protected $app;
 
@@ -32,5 +46,80 @@ class Data implements IHelper
     public function select(string ...$fields): SelectInitiator
     {
         return new SelectInitiator($this->app, $fields);
+    }
+
+    /**
+     * Start a distinct query
+     */
+    public function selectDistinct(string ...$fields): SelectInitiator
+    {
+        return new SelectInitiator($this->app, $fields, true);
+    }
+
+
+    /**
+     *
+     */
+    public function union(string ...$fields): UnionInitiator
+    {
+        Df\incomplete();
+    }
+
+    /**
+     *
+     */
+    public function fetch(): FetchInitiator
+    {
+        Df\incomplete();
+    }
+
+
+
+    /**
+     *
+     */
+    public function insert(array $values): InsertInitiator
+    {
+        Df\incomplete();
+    }
+
+    /**
+     *
+     */
+    public function batchInsert(array $rows=[]): BatchInsertInitiator
+    {
+        Df\incomplete();
+    }
+
+    /**
+     *
+     */
+    public function replace(array $values): ReplaceInitiator
+    {
+        Df\incomplete();
+    }
+
+    /**
+     *
+     */
+    public function batchReplace(array $rows=[]): BatchReplaceInitiator
+    {
+        Df\incomplete();
+    }
+
+    /**
+     *
+     */
+    public function update(array $valueMap=null): UpdateInitiator
+    {
+        Df\incomplete();
+    }
+
+    /**
+     *
+     */
+    public function delete(): DeleteInitiator
+    {
+        Df\incomplete();
     }
 }
