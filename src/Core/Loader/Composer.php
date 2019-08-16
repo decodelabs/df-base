@@ -103,13 +103,6 @@ class Composer implements ILoader
 
 
 
-    /**
-     * List of package paths for app specific files
-     */
-    public function getApexPaths(): array
-    {
-        return $this->apexPaths;
-    }
 
     /**
      * List of package paths for library class files
@@ -125,6 +118,6 @@ class Composer implements ILoader
      */
     public function __debugInfo(): array
     {
-        return $this->apexPaths;
+        return $this->bundlePaths;
     }
 }
