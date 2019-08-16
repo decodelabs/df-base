@@ -48,7 +48,8 @@ namespace Df
     use Df\Core\IApp;
     use Df\Core\Config\Env;
     use Df\Lang\Error\Factory as ErrorFactory;
-    use Df\Lang\Stack\Frame as StackFrame;
+
+    use Glitch\Stack\Frame as StackFrame;
 
     use Composer\Autoload\ClassLoader;
 

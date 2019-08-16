@@ -8,7 +8,7 @@ namespace Df\Lang\Dumper;
 
 use Df;
 use Df\Lang\IDumper;
-use Df\Lang\Stack\Trace;
+use Glitch\Stack\Trace;
 
 use Symfony\Component\VarDumper\VarDumper;
 use Symfony\Component\VarDumper\Cloner;

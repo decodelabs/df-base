@@ -7,8 +7,8 @@ declare(strict_types=1);
 namespace Df\Lang\Error;
 
 use Df;
-use Df\Lang\Stack\Frame;
-use Df\Lang\Stack\Trace;
+use Glitch\Stack\Frame;
+use Glitch\Stack\Trace;
 
 /**
  * Main root exception inheritance

@@ -6,8 +6,8 @@
 namespace Df;
 
 use Df;
-use Df\Lang\Stack\Frame;
-use Df\Lang\Stack\Trace;
+use Glitch\Stack\Frame;
+use Glitch\Stack\Trace;
 
 interface IError
 {
