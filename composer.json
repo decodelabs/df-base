@@ -26,7 +26,7 @@
         "psr/http-server-middleware": "^1.0",
         "psr/http-server-handler": "^1.0",
 
-        "symfony/var-dumper": "~4.1.0",
+        "symfony/var-dumper": "~4",
         "monolog/monolog": "~1.23",
         "ramsey/uuid": "^3.7",
         "paragonie/halite": "^4",
