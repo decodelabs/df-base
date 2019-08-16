@@ -199,6 +199,7 @@ class Factory
     {
         if (isset($headers['host']) || isset($headers['x-original-host'])) {
             $host = $headers['host'] ?? $headers['x-original-host'];
+            $port = null;
 
             if (preg_match('|\:(\d+)$|', $host, $matches)) {
                 $host = substr($host, 0, -(strlen($matches[1]) + 1));
