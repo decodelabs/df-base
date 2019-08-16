@@ -48,6 +48,7 @@ namespace Df
     use Df\Core\IApp;
     use Df\Core\Config\Env;
 
+    use Glitch\PathHandler;
     use Glitch\Stack\Frame as StackFrame;
 
     use Composer\Autoload\ClassLoader;
@@ -70,6 +71,7 @@ namespace Df
         $started = true;
 
 
+
         /* Use reflection to get a handle on vendor path
          * and by extension, base path */
         if ($basePath === null) {
@@ -79,6 +81,12 @@ namespace Df
 
         /* Make basePath available globally */
         define('Df\\BASE_PATH', $basePath);
+
+        PathHandler::registerAliases([
+            'app' => Df\BASE_PATH,
+            'df-base' => __DIR__
+        ]);
+
 
         /* Manually load App class from base path */
         if (file_exists($basePath.'/App.php')) {
@@ -178,11 +186,6 @@ namespace Df
      */
     function stripBasePath(?string $path): ?string
     {
-        if (!defined('Df\\BASE_PATH') || $path === null) {
-            return $path;
-        }
-
-        $parts = explode(Df\BASE_PATH, $path, 2);
-        return array_pop($parts);
+        return PathHandler::normalizePath($path);
     }
 }
