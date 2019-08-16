@@ -98,7 +98,7 @@ class Manager
         $class = Driver::class.'\\'.$name;
 
         if (!class_exists($class)) {
-            throw Df\Error::{'EInvalidArgument,ENotFound'}(
+            throw \Glitch::{'EInvalidArgument,ENotFound'}(
                 'Cache driver '.$name.' could not be found'
             );
         }

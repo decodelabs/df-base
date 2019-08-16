@@ -33,7 +33,7 @@ class CallableMiddleware implements MiddlewareInterface
         $response = ($this->callable)($request, $handler);
 
         if (!$response instanceof ResponseInterface) {
-            throw Df\Error::EImplementation(
+            throw \Glitch::EImplementation(
                 'Callable middleware did not return a ResponseInterface instance'
             );
         }

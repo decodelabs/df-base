@@ -56,7 +56,7 @@ class Dispatcher implements IDispatcher
         $ref = new \ReflectionClass($type);
 
         if (!$ref->implementsInterface('Psr\Http\Server\MiddlewareInterface')) {
-            throw Df\Error::EImplementation(
+            throw \Glitch::EImplementation(
                 'Queued middleware "'.$type.'" does not implement MiddlewareInterface'
             );
         }
@@ -80,7 +80,7 @@ class Dispatcher implements IDispatcher
             } elseif (is_string($middleware)) {
                 $this->queueType($middleware);
             } else {
-                throw Df\Error::EInvalidArgument(
+                throw \Glitch::EInvalidArgument(
                     'Unexpected / invalid middleware type',
                     null,
                     $middleware
@@ -101,7 +101,7 @@ class Dispatcher implements IDispatcher
         next($this->queue);
 
         if (!$middleware) {
-            throw Df\Error::ENotFound([
+            throw \Glitch::ENotFound([
                 'message' => 'Reached the end of the middleware queue without a response',
                 'http' => 404
             ]);

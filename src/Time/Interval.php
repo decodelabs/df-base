@@ -30,7 +30,7 @@ class Interval extends CarbonInterval
         } elseif (is_array($duration)) {
             return static::create(...$duration);
         } else {
-            throw Df\Error::EInvalidArgument('Invalid duration format', null, $duration);
+            throw \Glitch::EInvalidArgument('Invalid duration format', null, $duration);
         }
     }
 

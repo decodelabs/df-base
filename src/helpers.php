@@ -47,7 +47,6 @@ namespace Df
     use Df;
     use Df\Core\IApp;
     use Df\Core\Config\Env;
-    use Df\Lang\Error\Factory as ErrorFactory;
 
     use Glitch\Stack\Frame as StackFrame;
 
@@ -160,7 +159,7 @@ namespace Df
     {
         $frame = StackFrame::create(1);
 
-        throw Df\Error::EImplementation(
+        throw \Glitch::EImplementation(
             $frame->getSignature().' has not been completed yet!'
         );
     }
@@ -172,20 +171,6 @@ namespace Df
     function logException(\Throwable $e): void
     {
         // We can deal with this later...........
-    }
-
-    /**
-     * Direct facade for generating IError based exceptions
-     */
-    function Error($message, ?array $params=[], $data=null): IError
-    {
-        return ErrorFactory::create(
-            null,
-            [],
-            $message,
-            $params,
-            $data
-        );
     }
 
     /**

@@ -75,7 +75,7 @@ class Node implements IRoute
         $class = '\\Df\\Apex\\Http\\'.ucfirst($context->request->area).'\\'.implode('\\', $parts).'Node';
 
         if (!class_exists($class, true)) {
-            throw Df\Error::ENotFound([
+            throw \Glitch::ENotFound([
                 'message' => 'Node not found: '.$context->request,
                 'http' => 404,
                 'data' => $context->request

@@ -87,7 +87,7 @@ class Sanitizer
         }
 
         if ($this->required && $value === null) {
-            throw Df\Error::EUnexpectedValue(
+            throw \Glitch::EUnexpectedValue(
                 'Value is required'
             );
         }
@@ -103,7 +103,7 @@ class Sanitizer
         $value = $callback($this->value);
 
         if ($this->required && $value === null) {
-            throw Df\Error::EUnexpectedValue(
+            throw \Glitch::EUnexpectedValue(
                 'Value is required'
             );
         }

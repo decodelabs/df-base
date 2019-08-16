@@ -55,7 +55,7 @@ class Join implements
                 break;
 
             default:
-                throw Df\Error::EInvalidArgument(
+                throw \Glitch::EInvalidArgument(
                     'Unknown join type '.$type
                 );
         }

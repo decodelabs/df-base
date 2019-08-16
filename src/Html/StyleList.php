@@ -39,7 +39,7 @@ class StyleList implements \IteratorAggregate, IHashMap
             } elseif ($data === null) {
                 continue;
             } elseif (!is_array($data)) {
-                throw Df\Error::EInvalidArgument('Invalid style data', null, $data);
+                throw \Glitch::EInvalidArgument('Invalid style data', null, $data);
             }
 
             $this->merge($data);

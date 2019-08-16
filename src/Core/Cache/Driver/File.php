@@ -108,7 +108,7 @@ class File implements IDriver
         try {
             $file->putContents($data);
             $output = true;
-        } catch (Fs\IError $e) {
+        } catch (Fs\EGlitch $e) {
             $output = false;
         }
 
@@ -217,7 +217,7 @@ class File implements IDriver
         try {
             $file->putContents($expires);
             return true;
-        } catch (Fs\IError $e) {
+        } catch (Fs\EGlitch $e) {
             return false;
         }
     }

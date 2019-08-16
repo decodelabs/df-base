@@ -60,7 +60,7 @@ class UploadedFile implements UploadedFileInterface
         $this->size = $size;
 
         if (!isset(static::ERRORS[$error])) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid uploaded file status: '.$error
             );
         }
@@ -110,19 +110,19 @@ class UploadedFile implements UploadedFileInterface
     public function moveTo($targetPath): void
     {
         if ($moved) {
-            throw Df\Error::ERuntime(
+            throw \Glitch::ERuntime(
                 'File has already been moved'
             );
         }
 
         if ($this->error !== UPLOAD_ERR_OK) {
-            throw Df\Error::ERuntime(
+            throw \Glitch::ERuntime(
                 'Cannot move file: '.static::ERRORS[$this->error]
             );
         }
 
         if (empty($targetPath = (string)$targetPath)) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid upload file target path'
             );
         }
@@ -130,7 +130,7 @@ class UploadedFile implements UploadedFileInterface
         $targetDir = dirname($targetPath);
 
         if (!is_dir($targetDir) || !is_writable($targetDir)) {
-            throw Df\Error::ERuntime(
+            throw \Glitch::ERuntime(
                 'Target directory doesn\'t exist: '.$targetDir
             );
         }
@@ -141,7 +141,7 @@ class UploadedFile implements UploadedFileInterface
             $this->writeFile($targetPath);
         } else {
             if (false === move_uploaded_file($this->file, $targetPath)) {
-                throw Df\Error::ERuntime(
+                throw \Glitch::ERuntime(
                     'Moving uploaded file failed'
                 );
             }
@@ -156,7 +156,7 @@ class UploadedFile implements UploadedFileInterface
     protected function writeFile(string $targetPath): void
     {
         if (false === ($fp = fopen($targetPath, 'wb+'))) {
-            throw Df\Error::ERuntime(
+            throw \Glitch::ERuntime(
                 'Target path is not writable'
             );
         }
@@ -177,13 +177,13 @@ class UploadedFile implements UploadedFileInterface
     public function getStream(): StreamInterface
     {
         if ($this->error !== UPLOAD_ERR_OK) {
-            throw Df\Error::ERuntime(
+            throw \Glitch::ERuntime(
                 'Stream not available: '.static::ERRORS[$this->error]
             );
         }
 
         if ($this->moved) {
-            throw Df\Error::ERuntime(
+            throw \Glitch::ERuntime(
                 'Stream not available, file has already been moved'
             );
         }

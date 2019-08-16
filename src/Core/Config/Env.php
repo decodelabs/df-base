@@ -27,7 +27,7 @@ class Env implements \ArrayAccess, IPipe
 
         foreach ($data as $key => $value) {
             if (!is_scalar($value)) {
-                throw Df\Error::EUnexpectedValue(
+                throw \Glitch::EUnexpectedValue(
                     'Env value '.$key.' is not a scalar',
                     null,
                     $value
@@ -182,7 +182,7 @@ class Env implements \ArrayAccess, IPipe
         }
 
         if (!empty($failed)) {
-            throw Df\Error('Env key(s) '.implode(', ', $failed).' have not been set');
+            throw \Glitch('Env key(s) '.implode(', ', $failed).' have not been set');
         }
 
         return $this;

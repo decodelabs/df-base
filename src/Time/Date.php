@@ -30,7 +30,7 @@ class Date extends Carbon
         } elseif (is_array($date)) {
             return parent::createSafe(...$date);
         } else {
-            throw Df\Error::EInvalidArgument('Invalid date format', null, $date);
+            throw \Glitch::EInvalidArgument('Invalid date format', null, $date);
         }
     }
 

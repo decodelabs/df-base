@@ -56,7 +56,7 @@ trait TRoute
             unset($query[$matches[1]]);
 
             if ($value == '') {
-                throw Df\Error::EUnexpectedValue(
+                throw \Glitch::EUnexpectedValue(
                     'Route out '.$uri.' requires "'.$matches[1].'" in the query'
                 );
             }
@@ -139,7 +139,7 @@ trait TRoute
             }
 
             if (array_key_exists($key, $this->params)) {
-                throw Df\Error::EUnexpectedValue(
+                throw \Glitch::EUnexpectedValue(
                     'Area map key {'.$key.'} has been used more than once'
                 );
             }
@@ -225,7 +225,7 @@ trait TRoute
             return new Text((string)$output);
         }
 
-        throw Df\Error::EUnexpectedValue(
+        throw \Glitch::EUnexpectedValue(
             'Don\'t know how to handle response',
             null,
             $output

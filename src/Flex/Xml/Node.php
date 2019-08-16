@@ -23,7 +23,7 @@ class Node implements INode
             $document = static::newDomDocument();
             $document->load($path);
         } catch (\Throwable $e) {
-            throw Df\Error::EIo('Unable to load XML file', [
+            throw \Glitch::EIo('Unable to load XML file', [
                 'previous' => $e
             ]);
         }
@@ -48,7 +48,7 @@ class Node implements INode
             $document = static::newDOMDocument();
             $document->loadXML($xml);
         } catch (\Throwable $e) {
-            throw Df\Error::EIo('Unable to load XML string', [
+            throw \Glitch::EIo('Unable to load XML string', [
                 'previous' => $e
             ]);
         }
@@ -65,7 +65,7 @@ class Node implements INode
             $document = static::newDomDocument();
             $document->loadHtmlFile($path);
         } catch (\Throwable $e) {
-            throw Df\Error::EIo('Unable to load HTML file', [
+            throw \Glitch::EIo('Unable to load HTML file', [
                 'previous' => $e
             ]);
         }
@@ -82,7 +82,7 @@ class Node implements INode
             $document = static::newDOMDocument();
             $document->loadHTML($xml);
         } catch (\Throwable $e) {
-            throw Df\Error::EIo('Unable to load HTML string', [
+            throw \Glitch::EIo('Unable to load HTML string', [
                 'previous' => $e
             ]);
         }
@@ -650,7 +650,7 @@ class Node implements INode
     protected function getNthChildNode(int $index, string $name=null): ?INode
     {
         if ($index < 1) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 $index.' is an invalid child index'
             );
         }
@@ -690,7 +690,7 @@ class Node implements INode
         }
 
         if (!preg_match('/^([\-]?)([0-9]*)[n]([+]([0-9]+))?$/i', str_replace(' ', '', $formula), $matches)) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 $formula.' is not a valid nth-child formula'
             );
         }
@@ -789,7 +789,7 @@ class Node implements INode
         }
 
         if ($index < 0) {
-            throw Df\Error::EOutOfBounds(
+            throw \Glitch::EOutOfBounds(
                 'Index '.$origIndex.' is out of bounds'
             );
         }

@@ -78,11 +78,11 @@ class Stream implements StreamInterface
     public function tell(): int
     {
         if ($this->resource === null) {
-            throw Df\Error::ERuntime('Cannot tell stream position, resource has been detached');
+            throw \Glitch::ERuntime('Cannot tell stream position, resource has been detached');
         }
 
         if (false === ($output = ftell($this->resource))) {
-            throw Df\Error::ERuntime('Unable to tell stream position');
+            throw \Glitch::ERuntime('Unable to tell stream position');
         }
 
         return $output;
@@ -119,17 +119,17 @@ class Stream implements StreamInterface
     public function seek($offset, $whence=SEEK_SET): void
     {
         if ($this->resource === null) {
-            throw Df\Error::ERuntime('Cannot seek stream position, resource has been detached');
+            throw \Glitch::ERuntime('Cannot seek stream position, resource has been detached');
         }
 
         if (!$this->isSeekable()) {
-            throw Df\Error::ERuntime('Stream is not seekable');
+            throw \Glitch::ERuntime('Stream is not seekable');
         }
 
         $result = fseek($this->resource, $offset, $whence);
 
         if ($result !== 0) {
-            throw Df\Error::ERuntime('Stream seeking failed');
+            throw \Glitch::ERuntime('Stream seeking failed');
         }
     }
 
@@ -168,17 +168,17 @@ class Stream implements StreamInterface
     public function write($string)
     {
         if ($this->resource === null) {
-            throw Df\Error::ERuntime('Cannot write to stream, resource has been detached');
+            throw \Glitch::ERuntime('Cannot write to stream, resource has been detached');
         }
 
         if (!$this->isWritable()) {
-            throw Df\Error::ERuntime('Stream is not writable');
+            throw \Glitch::ERuntime('Stream is not writable');
         }
 
         $output = fwrite($this->resource, $string);
 
         if ($output === false) {
-            throw Df\Error::ERuntime('Writing to stream failed');
+            throw \Glitch::ERuntime('Writing to stream failed');
         }
 
         return (int)$output;
@@ -205,17 +205,17 @@ class Stream implements StreamInterface
     public function read($length): string
     {
         if ($this->resource === null) {
-            throw Df\Error::ERuntime('Cannot read from stream, resource has been detached');
+            throw \Glitch::ERuntime('Cannot read from stream, resource has been detached');
         }
 
         if (!$this->isReadable()) {
-            throw Df\Error::ERuntime('Stream is not readable');
+            throw \Glitch::ERuntime('Stream is not readable');
         }
 
         $output = fread($this->resource, $length);
 
         if ($output === false) {
-            throw Df\Error::ERuntime('Reading from stream failed');
+            throw \Glitch::ERuntime('Reading from stream failed');
         }
 
         return $output;
@@ -227,13 +227,13 @@ class Stream implements StreamInterface
     public function getContents(): string
     {
         if (!$this->isReadable()) {
-            throw Df\Error::ERuntime('Stream is not readable');
+            throw \Glitch::ERuntime('Stream is not readable');
         }
 
         $output = stream_get_contents($this->resource);
 
         if ($output === false) {
-            throw Df\Error::ERuntime('Reading from stream failed');
+            throw \Glitch::ERuntime('Reading from stream failed');
         }
 
         return $output;
@@ -281,7 +281,7 @@ class Stream implements StreamInterface
             try {
                 $stream = fopen($stream, $mode);
             } catch (\ErrorException $e) {
-                throw Df\Error::EInvalidArgument([
+                throw \Glitch::EInvalidArgument([
                     'message' => 'Invalid HTTP body stream',
                     'data' => $stream,
                     'previous' => $e
@@ -292,7 +292,7 @@ class Stream implements StreamInterface
         }
 
         if (!is_resource($stream)) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid HTTP body stream',
                 null,
                 $stream

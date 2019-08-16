@@ -386,7 +386,7 @@ class Tag implements ITag, IPipe
         }
 
         if (preg_match('/\s/', $id)) {
-            throw Df\Error::EInvalidArgument('Invalid tag id: '.$id);
+            throw \Glitch::EInvalidArgument('Invalid tag id: '.$id);
         }
 
         $this->setAttribute('id', $id);

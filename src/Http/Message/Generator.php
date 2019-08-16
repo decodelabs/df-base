@@ -30,7 +30,7 @@ class Generator implements StreamInterface
         }
 
         if (!$iterator instanceof \Iterator) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid iterator passed as response'
             );
         }
@@ -76,7 +76,7 @@ class Generator implements StreamInterface
      */
     public function seek($offset, $whence=SEEK_SET): void
     {
-        throw Df\Error::ERuntime('Iterators cannot seek');
+        throw \Glitch::ERuntime('Iterators cannot seek');
     }
 
     /**
@@ -84,7 +84,7 @@ class Generator implements StreamInterface
      */
     public function rewind(): void
     {
-        throw Df\Error::ERuntime('Iterators cannot seek');
+        throw \Glitch::ERuntime('Iterators cannot seek');
     }
 
     /**
@@ -100,7 +100,7 @@ class Generator implements StreamInterface
      */
     public function write($string): void
     {
-        throw Df\Error::ERuntime('Iterators cannot be written to');
+        throw \Glitch::ERuntime('Iterators cannot be written to');
     }
 
     /**
@@ -119,11 +119,11 @@ class Generator implements StreamInterface
     public function read($length): string
     {
         if ($this->iterator === null) {
-            throw Df\Error::ERuntime('Cannot read from stream, resource has been detached');
+            throw \Glitch::ERuntime('Cannot read from stream, resource has been detached');
         }
 
         if ($this->eof) {
-            throw Df\Error::ERuntime('Cannot read from stream, iterator has completed');
+            throw \Glitch::ERuntime('Cannot read from stream, iterator has completed');
         }
 
 
@@ -162,11 +162,11 @@ class Generator implements StreamInterface
     public function getContents(): string
     {
         if ($this->iterator === null) {
-            throw Df\Error::ERuntime('Cannot read from stream, resource has been detached');
+            throw \Glitch::ERuntime('Cannot read from stream, resource has been detached');
         }
 
         if ($this->eof) {
-            throw Df\Error::ERuntime('Cannot read from stream, iterator has completed');
+            throw \Glitch::ERuntime('Cannot read from stream, iterator has completed');
         }
 
         $output = '';

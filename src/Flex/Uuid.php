@@ -120,7 +120,7 @@ class Uuid
         } elseif (is_int($value)) {
             return UuidLib::fromInteger($value);
         } else {
-            throw Df\Error::EInvalidArgument('Invalid Uuid input', null, $value);
+            throw \Glitch::EInvalidArgument('Invalid Uuid input', null, $value);
         }
     }
 

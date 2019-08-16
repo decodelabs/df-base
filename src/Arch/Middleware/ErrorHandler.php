@@ -34,7 +34,7 @@ class ErrorHandler implements MiddlewareInterface
      */
     public function renderError(\Throwable $e): ResponseInterface
     {
-        if ($e instanceof Df\IError) {
+        if ($e instanceof \EGlitch) {
             $http = $e->getHttpCode() ?? 500;
             $trace = $e->getStackTrace();
         } else {

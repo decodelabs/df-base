@@ -36,7 +36,7 @@ class Halite implements ISymmetric
     public function generateKeyFile(): void
     {
         if ($this->keyFileExists()) {
-            throw Df\Error::ERuntime(
+            throw \Glitch::ERuntime(
                 'Key file already exists at keyPath'
             );
         }
@@ -44,7 +44,7 @@ class Halite implements ISymmetric
         $dir = realpath(dirname($this->keyPath));
 
         if ($dir === false || !is_dir($dir) || !is_writable($dir)) {
-            throw Df\Error::{'ERuntime,EIo'}(
+            throw \Glitch::{'ERuntime,EIo'}(
                 'Cannot write encryption key to keyPath'
             );
         }
@@ -86,7 +86,7 @@ class Halite implements ISymmetric
     public function encryptFile(string $inputFilePath, string $outputFilePath): void
     {
         if (!is_file($inputFilePath) || !is_readable($inputFilePath)) {
-            throw Df\Error::{'ENotFound,EIo'}(
+            throw \Glitch::{'ENotFound,EIo'}(
                 'File to encrypt could not be found',
                 null,
                 $inputFilePath
@@ -96,7 +96,7 @@ class Halite implements ISymmetric
         $dir = realpath(dirname($outputFilePath));
 
         if ($dir === false || !is_dir($dir) || !is_writable($dir)) {
-            throw Df\Error::{'ERuntime,EIo'}(
+            throw \Glitch::{'ERuntime,EIo'}(
                 'Cannot write encryped file to $outputFilePath',
                 null,
                 $outputFilePath
@@ -113,7 +113,7 @@ class Halite implements ISymmetric
     public function checksumFile(string $filePath): string
     {
         if (!is_file($filePath)) {
-            throw Df\Error::{'ENotFound,EIo'}(
+            throw \Glitch::{'ENotFound,EIo'}(
                 'File to checksum could not be found',
                 null,
                 $filePath
@@ -148,7 +148,7 @@ class Halite implements ISymmetric
     public function decryptFile(string $inputFilePath, string $outputFilePath): void
     {
         if (!is_file($inputFilePath)) {
-            throw Df\Error::{'ENotFound,EIo'}(
+            throw \Glitch::{'ENotFound,EIo'}(
                 'File to decrypt could not be found',
                 null,
                 $inputFilePath
@@ -158,7 +158,7 @@ class Halite implements ISymmetric
         $dir = realpath(dirname($outputFilePath));
 
         if ($dir === false || !is_dir($dir) || !is_writable($dir)) {
-            throw Df\Error::{'ERuntime,EIo'}(
+            throw \Glitch::{'ERuntime,EIo'}(
                 'Cannot write decryped file to $outputFilePath',
                 null,
                 $outputFilePath

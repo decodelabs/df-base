@@ -48,11 +48,11 @@ trait TGroup
                 $test = $target->getParent();
 
                 if ($test === $target) {
-                    throw Df\Error::ELogic('Recursive clause group detected');
+                    throw \Glitch::ELogic('Recursive clause group detected');
                 }
 
                 if ($test === null) {
-                    throw Df\Error::ELogic('Clause group is not contained in a query');
+                    throw \Glitch::ELogic('Clause group is not contained in a query');
                 }
 
                 $target = $test;

@@ -56,7 +56,7 @@ class Handler implements IHandler
         $area = $map->getArea();
 
         if (isset($this->areaMaps[$area])) {
-            throw Df\Error::ELogic(
+            throw \Glitch::ELogic(
                 'Area "'.$area.'" has already been mapped'
             );
         }
@@ -121,13 +121,13 @@ class Handler implements IHandler
     {
         // Make sure area maps make sense
         if (empty($this->areaMaps)) {
-            throw Df\Error::ELogic(
+            throw \Glitch::ELogic(
                 'No area maps have been defined'
             );
         }
 
         if (!isset($this->areaMaps['front']) && !isset($this->areaMaps['*'])) {
-            throw Df\Error::EDefinition(
+            throw \Glitch::EDefinition(
                 'No default area map (front or *) has been defined'
             );
         }
@@ -254,7 +254,7 @@ class Handler implements IHandler
         }
 
         if (!$route) {
-            throw Df\Error::EUnexpectedValue(
+            throw \Glitch::EUnexpectedValue(
                 'Arch uri '.$uri.' did not match any routes'
             );
         }
@@ -262,7 +262,7 @@ class Handler implements IHandler
         $map = $this->areaMaps[$area] ?? $this->areaMaps['*'] ?? null;
 
         if (!$map) {
-            throw Df\Error::ERuntime(
+            throw \Glitch::ERuntime(
                 'No matching area maps to route out uri: '.$uri
             );
         }

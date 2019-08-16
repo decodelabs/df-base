@@ -40,7 +40,7 @@ class Writer implements IWriter
             $dir = dirname($path);
 
             if (!is_dir($dir)) {
-                throw Df\Error::EIo('Xml path is not writable');
+                throw \Glitch::EIo('Xml path is not writable');
             }
 
             $this->path = $path;
@@ -60,17 +60,17 @@ class Writer implements IWriter
     public function writeHeader(string $version='1.0', string $encoding='UTF-8', bool $standalone=false): IWriter
     {
         if ($this->headerWritten) {
-            throw Df\Error::ELogic('XML header has already been written');
+            throw \Glitch::ELogic('XML header has already been written');
         }
 
         if ($this->dtdWritten || $this->rootWritten) {
-            throw Df\Error::ELogic('XML header cannot be written once the document is open');
+            throw \Glitch::ELogic('XML header cannot be written once the document is open');
         }
 
         try {
             $this->document->startDocument($version, $encoding, $standalone ? true : null);
         } catch (\ErrorException $e) {
-            throw Df\Error::EInvalidArguement($e->getMessage(), [
+            throw \Glitch::EInvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
         }
@@ -85,7 +85,7 @@ class Writer implements IWriter
     public function writeDtd(string $name, string $publicId=null, string $systemId=null, string $subset=null): IWriter
     {
         if ($this->rootWritten) {
-            throw Df\Error::ELogic('XML DTD cannot be written once the document is open');
+            throw \Glitch::ELogic('XML DTD cannot be written once the document is open');
         }
 
         if (!$this->headerWritten) {
@@ -95,7 +95,7 @@ class Writer implements IWriter
         try {
             $this->document->writeDtd($name, $publicId, $systemId, $subset);
         } catch (\ErrorException $e) {
-            throw Df\Error::EInvalidArguement($e->getMessage(), [
+            throw \Glitch::EInvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
         }
@@ -110,7 +110,7 @@ class Writer implements IWriter
     public function writeDtdAttlist(string $name, string $content): IWriter
     {
         if ($this->rootWritten) {
-            throw Df\Error::ELogic('XML DTD cannot be written once the document is open');
+            throw \Glitch::ELogic('XML DTD cannot be written once the document is open');
         }
 
         if (!$this->headerWritten) {
@@ -120,7 +120,7 @@ class Writer implements IWriter
         try {
             $this->document->writeDtdAttlist($name, $content);
         } catch (\ErrorException $e) {
-            throw Df\Error::EInvalidArguement($e->getMessage(), [
+            throw \Glitch::EInvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
         }
@@ -135,7 +135,7 @@ class Writer implements IWriter
     public function writeDtdElement(string $name, string $content): IWriter
     {
         if ($this->rootWritten) {
-            throw Df\Error::ELogic('XML DTD cannot be written once the document is open');
+            throw \Glitch::ELogic('XML DTD cannot be written once the document is open');
         }
 
         if (!$this->headerWritten) {
@@ -145,7 +145,7 @@ class Writer implements IWriter
         try {
             $this->document->writeDtdElement($name, $content);
         } catch (\ErrorException $e) {
-            throw Df\Error::EInvalidArguement($e->getMessage(), [
+            throw \Glitch::EInvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
         }
@@ -160,7 +160,7 @@ class Writer implements IWriter
     public function writeDtdEntity(string $name, string $content, string $pe, string $publicId, string $systemId, string $nDataId): IWriter
     {
         if ($this->rootWritten) {
-            throw Df\Error::ELogic('XML DTD cannot be written once the document is open');
+            throw \Glitch::ELogic('XML DTD cannot be written once the document is open');
         }
 
         if (!$this->headerWritten) {
@@ -170,7 +170,7 @@ class Writer implements IWriter
         try {
             $this->document->writeDtdEntity($name, $content, $pe, $publicId, $systemId, $nDataId);
         } catch (\ErrorException $e) {
-            throw Df\Error::EInvalidArguement($e->getMessage(), [
+            throw \Glitch::EInvalidArguement($e->getMessage(), [
                 'previous' => $e
             ]);
         }
@@ -219,7 +219,7 @@ class Writer implements IWriter
     public function endElement(): IWriter
     {
         if ($this->currentNode !== self::ELEMENT) {
-            throw Df\Error::ELogic('XML writer is not currently writing an element');
+            throw \Glitch::ELogic('XML writer is not currently writing an element');
         }
 
         $this->completeCurrentNode();
@@ -285,7 +285,7 @@ class Writer implements IWriter
     public function writeCDataContent(string $content): IWriter
     {
         if ($this->currentNode !== self::CDATA) {
-            throw Df\Error::ELogic('XML writer is not current writing CDATA');
+            throw \Glitch::ELogic('XML writer is not current writing CDATA');
         }
 
         $content = self::normalizeString($content);
@@ -299,7 +299,7 @@ class Writer implements IWriter
     public function endCData(): IWriter
     {
         if ($this->currentNode !== self::CDATA) {
-            throw Df\Error::ELogic('XML writer is not current writing CDATA');
+            throw \Glitch::ELogic('XML writer is not current writing CDATA');
         }
 
         $this->document->endCData();
@@ -335,7 +335,7 @@ class Writer implements IWriter
     public function writeCommentContent(string $comment): IWriter
     {
         if ($this->currentNode !== self::COMMENT) {
-            throw Df\Error::ELogic('XML writer is not currently writing a comment');
+            throw \Glitch::ELogic('XML writer is not currently writing a comment');
         }
 
         $content = self::normalizeString($content);
@@ -349,7 +349,7 @@ class Writer implements IWriter
     public function endComment(): IWriter
     {
         if ($this->currentNode !== self::COMMENT) {
-            throw Df\Error::ELogic('XML writer is not currently writing a comment');
+            throw \Glitch::ELogic('XML writer is not currently writing a comment');
         }
 
         $this->document->endComment();
@@ -385,7 +385,7 @@ class Writer implements IWriter
     public function writePiContent(): IWriter
     {
         if ($this->currentNode !== self::PI) {
-            throw Df\Error::ELogic('XML writer is not currently writing a processing instruction');
+            throw \Glitch::ELogic('XML writer is not currently writing a processing instruction');
         }
 
         $this->document->text($content);
@@ -398,7 +398,7 @@ class Writer implements IWriter
     public function endPi(): IWriter
     {
         if ($this->currentNode !== self::PI) {
-            throw Df\Error::ELogic('XML writer is not currently writing a processing instruction');
+            throw \Glitch::ELogic('XML writer is not currently writing a processing instruction');
         }
 
         $this->document->endPI();

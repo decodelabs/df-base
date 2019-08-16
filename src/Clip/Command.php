@@ -71,7 +71,7 @@ class Command implements ICommand
     public function addArgument(string $name, string $description, callable $setup=null): ICommand
     {
         if (isset($this->arguments[$name])) {
-            throw Df\Error::ELogic(
+            throw \Glitch::ELogic(
                 'Named argument "'.$name.'" has already been defined'
             );
         }
@@ -147,7 +147,7 @@ class Command implements ICommand
                 }
             } else {
                 if ($lastIsList) {
-                    throw Df\Error::ELogic(
+                    throw \Glitch::ELogic(
                         'List arguments must come last in the command definition'
                     );
                 }
@@ -160,7 +160,7 @@ class Command implements ICommand
 
                 if (!$arg->isOptional()) {
                     if ($lastIsOptional) {
-                        throw Df\Error::ELogic(
+                        throw \Glitch::ELogic(
                             'Optional arguments cannot appear before required arguments'
                         );
                     }
@@ -183,7 +183,7 @@ class Command implements ICommand
                 $name = array_shift($parts);
 
                 if (!$arg = ($opts[$name] ?? null)) {
-                    throw Df\Error::EUnexpectedValue(
+                    throw \Glitch::EUnexpectedValue(
                         'Unexpected option: '.$name
                     );
                 }
@@ -212,7 +212,7 @@ class Command implements ICommand
                 }
             } else {
                 if (!$arg = array_shift($args)) {
-                    throw Df\Error::EUnexpectedValue(
+                    throw \Glitch::EUnexpectedValue(
                         'Unexpected argument: '.$param
                     );
                 }
@@ -250,7 +250,7 @@ class Command implements ICommand
                             $output[$name] = null;
                         }
                     } else {
-                        throw Df\Error::EUnexpectedValue(
+                        throw \Glitch::EUnexpectedValue(
                             'No list values defined for argument: '.$this->name
                         );
                     }

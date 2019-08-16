@@ -27,7 +27,7 @@ class Stream implements IChannel
             $this->mode = stream_get_meta_data($this->resource)['mode'];
         } else {
             if (!$this->resource = fopen($path, $mode)) {
-                throw Df\Error::EIo('Unable to open stream');
+                throw \Glitch::EIo('Unable to open stream');
             }
 
             $this->mode = $mode;
@@ -40,7 +40,7 @@ class Stream implements IChannel
     public function setBlocking(bool $flag): void
     {
         if (!$this->resource) {
-            throw Df\Error::ELogic('Cannot set blocking, resource not open');
+            throw \Glitch::ELogic('Cannot set blocking, resource not open');
         }
 
         stream_set_blocking($this->resource, $flag);

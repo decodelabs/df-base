@@ -38,7 +38,7 @@ class Binding implements IBinding
         $this->container = $container;
 
         if (!interface_exists($type, true) && !class_exists($type, true)) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Binding type must be a valid interface'
             );
         }
@@ -113,7 +113,7 @@ class Binding implements IBinding
                     return $this->container->buildInstanceOf($target, $this->params);
                 };
             } else {
-                throw Df\Error::{
+                throw \Glitch::{
                     'EInvalidArgument,Psr\\Container\\NotFoundExceptionInterface'
                 }(
                     'Binding target for '.$this->type.' cannot be converted to a factory'
@@ -167,7 +167,7 @@ class Binding implements IBinding
     public function alias(string $alias): IBinding
     {
         if (false !== strpos($alias, '\\')) {
-            throw Df\Error::{
+            throw \Glitch::{
                 'EInvalidArgument,Psr\Container\ContainerExceptionInterface'
             }(
                 'Aliases must not contain \\ character',
@@ -182,7 +182,7 @@ class Binding implements IBinding
 
         if ($this->container->hasAlias($alias)
         && $this->container->getAliasedType($alias) !== $this->type) {
-            throw Df\Error::{
+            throw \Glitch::{
                 'ELogic,Psr\Container\ContainerExceptionInterface'
             }(
                 'Alias "'.$alias.'" has already been bound'
@@ -426,7 +426,7 @@ class Binding implements IBinding
         }
 
         if (!$instance instanceof $this->type) {
-            throw Df\Error::{
+            throw \Glitch::{
                 'ELogic,Psr\\Container\\ContainerExceptionInterface'
             }(
                 'Binding instance does not implement type '.$this->type,

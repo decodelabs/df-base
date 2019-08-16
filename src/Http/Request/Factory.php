@@ -85,7 +85,7 @@ class Factory
             } elseif (is_array($value)) {
                 $output[$key] = $this->prepareFiles($value);
             } else {
-                throw Df\Error::EInvalidArgument('Invalid $_FILES array', null, $files);
+                throw \Glitch::EInvalidArgument('Invalid $_FILES array', null, $files);
             }
         }
 
@@ -252,7 +252,7 @@ class Factory
         }
 
         if (!preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $output, $matches)) {
-            throw Df\Error::EUnexpectedValue(
+            throw \Glitch::EUnexpectedValue(
                 'Unrecognized HTTP protocal version: '.$output
             );
         }

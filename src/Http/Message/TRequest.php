@@ -34,7 +34,7 @@ trait TRequest
         $method = strtoupper($method);
 
         if (!$this->isValidMethod($method)) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid HTTP method: '.$method
             );
         }
@@ -103,7 +103,7 @@ trait TRequest
     public function withRequestTarget($target): RequestInterface
     {
         if (preg_match('/\s/', $target)) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Request target must not contain spaces'
             );
         }
@@ -140,7 +140,7 @@ trait TRequest
         $method = strtoupper($method);
 
         if (!$this->isValidMethod($method)) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid HTTP method: '.$method
             );
         }

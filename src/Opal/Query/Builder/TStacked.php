@@ -38,7 +38,7 @@ trait TStacked
     protected function registerStack(string $name, string $mode, ?IField $keyField, ?IField $valueField, ?callable $processor): IStacked
     {
         if ($this->getSubQueryMode() !== 'stack') {
-            throw Df\Error::ELogic('Sub query is not in stack mode');
+            throw \Glitch::ELogic('Sub query is not in stack mode');
         }
 
         $stack = (new Stack($name, $this, $mode))

@@ -32,11 +32,11 @@ abstract class Base implements ITask
             [Formatter::class, 'id'],
             explode('/', $context->request->getPath())
         );
-        
+
         $class = '\\Df\\Apex\\Clip\\'.implode('\\', $parts).'Task';
 
         if (!class_exists($class, true)) {
-            throw Df\Error::ENotFound([
+            throw \Glitch::ENotFound([
                 'message' => 'Task not found: '.$request->getPath(),
                 'data' => $request
             ]);

@@ -38,7 +38,7 @@ trait TDerivable
     public function endDerivation(string $alias=null): IBuilder
     {
         if (!$this->derivationParent) {
-            throw Df\Error::ELogic(
+            throw \Glitch::ELogic(
                 'Cannot create derived source - no parent query available'
             );
         }

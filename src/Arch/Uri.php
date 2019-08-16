@@ -56,7 +56,7 @@ class Uri implements \ArrayAccess
             return $value;
         }
 
-        throw Df\Error::EInvalidArgument(
+        throw \Glitch::EInvalidArgument(
             'Invalid Arch Uri instance',
             null,
             $value
@@ -97,7 +97,7 @@ class Uri implements \ArrayAccess
         $parts = parse_url($uri);
 
         if ($parts === false) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Unable to parse uri',
                 null,
                 $uri
@@ -121,7 +121,7 @@ class Uri implements \ArrayAccess
             return $this->{$part};
         }
 
-        throw Df\Error::ELogic('Arch\\Uri does not have member "'.$part.'"');
+        throw \Glitch::ELogic('Arch\\Uri does not have member "'.$part.'"');
     }
 
     /**
@@ -256,7 +256,7 @@ class Uri implements \ArrayAccess
         }
 
         if (preg_match('/[^a-zA-Z0-9\-]/', $type)) {
-            throw Df\Error('Invalid Arch\Uri route type: '.$type);
+            throw \Glitch('Invalid Arch\Uri route type: '.$type);
         }
 
         return lcfirst($type);
@@ -274,7 +274,7 @@ class Uri implements \ArrayAccess
         $area = lcfirst(ltrim($area, '~'));
 
         if (preg_match('/[^a-zA-Z0-9\-]/', $area)) {
-            throw Df\Error('Invalid Arch\Uri route area: '.$area);
+            throw \Glitch('Invalid Arch\Uri route area: '.$area);
         }
 
         return $area;
@@ -290,13 +290,13 @@ class Uri implements \ArrayAccess
         }
 
         if (strpos($path, '?') !== false) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid path, must not contain query string'
             );
         }
 
         if (strpos($path, '#') !== false) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid path, must not contain fragment'
             );
         }

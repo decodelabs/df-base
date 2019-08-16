@@ -23,7 +23,7 @@ class Native implements IHasher
         if ($algo === null) {
             $algo = PASSWORD_DEFAULT;
         }
-        
+
         $this->algo = $algo;
         $this->options = $options;
     }
@@ -44,7 +44,7 @@ class Native implements IHasher
         $output = password_hash($value, $this->algo, $this->options);
 
         if ($output === false) {
-            throw Df\Error::ERuntime(
+            throw \Glitch::ERuntime(
                 'Hashing failed with current options'
             );
         }

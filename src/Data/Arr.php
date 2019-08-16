@@ -132,7 +132,7 @@ class Arr
     public static function getRandom(array $array)
     {
         if (empty($array)) {
-            throw Df\Error::EUnderflow('Cannot pick random, array is empty');
+            throw \Glitch::EUnderflow('Cannot pick random, array is empty');
         }
 
         return $array[array_rand($array)];
@@ -150,7 +150,7 @@ class Arr
         }
 
         if ($number > $count) {
-            throw Df\Error::EUnderflow('Cannot random slice '.$number.' items, only '.$count.' items in array');
+            throw \Glitch::EUnderflow('Cannot random slice '.$number.' items, only '.$count.' items in array');
         }
 
         return self::intersectKeys($array, (array)array_rand($array, $number));

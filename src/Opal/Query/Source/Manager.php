@@ -71,7 +71,7 @@ class Manager implements ITransactionAware
         $alias = $reference->getAlias();
 
         if (isset($this->references[$alias])) {
-            throw Df\Error::ERuntime('A source has already been defined as '.$alias);
+            throw \Glitch::ERuntime('A source has already been defined as '.$alias);
         }
 
         $this->references[$alias] = $reference;
@@ -211,7 +211,7 @@ class Manager implements ITransactionAware
             return $possible->findField($fieldName);
         }
 
-        throw Df\Error::EUnexpectedValue(
+        throw \Glitch::EUnexpectedValue(
             'Field '.$name.' could not be found in current query'
         );
     }
@@ -233,7 +233,7 @@ class Manager implements ITransactionAware
             return $possible->findField($fieldName);
         }
 
-        throw Df\Error::EUnexpectedValue(
+        throw \Glitch::EUnexpectedValue(
             'Field '.$name.' could not be found in current query'
         );
     }

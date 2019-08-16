@@ -76,7 +76,7 @@ class Uri implements IUri
         $parts = parse_url($uri);
 
         if ($parts === false) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Unable to parse uri',
                 null,
                 $uri
@@ -140,7 +140,7 @@ class Uri implements IUri
         }
 
         if (!isset(self::SCHEMES[$scheme])) {
-            throw Df\Error::{'EInvalidArgument'}(
+            throw \Glitch::{'EInvalidArgument'}(
                 'Scheme "'.$scheme.'" is unsupported'
             );
         }
@@ -381,7 +381,7 @@ class Uri implements IUri
         }
 
         if (!is_numeric($port)) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid port: '.$port
             );
         }
@@ -389,7 +389,7 @@ class Uri implements IUri
         $port = (int)$port;
 
         if ($port < 1 || $port > 65535) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid port: '.$port
             );
         }
@@ -459,13 +459,13 @@ class Uri implements IUri
         }
 
         if (strpos($path, '?') !== false) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid path, must not contain query string'
             );
         }
 
         if (strpos($path, '#') !== false) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid path, must not contain fragment'
             );
         }
@@ -530,7 +530,7 @@ class Uri implements IUri
         }
 
         if (strpos($query, '#') !== false) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid query string - must not contain fragment'
             );
         }

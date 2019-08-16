@@ -26,7 +26,7 @@ class AreaMap
     public function __construct(string $area, string $uri)
     {
         if (!preg_match('/^\*|[a-z]+$/', $area)) {
-            throw Df\Error::EInvalidArgument(
+            throw \Glitch::EInvalidArgument(
                 'Invalid area in area map: '.$area
             );
         }
@@ -85,7 +85,7 @@ class AreaMap
             $key = $matches[1];
 
             if (in_array($key, $this->matchKeys)) {
-                throw Df\Error::EUnexpectedValue(
+                throw \Glitch::EUnexpectedValue(
                     'Area map key {'.$key.'} has been used more than once'
                 );
             }
@@ -139,7 +139,7 @@ class AreaMap
             unset($query[$matches[1]]);
 
             if ($value == '') {
-                throw Df\Error::EUnexpectedValue(
+                throw \Glitch::EUnexpectedValue(
                     'Route out '.$request.' requires "'.$matches[1].'" in the query'
                 );
             }

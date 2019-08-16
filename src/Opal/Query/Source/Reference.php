@@ -154,7 +154,7 @@ class Reference
         $alias = $field->getAlias();
 
         if (isset($this->fields[$alias]) && !$this->fields[$alias]->matches($field)) {
-            throw Df\Error::EUnexpectedValue('Another field has already been aliased as '.$alias);
+            throw \Glitch::EUnexpectedValue('Another field has already been aliased as '.$alias);
         }
 
         $this->fields[$field->getAlias()] = $field;
