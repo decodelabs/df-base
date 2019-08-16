@@ -29,7 +29,7 @@
         "ramsey/uuid": "^3.7",
         "paragonie/halite": "^4",
         "paragonie/sodium_compat": "^1",
-        "nesbot/carbon": "~1.21"
+        "nesbot/carbon": "^2"
     },
     "autoload": {
         "psr-4": {
