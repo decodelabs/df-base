@@ -5,51 +5,14 @@
  */
 declare(strict_types=1);
 
-
-/**
- * global helpers
- */
-namespace
-{
-    use Df\Lang\Dumper\Handler as DumpHandler;
-    use Symfony\Component\VarDumper\VarDumper;
-
-    if (!function_exists('dd')) {
-        /**
-         * Super quick global dump & die
-         */
-        function dd(...$vars): void
-        {
-            DumpHandler::dumpDie(...$vars);
-        }
-    }
-
-    if (!function_exists('dump')) {
-        /**
-         * Quick dump
-         */
-        function dump(...$vars): void
-        {
-            DumpHandler::dump(...$vars);
-        }
-    } elseif (class_exists(VarDumper::class)) {
-        VarDumper::setHandler([DumpHandler::class, 'dump']);
-    }
-}
-
-
 /**
  * Df helper
  */
 namespace Df
 {
-
     use Df;
     use Df\Core\IApp;
     use Df\Core\Config\Env;
-
-    use Glitch\Context as GlitchContext;
-    use Glitch\Stack\Frame as StackFrame;
 
     use Composer\Autoload\ClassLoader;
 
@@ -82,10 +45,12 @@ namespace Df
         /* Make basePath available globally */
         define('Df\\BASE_PATH', $basePath);
 
-        GlitchContext::getDefault()->registerPathAliases([
-            'app' => Df\BASE_PATH,
-            'df-base' => __DIR__
-        ]);
+        \Glitch::getContext()
+            ->setStartTime(Df\START)
+            ->registerPathAliases([
+                'app' => Df\BASE_PATH,
+                'df-base' => __DIR__
+            ]);
 
 
         /* Manually load App class from base path */
@@ -125,35 +90,5 @@ namespace Df
     function env(): Env
     {
         return Df\app()[Env::class];
-    }
-
-
-    /**
-     * Cry about a method not being complete
-     */
-    function incomplete(): void
-    {
-        $frame = StackFrame::create(1);
-
-        throw \Glitch::EImplementation(
-            $frame->getSignature().' has not been completed yet!'
-        );
-    }
-
-
-    /**
-     * Log an exception... somewhere :)
-     */
-    function logException(\Throwable $e): void
-    {
-        // We can deal with this later...........
-    }
-
-    /**
-     * Strip base path from path string
-     */
-    function stripBasePath(?string $path): ?string
-    {
-        return GlitchContext::getDefault()->normalizePath($path);
     }
 }

@@ -30,7 +30,7 @@ class Query extends Base
      */
     public function getPreparedValue()
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
     /**

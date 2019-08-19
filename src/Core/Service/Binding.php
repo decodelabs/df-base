@@ -407,7 +407,7 @@ class Binding implements IBinding
             $output .= 'type : '.$this->target;
         } elseif ($this->target instanceof \Closure) {
             $ref = new \ReflectionFunction($this->target);
-            $output .= 'closure @ '.Df\stripBasePath($ref->getFileName()).' : '.$ref->getStartLine();
+            $output .= 'closure @ '.\Glitch::normalizePath($ref->getFileName()).' : '.$ref->getStartLine();
         } else {
             $output .= 'null';
         }

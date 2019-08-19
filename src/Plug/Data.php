@@ -62,7 +62,7 @@ class Data implements
      */
     public function union(string ...$fields): UnionInitiator
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
     /**
@@ -70,7 +70,7 @@ class Data implements
      */
     public function fetch(): FetchInitiator
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
 
@@ -80,7 +80,7 @@ class Data implements
      */
     public function insert(array $values): InsertInitiator
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
     /**
@@ -88,7 +88,7 @@ class Data implements
      */
     public function batchInsert(array $rows=[]): BatchInsertInitiator
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
     /**
@@ -96,7 +96,7 @@ class Data implements
      */
     public function replace(array $values): ReplaceInitiator
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
     /**
@@ -104,7 +104,7 @@ class Data implements
      */
     public function batchReplace(array $rows=[]): BatchReplaceInitiator
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
     /**
@@ -112,7 +112,7 @@ class Data implements
      */
     public function update(array $valueMap=null): UpdateInitiator
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
     /**
@@ -120,6 +120,6 @@ class Data implements
      */
     public function delete(): DeleteInitiator
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 }

@@ -42,7 +42,7 @@ trait TStackable
      */
     public function union(string ...$fields): UnionInitiator
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
     /**
@@ -50,7 +50,7 @@ trait TStackable
      */
     public function fetch(): FetchInitiator
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
 

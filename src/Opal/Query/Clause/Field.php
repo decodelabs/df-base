@@ -28,7 +28,7 @@ class Field extends Base
      */
     public function getPreparedValue()
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
 
     /**

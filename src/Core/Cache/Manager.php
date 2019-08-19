@@ -71,7 +71,7 @@ class Manager
                     return $driver;
                 }
             } catch (\Throwable $e) {
-                Df\logException($e);
+                \Glitch::logException($e);
             }
         }
 
@@ -83,7 +83,7 @@ class Manager
                     return $driver;
                 }
             } catch (\Throwable $e) {
-                Df\logException($e);
+                \Glitch::logException($e);
             }
         }
 
@@ -137,7 +137,7 @@ class Manager
                     continue;
                 }
             } catch (\Throwable $e) {
-                Df\logException($e);
+                \Glitch::logException($e);
                 continue;
             }
 
@@ -155,7 +155,7 @@ class Manager
                     continue;
                 }
             } catch (\Throwable $e) {
-                Df\logException($e);
+                \Glitch::logException($e);
                 continue;
             }
 

@@ -14,7 +14,7 @@ trait TRelations
     /*
     protected function lookupRelationField(string &$fieldName, ?IField $queryField=null)
     {
-        Df\incomplete();
+        \Glitch::incomplete();
     }
     */
 
@@ -23,7 +23,7 @@ trait TRelations
      */
     protected function lookupRelationManifest(string $fieldName): array
     {
-        Df\incomplete();
+        \Glitch::incomplete();
         $sourceManager = $this->getSourceManager();
 
         return [

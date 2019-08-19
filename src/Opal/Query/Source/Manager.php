@@ -109,9 +109,9 @@ class Manager implements ITransactionAware
     public function normalizeSource($source): ISource
     {
         if (is_string($source)) {
-            Df\incomplete('Lookup entity');
+            \Glitch::incomplete('Lookup entity');
         } elseif (!$source instanceof ISource) {
-            Df\incomplete('Other types of source!??');
+            \Glitch::incomplete('Other types of source!??');
         }
 
         return $source;
