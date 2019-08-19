@@ -48,7 +48,7 @@ namespace Df
     use Df\Core\IApp;
     use Df\Core\Config\Env;
 
-    use Glitch\PathHandler;
+    use Glitch\Context as GlitchContext;
     use Glitch\Stack\Frame as StackFrame;
 
     use Composer\Autoload\ClassLoader;
@@ -82,7 +82,7 @@ namespace Df
         /* Make basePath available globally */
         define('Df\\BASE_PATH', $basePath);
 
-        PathHandler::registerAliases([
+        GlitchContext::getDefault()->registerPathAliases([
             'app' => Df\BASE_PATH,
             'df-base' => __DIR__
         ]);
@@ -127,38 +127,6 @@ namespace Df
         return Df\app()[Env::class];
     }
 
-    /**
-     * Get env config value
-     */
-    function envString(string $key, string $default=null): ?string
-    {
-        return Df\app()[Env::class]->get($key, $default);
-    }
-
-    /**
-     * Get env config value as bool
-     */
-    function envBool(string $key, bool $default=null): ?bool
-    {
-        return Df\app()[Env::class]->getBool($key, $default);
-    }
-
-    /**
-     * Get env config value as int
-     */
-    function envInt(string $key, int $default=null): ?int
-    {
-        return Df\app()[Env::class]->getInt($key, $default);
-    }
-
-    /**
-     * Get env config value as float
-     */
-    function envFloat(string $key, float $default=null): ?float
-    {
-        return Df\app()[Env::class]->getFloat($key, $default);
-    }
-
 
     /**
      * Cry about a method not being complete
@@ -186,6 +154,6 @@ namespace Df
      */
     function stripBasePath(?string $path): ?string
     {
-        return PathHandler::normalizePath($path);
+        return GlitchContext::getDefault()->normalizePath($path);
     }
 }
