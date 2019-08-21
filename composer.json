@@ -26,6 +26,7 @@
 
         "monolog/monolog": "~1.23",
         "ramsey/uuid": "^3.7",
+        "moontoast/math": "^1.1",
         "paragonie/halite": "^4",
         "paragonie/sodium_compat": "^1",
         "nesbot/carbon": "^2"

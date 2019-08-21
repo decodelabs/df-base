@@ -71,6 +71,38 @@ class Uuid
     }
 
     /**
+     * Generate a COMB string
+     */
+    public static function combString(): string
+    {
+        return (string)self::comb();
+    }
+
+    /**
+     * Generate a COMB object
+     */
+    public static function comb(): UuidInterface
+    {
+        static $factory;
+
+        if ($factory === null) {
+            $factory = new \Ramsey\Uuid\UuidFactory();
+            $generator = new \Ramsey\Uuid\Generator\CombGenerator($factory->getRandomGenerator(), $factory->getNumberConverter());
+            $codec = new \Ramsey\Uuid\Codec\TimestampFirstCombCodec($factory->getUuidBuilder());
+
+            $factory->setRandomGenerator($generator);
+            $factory->setCodec($codec);
+        }
+
+        $old = UuidLib::getFactory();
+        UuidLib::setFactory($factory);
+        $output = UuidLib::uuid4();
+        UuidLib::setFactory($old);
+
+        return $output;
+    }
+
+    /**
      * Generate a Uuid5 string
      */
     public static function v5String(string $ns, string $name): string
