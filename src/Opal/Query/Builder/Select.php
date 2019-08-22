@@ -19,7 +19,7 @@ use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Clause\WhereGroup;
 use Df\Opal\Query\Clause\HavingGroup;
 
-use Glitch\IInspectable;
+use Glitch\Inspectable;
 use Glitch\Dumper\Inspector;
 use Glitch\Dumper\Entity;
 
@@ -38,7 +38,7 @@ class Select implements
     IStackedData,
     INestable,
 
-    IInspectable
+    Inspectable
 {
     use TSources;
     use TParentAware;
