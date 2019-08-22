@@ -19,6 +19,10 @@ use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Clause\WhereGroup;
 use Df\Opal\Query\Clause\HavingGroup;
 
+use Glitch\IInspectable;
+use Glitch\Dumper\Inspector;
+use Glitch\Dumper\Entity;
+
 class Select implements
     IBuilder,
     IParentAware,
@@ -32,7 +36,9 @@ class Select implements
 
     IStackable,
     IStackedData,
-    INestable
+    INestable,
+
+    IInspectable
 {
     use TSources;
     use TParentAware;
@@ -213,5 +219,21 @@ class Select implements
             'source' => $this->sourceReference,
             'sql' => $this->__toString()
         ];
+    }
+
+
+    /**
+     * Inspect for Glitch
+     */
+    public function glitchInspect(Entity $entity, Inspector $inspector): void
+    {
+        $entity
+            ->setText($this->__toString())
+            ->setProperty('*sourceManager', $inspector($this->sourceManager, function ($entity) {
+                $entity->setOpen(false);
+            }))
+            ->setProperty('%source', $inspector($this->sourceReference, function ($entity) {
+                $entity->setOpen(false);
+            }));
     }
 }
