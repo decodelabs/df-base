@@ -20,7 +20,6 @@ use Df\Opal\Query\Clause\WhereGroup;
 use Df\Opal\Query\Clause\HavingGroup;
 
 use DecodeLabs\Glitch\Inspectable;
-use DecodeLabs\Glitch\Dumper\Inspector;
 use DecodeLabs\Glitch\Dumper\Entity;
 
 class Select implements
@@ -225,7 +224,7 @@ class Select implements
     /**
      * Inspect for Glitch
      */
-    public function glitchInspect(Entity $entity, Inspector $inspector): void
+    public function glitchInspect(Entity $entity, callable $inspector): void
     {
         $entity
             ->setText($this->__toString())
