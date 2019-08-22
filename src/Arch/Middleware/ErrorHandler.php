@@ -8,7 +8,7 @@ namespace Df\Arch\Middleware;
 
 use Df;
 
-use Glitch\Stack\Trace;
+use DecodeLabs\Glitch\Stack\Trace;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;

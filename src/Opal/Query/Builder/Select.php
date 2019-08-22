@@ -19,9 +19,9 @@ use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Clause\WhereGroup;
 use Df\Opal\Query\Clause\HavingGroup;
 
-use Glitch\Inspectable;
-use Glitch\Dumper\Inspector;
-use Glitch\Dumper\Entity;
+use DecodeLabs\Glitch\Inspectable;
+use DecodeLabs\Glitch\Dumper\Inspector;
+use DecodeLabs\Glitch\Dumper\Entity;
 
 class Select implements
     IBuilder,
