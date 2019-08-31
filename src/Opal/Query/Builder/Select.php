@@ -21,6 +21,7 @@ use Df\Opal\Query\Clause\HavingGroup;
 
 use DecodeLabs\Glitch\Inspectable;
 use DecodeLabs\Glitch\Dumper\Entity;
+use DecodeLabs\Glitch\Dumper\Inspector;
 
 class Select implements
     IBuilder,
@@ -224,7 +225,7 @@ class Select implements
     /**
      * Inspect for Glitch
      */
-    public function glitchInspect(Entity $entity, callable $inspector): void
+    public function glitchInspect(Entity $entity, Inspector $inspector): void
     {
         $entity
             ->setText($this->__toString())
