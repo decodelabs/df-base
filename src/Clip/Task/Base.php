@@ -37,8 +37,8 @@ abstract class Base implements ITask
 
         if (!class_exists($class, true)) {
             throw \Glitch::ENotFound([
-                'message' => 'Task not found: '.$request->getPath(),
-                'data' => $request
+                'message' => 'Task not found: '.$context->request->getPath(),
+                'data' => $context->request
             ]);
         }
 
