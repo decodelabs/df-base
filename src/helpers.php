@@ -49,6 +49,7 @@ namespace Df
         \Glitch::getContext()
             ->setStartTime(Df\START)
             ->registerPathAliases([
+                'vendor' => Df\BASE_PATH.'/vendor',
                 'app' => Df\BASE_PATH,
                 'df-base' => __DIR__
             ]);

@@ -19,9 +19,14 @@ class Bundle
     /**
      * Add meta info for bundle
      */
-    public static function register(string $name, int $priority, array $paths): void
+    public static function register(string $name, int $priority, string $pathBase, array $paths): void
     {
-        self::$bundles[$name] = new self($name, $priority, $paths);
+        $pathBase = rtrim($pathBase, '/');
+        \Glitch::getContext()->registerPathAlias($name, $pathBase);
+
+        self::$bundles[$name] = new self($name, $priority, array_map(function ($path) use ($pathBase) {
+            return $pathBase.'/'.ltrim($path, '/');
+        }, $paths));
     }
 
     /**

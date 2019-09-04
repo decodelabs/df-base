@@ -122,10 +122,10 @@ class App extends Container implements IApp
         $paths = [];
 
         foreach (static::APEX as $key) {
-            $paths['apex.'.$key] = $this->getBasePath().'/'.$key;
+            $paths['apex.'.$key] = $key;
         }
 
-        Bundle::register('app', PHP_INT_MAX, $paths);
+        Bundle::register('app', PHP_INT_MAX, $this->getBasePath(), $paths);
     }
 
     /**
