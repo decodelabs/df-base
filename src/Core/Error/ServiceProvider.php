@@ -12,8 +12,7 @@ use Df\Core\Error\IHandler;
 use Df\Core\Error\Handler;
 
 use Df\Core\Error\IRenderer;
-use Df\Core\Error\Renderer\Whoops as WhoopsRenderer;
-use Df\Core\Error\Renderer\Dump as DumpRenderer;
+use Df\Core\Error\Renderer;
 
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
@@ -39,11 +38,15 @@ class ServiceProvider implements IProvider
     public function registerServices(IContainer $app): void
     {
         $app->bindShared(IHandler::class, Handler::class);
+        $renderers = ['Glitch', 'Whoops', 'Dump'];
 
-        if (WhoopsRenderer::isLoadable()) {
-            $app->bind(IRenderer::class, WhoopsRenderer::class);
-        } else {
-            $app->bind(IRenderer::class, DumpRenderer::class);
+        foreach ($renderers as $name) {
+            $class = '\\Df\\Core\\Error\\Renderer\\'.$name;
+
+            if ($class::isLoadable()) {
+                $app->bind(IRenderer::class, $class);
+                break;
+            }
         }
 
         Handler::register($app[IHandler::class]);

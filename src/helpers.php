@@ -45,6 +45,7 @@ namespace Df
         /* Make basePath available globally */
         define('Df\\BASE_PATH', $basePath);
 
+        \Glitch::setAutoRegister(false);
         \Glitch::getContext()
             ->setStartTime(Df\START)
             ->registerPathAliases([
