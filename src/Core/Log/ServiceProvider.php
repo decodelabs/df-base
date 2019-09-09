@@ -35,6 +35,10 @@ class ServiceProvider implements IProvider
     {
         $app->bind(IFactory::class, MonologFactory::class);
 
-        $app->bindShared(ILogger::class, Logger::class);
+        $app->bindShared(ILogger::class, Logger::class)
+            ->prepareWith(function ($logger) {
+                \Glitch::getContext()->setLogger($logger);
+                return $logger;
+            });
     }
 }
