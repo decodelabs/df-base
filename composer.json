@@ -13,10 +13,10 @@
         "php": "^7.2",
         "symfony/polyfill-mbstring": "~1.7",
 
-        "decodelabs/glitch": "<2",
-        "decodelabs/gadgets": "dev-develop",
-        "decodelabs/collections": "dev-develop",
-        "decodelabs/tagged": "dev-develop",
+        "decodelabs/glitch": "^1.0",
+        "decodelabs/gadgets": "^1.0",
+        "decodelabs/collections": "^1.0",
+        "decodelabs/tagged": "^1.0",
 
         "psr/container": "^1.0",
         "psr/cache": "^1.0",
