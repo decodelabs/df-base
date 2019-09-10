@@ -6,10 +6,9 @@
 declare(strict_types=1);
 namespace Df\Core\Config;
 
-use Df;
-use Df\Data\Tree;
+use DecodeLabs\Collections\Tree\NativeMutable as MutableTree;
 
-class Repository extends Tree
+class Repository extends MutableTree
 {
     const KEY_SEPARATOR = '.';
 }

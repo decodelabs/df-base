@@ -8,7 +8,9 @@ namespace Df\Http;
 
 use Df;
 use Df\Link\IUri;
-use Df\Data\Tree;
+
+use DecodeLabs\Collections\Tree;
+use DecodeLabs\Collections\Tree\NativeMutable as MutableTree;
 
 use Psr\Http\Message\UriInterface;
 
@@ -580,7 +582,7 @@ class Uri implements IUri
      */
     public function getQueryTree(): Tree
     {
-        return Tree::fromDelimitedString($this->query);
+        return MutableTree::fromDelimitedString($this->query);
     }
 
 

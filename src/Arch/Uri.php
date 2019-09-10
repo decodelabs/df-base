@@ -6,9 +6,8 @@
 declare(strict_types=1);
 namespace Df\Arch;
 
-use Df;
-use Df\Data\ITree;
-use Df\Data\Tree;
+use DecodeLabs\Collections\Tree;
+use DecodeLabs\Collections\Tree\NativeMutable as MutableTree;
 
 class Uri implements \ArrayAccess
 {
@@ -209,7 +208,7 @@ class Uri implements \ArrayAccess
     /**
      * Get query tree
      */
-    public function getQuery(): ITree
+    public function getQuery(): Tree
     {
         return $this->query;
     }
@@ -316,17 +315,17 @@ class Uri implements \ArrayAccess
     /**
      * Prepare query tree object
      */
-    protected function prepareQuery($query): ITree
+    protected function prepareQuery($query): Tree
     {
-        if ($query instanceof ITree) {
+        if ($query instanceof Tree) {
             return $query;
         } elseif (empty($query)) {
-            return new Tree();
+            return new MutableTree();
         } elseif (is_string($query)) {
-            return Tree::fromDelimitedString($query);
+            return MutableTree::fromDelimitedString($query);
         }
 
-        return new Tree($query);
+        return new MutableTree($query);
     }
 
     /**

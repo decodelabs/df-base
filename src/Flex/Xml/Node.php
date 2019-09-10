@@ -8,7 +8,8 @@ namespace Df\Flex\Xml;
 
 use Df;
 use Df\Flex\Formatter;
-use Df\Data\IAttributeContainer;
+
+use DecodeLabs\Collections\AttributeContainer;
 
 class Node implements INode
 {
@@ -154,21 +155,9 @@ class Node implements INode
 
 
     /**
-     * Replace attribute on node
-     */
-    public function setAttributes(array $attributes): IAttributeContainer
-    {
-        foreach ($this->element->attributes as $attrNode) {
-            $this->element->removeAttributeNode($attrNode);
-        }
-
-        return $this->addAttributes($attributes);
-    }
-
-    /**
      * Merge attributes on node
      */
-    public function addAttributes(array $attributes): IAttributeContainer
+    public function setAttributes(array $attributes): AttributeContainer
     {
         foreach ($attributes as $key => $value) {
             $this->setAttribute($key, $value);
@@ -178,9 +167,17 @@ class Node implements INode
     }
 
     /**
+     * Replace attribute on node
+     */
+    public function replaceAttributes(array $attributes): AttributeContainer
+    {
+        return $this->clearAttributes()->setAttributes($attributes);
+    }
+
+    /**
      * Set attribute on node
      */
-    public function setAttribute($key, $value): IAttributeContainer
+    public function setAttribute($key, $value): AttributeContainer
     {
         $this->element->setAttribute($key, $value);
         return $this;
@@ -219,7 +216,7 @@ class Node implements INode
     /**
      * Remove attribute list
      */
-    public function removeAttribute(string ...$keys): IAttributeContainer
+    public function removeAttribute(string ...$keys): AttributeContainer
     {
         foreach ($keys as $key) {
             $this->element->removeAttribute($key);
@@ -243,6 +240,20 @@ class Node implements INode
     }
 
     /**
+     * Does node have attributes?
+     */
+    public function hasAttributes(string ...$keys): bool
+    {
+        foreach ($keys as $key) {
+            if (!$this->element->hasAttribute($key)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * How many attributes?
      */
     public function countAttributes(): int
@@ -253,7 +264,7 @@ class Node implements INode
     /**
      * Remove all attributes
      */
-    public function clearAttributes(): IAttributeContainer
+    public function clearAttributes(): AttributeContainer
     {
         foreach ($this->element->attributes as $attrNode) {
             $this->element->removeAttribute($attrNode->name);

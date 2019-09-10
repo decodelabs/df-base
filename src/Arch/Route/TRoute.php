@@ -11,9 +11,6 @@ use Df\Core\IApp;
 use Df\Arch\IRoute;
 use Df\Arch\Uri;
 
-use Df\Data\IArrayProvider;
-use Df\Html\IContainer as HtmlContainer;
-
 use Df\Http\Message\Generator;
 use Df\Http\Response\Stream;
 use Df\Http\Response\Text;
@@ -25,6 +22,9 @@ use Df\Http\Response\IProxy;
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+
+use DecodeLabs\Collections\ArrayProvider;
+use DecodeLabs\Tagged\Markup;
 
 trait TRoute
 {
@@ -209,11 +209,11 @@ trait TRoute
             return new Redirect($output);
         }
 
-        if ($output instanceof HtmlContainer) {
+        if ($output instanceof Markup) {
             return new Html((string)$output);
         }
 
-        if ($output instanceof IArrayProvider) {
+        if ($output instanceof ArrayProvider) {
             $output = $output->toArray();
         }
 

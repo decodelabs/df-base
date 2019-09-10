@@ -6,9 +6,10 @@
 namespace Df\Flex\Xml;
 
 use Df;
-use Df\Data\IAttributeContainer;
 
-interface INode extends IAttributeContainer, \Countable, \ArrayAccess
+use DecodeLabs\Collections\AttributeContainer;
+
+interface INode extends AttributeContainer, \Countable, \ArrayAccess
 {
     // Node info
     public function setTagName(string $name): INode;

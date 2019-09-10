@@ -6,13 +6,14 @@
 namespace Df\Opal\Query\Clause;
 
 use Df;
-use Df\Data\IArrayProvider;
 
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;
 
-interface IGroup extends IRepresentation, IFacade, IArrayProvider, \Countable
+use DecodeLabs\Collections\ArrayProvider;
+
+interface IGroup extends IRepresentation, IFacade, ArrayProvider, \Countable
 {
     public function getParent(): IFacade;
     public function getQuery(): IBuilder;

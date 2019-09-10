@@ -11,9 +11,9 @@ use Df;
 use DecodeLabs\Gadgets\Pipe;
 use DecodeLabs\Gadgets\PipeTrait;
 
-use Df\Data\ICollection;
+use DecodeLabs\Collections\Collection;
 
-class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable, Pipe
+class Text implements \IteratorAggregate, Collection, \ArrayAccess, \Countable
 {
     use PipeTrait;
 
@@ -1254,7 +1254,7 @@ class Text implements \IteratorAggregate, ICollection, \ArrayAccess, \Countable,
     /**
      * Duplicate collection, can change type if needed
      */
-    public function copy(): ICollection
+    public function copy(): Collection
     {
         return clone $this;
     }

@@ -5,8 +5,7 @@
  */
 namespace Df\Link;
 
-use Df;
-use Df\Data\Tree;
+use DecodeLabs\Collections\Tree;
 
 use Psr\Http\Message\UriInterface;
 

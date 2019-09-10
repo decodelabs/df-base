@@ -6,9 +6,9 @@
 namespace Df\Flex\Xml;
 
 use Df;
-use Df\Data\IAttributeContainer;
+use DecodeLabs\Collections\AttributeContainer;
 
-interface IWriter extends IAttributeContainer, \ArrayAccess
+interface IWriter extends AttributeContainer, \ArrayAccess
 {
     // Header
     public function writeHeader(string $version='1.0', string $encoding='UTF-8', bool $standalone=false): IWriter;

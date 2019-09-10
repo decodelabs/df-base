@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Df\Flex\Xml;
 
 use Df;
-use Df\Data\TAttributeContainer;
+use DecodeLabs\Collections\AttributeContainerTrait;
 
 class Writer implements IWriter
 {
@@ -16,7 +16,7 @@ class Writer implements IWriter
     const COMMENT = 3;
     const PI = 4;
 
-    use TAttributeContainer;
+    use AttributeContainerTrait;
 
     protected $document;
     protected $path;

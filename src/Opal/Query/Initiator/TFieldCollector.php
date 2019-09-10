@@ -7,7 +7,8 @@ declare(strict_types=1);
 namespace Df\Opal\Query\Initiator;
 
 use Df;
-use Df\Data\Arr;
+
+use DecodeLabs\Collections\ArrayUtils;
 
 trait TFieldCollector
 {
@@ -18,7 +19,7 @@ trait TFieldCollector
      */
     protected function importFields(array $fields): void
     {
-        $this->addFields(...Arr::collapse($fields, false, true, true));
+        $this->addFields(...ArrayUtils::collapse($fields, false, true, true));
     }
 
     /**
