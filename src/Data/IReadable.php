@@ -6,13 +6,14 @@
 namespace Df\Data;
 
 use Df;
-use Df\Lang\IPipe;
+
+use DecodeLabs\Gadgets\Pipe;
 
 /**
  * All methods returning IReadable MUST be immutable,
  * regardless of whether implementation is mutable
  */
-interface IReadable extends ICollection, \Countable, \ArrayAccess, IPipe
+interface IReadable extends ICollection, \Countable, \ArrayAccess, Pipe
 {
     public function getFirst(callable $filter=null);
     public function getLast(callable $filter=null);

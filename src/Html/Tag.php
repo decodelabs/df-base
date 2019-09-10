@@ -11,12 +11,12 @@ use Df;
 use Df\Data\IAttributeContainer;
 use Df\Data\TAttributeContainer;
 
-use Df\Lang\IPipe;
-use Df\Lang\TPipe;
+use DecodeLabs\Gadgets\Pipe;
+use DecodeLabs\Gadgets\PipeTrait;
 
-class Tag implements ITag, IPipe
+class Tag implements ITag, Pipe
 {
-    use TPipe;
+    use PipeTrait;
     use TAttributeContainer;
 
     const CLOSED_TAGS = [

@@ -8,12 +8,12 @@ namespace Df\Core\Config;
 
 use Df;
 
-use Df\Lang\IPipe;
-use Df\Lang\TPipe;
+use DecodeLabs\Gadgets\Pipe;
+use DecodeLabs\Gadgets\PipeTrait;
 
-class Env implements \ArrayAccess, IPipe
+class Env implements \ArrayAccess, Pipe
 {
-    use TPipe;
+    use PipeTrait;
 
     protected $identity;
     protected $data = [];

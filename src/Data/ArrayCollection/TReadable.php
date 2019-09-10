@@ -11,12 +11,12 @@ use Df;
 use Df\Data\Arr;
 use Df\Data\IReadable;
 
-use Df\Lang\TPipe;
+use DecodeLabs\Gadgets\PipeTrait;
 
 trait TReadable
 {
     use TCollection;
-    use TPipe;
+    use PipeTrait;
 
     /**
      * Count items
