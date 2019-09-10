@@ -14,6 +14,8 @@
         "symfony/polyfill-mbstring": "~1.7",
 
         "decodelabs/glitch": "<2",
+        "decodelabs/gadgets": "dev-develop",
+        "decodelabs/collections": "dev-develop",
         "decodelabs/tagged": "dev-develop",
 
         "psr/container": "^1.0",
