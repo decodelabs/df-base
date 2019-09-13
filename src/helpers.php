@@ -16,6 +16,8 @@ namespace Df
 
     use Composer\Autoload\ClassLoader;
 
+    use DecodeLabs\Glitch\Context as GlitchContext;
+
     define('Df\\START', microtime(true));
 
 
@@ -45,9 +47,7 @@ namespace Df
         /* Make basePath available globally */
         define('Df\\BASE_PATH', $basePath);
 
-        \Glitch::setAutoRegister(false);
-        \Glitch::getContext()
-            ->setStartTime(Df\START)
+        Glitch::setStartTime(Df\START)
             ->registerPathAliases([
                 'vendor' => Df\BASE_PATH.'/vendor',
                 'app' => Df\BASE_PATH,
