@@ -27,7 +27,7 @@ class Env implements \ArrayAccess, Pipe
 
         foreach ($data as $key => $value) {
             if (!is_scalar($value)) {
-                throw \Glitch::EUnexpectedValue(
+                throw Glitch::EUnexpectedValue(
                     'Env value '.$key.' is not a scalar',
                     null,
                     $value
@@ -182,7 +182,7 @@ class Env implements \ArrayAccess, Pipe
         }
 
         if (!empty($failed)) {
-            throw \Glitch('Env key(s) '.implode(', ', $failed).' have not been set');
+            throw Glitch('Env key(s) '.implode(', ', $failed).' have not been set');
         }
 
         return $this;

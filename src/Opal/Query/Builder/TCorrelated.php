@@ -18,15 +18,15 @@ trait TCorrelated
     public function endCorrelation(string $alias=null): ICorrelated
     {
         if ($this->getSubQueryMode() !== 'correlation') {
-            throw \Glitch::ELogic('Select query is not a correlation');
+            throw Glitch::ELogic('Select query is not a correlation');
         }
 
         if (!$parent = $this->getParentQuery()) {
-            throw \Glitch::ELogic('Query does not have a parent to be aliased into');
+            throw Glitch::ELogic('Query does not have a parent to be aliased into');
         }
 
         if (!$parent instanceof ICorrelatable) {
-            throw \Glitch::ELogic('Parent query is not correlatable');
+            throw Glitch::ELogic('Parent query is not correlatable');
         }
 
         $parent->addCorrelation($this, $alias);

@@ -72,6 +72,6 @@ class Factory
             return $ref;
         }
 
-        throw \Glitch::EUnexpectedValue('Source alias '.$sourceAlias.' has not been defined');
+        throw Glitch::EUnexpectedValue('Source alias '.$sourceAlias.' has not been defined');
     }
 }

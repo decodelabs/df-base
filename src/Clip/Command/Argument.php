@@ -251,7 +251,7 @@ class Argument implements IArgument
                 $value = Formatter::toBoolean($value);
 
                 if ($value === null) {
-                    throw \Glitch::EUnexpectedValue(
+                    throw Glitch::EUnexpectedValue(
                         'Invalid boolean value found for argument: '.$this->name
                     );
                 }
@@ -265,7 +265,7 @@ class Argument implements IArgument
         } else {
             if ($value === null) {
                 if (!$this->optional) {
-                    throw \Glitch::EUnexpectedValue(
+                    throw Glitch::EUnexpectedValue(
                         'No value found for argument: '.$this->name
                     );
                 } else {
@@ -274,7 +274,7 @@ class Argument implements IArgument
             }
 
             if ($this->pattern !== null && !mb_ereg($this->pattern, $value)) {
-                throw \Glitch::EUnexpectedValue(
+                throw Glitch::EUnexpectedValue(
                     'Value does not match pattern for argument: '.$this->name
                 );
             }

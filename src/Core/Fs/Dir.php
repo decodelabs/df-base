@@ -37,7 +37,7 @@ class Dir implements IDir
     {
         if (!is_dir($this->path)) {
             if (file_exists($this->path)) {
-                throw \Glitch::EIo('Dir destination exists as file', null, $this);
+                throw Glitch::EIo('Dir destination exists as file', null, $this);
             }
 
             if ($permissions === null) {
@@ -45,7 +45,7 @@ class Dir implements IDir
             }
 
             if (!mkdir($this->path, $permissions, true)) {
-                throw \Glitch::EIo('Unable to mkdir', null, $this);
+                throw Glitch::EIo('Unable to mkdir', null, $this);
             }
         } else {
             if ($permissions !== null) {
@@ -85,7 +85,7 @@ class Dir implements IDir
     public function setPermissions(int $mode, bool $recursive=false): IDir
     {
         if (!$this->exists()) {
-            throw \Glitch::ENotFound('Cannot set permissions, dir does not exist', null, $this);
+            throw Glitch::ENotFound('Cannot set permissions, dir does not exist', null, $this);
         }
 
         chmod($this->path, $mode);
@@ -109,7 +109,7 @@ class Dir implements IDir
     public function setOwner(int $owner, bool $recursive=false): IDir
     {
         if (!$this->exists()) {
-            throw \Glitch::ENotFound('Cannot set owner, dir does not exist', null, $this);
+            throw Glitch::ENotFound('Cannot set owner, dir does not exist', null, $this);
         }
 
         chown($this->path, $owner);
@@ -133,7 +133,7 @@ class Dir implements IDir
     public function setGroup(int $group, bool $recursive=false): IDir
     {
         if (!$this->exists()) {
-            throw \Glitch::ENotFound('Cannot set group, dir does not exist', null, $this);
+            throw Glitch::ENotFound('Cannot set group, dir does not exist', null, $this);
         }
 
         chgrp($this->path, $group);
@@ -585,7 +585,7 @@ class Dir implements IDir
     public function copyTo(string $path): INode
     {
         if (file_exists($path)) {
-            throw \Glitch::EIo('Destination dir already exists', null, $this);
+            throw Glitch::EIo('Destination dir already exists', null, $this);
         }
 
         return $this->mergeInto($path);
@@ -597,7 +597,7 @@ class Dir implements IDir
     public function moveTo(string $destination, string $newName=null): INode
     {
         if (!$this->exists()) {
-            throw \Glitch::ENotFound('Source dir does not exist', null, $this);
+            throw Glitch::ENotFound('Source dir does not exist', null, $this);
         }
 
         if ($newName === null) {
@@ -605,18 +605,18 @@ class Dir implements IDir
         }
 
         if ($newName == '' || $newName === '..' || $newName === '.' || strstr($newName, '/')) {
-            throw \Glitch::EInvalidArgument('New dir name is invalid: '.$name, null, $this);
+            throw Glitch::EInvalidArgument('New dir name is invalid: '.$name, null, $this);
         }
 
         $destination = rtrim($destination, '/').'/'.$newName;
         (new Dir(dirname($destination)))->ensureExists();
 
         if (file_exists($destination)) {
-            throw \Glitch::EIo('Destination file already exists', null, $destination);
+            throw Glitch::EIo('Destination file already exists', null, $destination);
         }
 
         if (!rename($this->path, $destination)) {
-            throw \Glitch::EIo('Unable to rename dir', null, $this);
+            throw Glitch::EIo('Unable to rename dir', null, $this);
         }
 
         $this->path = $destination;
@@ -661,7 +661,7 @@ class Dir implements IDir
     public function mergeInto(string $destination): IDir
     {
         if (!$this->exists()) {
-            throw \Glitch::ENotFound('Source dir does not exist', null, $this);
+            throw Glitch::ENotFound('Source dir does not exist', null, $this);
         }
 
         $destination = new Dir($destination);

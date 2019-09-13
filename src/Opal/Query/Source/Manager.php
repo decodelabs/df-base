@@ -71,7 +71,7 @@ class Manager implements ITransactionAware
         $alias = $reference->getAlias();
 
         if (isset($this->references[$alias])) {
-            throw \Glitch::ERuntime('A source has already been defined as '.$alias);
+            throw Glitch::ERuntime('A source has already been defined as '.$alias);
         }
 
         $this->references[$alias] = $reference;
@@ -109,9 +109,9 @@ class Manager implements ITransactionAware
     public function normalizeSource($source): ISource
     {
         if (is_string($source)) {
-            \Glitch::incomplete('Lookup entity');
+            Glitch::incomplete('Lookup entity');
         } elseif (!$source instanceof ISource) {
-            \Glitch::incomplete('Other types of source!??');
+            Glitch::incomplete('Other types of source!??');
         }
 
         return $source;
@@ -211,7 +211,7 @@ class Manager implements ITransactionAware
             return $possible->findField($fieldName);
         }
 
-        throw \Glitch::EUnexpectedValue(
+        throw Glitch::EUnexpectedValue(
             'Field '.$name.' could not be found in current query'
         );
     }
@@ -233,7 +233,7 @@ class Manager implements ITransactionAware
             return $possible->findField($fieldName);
         }
 
-        throw \Glitch::EUnexpectedValue(
+        throw Glitch::EUnexpectedValue(
             'Field '.$name.' could not be found in current query'
         );
     }

@@ -44,7 +44,7 @@ trait TContext
         $class = '\\Df\\Plug\\'.ucfirst($name);
 
         if (!class_exists($class, true)) {
-            throw \Glitch::ENotFound([
+            throw Glitch::ENotFound([
                 'Helper '.$name.' could not be found'
             ]);
         }

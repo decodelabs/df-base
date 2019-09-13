@@ -33,7 +33,7 @@ class Container implements IContainer
     public function registerProvider(string $provider): void
     {
         if (!class_exists($provider, true)) {
-            throw \Glitch::{'EImplementation,ENotFound'}(
+            throw Glitch::{'EImplementation,ENotFound'}(
                 'Service provider '.$provider.' could not be found'
             );
         }
@@ -332,7 +332,7 @@ class Container implements IContainer
             return $binding;
         }
 
-        throw \Glitch::{
+        throw Glitch::{
             'ENotFound,Psr\\Container\\NotFoundExceptionInterface'
         }(
             $type.' has not been bound'
@@ -461,7 +461,7 @@ class Container implements IContainer
         $reflector = new \ReflectionClass($type);
 
         if (!$reflector->isInstantiable()) {
-            throw \Glitch::{
+            throw Glitch::{
                 'ELogic,Psr\\Container\\ContainerExceptionInterface'
             }(
                 'Binding target '.$type.' cannot be instantiated'
@@ -486,7 +486,7 @@ class Container implements IContainer
     {
         foreach ($interfaces as $interface) {
             if (!$object instanceof $interface) {
-                throw \Glitch::EImplementation(
+                throw Glitch::EImplementation(
                     'Binding target does not implement '.$interface
                 );
             }
@@ -535,7 +535,7 @@ class Container implements IContainer
             } elseif ($i === 0 && $reflector->name === 'app') {
                 $args[] = $this;
             } else {
-                throw \Glitch::{
+                throw Glitch::{
                     'ELogic,Psr\\Container\\ContainerExceptionInterface'
                 }(
                     'Binding param $'.$reflector->name.' cannot be resolved'

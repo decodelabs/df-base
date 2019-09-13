@@ -30,7 +30,7 @@ class Query extends Base
      */
     public function getPreparedValue()
     {
-        \Glitch::incomplete();
+        Glitch::incomplete();
     }
 
     /**

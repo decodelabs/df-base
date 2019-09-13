@@ -85,7 +85,7 @@ class Sender implements ISender
     public function sendResponse(ServerRequestInterface $request, ResponseInterface $response): void
     {
         if (headers_sent()) {
-            throw \Glitch::ERuntime('Cannot send response, headers already sent');
+            throw Glitch::ERuntime('Cannot send response, headers already sent');
         }
 
         $status = $response->getStatusCode();

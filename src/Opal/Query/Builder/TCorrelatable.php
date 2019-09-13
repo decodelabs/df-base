@@ -33,7 +33,7 @@ trait TCorrelatable
      */
     public function correlateRelation(string $relation, string $field): SelectInitiator
     {
-        \Glitch::incomplete();
+        Glitch::incomplete();
     }
 
 

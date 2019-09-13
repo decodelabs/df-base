@@ -121,7 +121,7 @@ class Select implements
                 return $this->asMany($alias);
 
             default:
-                throw \Glitch::ELogic('Query does not have a parent to be aliased into');
+                throw Glitch::ELogic('Query does not have a parent to be aliased into');
         }
     }
 
@@ -132,17 +132,17 @@ class Select implements
     public function endClause(): IBuilder
     {
         if (!$parent = $this->getParentQuery()) {
-            throw \Glitch::ELogic('Query does not have a parent to be aliased into');
+            throw Glitch::ELogic('Query does not have a parent to be aliased into');
         }
 
         if (!$this->applicator) {
-            throw \Glitch::ELogic('Correlated subquery does not have a clause generator applicator');
+            throw Glitch::ELogic('Correlated subquery does not have a clause generator applicator');
         }
 
         switch ($mode = $this->getSubQueryMode()) {
             case 'where':
                 if (!$parent instanceof IWhereClauseProvider) {
-                    throw \Glitch::ELogic('Parent query is not a where clause provider');
+                    throw Glitch::ELogic('Parent query is not a where clause provider');
                 }
 
                 $parent->addWhereClause(($this->applicator)($this));
@@ -150,14 +150,14 @@ class Select implements
 
             case 'having':
                 if (!$parent instanceof IHavingClauseProvider) {
-                    throw \Glitch::ELogic('Parent query is not a having clause provider');
+                    throw Glitch::ELogic('Parent query is not a having clause provider');
                 }
 
                 $parent->addHavingClause(($this->applicator)($this));
                 break;
 
             default:
-                throw \Glitch::ELogic('Select query is not in recognized clause mode: '.$mode);
+                throw Glitch::ELogic('Select query is not in recognized clause mode: '.$mode);
         }
 
 

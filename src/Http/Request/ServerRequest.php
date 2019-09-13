@@ -209,7 +209,7 @@ class ServerRequest implements ServerRequestInterface
             }
 
             if (!$file instanceof UploadedFileInterface) {
-                throw \Glitch::EInvalidArgument(
+                throw Glitch::EInvalidArgument(
                     'Invalid uploaded file array - files must be instances of UploadedFileInterface'
                 );
             }

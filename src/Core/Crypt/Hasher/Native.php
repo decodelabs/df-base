@@ -44,7 +44,7 @@ class Native implements IHasher
         $output = password_hash($value, $this->algo, $this->options);
 
         if ($output === false) {
-            throw \Glitch::ERuntime(
+            throw Glitch::ERuntime(
                 'Hashing failed with current options'
             );
         }

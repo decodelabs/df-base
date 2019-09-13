@@ -25,7 +25,7 @@ class Source implements IComposedSource, ITransactionAdapter
         $this->data = $data;
 
         if (preg_match('/[^a-zA-Z0-9_-]/', $name)) {
-            throw \Glitch::EInvalidArgument('Source name must only contain alphanumerics, - and _');
+            throw Glitch::EInvalidArgument('Source name must only contain alphanumerics, - and _');
         }
 
         $this->name = $name;

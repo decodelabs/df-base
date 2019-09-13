@@ -71,7 +71,7 @@ class Manager
                     return $driver;
                 }
             } catch (\Throwable $e) {
-                \Glitch::logException($e);
+                Glitch::logException($e);
             }
         }
 
@@ -83,7 +83,7 @@ class Manager
                     return $driver;
                 }
             } catch (\Throwable $e) {
-                \Glitch::logException($e);
+                Glitch::logException($e);
             }
         }
 
@@ -98,7 +98,7 @@ class Manager
         $class = Driver::class.'\\'.$name;
 
         if (!class_exists($class)) {
-            throw \Glitch::{'EInvalidArgument,ENotFound'}(
+            throw Glitch::{'EInvalidArgument,ENotFound'}(
                 'Cache driver '.$name.' could not be found'
             );
         }
@@ -137,7 +137,7 @@ class Manager
                     continue;
                 }
             } catch (\Throwable $e) {
-                \Glitch::logException($e);
+                Glitch::logException($e);
                 continue;
             }
 
@@ -155,7 +155,7 @@ class Manager
                     continue;
                 }
             } catch (\Throwable $e) {
-                \Glitch::logException($e);
+                Glitch::logException($e);
                 continue;
             }
 

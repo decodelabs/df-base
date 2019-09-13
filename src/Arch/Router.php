@@ -156,7 +156,7 @@ abstract class Router
                 $runner = $name;
                 $name = $path;
             } else {
-                throw \Glitch::EInvalidArgument(
+                throw Glitch::EInvalidArgument(
                     'Named routes must define a runner function'
                 );
             }

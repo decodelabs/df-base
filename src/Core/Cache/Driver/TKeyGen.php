@@ -63,7 +63,7 @@ trait TKeyGen
         $man = $this->parseKey($namespace, $key);
 
         if ($man['children']) {
-            throw \Glitch::EInvalidArgument('Invalid cache key', null, $key);
+            throw Glitch::EInvalidArgument('Invalid cache key', null, $key);
         }
 
         return $this->buildKey($namespace, $man['normal']);

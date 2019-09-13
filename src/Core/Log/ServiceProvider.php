@@ -37,7 +37,7 @@ class ServiceProvider implements IProvider
 
         $app->bindShared(ILogger::class, Logger::class)
             ->prepareWith(function ($logger) {
-                \Glitch::getContext()->setLogger($logger);
+                Glitch::setLogger($logger);
                 return $logger;
             });
     }

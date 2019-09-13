@@ -36,7 +36,7 @@ abstract class Base implements ITask
         $class = '\\Df\\Apex\\Clip\\'.implode('\\', $parts).'Task';
 
         if (!class_exists($class, true)) {
-            throw \Glitch::ENotFound([
+            throw Glitch::ENotFound([
                 'message' => 'Task not found: '.$context->request->getPath(),
                 'data' => $context->request
             ]);

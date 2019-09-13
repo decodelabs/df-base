@@ -179,7 +179,7 @@ class Text implements \IteratorAggregate, Collection, \ArrayAccess, \Countable
      */
     public function offsetSet($index, $value)
     {
-        throw \Glitch::EImplementation(
+        throw Glitch::EImplementation(
             'Immutable flex\\Text does not support array-access setting'
         );
     }
@@ -197,7 +197,7 @@ class Text implements \IteratorAggregate, Collection, \ArrayAccess, \Countable
      */
     public function offsetUnset($index)
     {
-        throw \Glitch::EImplementation(
+        throw Glitch::EImplementation(
             'Immutable flex\\Text does not support array-access unset'
         );
     }
@@ -1005,7 +1005,7 @@ class Text implements \IteratorAggregate, Collection, \ArrayAccess, \Countable
         }
 
         if (!is_int($output)) {
-            throw \Glitch::ERange(
+            throw Glitch::ERange(
                 'Alpha to numeric string overflowed int max'
             );
         }

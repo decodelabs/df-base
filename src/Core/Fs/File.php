@@ -137,7 +137,7 @@ class File extends Stream implements IFile
         }
 
         if (!$this->resource = fopen($this->path, $mode)) {
-            throw \Glitch::EIo('Unable to open file', null, $this);
+            throw Glitch::EIo('Unable to open file', null, $this);
         }
 
         return $this;
@@ -166,7 +166,7 @@ class File extends Stream implements IFile
     public function setPermissions(int $mode): IFile
     {
         if (!$this->exists()) {
-            throw \Glitch::ENotFound('Cannot set permissions, file does not exist', null, $this);
+            throw Glitch::ENotFound('Cannot set permissions, file does not exist', null, $this);
         }
 
         chmod($this->path, $mode);
@@ -179,7 +179,7 @@ class File extends Stream implements IFile
     public function setOwner(int $owner): IFile
     {
         if (!$this->exists()) {
-            throw \Glitch::ENotFound('Cannot set owner, file does not exist', null, $this);
+            throw Glitch::ENotFound('Cannot set owner, file does not exist', null, $this);
         }
 
         chown($this->path, $owner);
@@ -192,7 +192,7 @@ class File extends Stream implements IFile
     public function setGroup(int $group): IFile
     {
         if (!$this->exists()) {
-            throw \Glitch::ENotFound('Cannot set owner, file does not exist', null, $this);
+            throw Glitch::ENotFound('Cannot set owner, file does not exist', null, $this);
         }
 
         chgrp($this->path, $group);
@@ -206,7 +206,7 @@ class File extends Stream implements IFile
     public function lock(bool $nonBlocking=false): bool
     {
         if ($this->resource === null) {
-            throw \Glitch::EIo('Cannot lock file, file not open', null, $this);
+            throw Glitch::EIo('Cannot lock file, file not open', null, $this);
         }
 
         if ($nonBlocking) {
@@ -222,7 +222,7 @@ class File extends Stream implements IFile
     public function lockExclusive(bool $nonBlocking=false): bool
     {
         if ($this->resource === null) {
-            throw \Glitch::EIo('Cannot lock file, file not open', null, $this);
+            throw Glitch::EIo('Cannot lock file, file not open', null, $this);
         }
 
         if ($nonBlocking) {
@@ -242,7 +242,7 @@ class File extends Stream implements IFile
         }
 
         if (!flock($this->resource, LOCK_UN)) {
-            throw \Glitch::EIo('Unable to unlock file', null, $this);
+            throw Glitch::EIo('Unable to unlock file', null, $this);
         }
 
         return $this;
@@ -275,7 +275,7 @@ class File extends Stream implements IFile
         }
 
         if (!$this->lockExclusive()) {
-            throw \Glitch::EIo('Unable to lock file for writing', null, $this);
+            throw Glitch::EIo('Unable to lock file for writing', null, $this);
         }
 
         $this->truncate();
@@ -306,7 +306,7 @@ class File extends Stream implements IFile
         }
 
         if (!$this->lock()) {
-            throw \Glitch::EIo('Unable to lock file for reading', null, $this);
+            throw Glitch::EIo('Unable to lock file for reading', null, $this);
         }
 
         $this->seek(0);
@@ -357,7 +357,7 @@ class File extends Stream implements IFile
     public function moveTo(string $destination, string $newName=null): INode
     {
         if (!$this->exists()) {
-            throw \Glitch::ENotFound('Source file does not exist', null, $this);
+            throw Glitch::ENotFound('Source file does not exist', null, $this);
         }
 
         if ($newName === null) {
@@ -365,18 +365,18 @@ class File extends Stream implements IFile
         }
 
         if ($newName == '' || $newName === '..' || $newName === '.' || strstr($newName, '/')) {
-            throw \Glitch::EInvalidArgument('New file name is invalid: '.$name, null, $this);
+            throw Glitch::EInvalidArgument('New file name is invalid: '.$name, null, $this);
         }
 
         $destination = rtrim($destination, '/').'/'.$newName;
         (new Dir(dirname($destination)))->ensureExists();
 
         if (file_exists($destination)) {
-            throw \Glitch::EIo('Destination file already exists', null, $destination);
+            throw Glitch::EIo('Destination file already exists', null, $destination);
         }
 
         if (!rename($this->path, $destination)) {
-            throw \Glitch::EIo('Unable to rename file', null, $this);
+            throw Glitch::EIo('Unable to rename file', null, $this);
         }
 
         $this->path = $destination;
@@ -409,11 +409,11 @@ class File extends Stream implements IFile
     public function seek(int $offset, int $whence=SEEK_SET): IFile
     {
         if ($this->resource === null) {
-            throw \Glitch::EIo('Cannot seek file, file not open', null, $this);
+            throw Glitch::EIo('Cannot seek file, file not open', null, $this);
         }
 
         if (0 !== fseek($this->resource, $offset, $whence)) {
-            throw \Glitch::EIo('Failed to seek file', null, $this);
+            throw Glitch::EIo('Failed to seek file', null, $this);
         }
 
         return $this;
@@ -425,13 +425,13 @@ class File extends Stream implements IFile
     public function tell(): int
     {
         if ($this->resource === null) {
-            throw \Glitch::EIo('Cannot ftell file, file not open', null, $this);
+            throw Glitch::EIo('Cannot ftell file, file not open', null, $this);
         }
 
         $output = ftell($this->resource);
 
         if ($output === false) {
-            throw \Glitch::EIo('Failed to ftell file', null, $this);
+            throw Glitch::EIo('Failed to ftell file', null, $this);
         }
 
         return $output;
@@ -443,13 +443,13 @@ class File extends Stream implements IFile
     public function flush(): IFile
     {
         if ($this->resource === null) {
-            throw \Glitch::EIo('Cannot flush file, file not open', null, $this);
+            throw Glitch::EIo('Cannot flush file, file not open', null, $this);
         }
 
         $output = fflush($this->resource);
 
         if ($output === false) {
-            throw \Glitch::EIo('Failed to flush file', null, $this);
+            throw Glitch::EIo('Failed to flush file', null, $this);
         }
 
         return $output;

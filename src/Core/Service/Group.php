@@ -18,7 +18,7 @@ class Group extends Binding
         $this->container = $container;
 
         if (!interface_exists($type, true) && !class_exists($type, true)) {
-            throw \Glitch::EInvalidArgument(
+            throw Glitch::EInvalidArgument(
                 'Binding type must be a valid interface'
             );
         }
@@ -34,7 +34,7 @@ class Group extends Binding
      */
     public function setTarget($target): IBinding
     {
-        throw \Glitch::EImplementation('setTarget is not used for groups');
+        throw Glitch::EImplementation('setTarget is not used for groups');
     }
 
     /**
@@ -42,7 +42,7 @@ class Group extends Binding
      */
     public function getTarget()
     {
-        throw \Glitch::EImplementation('getTarget is not used for groups');
+        throw Glitch::EImplementation('getTarget is not used for groups');
     }
 
     /**
@@ -50,7 +50,7 @@ class Group extends Binding
      */
     public function setFactory(\Closure $factory)
     {
-        throw \Glitch::EImplementation('setFactory is not used for groups');
+        throw Glitch::EImplementation('setFactory is not used for groups');
     }
 
 
@@ -209,7 +209,7 @@ class Group extends Binding
      */
     public function setInstance(object $instance): IBinding
     {
-        throw \Glitch::EImplementation('setFactory is not used for groups');
+        throw Glitch::EImplementation('setFactory is not used for groups');
     }
 
     /**

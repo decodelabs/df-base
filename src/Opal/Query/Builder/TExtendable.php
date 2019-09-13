@@ -15,7 +15,7 @@ trait TExtendable
      */
     public function extend(string $name, ...$args): IExtendable
     {
-        \Glitch::incomplete();
+        Glitch::incomplete();
     }
 
     /**
@@ -23,6 +23,6 @@ trait TExtendable
      */
     public function extendFrom(string $fieldName, $name, ...$args): IExtendable
     {
-        \Glitch::incomplete();
+        Glitch::incomplete();
     }
 }

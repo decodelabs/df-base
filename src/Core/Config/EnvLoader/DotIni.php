@@ -54,13 +54,13 @@ class DotIni implements IEnvLoader
         $path = $this->getPath();
 
         if (!is_readable($path) || !is_file($path)) {
-            throw \Glitch::ENotFound('Ini file could not be read', null, $path);
+            throw Glitch::ENotFound('Ini file could not be read', null, $path);
         }
 
         $data = parse_ini_file($path);
 
         if (!isset($data['IDENTITY'])) {
-            throw \Glitch::EUnexpectedValue(
+            throw Glitch::EUnexpectedValue(
                 'Env data does not define an IDENTITY'
             );
         }

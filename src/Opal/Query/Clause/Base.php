@@ -115,7 +115,7 @@ abstract class Base implements IClause
                 break;
 
             default:
-                throw \Glitch::EInvalidArgument(
+                throw Glitch::EInvalidArgument(
                     'Operator '.$operator.' is not recognized'
                 );
         }

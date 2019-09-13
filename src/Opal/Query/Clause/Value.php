@@ -28,7 +28,7 @@ class Value extends Base
      */
     public function getPreparedValue()
     {
-        \Glitch::incomplete();
+        Glitch::incomplete();
     }
 
     /**

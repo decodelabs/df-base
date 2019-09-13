@@ -55,7 +55,7 @@ class Join implements
                 break;
 
             default:
-                throw \Glitch::EInvalidArgument(
+                throw Glitch::EInvalidArgument(
                     'Unknown join type '.$type
                 );
         }

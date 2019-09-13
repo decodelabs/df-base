@@ -151,7 +151,7 @@ class Nest implements
     public function getName(): string
     {
         if ($this->name === null) {
-            throw \Glitch::ELogic('No name has been given to nest instruction');
+            throw Glitch::ELogic('No name has been given to nest instruction');
         }
 
         return $this->name;

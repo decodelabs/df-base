@@ -85,7 +85,7 @@ trait TMessage
     protected function prepareProtocolVersion(?string $version): string
     {
         if (!preg_match('#^(1\.[01]|2)$#', (string)$version)) {
-            throw \Glitch::EInvalidArgument(
+            throw Glitch::EInvalidArgument(
                 'Invalid HTTP protocol version: '.$version,
                 null,
                 $version
@@ -147,7 +147,7 @@ trait TMessage
     public function withHeader($name, $value): MessageInterface
     {
         if (!$this->isHeaderNameValid($name)) {
-            throw \Glitch::EInvalidArgument(
+            throw Glitch::EInvalidArgument(
                 'Invalid header name: '.$name
             );
         }
@@ -173,7 +173,7 @@ trait TMessage
     public function withAddedHeader($name, $value): MessageInterface
     {
         if (!$this->isHeaderNameValid($name)) {
-            throw \Glitch::EInvalidArgument(
+            throw Glitch::EInvalidArgument(
                 'Invalid header name: '.$name
             );
         }
@@ -213,7 +213,7 @@ trait TMessage
 
         foreach ($input as $name => $value) {
             if (!$this->isHeaderNameValid($name)) {
-                throw \Glitch::EInvalidArgument(
+                throw Glitch::EInvalidArgument(
                     'Invalid header name: '.$name
                 );
             }
@@ -237,7 +237,7 @@ trait TMessage
 
         return array_map(function ($value) {
             if (!$this->isHeaderValueValid($value)) {
-                throw \Glitch::EInvalidArgument(
+                throw Glitch::EInvalidArgument(
                     'Invalid header value',
                     null,
                     $value

@@ -132,7 +132,7 @@ trait TJoinable
      */
     protected function createJoinRelation(string $relation, array $fields, string $type): Join
     {
-        \Glitch::incomplete();
+        Glitch::incomplete();
     }
 
 

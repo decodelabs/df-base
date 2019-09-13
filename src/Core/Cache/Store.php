@@ -35,7 +35,7 @@ class Store implements IStore
         $this->driver = $driver;
 
         if ($namespace === '') {
-            throw \Glitch::EInvalidArgument('Invalid empty cache namespace');
+            throw Glitch::EInvalidArgument('Invalid empty cache namespace');
         }
 
         $this->namespace = $namespace;
@@ -256,7 +256,7 @@ class Store implements IStore
     public function save(CacheItemInterface $item): bool
     {
         if (!$item instanceof IItem) {
-            throw \Glitch::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
+            throw Glitch::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
                 'Cache items must implement Df\\Core\\Cache\\IItem',
                 null,
                 $item
@@ -512,7 +512,7 @@ class Store implements IStore
     protected function validateKey($key): string
     {
         if (!is_string($key) || !isset($key{0})) {
-            throw \Glitch::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
+            throw Glitch::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
                 'Cache key must be a string',
                 null,
                 $key
@@ -520,7 +520,7 @@ class Store implements IStore
         }
 
         if (preg_match('|[\{\}\(\)/\\\@\:]|', $key)) {
-            throw \Glitch::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
+            throw Glitch::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
                 'Cache key must not contain reserved extension characters: {}()/\@:',
                 null,
                 $key
@@ -537,7 +537,7 @@ class Store implements IStore
     {
         if (!is_array($keys)) {
             if (!$keys instanceof \Traversable) {
-                throw \Glitch::{'EInvalidArgument,Psr\\SimpleCache\\InvalidArgumentException'}(
+                throw Glitch::{'EInvalidArgument,Psr\\SimpleCache\\InvalidArgumentException'}(
                     'Invalid cache keys',
                     null,
                     $keys
@@ -560,7 +560,7 @@ class Store implements IStore
         try {
             return $func();
         } catch (CacheInvalidArgumentException $e) {
-            throw \Glitch::{'EInvalidArgument,Psr\\SimpleCache\\InvalidArgumentException'}(
+            throw Glitch::{'EInvalidArgument,Psr\\SimpleCache\\InvalidArgumentException'}(
                 $e->getMessage(),
                 ['previous' => $e]
             );

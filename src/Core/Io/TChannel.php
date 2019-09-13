@@ -16,7 +16,7 @@ trait TChannel
     public function setBlocking(bool $flag): void
     {
         if (!$flag) {
-            throw \Glitch::ERuntime('Channel does not support non-blocking mode');
+            throw Glitch::ERuntime('Channel does not support non-blocking mode');
         }
     }
 
@@ -71,7 +71,7 @@ trait TChannel
     protected function checkReadable(): void
     {
         if (!$this->getResource() || !$this->isReadable()) {
-            throw \Glitch::ERuntime('Reading has been shut down');
+            throw Glitch::ERuntime('Reading has been shut down');
         }
     }
 
@@ -111,7 +111,7 @@ trait TChannel
     protected function checkWritable(): void
     {
         if (!$this->getResource() || !$this->isWritable()) {
-            throw \Glitch::ERuntime('Writing has been shut down');
+            throw Glitch::ERuntime('Writing has been shut down');
         }
     }
 }

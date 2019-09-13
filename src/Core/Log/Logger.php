@@ -118,7 +118,7 @@ class Logger implements ILogger
     public function log($level, $message, array $context=[])
     {
         if (!isset(self::LEVELS[$level])) {
-            throw \Glitch::{'EInvalidArgument,Psr\Log\InvalidArgumentException'}(
+            throw Glitch::{'EInvalidArgument,Psr\Log\InvalidArgumentException'}(
                 'Invalid log level: '.$level
             );
         }

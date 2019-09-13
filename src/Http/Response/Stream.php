@@ -152,7 +152,7 @@ class Stream implements ResponseInterface
     protected function prepareStatusCode(int $code): int
     {
         if (!isset(static::CODES[$code])) {
-            throw \Glitch::EInvalidArgument(
+            throw Glitch::EInvalidArgument(
                 'Invalid HTTP status code: '.$code
             );
         }
