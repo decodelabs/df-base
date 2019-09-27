@@ -9,7 +9,8 @@ namespace Df\Core\Error\Renderer;
 use Df;
 use Df\Core\Error\IRenderer;
 use Df\Core\IApp;
-use DecodeLabs\Glitch\Glitch as Facade;
+use DecodeLabs\Glitch as Facade;
+use DecodeLabs\Glitch\Context;
 
 class Glitch implements IRenderer
 {
@@ -28,7 +29,7 @@ class Glitch implements IRenderer
      */
     public static function isLoadable(): bool
     {
-        return class_exists(Facade::class, true);
+        return class_exists(Context::class, true);
     }
 
     /**
