@@ -9,7 +9,11 @@ namespace Df\Arch;
 use DecodeLabs\Collections\Tree;
 use DecodeLabs\Collections\Tree\NativeMutable as MutableTree;
 
-class Uri implements \ArrayAccess
+use DecodeLabs\Glitch\Inspectable;
+use DecodeLabs\Glitch\Dumper\Entity;
+use DecodeLabs\Glitch\Dumper\Inspector;
+
+class Uri implements \ArrayAccess, Inspectable
 {
     const DELIMITERS = '!\$&\'\(\)\*\+,;=';
     const VALID_CHARACTERS = 'a-zA-Z0-9_\-\.~\pL';
@@ -410,14 +414,11 @@ class Uri implements \ArrayAccess
     }
 
 
-
     /**
-     * Normalize for debug
+     * Inspect for Glitch
      */
-    public function __debugInfo(): array
+    public function glitchInspect(Entity $entity, Inspector $inspector): void
     {
-        return [
-            'str' => $this->__toString()
-        ];
+        $entity->setDefinition($this->__toString());
     }
 }
