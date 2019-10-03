@@ -6,9 +6,9 @@
 declare(strict_types=1);
 namespace Df\Clip\Shell;
 
-use Df;
-use Df\Core\Io\Stream;
 use Df\Clip\IShell;
+
+use DecodeLabs\Atlas\Channel\Stream;
 
 class Std implements IShell
 {

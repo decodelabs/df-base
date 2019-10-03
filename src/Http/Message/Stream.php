@@ -7,10 +7,11 @@ declare(strict_types=1);
 namespace Df\Http\Message;
 
 use Df;
-use Df\Core\Io\Stream as IoStream;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
+
+use DecodeLabs\Atlas\Channel\Stream as IoStream;
 
 class Stream implements StreamInterface
 {

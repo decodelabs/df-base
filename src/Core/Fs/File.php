@@ -7,8 +7,9 @@ declare(strict_types=1);
 namespace Df\Core\Fs;
 
 use Df;
-use Df\Core\Io\Stream;
-use Df\Core\Io\IChannel;
+
+use DecodeLabs\Atlas\Channel;
+use DecodeLabs\Atlas\Channel\Stream;
 
 class File extends Stream implements IFile
 {
@@ -256,7 +257,7 @@ class File extends Stream implements IFile
     {
         $closeData = $closeAfter = false;
 
-        if (!$data instanceof IChannel) {
+        if (!$data instanceof Channel) {
             $file = new File('php://temp', 'w+');
             $file->write((string)$data);
             $file->seek(0);
@@ -337,7 +338,7 @@ class File extends Stream implements IFile
         $this->lock();
         $this->seek(0);
 
-        while (!$this->eof()) {
+        while (!$this->isAtEnd()) {
             $target->write($this->read(8192));
         }
 

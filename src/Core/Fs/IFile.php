@@ -5,10 +5,9 @@
  */
 namespace Df\Core\Fs;
 
-use Df;
-use Df\Core\Io\IChannel;
+use DecodeLabs\Atlas\Channel;
 
-interface IFile extends INode, IChannel
+interface IFile extends INode, Channel
 {
     public function getSize(): ?int;
     public function getHash(string $type, bool $raw=false): ?string;
