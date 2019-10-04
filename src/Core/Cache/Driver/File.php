@@ -8,9 +8,12 @@ namespace Df\Core\Cache\Driver;
 
 use Df;
 use Df\Core\Cache\IDriver;
-use Df\Core\Fs;
-use Df\Core\Fs\IFile;
 use Df\Core\Config\Repository;
+
+use DecodeLabs\Atlas;
+use DecodeLabs\Atlas\File as FileInterface;
+use DecodeLabs\Atlas\File\Local as LocalFile;
+use DecodeLabs\Atlas\Dir\Local as LocalDir;
 
 class File implements IDriver
 {
@@ -56,7 +59,7 @@ class File implements IDriver
      */
     public function __construct(string $dirPath)
     {
-        $this->dir = Fs::dir($dirPath);
+        $this->dir = new LocalDir($dirPath);
     }
 
     /**
@@ -108,7 +111,7 @@ class File implements IDriver
         try {
             $file->putContents($data);
             $output = true;
-        } catch (Fs\EGlitch $e) {
+        } catch (Atlas\EGlitch $e) {
             $output = false;
         }
 
@@ -122,7 +125,7 @@ class File implements IDriver
     /**
      * Store item data in file
      */
-    protected function buildFileContent(IFile $file, string $namespace, string $key, $value, int $created, ?int $expires): string
+    protected function buildFileContent(FileInterface $file, string $namespace, string $key, $value, int $created, ?int $expires): string
     {
         return serialize([
             'namespace' => $namespace,
@@ -160,7 +163,7 @@ class File implements IDriver
     /**
      * Get item data from file
      */
-    protected function loadFileContent(IFile $file): ?array
+    protected function loadFileContent(FileInterface $file): ?array
     {
         try {
             $data = unserialize($file->getContents());
@@ -217,7 +220,7 @@ class File implements IDriver
         try {
             $file->putContents($expires);
             return true;
-        } catch (Fs\EGlitch $e) {
+        } catch (Atlas\EGlitch $e) {
             return false;
         }
     }
@@ -258,7 +261,7 @@ class File implements IDriver
     /**
      * Create file path from key
      */
-    protected function getFile(string $namespace, string $key): IFile
+    protected function getFile(string $namespace, string $key): FileInterface
     {
         $key = $this->createKey($namespace, $key);
         $key = $this->hashKey($key).static::EXTENSION;
@@ -268,7 +271,7 @@ class File implements IDriver
     /**
      * Create file path from key
      */
-    protected function getLockFile(string $namespace, string $key): IFile
+    protected function getLockFile(string $namespace, string $key): FileInterface
     {
         $key = $this->createKey($namespace, $key);
         $key = $this->hashKey($key).'.lock';

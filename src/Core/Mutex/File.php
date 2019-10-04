@@ -6,8 +6,7 @@
 declare(strict_types=1);
 namespace Df\Core\Mutex;
 
-use Df;
-use Df\Core\Fs\File as Fs;
+use DecodeLabs\Atlas\File\Local as LocalFile;
 
 class File implements ILock
 {
@@ -23,7 +22,7 @@ class File implements ILock
     public function __construct(string $name, string $path)
     {
         $this->__lockConstruct($name);
-        $this->file = new Fs($path.'/'.$name.'.lock');
+        $this->file = new LocalFile($path.'/'.$name.'.lock');
     }
 
 

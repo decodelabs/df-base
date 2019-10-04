@@ -6,8 +6,7 @@
 declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
-use Df;
-use Df\Core\Fs\IFile;
+use DecodeLabs\Atlas\File as FileInterface;
 
 class PhpFile extends File
 {
@@ -16,7 +15,7 @@ class PhpFile extends File
     /**
      * Store item data in file
      */
-    protected function buildFileContent(IFile $file, string $namespace, string $key, $value, int $created, ?int $expires): string
+    protected function buildFileContent(FileInterface $file, string $namespace, string $key, $value, int $created, ?int $expires): string
     {
         $output = '<?php'.PHP_EOL.'return ';
 
@@ -33,7 +32,7 @@ class PhpFile extends File
     /**
      * Get item data from file
      */
-    protected function loadFileContent(IFile $file): ?array
+    protected function loadFileContent(FileInterface $file): ?array
     {
         try {
             $data = require (string)$file;
