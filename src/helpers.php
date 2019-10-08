@@ -48,6 +48,7 @@ namespace Df
         define('Df\\BASE_PATH', $basePath);
 
         Glitch::setStartTime(Df\START)
+            ->registerAsErrorHandler()
             ->registerPathAliases([
                 'vendor' => Df\BASE_PATH.'/vendor',
                 'app' => Df\BASE_PATH,
