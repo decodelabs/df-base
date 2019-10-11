@@ -18,8 +18,8 @@
         "decodelabs/collections": "~0.5",
         "decodelabs/tagged": "~0.6",
         "decodelabs/veneer": "~0.4",
-        "decodelabs/systemic": "~0.5",
-        "decodelabs/atlas": "dev-develop",
+        "decodelabs/systemic": "~0.6",
+        "decodelabs/atlas": "~0.6",
 
         "psr/container": "^1.0",
         "psr/cache": "^1.0",
