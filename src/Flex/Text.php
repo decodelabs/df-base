@@ -8,14 +8,14 @@ namespace Df\flex;
 
 use Df;
 
-use DecodeLabs\Gadgets\Pipe;
-use DecodeLabs\Gadgets\PipeTrait;
+use DecodeLabs\Gadgets\Then;
+use DecodeLabs\Gadgets\ThenTrait;
 
 use DecodeLabs\Collections\Collection;
 
 class Text implements \IteratorAggregate, Collection, \ArrayAccess, \Countable
 {
-    use PipeTrait;
+    use ThenTrait;
 
     protected $encoding;
     protected $text;

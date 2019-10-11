@@ -8,12 +8,12 @@ namespace Df\Core\Config;
 
 use Df;
 
-use DecodeLabs\Gadgets\Pipe;
-use DecodeLabs\Gadgets\PipeTrait;
+use DecodeLabs\Gadgets\Then;
+use DecodeLabs\Gadgets\ThenTrait;
 
-class Env implements \ArrayAccess, Pipe
+class Env implements \ArrayAccess, Then
 {
-    use PipeTrait;
+    use ThenTrait;
 
     protected $identity;
     protected $data = [];
