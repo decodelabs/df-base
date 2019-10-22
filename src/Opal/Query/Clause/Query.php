@@ -12,6 +12,8 @@ use Df\Opal\Query\Field\INamed as INamedField;
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Builder\Select as SelectBuilder;
 
+use DecodeLabs\Glitch;
+
 class Query extends Base
 {
     protected $query;

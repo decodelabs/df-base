@@ -9,6 +9,8 @@ namespace Df\Core\Service;
 use Df;
 use Df\Core\IContainer;
 
+use DecodeLabs\Glitch;
+
 class Group extends Binding
 {
     protected $bindings = [];

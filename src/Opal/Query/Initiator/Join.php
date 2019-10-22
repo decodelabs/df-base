@@ -17,6 +17,8 @@ use Df\Opal\Query\Source\Manager as SourceManager;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Builder\Join as JoinBuilder;
 
+use DecodeLabs\Glitch;
+
 class Join implements
     IInitiator,
     IFieldCollector,

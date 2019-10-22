@@ -15,6 +15,8 @@ use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 
+use DecodeLabs\Glitch;
+
 class Uuid
 {
     const DNS = UuidLib::NAMESPACE_DNS;

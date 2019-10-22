@@ -10,6 +10,7 @@ use Df;
 use Df\Flex\Formatter;
 
 use DecodeLabs\Collections\AttributeContainer;
+use DecodeLabs\Glitch;
 
 class Node implements INode
 {

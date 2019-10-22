@@ -15,6 +15,8 @@ use Df\Core\Log\Monolog\Factory as MonologFactory;
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
 
+use DecodeLabs\Glitch;
+
 class ServiceProvider implements IProvider
 {
     /**

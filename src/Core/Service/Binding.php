@@ -10,6 +10,8 @@ use Df;
 
 use Psr\Container\NotFoundExceptionInterface;
 
+use DecodeLabs\Glitch;
+
 class Binding implements IBinding
 {
     protected $type;

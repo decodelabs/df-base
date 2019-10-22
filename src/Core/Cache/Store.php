@@ -12,6 +12,8 @@ use Df\Core\Cache\Driver\PhpArray;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\InvalidArgumentException as CacheInvalidArgumentException;
 
+use DecodeLabs\Glitch;
+
 class Store implements IStore
 {
     protected $driver;

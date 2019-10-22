@@ -10,8 +10,8 @@ use Df;
 
 use DecodeLabs\Gadgets\Then;
 use DecodeLabs\Gadgets\ThenTrait;
-
 use DecodeLabs\Collections\Collection;
+use DecodeLabs\Glitch;
 
 class Text implements \IteratorAggregate, Collection, \ArrayAccess, \Countable
 {

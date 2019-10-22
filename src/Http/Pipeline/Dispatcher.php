@@ -15,6 +15,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
+use DecodeLabs\Glitch;
+
 class Dispatcher implements IDispatcher
 {
     protected $queue = [];

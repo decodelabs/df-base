@@ -11,6 +11,8 @@ use Df;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\StreamInterface;
 
+use DecodeLabs\Glitch;
+
 class UploadedFile implements UploadedFileInterface
 {
     const ERRORS = [

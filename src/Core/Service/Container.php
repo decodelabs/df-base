@@ -9,6 +9,8 @@ namespace Df\Core\Service;
 use Df;
 use Df\Core\Event\Dispatcher;
 
+use DecodeLabs\Glitch;
+
 class Container implements IContainer
 {
     protected $bindings = [];

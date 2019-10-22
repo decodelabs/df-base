@@ -16,6 +16,8 @@ use Df\Clip\Command\IRequest;
 use Df\Plug\TContextProxy;
 use Df\Flex\Formatter;
 
+use DecodeLabs\Glitch;
+
 abstract class Base implements ITask
 {
     use TContextProxy;

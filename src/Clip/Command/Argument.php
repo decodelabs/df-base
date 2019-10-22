@@ -9,6 +9,8 @@ namespace Df\Clip\Command;
 use Df;
 use Df\Flex\Formatter;
 
+use DecodeLabs\Glitch;
+
 class Argument implements IArgument
 {
     protected $name;

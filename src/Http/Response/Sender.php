@@ -11,6 +11,8 @@ use Df;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+use DecodeLabs\Glitch;
+
 class Sender implements ISender
 {
     const MERGE_HEADERS = [

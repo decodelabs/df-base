@@ -11,6 +11,8 @@ use Df;
 use Df\Arch\Uri as ArchUri;
 use Df\Http\Uri as HttpUri;
 
+use DecodeLabs\Glitch;
+
 class AreaMap
 {
     protected $area;

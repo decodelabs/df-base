@@ -10,6 +10,8 @@ use Df;
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Initiator\Join as JoinInitiator;
 
+use DecodeLabs\Glitch;
+
 trait TJoinable
 {
     protected $joins = [];

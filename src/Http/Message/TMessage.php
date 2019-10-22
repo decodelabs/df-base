@@ -11,6 +11,8 @@ use Df;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
+use DecodeLabs\Glitch;
+
 trait TMessage
 {
     protected $protocol = '1.1';

@@ -11,6 +11,8 @@ use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;
 
+use DecodeLabs\Glitch;
+
 trait TGroup
 {
     use TRepresentation;

@@ -9,6 +9,7 @@ namespace Df\Time;
 use Df;
 
 use Carbon\Carbon;
+use DecodeLabs\Glitch;
 
 class Date extends Carbon
 {

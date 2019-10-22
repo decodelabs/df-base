@@ -10,6 +10,8 @@ use Df;
 use Df\Core\Crypt\IHasher;
 use Df\Core\Crypt\Hasher;
 
+use DecodeLabs\Glitch;
+
 class Native implements IHasher
 {
     protected $algo;

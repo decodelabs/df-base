@@ -9,10 +9,11 @@ namespace Df\Http;
 use Df;
 use Df\Link\IUri;
 
+use Psr\Http\Message\UriInterface;
+
 use DecodeLabs\Collections\Tree;
 use DecodeLabs\Collections\Tree\NativeMutable as MutableTree;
-
-use Psr\Http\Message\UriInterface;
+use DecodeLabs\Glitch;
 
 class Uri implements IUri
 {

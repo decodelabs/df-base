@@ -9,6 +9,8 @@ namespace Df\Opal\Query\Builder;
 use Df;
 use Df\Opal\Query\IField;
 
+use DecodeLabs\Glitch;
+
 trait TRelations
 {
     /*

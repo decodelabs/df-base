@@ -13,6 +13,8 @@ use Df\Clip\Command\IArgument;
 use Df\Clip\Command\Argument;
 use Df\Clip\Command\IRequest;
 
+use DecodeLabs\Glitch;
+
 class Command implements ICommand
 {
     protected $path;

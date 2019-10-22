@@ -11,6 +11,8 @@ use Df;
 use DecodeLabs\Gadgets\Then;
 use DecodeLabs\Gadgets\ThenTrait;
 
+use DecodeLabs\Glitch;
+
 class Env implements \ArrayAccess, Then
 {
     use ThenTrait;

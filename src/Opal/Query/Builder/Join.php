@@ -15,6 +15,8 @@ use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Clause\WhereGroup;
 
+use DecodeLabs\Glitch;
+
 class Join implements
     IBuilder,
     IParentAware,

@@ -13,6 +13,8 @@ use Df\Arch\Route\Named as NamedRoute;
 use Df\Arch\Route\Node as NodeRoute;
 use Df\Arch\Route\View as ViewRoute;
 
+use DecodeLabs\Glitch;
+
 abstract class Router
 {
     protected $area;

@@ -13,6 +13,8 @@ use Df\Opal\Query\Field\Correlation as CorrelationField;
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Initiator\Select as SelectInitiator;
 
+use DecodeLabs\Glitch;
+
 trait TCorrelatable
 {
     /**

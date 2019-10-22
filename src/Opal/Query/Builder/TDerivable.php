@@ -11,6 +11,8 @@ use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\IInitiator;
 use Df\Opal\Query\Source\Derived;
 
+use DecodeLabs\Glitch;
+
 trait TDerivable
 {
     protected $derivationParent;

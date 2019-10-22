@@ -15,8 +15,7 @@ namespace Df
     use Df\Core\Config\Env;
 
     use Composer\Autoload\ClassLoader;
-
-    use DecodeLabs\Glitch\Context as GlitchContext;
+    use DecodeLabs\Glitch;
 
     define('Df\\START', microtime(true));
 

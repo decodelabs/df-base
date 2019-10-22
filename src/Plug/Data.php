@@ -25,6 +25,8 @@ use Df\Opal\Query\Initiator\BatchReplace as BatchReplaceInitiator;
 use Df\Opal\Query\Initiator\Update as UpdateInitiator;
 use Df\Opal\Query\Initiator\Delete as DeleteInitiator;
 
+use DecodeLabs\Glitch;
+
 class Data implements
     IHelper,
     IReadFacade,

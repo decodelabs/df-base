@@ -19,6 +19,7 @@ use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Clause\WhereGroup;
 use Df\Opal\Query\Clause\HavingGroup;
 
+use DecodeLabs\Glitch;
 use DecodeLabs\Glitch\Inspectable;
 use DecodeLabs\Glitch\Dumper\Entity;
 use DecodeLabs\Glitch\Dumper\Inspector;

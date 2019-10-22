@@ -19,6 +19,8 @@ use Df\Opal\Query\ISource;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Field\Virtual as VirtualField;
 
+use DecodeLabs\Glitch;
+
 class Manager implements ITransactionAware
 {
     use TTransactionAware;

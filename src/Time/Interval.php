@@ -9,6 +9,7 @@ namespace Df\Time;
 use Df;
 
 use Carbon\CarbonInterval;
+use DecodeLabs\Glitch;
 
 class Interval extends CarbonInterval
 {

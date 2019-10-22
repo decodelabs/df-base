@@ -15,6 +15,8 @@ use ParagonIE\Halite\File;
 use ParagonIE\Halite\Symmetric\Crypto;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 
+use DecodeLabs\Glitch;
+
 class Halite implements ISymmetric
 {
     protected $keyPath;

@@ -12,6 +12,7 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
 use DecodeLabs\Atlas\Channel\Stream as IoStream;
+use DecodeLabs\Glitch;
 
 class Stream implements StreamInterface
 {

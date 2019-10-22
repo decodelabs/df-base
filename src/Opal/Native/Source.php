@@ -10,6 +10,8 @@ use Df;
 use Df\Mesh\Job\ITransactionAdapter;
 use Df\Opal\Query\IComposedSource;
 
+use DecodeLabs\Glitch;
+
 class Source implements IComposedSource, ITransactionAdapter
 {
     protected $name;

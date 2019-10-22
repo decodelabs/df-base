@@ -10,6 +10,8 @@ use Df;
 use Df\Opal\Query\Builder\ICorrelated;
 use Df\Opal\Query\Builder\ICorrelatable;
 
+use DecodeLabs\Glitch;
+
 trait TCorrelated
 {
     /**

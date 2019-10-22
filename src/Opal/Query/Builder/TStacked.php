@@ -10,6 +10,8 @@ use Df;
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\IField;
 
+use DecodeLabs\Glitch;
+
 trait TStacked
 {
     /**

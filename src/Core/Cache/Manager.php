@@ -10,6 +10,8 @@ use Df;
 use Df\Core\Config\Repository;
 use Df\Core\Cache\Driver;
 
+use DecodeLabs\Glitch;
+
 class Manager
 {
     protected $caches = [];

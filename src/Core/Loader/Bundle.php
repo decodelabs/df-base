@@ -8,6 +8,8 @@ namespace Df\Core\Loader;
 
 use Df;
 
+use DecodeLabs\Glitch;
+
 class Bundle
 {
     protected static $bundles = [];

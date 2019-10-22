@@ -8,6 +8,8 @@ namespace Df\Opal\Query\Builder;
 
 use Df;
 
+use DecodeLabs\Glitch;
+
 trait TExtendable
 {
     /**

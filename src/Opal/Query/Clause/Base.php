@@ -11,6 +11,8 @@ use Df\Opal\Query\IClause;
 use Df\Opal\Query\IField;
 use Df\Opal\Query\Clause\TRepresentation;
 
+use DecodeLabs\Glitch;
+
 abstract class Base implements IClause
 {
     use TRepresentation;

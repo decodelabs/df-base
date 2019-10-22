@@ -13,6 +13,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
+use DecodeLabs\Glitch;
+
 class CallableMiddleware implements MiddlewareInterface
 {
     protected $callable;

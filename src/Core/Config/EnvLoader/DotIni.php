@@ -13,6 +13,8 @@ use Df\Core\IApp;
 use Df\Core\Config\IEnvLoader;
 use Df\Core\Config\Env;
 
+use DecodeLabs\Glitch;
+
 class DotIni implements IEnvLoader
 {
     protected $path;

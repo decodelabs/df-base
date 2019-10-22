@@ -11,6 +11,8 @@ use Df\Core\IApp;
 use Df\Plug\IHelper;
 use Df\Plug\IGlobalHelper;
 
+use DecodeLabs\Glitch;
+
 trait TContext
 {
     protected $app;

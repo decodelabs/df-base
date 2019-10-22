@@ -14,6 +14,8 @@ use Psr\Log\LoggerTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
+use DecodeLabs\Glitch;
+
 class Logger implements ILogger
 {
     use LoggerTrait;

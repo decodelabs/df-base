@@ -12,6 +12,8 @@ use Df\Http\Uri;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
 
+use DecodeLabs\Glitch;
+
 trait TRequest
 {
     use TMessage;

@@ -10,6 +10,8 @@ use Df;
 use Df\Opal\Query\IField;
 use Df\Opal\Query\Field\INamed as INamedField;
 
+use DecodeLabs\Glitch;
+
 class Value extends Base
 {
     protected $value;

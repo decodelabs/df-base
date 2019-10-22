@@ -15,6 +15,8 @@ use Df\Opal\Query\Field\INamed as INamedField;
 use Df\Opal\Query\Field\Wildcard;
 use Df\Opal\Query\Field\Factory;
 
+use DecodeLabs\Glitch;
+
 class Reference
 {
     protected $fields = [];

@@ -11,6 +11,8 @@ use Df;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
+use DecodeLabs\Glitch;
+
 class Generator implements StreamInterface
 {
     protected $iterator;

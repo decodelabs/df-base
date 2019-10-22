@@ -17,6 +17,8 @@ use Df\Opal\Query\Field\INamed as INamedField;
 use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;
 
+use DecodeLabs\Glitch;
+
 class Nest implements
     INested,
     IParentAware,

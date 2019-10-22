@@ -15,6 +15,8 @@ use Df\Opal\Query\Field\Wildcard;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Source\Manager;
 
+use DecodeLabs\Glitch;
+
 class Factory
 {
     /**

@@ -12,6 +12,8 @@ use Df\Http\Message\TMessage;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
+use DecodeLabs\Glitch;
+
 class Stream implements ResponseInterface
 {
     use TMessage;

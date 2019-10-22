@@ -18,6 +18,8 @@ use Df\Http\Response\Stream;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+use DecodeLabs\Glitch;
+
 class Node implements IRoute
 {
     use TRoute;

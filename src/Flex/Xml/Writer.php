@@ -9,6 +9,8 @@ namespace Df\Flex\Xml;
 use Df;
 use DecodeLabs\Collections\AttributeContainerTrait;
 
+use DecodeLabs\Glitch;
+
 class Writer implements IWriter
 {
     const ELEMENT = 1;
