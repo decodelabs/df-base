@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Flex;
 
-use Df;
 use Df\Flex\Text;
 
 class Formatter

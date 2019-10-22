@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Http\Message;
 
-use Df;
 use Df\Http\Uri;
 
 use Psr\Http\Message\RequestInterface;

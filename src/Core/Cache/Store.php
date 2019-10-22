@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Cache;
 
-use Df;
 use Df\Core\Cache\Driver\PhpArray;
 
 use Psr\Cache\CacheItemInterface;

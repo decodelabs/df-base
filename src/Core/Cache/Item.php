@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Cache;
 
-use Df;
 use Df\Time\Date;
 use Df\Time\Interval;
 

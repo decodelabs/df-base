@@ -5,7 +5,6 @@
  */
 namespace Df\Opal\Query\Clause;
 
-use Df;
 use Df\Opal\Query\Initiator\Select as SelectInitiator;
 use Df\Opal\Query\Builder\Select as SelectBuilder;
 

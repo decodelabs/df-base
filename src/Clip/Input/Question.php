@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Clip\Input;
 
-use Df;
 use Df\Clip\IContext;
 
 class Question

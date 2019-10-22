@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Builder;
 
-use Df;
 use Df\Opal\Query\Source\Correlated as CorrelatedSource;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Field\Correlation as CorrelationField;

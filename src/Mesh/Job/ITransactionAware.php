@@ -5,8 +5,6 @@
  */
 namespace Df\Mesh\Job;
 
-use Df;
-
 interface ITransactionAware
 {
     public function setTransaction(?ITransaction $transaction): ITransactionAware;

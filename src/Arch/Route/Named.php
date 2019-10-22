@@ -6,9 +6,7 @@
 declare(strict_types=1);
 namespace Df\Arch\Route;
 
-use Df;
 use Df\Core\IApp;
-
 use Df\Arch\IRoute;
 use Df\Arch\Context;
 use Df\Arch\Uri;

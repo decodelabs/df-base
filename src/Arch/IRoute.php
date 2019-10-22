@@ -5,9 +5,7 @@
  */
 namespace Df\Arch;
 
-use Df;
 use Df\Core\IApp;
-
 use Df\Arch\Uri;
 
 use Psr\Http\Message\ResponseInterface;

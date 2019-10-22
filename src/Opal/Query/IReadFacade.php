@@ -5,7 +5,6 @@
  */
 namespace Df\Opal\Query;
 
-use Df;
 use Df\Opal\Query\Initiator\Select as SelectInitiator;
 use Df\Opal\Query\Initiator\Fetch as FetchInitiator;
 use Df\Opal\Query\Initiator\Union as UnionInitiator;

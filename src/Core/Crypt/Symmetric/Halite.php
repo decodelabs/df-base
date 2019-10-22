@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Crypt\Symmetric;
 
-use Df;
 use Df\Core\Crypt\ISymmetric;
 
 use ParagonIE\Halite\HiddenString;

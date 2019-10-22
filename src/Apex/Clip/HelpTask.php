@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Apex\Clip;
 
-use Df;
 use Df\Clip\ITask;
 use Df\Clip\Task\Base;
 use Df\Clip\ICommand;

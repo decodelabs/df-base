@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Plug;
 
-use Df;
 use Df\Core\IApp;
 use Df\Plug\IHelper;
 use Df\Plug\IGlobalHelper;

@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Source;
 
-use Df;
 use Df\Core\IApp;
 
 use Df\Mesh\Job\ITransaction;

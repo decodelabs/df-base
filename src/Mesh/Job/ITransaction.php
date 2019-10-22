@@ -5,8 +5,6 @@
  */
 namespace Df\Mesh\Job;
 
-use Df;
-
 interface ITransaction
 {
     public function isOpen(): bool;

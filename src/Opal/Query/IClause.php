@@ -5,7 +5,6 @@
  */
 namespace Df\Opal\Query;
 
-use Df;
 use Df\Opal\Query\IField;
 use Df\Opal\Query\Clause\IWhere;
 use Df\Opal\Query\Clause\IHaving;

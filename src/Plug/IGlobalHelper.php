@@ -5,8 +5,6 @@
  */
 namespace Df\Plug;
 
-use Df;
-
 interface IGlobalHelper extends IHelper
 {
 }

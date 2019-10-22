@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Config\EnvLoader;
 
-use Df;
-
 use Df\Core\IApp;
 
 use Df\Core\Config\IEnvLoader;

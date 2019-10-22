@@ -5,8 +5,6 @@
  */
 namespace Df\Opal\Query;
 
-use Df;
-
 interface IComposedSource extends ISource
 {
     public function getFieldNames(): array;

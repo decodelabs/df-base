@@ -5,8 +5,6 @@
  */
 namespace Df\Core\Service;
 
-use Df;
-
 interface IBinding
 {
     public function getContainer(): IContainer;

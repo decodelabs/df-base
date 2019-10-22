@@ -5,8 +5,6 @@
  */
 namespace Df\Core\Service;
 
-use Df;
-
 interface IProvider
 {
     public static function getProvidedServices(): array;

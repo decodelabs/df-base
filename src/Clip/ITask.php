@@ -5,8 +5,6 @@
  */
 namespace Df\Clip;
 
-use Df;
-
 interface ITask extends \ArrayAccess
 {
     public function setArgs(array $args): ITask;

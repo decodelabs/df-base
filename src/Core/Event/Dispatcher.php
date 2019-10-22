@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Event;
 
-use Df;
-
 class Dispatcher
 {
     protected $events = [];

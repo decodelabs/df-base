@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Flex;
 
-use Df;
-
 use Df\Time\Date;
 
 use Ramsey\Uuid\Uuid as UuidLib;

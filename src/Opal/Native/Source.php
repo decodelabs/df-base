@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Native;
 
-use Df;
 use Df\Mesh\Job\ITransactionAdapter;
 use Df\Opal\Query\IComposedSource;
 

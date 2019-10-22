@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\flex;
 
-use Df;
-
 use DecodeLabs\Gadgets\Then;
 use DecodeLabs\Gadgets\ThenTrait;
 use DecodeLabs\Collections\Collection;

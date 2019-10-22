@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Http;
 
-use Df;
-
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
 

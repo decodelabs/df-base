@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Loader;
 
-use Df;
-
 use DecodeLabs\Glitch;
 
 class Bundle

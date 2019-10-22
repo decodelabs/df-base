@@ -5,8 +5,6 @@
  */
 namespace Df\Opal\Query;
 
-use Df;
-
 interface IIntegralSource extends IComposedSource
 {
 }

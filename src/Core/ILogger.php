@@ -5,8 +5,6 @@
  */
 namespace Df\Core;
 
-use Df;
-
 use Psr\Log\LoggerInterface;
 
 interface ILogger extends LoggerInterface

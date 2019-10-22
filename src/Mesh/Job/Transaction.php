@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Mesh\Job;
 
-use Df;
-
 class Transaction implements ITransaction
 {
     protected $open = true;

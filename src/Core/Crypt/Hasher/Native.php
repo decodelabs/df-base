@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Crypt\Hasher;
 
-use Df;
 use Df\Core\Crypt\IHasher;
 use Df\Core\Crypt\Hasher;
 

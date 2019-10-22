@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Clip\Command;
 
-use Df;
-
 use Df\Clip\ICommand;
 use Df\Clip\Command;
 use Df\Clip\Command\IRequest;

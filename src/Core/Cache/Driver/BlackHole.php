@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
-use Df;
 use Df\Core\Cache\IDriver;
 use Df\Core\Cache\IItem;
 use Df\Core\Config\Repository;

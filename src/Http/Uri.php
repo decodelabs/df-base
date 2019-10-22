@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Http;
 
-use Df;
 use Df\Link\IUri;
 
 use Psr\Http\Message\UriInterface;

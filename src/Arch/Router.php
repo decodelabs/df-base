@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Arch;
 
-use Df;
-
 use Df\Arch\Uri as ArchUri;
 use Df\Arch\Route\Named as NamedRoute;
 use Df\Arch\Route\Node as NodeRoute;

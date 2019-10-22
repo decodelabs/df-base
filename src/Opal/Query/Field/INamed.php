@@ -5,7 +5,6 @@
  */
 namespace Df\Opal\Query\Field;
 
-use Df;
 use Df\Opal\Query\IField;
 
 interface INamed extends IField

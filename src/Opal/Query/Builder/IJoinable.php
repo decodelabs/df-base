@@ -5,7 +5,6 @@
  */
 namespace Df\Opal\Query\Builder;
 
-use Df;
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Initiator\Join as JoinInitiator;
 

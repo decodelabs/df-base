@@ -5,8 +5,6 @@
  */
 namespace Df\Core\Crypt;
 
-use Df;
-
 interface ISymmetric
 {
     public function encryptString(string $string): string;

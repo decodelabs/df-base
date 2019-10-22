@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Config;
 
-use Df;
-
 use Df\Core\Config\Loader\PhpArray;
 use Df\Core\Config\EnvLoader\DotIni;
 

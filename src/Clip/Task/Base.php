@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Clip\Task;
 
-use Df;
-
 use Df\Clip\ITask;
 use Df\Clip\ICommand;
 use Df\Clip\Context;

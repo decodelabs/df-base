@@ -5,7 +5,6 @@
  */
 namespace Df\Core\Kernel;
 
-use Df;
 use Df\Clip\Command\IRequest;
 
 interface IConsole

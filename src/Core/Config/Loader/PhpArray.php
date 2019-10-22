@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Config\Loader;
 
-use Df;
-
 use Df\Core\IApp;
 
 use Df\Core\Config\Repository;

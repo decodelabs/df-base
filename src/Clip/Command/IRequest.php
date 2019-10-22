@@ -5,8 +5,6 @@
  */
 namespace Df\Clip\Command;
 
-use Df;
-
 interface IRequest
 {
     public function setScript(string $script): IRequest;

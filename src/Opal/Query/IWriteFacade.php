@@ -5,7 +5,6 @@
  */
 namespace Df\Opal\Query;
 
-use Df;
 use Df\Opal\Query\Initiator\Insert as InsertInitiator;
 use Df\Opal\Query\Initiator\BatchInsert as BatchInsertInitiator;
 use Df\Opal\Query\Initiator\Replace as ReplaceInitiator;

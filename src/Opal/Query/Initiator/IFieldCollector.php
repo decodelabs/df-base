@@ -5,7 +5,6 @@
  */
 namespace Df\Opal\Query\Initiator;
 
-use Df;
 use Df\Opal\Query\IInitiator;
 
 interface IFieldCollector extends IInitiator

@@ -5,7 +5,6 @@
  */
 namespace Df\Core\Config;
 
-use Df;
 use Df\Core\IApp;
 
 interface ILoader

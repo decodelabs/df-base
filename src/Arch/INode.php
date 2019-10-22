@@ -5,8 +5,6 @@
  */
 namespace Df\Arch;
 
-use Df;
-
 interface INode
 {
     public function dispatch();

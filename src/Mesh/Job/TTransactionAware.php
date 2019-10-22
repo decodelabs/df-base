@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Mesh\Job;
 
-use Df;
-
 trait TTransactionAware
 {
     protected $transaction;

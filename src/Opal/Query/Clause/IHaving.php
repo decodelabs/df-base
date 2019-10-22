@@ -5,8 +5,6 @@
  */
 namespace Df\Opal\Query\Clause;
 
-use Df;
-
 interface IHaving extends IRepresentation
 {
 }

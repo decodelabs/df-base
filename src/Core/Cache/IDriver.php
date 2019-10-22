@@ -5,7 +5,6 @@
  */
 namespace Df\Core\Cache;
 
-use Df;
 use Df\Core\Config\Repository;
 
 interface IDriver

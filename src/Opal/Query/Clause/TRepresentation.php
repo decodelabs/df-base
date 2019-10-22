@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Clause;
 
-use Df;
-
 trait TRepresentation
 {
     protected $or = false;

@@ -5,7 +5,6 @@
  */
 namespace Df\Core\Kernel;
 
-use Df;
 use Df\Http\Response\ISender;
 
 use Psr\Http\Message\ResponseInterface;

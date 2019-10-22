@@ -5,8 +5,6 @@
  */
 namespace Df\Clip;
 
-use Df;
-
 use Df\Plug\IContext as IPlugContext;
 use Df\Clip\IInput;
 

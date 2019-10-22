@@ -5,8 +5,6 @@
  */
 namespace Df\Http\Pipeline;
 
-use Df;
-
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 

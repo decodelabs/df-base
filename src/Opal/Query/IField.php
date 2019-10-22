@@ -5,7 +5,6 @@
  */
 namespace Df\Opal\Query;
 
-use Df;
 use Df\Opal\Query\Source\Reference;
 
 interface IField

@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Clause;
 
-use Df;
 use Df\Opal\Query\IClause;
 use Df\Opal\Query\IField;
 use Df\Opal\Query\Clause\TRepresentation;

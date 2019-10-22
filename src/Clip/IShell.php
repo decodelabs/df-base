@@ -5,8 +5,6 @@
  */
 namespace Df\Clip;
 
-use Df;
-
 interface IShell
 {
     public function getWidth(): int;

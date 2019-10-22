@@ -5,8 +5,6 @@
  */
 namespace Df\Flex\Xml;
 
-use Df;
-
 use DecodeLabs\Collections\AttributeContainer;
 
 interface INode extends AttributeContainer, \Countable, \ArrayAccess

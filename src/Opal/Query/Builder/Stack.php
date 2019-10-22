@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Builder;
 
-use Df;
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\IField;
 

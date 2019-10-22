@@ -5,8 +5,6 @@
  */
 namespace Df\Core\Cache;
 
-use Df;
-
 use Psr\Cache\CacheItemInterface;
 
 interface IItem extends CacheItemInterface

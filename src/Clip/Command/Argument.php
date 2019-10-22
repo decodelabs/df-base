@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Clip\Command;
 
-use Df;
 use Df\Flex\Formatter;
 
 use DecodeLabs\Glitch;

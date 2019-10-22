@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Field;
 
-use Df;
-
 use Df\Opal\Query\IField;
 use Df\Opal\Query\Field\Intrinsic;
 use Df\Opal\Query\Field\Wildcard;

@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
-use Df;
-
 use DecodeLabs\Glitch;
 
 trait TKeyGen

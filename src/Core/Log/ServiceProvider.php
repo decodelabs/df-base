@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Log;
 
-use Df;
-
 use Df\Core\ILogger;
 use Df\Core\Log\Logger;
 use Df\Core\Log\Monolog\Factory as MonologFactory;

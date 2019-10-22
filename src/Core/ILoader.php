@@ -5,8 +5,6 @@
  */
 namespace Df\Core;
 
-use Df;
-
 interface ILoader
 {
     public function loadBundles(array $bundles): void;

@@ -5,8 +5,6 @@
  */
 namespace Df\Core\Log;
 
-use Df;
-
 use Df\Core\ILogger;
 use Df\Core\Config\Repository;
 

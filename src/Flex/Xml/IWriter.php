@@ -5,7 +5,6 @@
  */
 namespace Df\Flex\Xml;
 
-use Df;
 use DecodeLabs\Collections\AttributeContainer;
 
 interface IWriter extends AttributeContainer, \ArrayAccess

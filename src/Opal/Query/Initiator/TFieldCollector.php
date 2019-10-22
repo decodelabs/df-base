@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Initiator;
 
-use Df;
-
 use DecodeLabs\Collections\ArrayUtils;
 
 trait TFieldCollector

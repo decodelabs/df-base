@@ -5,8 +5,6 @@
  */
 namespace Df\Clip\Command;
 
-use Df;
-
 interface IArgument
 {
     public function getName(): string;

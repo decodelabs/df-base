@@ -5,8 +5,6 @@
  */
 namespace Df\Opal\Query\Clause;
 
-use Df;
-
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;

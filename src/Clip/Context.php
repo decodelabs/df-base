@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Clip;
 
-use Df;
 use Df\Core\IApp;
 use Df\Clip\IShell;
 use Df\Clip\Command\IRequest;

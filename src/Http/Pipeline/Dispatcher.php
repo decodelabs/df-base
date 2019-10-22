@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Http\Pipeline;
 
-use Df;
-
 use Df\Core\IApp;
 
 use Psr\Http\Message\ResponseInterface;

@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Crypt;
 
-use Df;
-
 use Df\Core\Crypt\Symmetric\Halite as HaliteSymmetric;
 use Df\Core\Crypt\Hasher\Native as NativeHasher;
 

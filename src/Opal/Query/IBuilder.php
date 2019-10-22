@@ -5,8 +5,6 @@
  */
 namespace Df\Opal\Query;
 
-use Df;
-
 use Df\Mesh\Job\ITransactionAware;
 
 use Df\Opal\Query\Source\Reference;

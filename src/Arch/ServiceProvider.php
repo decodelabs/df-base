@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Arch;
 
-use Df;
-
 use Df\Arch\Pipeline\AreaMap;
 use Df\Arch\Pipeline\IHandler;
 use Df\Arch\Pipeline\Handler;

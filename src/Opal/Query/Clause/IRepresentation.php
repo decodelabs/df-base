@@ -5,8 +5,6 @@
  */
 namespace Df\Opal\Query\Clause;
 
-use Df;
-
 interface IRepresentation
 {
     public function setOr(bool $or): IRepresentation;

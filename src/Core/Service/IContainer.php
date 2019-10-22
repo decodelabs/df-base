@@ -5,8 +5,6 @@
  */
 namespace Df\Core\Service;
 
-use Df;
-
 use Psr\Container\ContainerInterface;
 
 interface IContainer extends ContainerInterface, \ArrayAccess

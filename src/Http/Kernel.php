@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Http;
 
-use Df;
 use Df\Http\Pipeline\IDispatcher;
 use Df\Http\Response\ISender;
 use Df\Core\IApp;

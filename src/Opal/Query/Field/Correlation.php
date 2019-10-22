@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Field;
 
-use Df;
 use Df\Opal\Query\Builder\ICorrelated;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\IField;

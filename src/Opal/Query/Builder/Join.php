@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Builder;
 
-use Df;
-
 use Df\Opal\Query\ISource;
 use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;

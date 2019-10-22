@@ -5,8 +5,6 @@
  */
 namespace Df\Http\Response;
 
-use Df;
-
 use Psr\Http\Message\ResponseInterface;
 
 interface IProxy

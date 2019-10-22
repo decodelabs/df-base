@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Arch\Pipeline;
 
-use Df;
-
 use Df\Arch\Uri as ArchUri;
 use Df\Http\Uri as HttpUri;
 

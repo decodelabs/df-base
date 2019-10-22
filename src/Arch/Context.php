@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Arch;
 
-use Df;
 use Df\Core\IApp;
 use Df\Arch\Uri as ArchUri;
 use Df\Http\Uri as HttpUri;

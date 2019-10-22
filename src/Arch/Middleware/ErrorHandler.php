@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Arch\Middleware;
 
-use Df;
-
 use DecodeLabs\Glitch\Stack\Trace;
 
 use Psr\Http\Message\ResponseInterface;

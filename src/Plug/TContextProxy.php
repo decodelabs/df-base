@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Plug;
 
-use Df;
-
 trait TContextProxy
 {
     protected $context;

@@ -5,8 +5,6 @@
  */
 namespace Df\Plug;
 
-use Df;
-
 interface IContext
 {
     public function __get(string $name);

@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Http\Request;
 
-use Df;
 use Df\Http\Uri;
 use Df\Http\Message\UploadedFile;
 

@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Config;
 
-use Df;
-
 use DecodeLabs\Gadgets\Then;
 use DecodeLabs\Gadgets\ThenTrait;
 

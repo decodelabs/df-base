@@ -6,7 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Loader;
 
-use Df;
 use Df\Core\IApp;
 use Df\Core\ILoader;
 

@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Clip\Command;
 
-use Df;
-
 class Styles
 {
     const FG_COLORS = [

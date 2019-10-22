@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Clip;
 
-use Df;
-
 use Df\Clip\IContext;
 use Df\Clip\Command\IArgument;
 use Df\Clip\Command\Argument;

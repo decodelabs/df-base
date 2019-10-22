@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Time;
 
-use Df;
-
 use Carbon\CarbonInterval;
 use DecodeLabs\Glitch;
 

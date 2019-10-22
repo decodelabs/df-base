@@ -5,7 +5,6 @@
  */
 namespace Df\Core;
 
-use Df;
 use Df\Core\Service\IContainer;
 
 interface IApp extends IContainer
