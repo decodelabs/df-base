@@ -76,7 +76,7 @@ namespace Df
         static $app;
 
         if (!isset($app)) {
-            if (class_exists('Df\Apex\App', true)) {
+            if (class_exists('Df\\Apex\\App', true)) {
                 $app = new Df\Apex\App();
             } else {
                 $app = new Df\Core\App();

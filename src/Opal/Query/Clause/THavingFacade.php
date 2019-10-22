@@ -63,7 +63,7 @@ trait THavingFacade
      */
     public function orHavingField(string $local, string $operator, string $foreign): IHavingFacade
     {
-        return $this->addWhereClause(
+        return $this->addHavingClause(
             (new Factory($this))->createFieldClause(
                 $local,
                 $operator,
@@ -125,7 +125,7 @@ trait THavingFacade
      */
     public function havingSelectDistinct(string $local, string $operator, string $foreign): SelectInitiator
     {
-        return $this->createWhereSelect($local, $operator, $foreign, false, true);
+        return $this->createHavingSelect($local, $operator, $foreign, false, true);
     }
 
     /**

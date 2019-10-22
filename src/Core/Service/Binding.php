@@ -33,7 +33,8 @@ class Binding implements IBinding
         IContainer $container,
         string $type,
         $target,
-        bool $autoAlias=true
+        bool $autoAlias=true,
+        bool $ignoreTarget=false
     ) {
         $this->container = $container;
 
@@ -44,7 +45,10 @@ class Binding implements IBinding
         }
 
         $this->type = $type;
-        $this->setTarget($target);
+
+        if (!$ignoreTarget) {
+            $this->setTarget($target);
+        }
 
         if ($autoAlias && null !== ($alias = $this->typeToAlias($this->type))) {
             $this->alias($alias);

@@ -59,7 +59,7 @@ class Question
      */
     public function setShowOptions(bool $show): Question
     {
-        $this->showOptinos = $show;
+        $this->showOptions = $show;
         return $this;
     }
 

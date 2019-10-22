@@ -137,7 +137,7 @@ class Manager implements ITransactionAware
 
         foreach ($this->references as $alias => $reference) {
             if ($reference->getId() === $id) {
-                unset($this->reference[$alias]);
+                unset($this->references[$alias]);
             }
         }
 

@@ -123,15 +123,15 @@ trait TParentAware
      */
     public function isSourceDeepNested(Reference $reference): bool
     {
-        if (!$this->parent instanceof IParentAware) {
+        if (!$this->parentQuery instanceof IParentAware) {
             return false;
         }
 
-        $gp = $this->parent;
+        $gp = $this->parentQuery;
         $sourceId = $reference->getId().' as '.$reference->getAlias();
 
         do {
-            $gp = $parent->getParentQuery();
+            $gp = $gp->getParentQuery();
             $gpReference = $gp->getPrimarySourceReference();
 
             if ($gpReference->getId().' as '.$gpReference->getAlias() === $sourceId) {

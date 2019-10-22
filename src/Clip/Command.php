@@ -251,7 +251,7 @@ class Command implements ICommand
                         }
                     } else {
                         throw Glitch::EUnexpectedValue(
-                            'No list values defined for argument: '.$this->name
+                            'No list values defined for argument: '.$name
                         );
                     }
                 }

@@ -36,7 +36,7 @@ trait TStacked
     /**
      * Create and register stacked subquery
      */
-    protected function registerStack(string $name, string $mode, ?IField $keyField, ?IField $valueField, ?callable $processor): IStacked
+    protected function registerStack(string $name, string $mode, ?IField $keyField=null, ?IField $valueField=null, ?callable $processor=null): IStacked
     {
         if ($this->getSubQueryMode() !== 'stack') {
             throw Glitch::ELogic('Sub query is not in stack mode');

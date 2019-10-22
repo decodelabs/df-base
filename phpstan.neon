@@ -1,0 +1,10 @@
+parameters:
+    level: 1
+    paths:
+        - src
+
+    ignoreErrors:
+        - '#Instantiated class Df\\Apex\\App not found\.#'
+        - '#Static call to instance method Carbon\\CarbonInterval\:\:#'
+
+        - '#^Return typehint of method Df\\((Opal\\Query\\(Builder\\Select|IWriteFacade|IReadFacade))|Plug\\Data)\:\:#'

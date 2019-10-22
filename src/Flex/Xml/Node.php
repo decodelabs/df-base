@@ -323,7 +323,7 @@ class Node implements INode
     {
         $this->removeAllChildren();
 
-        $text = $this->element->ownerDocument->createTextNode($text);
+        $text = $this->element->ownerDocument->createTextNode($content);
         $this->element->appendChild($text);
 
         return $this;
@@ -1223,7 +1223,7 @@ class Node implements INode
     /**
      * Ensure input is DomElement
      */
-    protected function normalizeInputChild($child, $value=null): DOMElement
+    protected function normalizeInputChild($child, $value=null): \DOMElement
     {
         $node = null;
 

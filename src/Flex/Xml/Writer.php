@@ -23,7 +23,7 @@ class Writer implements IWriter
     protected $headerWritten = false;
     protected $dtdWritten = false;
     protected $rootWritten = false;
-    protected $finalize = false;
+    protected $finalized = false;
 
     protected $elementContent = null;
     protected $rawAttributeNames = [];
@@ -338,8 +338,8 @@ class Writer implements IWriter
             throw Glitch::ELogic('XML writer is not currently writing a comment');
         }
 
-        $content = self::normalizeString($content);
-        $this->document->text($content);
+        $comment = self::normalizeString($comment);
+        $this->document->text($comment);
         return $this;
     }
 
@@ -382,7 +382,7 @@ class Writer implements IWriter
     /**
      * Write PI content
      */
-    public function writePiContent(): IWriter
+    public function writePiContent(string $content): IWriter
     {
         if ($this->currentNode !== self::PI) {
             throw Glitch::ELogic('XML writer is not currently writing a processing instruction');
@@ -489,7 +489,7 @@ class Writer implements IWriter
      */
     public function finalize(): IWriter
     {
-        if ($this->finalize) {
+        if ($this->finalized) {
             return $this;
         }
 

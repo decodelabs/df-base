@@ -37,6 +37,25 @@
         "paragonie/sodium_compat": "^1",
         "nesbot/carbon": "^2"
     },
+    "require-dev": {
+        "phpstan/phpstan": "^0.11.16",
+        "phpstan/extension-installer": "^1.0",
+        "decodelabs/phpstan-decodelabs": "^0.1",
+
+        "decodelabs/glitch": "dev-develop",
+        "decodelabs/veneer": "dev-develop",
+        "decodelabs/systemic": "dev-develop",
+        "decodelabs/tagged": "dev-develop",
+        "decodelabs/collections": "dev-develop",
+        "decodelabs/gadgets": "dev-develop",
+        "decodelabs/atlas": "dev-develop",
+        "decodelabs/enlighten": "dev-develop"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "0.x-dev"
+        }
+    },
     "autoload": {
         "psr-4": {
             "Df\\": "src/"
@@ -44,5 +63,7 @@
         "files": [
             "src/helpers.php"
         ]
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

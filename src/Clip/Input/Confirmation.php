@@ -41,7 +41,7 @@ class Confirmation
      */
     public function setShowOptions(bool $show): Confirmation
     {
-        $this->showOptinos = $show;
+        $this->showOptions = $show;
         return $this;
     }
 

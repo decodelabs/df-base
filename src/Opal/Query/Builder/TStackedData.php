@@ -52,7 +52,7 @@ trait TStackedData
         if (is_callable($field)) {
             $processor = $field;
         } else {
-            $valueField = $this->getSourceManager()->findForeignField($field2);
+            $valueField = $this->getSourceManager()->findForeignField($field);
         }
 
         return $this->registerStack($name, 'value', null, $valueField, $processor);

@@ -7,6 +7,8 @@ declare(strict_types=1);
 namespace Df\Plug;
 
 use Df\Core\IApp;
+use Df\Arch\Uri as ArchUri;
+use Df\Http\Uri as HttpUri;
 use Df\Plug\IHelper;
 use Df\Plug\IGlobalHelper;
 

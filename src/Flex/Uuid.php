@@ -43,7 +43,7 @@ class Uuid
      */
     public static function v3String(string $ns, string $name): string
     {
-        return (string)UuidLib::uuid3($node, $clockSeq);
+        return (string)UuidLib::uuid3($ns, $name);
     }
 
     /**
@@ -107,7 +107,7 @@ class Uuid
      */
     public static function v5String(string $ns, string $name): string
     {
-        return (string)UuidLib::uuid5($node, $clockSeq);
+        return (string)UuidLib::uuid5($ns, $name);
     }
 
     /**

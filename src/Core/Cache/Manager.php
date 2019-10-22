@@ -96,7 +96,7 @@ class Manager
      */
     public function loadDriver(string $name, Repository &$directConf=null): ?IDriver
     {
-        $class = Driver::class.'\\'.$name;
+        $class = 'Df\\Core\\Cache\\Driver\\'.$name;
 
         if (!class_exists($class)) {
             throw Glitch::{'EInvalidArgument,ENotFound'}(

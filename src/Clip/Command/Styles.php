@@ -108,6 +108,9 @@ class Styles
      */
     public function format(string $message, ?string $fgColor, ?string $bgColor=null, string ...$options): string
     {
+        $setCodes = [];
+        $unsetCodes = [];
+
         if ($fgColor !== null) {
             $setCodes[] = static::FG_COLORS[$fgColor];
             $unsetCodes[] = static::FG_COLORS['reset'];

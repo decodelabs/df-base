@@ -25,6 +25,8 @@ trait TRelations
     protected function lookupRelationManifest(string $fieldName): array
     {
         Glitch::incomplete();
+
+        /*
         $sourceManager = $this->getSourceManager();
 
         return [
@@ -39,5 +41,6 @@ trait TRelations
                 'field' => 'jam'
             ]
         ];
+        */
     }
 }

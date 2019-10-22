@@ -7,8 +7,8 @@ declare(strict_types=1);
 namespace Df\Core\Service;
 
 use Df\Core\Event\Dispatcher;
-
 use DecodeLabs\Glitch;
+use Psr\Container\NotFoundExceptionInterface;
 
 class Container implements IContainer
 {

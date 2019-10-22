@@ -23,6 +23,7 @@ class Join implements
     use TSources;
     use TParentAware;
     use TWhereClauseProvider;
+    use TRelations;
 
     protected $type;
     protected $sourceReference;

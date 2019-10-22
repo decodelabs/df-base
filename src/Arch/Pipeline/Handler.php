@@ -138,7 +138,7 @@ class Handler implements IHandler
         $uri = $request->getUri();
         $url = $uri->getAuthority().rawurldecode($uri->getPath());
         $scheme = $uri->getScheme();
-        $path = null;
+        $area = $path = null;
         $params = [];
 
         foreach (array_reverse($this->areaMaps) as $area => $map) {

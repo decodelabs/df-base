@@ -16,5 +16,5 @@ interface IFromSource extends IInitiator
     public function from($source, string $alias=null): IBuilder;
     public function fromSelect(string ...$fields): Select;
     public function fromSelectDistinct(string ...$fields): Select;
-    public function fromUnion(): Union;
+    //public function fromUnion(): Union;
 }

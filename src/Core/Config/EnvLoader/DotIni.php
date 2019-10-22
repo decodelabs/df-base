@@ -6,8 +6,8 @@
 declare(strict_types=1);
 namespace Df\Core\Config\EnvLoader;
 
+use Df;
 use Df\Core\IApp;
-
 use Df\Core\Config\IEnvLoader;
 use Df\Core\Config\Env;
 
@@ -42,7 +42,7 @@ class DotIni implements IEnvLoader
      */
     public function getPath(): string
     {
-        return $this->path ?? $app->getBasePath().'/.env';
+        return $this->path ?? Df\BASE_PATH.'/.env';
     }
 
 

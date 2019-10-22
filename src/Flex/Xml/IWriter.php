@@ -39,7 +39,7 @@ interface IWriter extends AttributeContainer, \ArrayAccess
     // PI
     public function writePi(string $target, string $content): IWriter;
     public function startPi(string $target): IWriter;
-    public function writePiContent(): IWriter;
+    public function writePiContent(string $content): IWriter;
     public function endPi(): IWriter;
 
     // Attributes

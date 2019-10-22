@@ -106,9 +106,9 @@ class Composer implements ILoader
     /**
      * List of package paths for library class files
      */
-    public function getLibraryPaths(): array
+    public function getBundlePaths(): array
     {
-        return $this->libraryPaths;
+        return $this->bundlePaths;
     }
 
 

@@ -109,7 +109,7 @@ class UploadedFile implements UploadedFileInterface
      */
     public function moveTo($targetPath): void
     {
-        if ($moved) {
+        if ($this->moved) {
             throw Glitch::ERuntime(
                 'File has already been moved'
             );

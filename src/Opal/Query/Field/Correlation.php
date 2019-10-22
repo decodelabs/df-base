@@ -21,11 +21,6 @@ class Correlation implements IField
     public function __construct(Reference $sourceReference, ?string $alias=null)
     {
         $this->sourceReference = $sourceReference;
-
-        if ($alias === null) {
-            $alias = $name;
-        }
-
         $this->alias = $alias;
     }
 
@@ -63,8 +58,8 @@ class Correlation implements IField
             return false;
         }
 
-        return $this->getQuery() === $this->query
-            && $this->getAlias() === $this->alias;
+        return $field->getSubQuery() === $this->getSubQuery()
+            && $field->getAlias() === $this->alias;
     }
 
     /**

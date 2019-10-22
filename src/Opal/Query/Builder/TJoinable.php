@@ -103,7 +103,7 @@ trait TJoinable
      */
     public function outerJoinRelation(string $relation, string ...$fields): IJoinable
     {
-        return $this->beginOutJoinRelation($relation, ...$fields)->endJoin();
+        return $this->beginOuterJoinRelation($relation, ...$fields)->endJoin();
     }
 
     /**

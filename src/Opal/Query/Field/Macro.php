@@ -24,11 +24,6 @@ class Macro implements IField
         $this->type = $type;
         $this->inner = $inner;
         $this->sourceReference = $sourceReference;
-
-        if ($alias === null) {
-            $alias = $name;
-        }
-
         $this->alias = $alias;
     }
 

@@ -6,8 +6,6 @@
 declare(strict_types=1);
 namespace Df\Core\Service;
 
-use Df\Core\IContainer;
-
 use DecodeLabs\Glitch;
 
 class Group extends Binding
@@ -16,15 +14,7 @@ class Group extends Binding
 
     public function __construct(IContainer $container, string $type)
     {
-        $this->container = $container;
-
-        if (!interface_exists($type, true) && !class_exists($type, true)) {
-            throw Glitch::EInvalidArgument(
-                'Binding type must be a valid interface'
-            );
-        }
-
-        $this->type = $type;
+        parent::__construct($container, $type, null, false, true);
         unset($this->params, $this->target);
     }
 
@@ -158,7 +148,7 @@ class Group extends Binding
     {
         foreach ($this->bindings as $binding) {
             foreach ($params as $key => $value) {
-                $binding->inject($name, $value);
+                $binding->inject($key, $value);
             }
         }
 

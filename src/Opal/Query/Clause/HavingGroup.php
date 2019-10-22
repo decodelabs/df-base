@@ -8,11 +8,13 @@ namespace Df\Opal\Query\Clause;
 
 use Df\Opal\Query\Clause;
 use Df\Opal\Query\IClause;
+use Df\Opal\Query\Builder\TRelations;
 
 class HavingGroup implements IHaving, IGroup, IHavingFacade
 {
     use TGroup;
     use THavingFacade;
+    use TRelations;
 
 
     /**

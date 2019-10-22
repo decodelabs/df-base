@@ -145,9 +145,8 @@ class Generator implements StreamInterface
 
         if (!empty($this->buffer)) {
             $this->buffer = substr($this->buffer, $outLength = strlen($output));
+            $this->position += $outLength;
         }
-
-        $this->position += $outLength;
 
         if ($this->complete && empty($this->buffer)) {
             $this->eof = true;

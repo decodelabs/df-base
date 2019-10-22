@@ -8,11 +8,13 @@ namespace Df\Opal\Query\Clause;
 
 use Df\Opal\Query\Clause;
 use Df\Opal\Query\IClause;
+use Df\Opal\Query\Builder\TRelations;
 
 class WhereGroup implements IWhere, IGroup, IWhereFacade
 {
     use TGroup;
     use TWhereFacade;
+    use TRelations;
 
     protected $prerequisiteName = null;
 

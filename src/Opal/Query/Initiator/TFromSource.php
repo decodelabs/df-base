@@ -56,6 +56,7 @@ trait TFromSource
     /**
      * Select from union subquery
      */
+     /*
     public function fromUnion(): Union
     {
         return (new Union($this->app))
@@ -63,4 +64,5 @@ trait TFromSource
             ->setSubQueryMode('derivation')
             ->setDerivationParent($this);
     }
+    */
 }

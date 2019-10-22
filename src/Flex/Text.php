@@ -4,14 +4,13 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\flex;
+namespace Df\Flex;
 
 use DecodeLabs\Gadgets\Then;
 use DecodeLabs\Gadgets\ThenTrait;
-use DecodeLabs\Collections\Collection;
 use DecodeLabs\Glitch;
 
-class Text implements \IteratorAggregate, Collection, \ArrayAccess, \Countable
+class Text implements \IteratorAggregate, \ArrayAccess, \Countable
 {
     use ThenTrait;
 
@@ -947,7 +946,7 @@ class Text implements \IteratorAggregate, Collection, \ArrayAccess, \Countable
     public function tabsToSpaces(int $tabLength=4): Text
     {
         return new static(
-            str_replace("\t", str_replace(' ', $tabLength), $this->text),
+            str_replace("\t", str_repeat(' ', $tabLength), $this->text),
             $this->encoding
         );
     }
@@ -958,7 +957,7 @@ class Text implements \IteratorAggregate, Collection, \ArrayAccess, \Countable
     public function spacesToTabs(int $tabLength): Text
     {
         return new static(
-            str_replace(str_replace(' ', $tabLength), "\t", $this->text),
+            str_replace(str_repeat(' ', $tabLength), "\t", $this->text),
             $this->encoding
         );
     }
@@ -1247,14 +1246,6 @@ class Text implements \IteratorAggregate, Collection, \ArrayAccess, \Countable
     public function isMutable(): bool
     {
         return false;
-    }
-
-    /**
-     * Duplicate collection, can change type if needed
-     */
-    public function copy(): Collection
-    {
-        return clone $this;
     }
 
 
