@@ -61,7 +61,7 @@ class Kernel implements IConsole
 
         try {
             $args = $command->apply($request);
-        } catch (EUnexpectedValue $e) {
+        } catch (EGlitch $e) {
             $shell->writeLine();
             $context->render($e->getMessage(), 'error');
             $command->renderHelp($context);

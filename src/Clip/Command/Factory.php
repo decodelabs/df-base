@@ -57,6 +57,6 @@ class Factory
     public function newCommand(string $path): ICommand
     {
         return (new Command($path))
-            ->addArgument('--h|help', 'Get help for this task');
+            ->addArgument('-help|h', 'Get help for this task');
     }
 }

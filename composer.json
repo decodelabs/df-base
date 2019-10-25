@@ -20,6 +20,7 @@
         "decodelabs/veneer": "~0.4",
         "decodelabs/systemic": "~0.6",
         "decodelabs/atlas": "~0.6",
+        "decodelabs/terminus": "dev-develop",
 
         "psr/container": "^1.0",
         "psr/cache": "^1.0",
@@ -46,6 +47,7 @@
         "decodelabs/veneer": "dev-develop",
         "decodelabs/systemic": "dev-develop",
         "decodelabs/tagged": "dev-develop",
+        "decodelabs/terminus": "dev-develop",
         "decodelabs/collections": "dev-develop",
         "decodelabs/gadgets": "dev-develop",
         "decodelabs/atlas": "dev-develop",

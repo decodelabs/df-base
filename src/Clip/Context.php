@@ -85,7 +85,8 @@ class Context implements IContext
             return;
         }
 
-        $message = $this->styles->modify((string)$message, $modifier, $channel = null);
+        $channel = null;
+        $message = $this->styles->modify((string)$message, $modifier, $channel);
 
         if ($channel === 'error') {
             $this->shell->writeError($message);
@@ -106,7 +107,8 @@ class Context implements IContext
     public function log($level, $message, array $context=[])
     {
         $message = $this->interpolate((string)$message, $context);
-        $message = $this->styles->apply($level, $message, $channel = null);
+        $channel = null;
+        $message = $this->styles->apply($level, $message, $channel);
 
         if ($channel === 'error') {
             $this->shell->writeErrorLine($message);

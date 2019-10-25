@@ -28,6 +28,11 @@ class Argument implements IArgument
      */
     public function __construct(string $name, string $description)
     {
+        if (substr($name, 0, 1) == '?') {
+            $this->setOptional(true);
+            $name = ltrim($name, '?');
+        }
+
         if (substr($name, 0, 1) == '-') {
             $this->setBoolean(true);
             $name = ltrim($name, '-');
@@ -42,13 +47,8 @@ class Argument implements IArgument
 
         if (false !== strpos($name, '|')) {
             $parts = explode('|', $name);
-            $this->setShortcut(array_shift($parts));
             $name = array_shift($parts);
-        }
-
-        if (substr($name, -1) == '?') {
-            $this->setOptional(true);
-            $name = substr($name, 0, -1);
+            $this->setShortcut(array_shift($parts));
         }
 
         if (substr($name, -1) == '*') {
