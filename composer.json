@@ -19,7 +19,7 @@
         "decodelabs/tagged": "~0.6",
         "decodelabs/veneer": "~0.4",
         "decodelabs/systemic": "~0.6",
-        "decodelabs/atlas": "~0.6",
+        "decodelabs/atlas": "~0.7",
         "decodelabs/terminus": "dev-develop",
 
         "psr/container": "^1.0",
