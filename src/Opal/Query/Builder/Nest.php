@@ -62,7 +62,7 @@ class Nest implements
      */
     public function setFields(string ...$fields): IFieldCollector
     {
-        return $this->clearFields()->addField(...$fields);
+        return $this->clearFields()->addFields(...$fields);
     }
 
     /**

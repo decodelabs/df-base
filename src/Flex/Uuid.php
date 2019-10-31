@@ -27,7 +27,7 @@ class Uuid
      */
     public static function v1String($node=null, int $clockSeq=null): string
     {
-        return (string)UuidLib::uuid1($node, $clockSeq);
+        return UuidLib::uuid1($node, $clockSeq)->toString();
     }
 
     /**
@@ -43,7 +43,7 @@ class Uuid
      */
     public static function v3String(string $ns, string $name): string
     {
-        return (string)UuidLib::uuid3($ns, $name);
+        return UuidLib::uuid3($ns, $name)->toString();
     }
 
     /**
@@ -59,7 +59,7 @@ class Uuid
      */
     public static function v4String(): string
     {
-        return (string)UuidLib::uuid4();
+        return UuidLib::uuid4()->toString();
     }
 
     /**
@@ -75,7 +75,7 @@ class Uuid
      */
     public static function combString(): string
     {
-        return (string)self::comb();
+        return self::comb()->toString();
     }
 
     /**
@@ -107,7 +107,7 @@ class Uuid
      */
     public static function v5String(string $ns, string $name): string
     {
-        return (string)UuidLib::uuid5($ns, $name);
+        return UuidLib::uuid5($ns, $name)->toString();
     }
 
     /**
@@ -130,7 +130,7 @@ class Uuid
         if ($value === null) {
             return null;
         } else {
-            return (string)$value;
+            return $value->toString();
         }
     }
 

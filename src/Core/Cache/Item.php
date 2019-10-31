@@ -415,7 +415,8 @@ class Item implements IItem
             $this->expiresAfter($ttl);
         }
 
-        return $this->set($value)->save();
+        $this->set($value);
+        return $this->save();
     }
 
     /**
@@ -427,7 +428,8 @@ class Item implements IItem
             $this->expiresAfter($ttl);
         }
 
-        return $this->set($this->get())->save();
+        $this->set($this->get());
+        return $this->save();
     }
 
     /**

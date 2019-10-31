@@ -6,6 +6,8 @@
 declare(strict_types=1);
 namespace Df\Core\Config;
 
+use Df\Core\IApp;
+
 use Df\Core\Config\Loader\PhpArray;
 use Df\Core\Config\EnvLoader\DotIni;
 
@@ -30,6 +32,10 @@ class ServiceProvider implements IProvider
      */
     public function registerServices(IContainer $app): void
     {
+        if (!$app instanceof IApp) {
+            throw Glitch::EUnexpectedValue('Container is not the app', null, $app);
+        }
+
         // Env
         $app->bindOnce(IEnvLoader::class, DotIni::class)
             ->inject('path', $app->getBasePath().'/private/.env');

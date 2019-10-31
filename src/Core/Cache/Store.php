@@ -227,7 +227,7 @@ class Store implements IStore
     {
         $item = $this->getItem($key);
 
-        if ($item->isMiss()) {
+        if ($item instanceof IItem && $item->isMiss()) {
             $item->lock();
             $value = $generator($item, $this);
             $item->set($value)->save();

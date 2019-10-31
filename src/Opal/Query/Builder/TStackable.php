@@ -23,9 +23,10 @@ trait TStackable
      */
     public function select(string ...$fields): SelectInitiator
     {
-        return (new SelectInitiator($this->getSourceManager()->getApp(), $fields))
-            ->setAliasPrefix(uniqid('sss_'))
-            ->asSubQuery($this, 'stack');
+        $output = new SelectInitiator($this->getSourceManager()->getApp(), $fields);
+        $output->setAliasPrefix(uniqid('sss_'));
+        $output->asSubQuery($this, 'stack');
+        return $output;
     }
 
     /**
@@ -33,9 +34,10 @@ trait TStackable
      */
     public function selectDistinct(string ...$fields): SelectInitiator
     {
-        return (new SelectInitiator($this->getSourceManager()->getApp(), $fields, true))
-            ->setAliasPrefix(uniqid('sss_'))
-            ->asSubQuery($this, 'stack');
+        $output = new SelectInitiator($this->getSourceManager()->getApp(), $fields, true);
+        $output->setAliasPrefix(uniqid('sss_'));
+        $output->asSubQuery($this, 'stack');
+        return $output;
     }
 
     /**

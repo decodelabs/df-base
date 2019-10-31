@@ -9,6 +9,7 @@ namespace Df\Opal\Query\Clause;
 use Df\Opal\Query\Clause;
 use Df\Opal\Query\IClause;
 use Df\Opal\Query\Builder\TRelations;
+use Df\Opal\Query\Builder\IWhereClauseProvider;
 
 class WhereGroup implements IWhere, IGroup, IWhereFacade
 {
@@ -66,8 +67,12 @@ class WhereGroup implements IWhere, IGroup, IWhereFacade
         }
 
         $parent = $this->getParent();
-        $parent->addPrerequisite($this);
 
+        if (!$parent instanceof IWhereClauseProvider) {
+            throw Glitch::EUnexpectedValue('Parent query is not a where clause provider', null, $parent);
+        }
+
+        $parent->addPrerequisite($this->prerequisiteName, $this);
         return $parent;
     }
 
@@ -112,8 +117,12 @@ class WhereGroup implements IWhere, IGroup, IWhereFacade
     public function endClause(): IFacade
     {
         $parent = $this->getParent();
-        $parent->addWhereClause($this);
 
+        if (!$parent instanceof IWhereClauseProvider) {
+            throw Glitch::EUnexpectedValue('Parent query is not a where clause provider', null, $parent);
+        }
+
+        $parent->addWhereClause($this);
         return $parent;
     }
 }

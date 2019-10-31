@@ -9,6 +9,7 @@ namespace Df\Opal\Query\Clause;
 use Df\Opal\Query\Clause;
 use Df\Opal\Query\IClause;
 use Df\Opal\Query\Builder\TRelations;
+use Df\Opal\Query\Builder\IHavingClauseProvider;
 
 class HavingGroup implements IHaving, IGroup, IHavingFacade
 {
@@ -72,8 +73,12 @@ class HavingGroup implements IHaving, IGroup, IHavingFacade
     public function endClause(): IFacade
     {
         $parent = $this->getParent();
-        $parent->addHavingClause($this);
 
+        if (!$parent instanceof IHavingClauseProvider) {
+            throw Glitch::EUnexpectedValue('Parent query is not a having clause provider', null, $parent);
+        }
+
+        $parent->addHavingClause($this);
         return $parent;
     }
 }

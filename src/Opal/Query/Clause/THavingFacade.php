@@ -176,20 +176,24 @@ trait THavingFacade
      */
     protected function createHavingSelect(string $local, string $operator, string $foreign, bool $or, bool $distinct): SelectInitiator
     {
-        return (new SelectInitiator(
-                $this->getSourceManager()->getApp(),
-                [$foreign],
-                $distinct
-            ))
-            ->setAliasPrefix(uniqid('hcs_'))
-            ->asSubQuery($this, 'having', function ($select) use ($local, $operator, $or) {
-                return (new Factory($this))->createQueryClause(
-                    $local,
-                    $operator,
-                    $select,
-                    $or
-                );
-            });
+        $output = new SelectInitiator(
+            $this->getSourceManager()->getApp(),
+            [$foreign],
+            $distinct
+        );
+
+        $output->setAliasPrefix(uniqid('hcs_'));
+
+        $output->asSubQuery($this, 'having', function ($select) use ($local, $operator, $or) {
+            return (new Factory($this))->createQueryClause(
+                $local,
+                $operator,
+                $select,
+                $or
+            );
+        });
+
+        return $output;
     }
 
 
@@ -202,10 +206,15 @@ trait THavingFacade
 
         if ($manifest['bridgeLocal']) {
             // Double bridge correlation
-            return $this->createHavingSelect($manifest['local']['field'], $operator, $manifest['bridgeLocal']['field'], $or, $distinct)
-                ->from($manifest['bridgeLocal']['source'], $local)
-                ->createHavingSelect($manifest['bridgeForeign']['field'], 'in', $manifest['foreign']['field'])
-                    ->from($manifest['foreign']['source'], $local);
+            $bridge = $this->createHavingSelect($manifest['local']['field'], $operator, $manifest['bridgeLocal']['field'], $or, $distinct)
+                ->from($manifest['bridgeLocal']['source'], $local);
+
+            if (!$bridge instanceof self) {
+                throw Glitch::EUnexpectedValue('Bridge source is not a where facade', null, $bridge);
+            }
+
+            return $bridge->createHavingSelect($manifest['bridgeForeign']['field'], 'in', $manifest['foreign']['field'], false, false)
+                ->from($manifest['foreign']['source'], $local);
         } else {
             // Single correlation
             return $this->createHavingSelect($manifest['local']['field'], $operator, $manifest['foreign']['field'], $or, $distinct)

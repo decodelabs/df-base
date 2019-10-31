@@ -66,8 +66,9 @@ class Select implements
      */
     public function asSubQuery(IBuilder $parent, string $mode, ?callable $applicator=null): IInitiator
     {
-        return $this->setParentQuery($parent)
-            ->setSubQueryMode($mode, $applicator);
+        $this->setParentQuery($parent);
+        $this->setSubQueryMode($mode, $applicator);
+        return $this;
     }
 
     /**
@@ -140,10 +141,12 @@ class Select implements
             $reference->selectField($field);
         }
 
-        return (new SelectBuilder($manager, $reference))
-            ->setDistinct($this->distinct)
-            ->setParentQuery($this->parentQuery)
-            ->setSubQueryMode($this->subQueryMode, $this->applicator)
-            ->setDerivationParent($this->derivationParent);
+        $output = new SelectBuilder($manager, $reference);
+        $output->setDistinct($this->distinct);
+        $output->setParentQuery($this->parentQuery);
+        $output->setSubQueryMode($this->subQueryMode, $this->applicator);
+        $output->setDerivationParent($this->derivationParent);
+        
+        return $output;
     }
 }

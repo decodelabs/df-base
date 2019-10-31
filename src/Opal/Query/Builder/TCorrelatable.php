@@ -10,6 +10,7 @@ use Df\Opal\Query\Source\Correlated as CorrelatedSource;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Field\Correlation as CorrelationField;
 use Df\Opal\Query\IBuilder;
+use Df\Opal\Query\Builder\ICorrelated;
 use Df\Opal\Query\Initiator\Select as SelectInitiator;
 
 use DecodeLabs\Glitch;
@@ -21,12 +22,14 @@ trait TCorrelatable
      */
     public function correlate(string $field): SelectInitiator
     {
-        return (new SelectInitiator(
-                $this->getSourceManager()->getApp(),
-                [$field]
-            ))
-            ->setAliasPrefix(uniqid('cfs_'))
-            ->asSubQuery($this, 'correlation');
+        $output = new SelectInitiator(
+            $this->getSourceManager()->getApp(),
+            [$field]
+        );
+
+        $output->setAliasPrefix(uniqid('cfs_'));
+        $output->asSubQuery($this, 'correlation');
+        return $output;
     }
 
     /**
@@ -43,8 +46,13 @@ trait TCorrelatable
      */
     public function countRelation(string $relation, string $alias=null): ICorrelatable
     {
-        return $this->correlateRelation($relation, 'COUNT')
-            ->endCorrelation($alias);
+        $output = $this->correlateRelation($relation, 'COUNT');
+
+        if (!$output instanceof ICorrelated) {
+            throw Glitch::EUnexpectedValue('Output query is not correlated', null, $output);
+        }
+
+        return $output->endCorrelation($alias);
     }
 
     /**
@@ -60,8 +68,13 @@ trait TCorrelatable
      */
     public function hasRelation(string $relation, string $alias=null): ICorrelatable
     {
-        return $this->correlateRelation($relation, 'HAS')
-            ->endCorrelation($alias);
+        $output = $this->correlateRelation($relation, 'HAS');
+
+        if (!$output instanceof ICorrelated) {
+            throw Glitch::EUnexpectedValue('Output query is not correlated', null, $output);
+        }
+
+        return $output->endCorrelation($alias);
     }
 
     /**

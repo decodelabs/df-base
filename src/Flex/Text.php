@@ -994,7 +994,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
                 continue;
             }
 
-            $output = (($output + 1) * 26) + ($num - 10);
+            $output = (($output + 1) * 26) + ((int)$num - 10);
         }
 
         if ($output === -1) {

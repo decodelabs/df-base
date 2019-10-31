@@ -48,7 +48,7 @@ class File implements IDriver
         }
 
         if (isset($config->filePerms)) {
-            $output->setFilePerms((int)$config['filePerms']);
+            $output->setFilePermissions((int)$config['filePerms']);
         }
 
         return $output;

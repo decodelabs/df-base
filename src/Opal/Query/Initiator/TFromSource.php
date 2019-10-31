@@ -34,11 +34,13 @@ trait TFromSource
      */
     public function fromSelect(string ...$fields): Select
     {
-        return (new Select($this->app, $fields))
-            ->setParentQuery($this->parentQuery)
-            ->setAliasPrefix(uniqid('dss_'))
-            ->setSubQueryMode('derivation')
-            ->setDerivationParent($this);
+        $output = new Select($this->app, $fields);
+        $output->setParentQuery($this->parentQuery);
+        $output->setAliasPrefix(uniqid('dss_'));
+        $output->setSubQueryMode('derivation');
+        $output->setDerivationParent($this);
+
+        return $output;
     }
 
     /**
@@ -46,11 +48,13 @@ trait TFromSource
      */
     public function fromSelectDistinct(string ...$fields): Select
     {
-        return (new Select($this->app, $fields, true))
-            ->setParentQuery($this->parentQuery)
-            ->setAliasPrefix(uniqid('dss_'))
-            ->setSubQueryMode('derivation')
-            ->setDerivationParent($this);
+        $output = new Select($this->app, $fields, true);
+        $output->setParentQuery($this->parentQuery);
+        $output->setAliasPrefix(uniqid('dss_'));
+        $output->setSubQueryMode('derivation');
+        $output->setDerivationParent($this);
+
+        return $output;
     }
 
     /**
@@ -59,10 +63,11 @@ trait TFromSource
      /*
     public function fromUnion(): Union
     {
-        return (new Union($this->app))
-            ->setParentQuery($this->parentQuery)
-            ->setSubQueryMode('derivation')
-            ->setDerivationParent($this);
+        $output = new Union($this->app);
+        $output->setParentQuery($this->parentQuery);
+        $output->setSubQueryMode('derivation');
+        $output->setDerivationParent($this);
+        return $output;
     }
     */
 }

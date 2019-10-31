@@ -67,6 +67,6 @@ class Correlation implements IField
      */
     public function __toString(): string
     {
-        return '('.$this->getSubQuery().') as '.$this->alias;
+        return '('.(string)$this->getSubQuery().') as '.$this->alias;
     }
 }

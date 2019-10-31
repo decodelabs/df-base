@@ -34,7 +34,9 @@ class Composer implements ILoader
         $this->basePath = dirname($this->vendorPath);
 
         $this->autoload = $autoload;
-        $this->appLibraries = $app::LOAD_APP_LIBRARIES;
+
+        $class = get_class($app);
+        $this->appLibraries = $class::LOAD_APP_LIBRARIES;
     }
 
 

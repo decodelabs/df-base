@@ -79,7 +79,7 @@ trait RouteTrait
 
         $output = new Uri($this->getRouteType().'://~'.$area.'/'.ltrim($this->getRoutePath(), '/'));
         $output->setQuery($request->getUri()->getQuery());
-        $output->query->merge(array_merge($attributes, $this->params));
+        $output->getQuery()->merge(array_merge($attributes, $this->params));
 
         return $output;
     }

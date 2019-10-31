@@ -215,20 +215,23 @@ trait TWhereFacade
      */
     protected function createWhereSelect(string $local, string $operator, string $foreign, bool $or, bool $distinct): SelectInitiator
     {
-        return (new SelectInitiator(
-                $this->getSourceManager()->getApp(),
-                [$foreign],
-                $distinct
-            ))
-            ->setAliasPrefix(uniqid('wcs_'))
-            ->asSubQuery($this, 'where', function ($select) use ($local, $operator, $or) {
-                return (new Factory($this))->createQueryClause(
-                    $local,
-                    $operator,
-                    $select,
-                    $or
-                );
-            });
+        $output = new SelectInitiator(
+            $this->getSourceManager()->getApp(),
+            [$foreign],
+            $distinct
+        );
+
+        $output->setAliasPrefix(uniqid('wcs_'));
+        $output->asSubQuery($this, 'where', function ($select) use ($local, $operator, $or) {
+            return (new Factory($this))->createQueryClause(
+                $local,
+                $operator,
+                $select,
+                $or
+            );
+        });
+
+        return $output;
     }
 
     /**
@@ -240,10 +243,15 @@ trait TWhereFacade
 
         if ($manifest['bridgeLocal']) {
             // Double bridge correlation
-            return $this->createWhereSelect($manifest['local']['field'], $operator, $manifest['bridgeLocal']['field'], $or, $distinct)
-                ->from($manifest['bridgeLocal']['source'], $local)
-                ->createWhereSelect($manifest['bridgeForeign']['field'], 'in', $manifest['foreign']['field'])
-                    ->from($manifest['foreign']['source'], $local);
+            $bridge = $this->createWhereSelect($manifest['local']['field'], $operator, $manifest['bridgeLocal']['field'], $or, $distinct)
+                ->from($manifest['bridgeLocal']['source'], $local);
+
+            if (!$bridge instanceof self) {
+                throw Glitch::EUnexpectedValue('Bridge source is not a where facade', null, $bridge);
+            }
+
+            return $bridge->createWhereSelect($manifest['bridgeForeign']['field'], 'in', $manifest['foreign']['field'], false, false)
+                ->from($manifest['foreign']['source'], $local);
         } else {
             // Single correlation
             return $this->createWhereSelect($manifest['local']['field'], $operator, $manifest['foreign']['field'], $or, $distinct)

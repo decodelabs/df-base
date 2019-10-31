@@ -22,9 +22,14 @@ trait TWhereClauseProvider
      */
     public function prerequisite(string $name, string $local, string $operator, $value): IWhereFacade
     {
-        return $this->beginPrerequisite()
-            ->where($local, $operator, $value)
-            ->endPrerequisite($name);
+        $output = $this->beginPrerequisite();
+        $output->where($local, $operator, $value);
+
+        if (!$output instanceof WhereGroup) {
+            throw Glitch::EUnexpectedValue('Parent query is not a where clause provider', null, $output);
+        }
+
+        return $output->endPrerequisite($name);
     }
 
     /**
@@ -32,9 +37,14 @@ trait TWhereClauseProvider
      */
     public function prerequisiteField(string $name, string $local, string $operator, string $foreign): IWhereFacade
     {
-        return $this->beginPrerequisite()
-            ->whereField($local, $operator, $foreign)
-            ->endPrerequisite($name);
+        $output = $this->beginPrerequisite();
+        $output->whereField($local, $operator, $foreign);
+
+        if (!$output instanceof WhereGroup) {
+            throw Glitch::EUnexpectedValue('Parent query is not a where clause provider', null, $output);
+        }
+
+        return $output->endPrerequisite($name);
     }
 
     /**

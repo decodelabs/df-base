@@ -1,9 +1,11 @@
 parameters:
-    level: 1
+    level: 2
     bootstrap: %rootDir%/../../../../df-base/tests/bootstrap.php
     paths:
         - src
 
+    inferPrivatePropertyTypeFromConstructor: true
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         - '#Instantiated class Df\\Apex\\App not found\.#'
         - '#Static call to instance method Carbon\\CarbonInterval\:\:#'

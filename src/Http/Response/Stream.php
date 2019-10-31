@@ -134,7 +134,7 @@ class Stream implements ResponseInterface
 
         $output = clone $this;
         $output->status = $this->prepareStatusCode((int)$code);
-        $output->reasonPhrase = $reasonPhrase;
+        $output->phrase = $reasonPhrase;
 
         return $output;
     }

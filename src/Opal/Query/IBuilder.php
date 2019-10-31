@@ -16,4 +16,5 @@ interface IBuilder extends ITransactionAware
     public function getPrimarySourceReference(): Reference;
     public function getPrimarySource(): ISource;
     public function getPrimarySourceAlias(): string;
+    public function __toString(): string;
 }

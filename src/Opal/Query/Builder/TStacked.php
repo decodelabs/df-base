@@ -8,6 +8,7 @@ namespace Df\Opal\Query\Builder;
 
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\IField;
+use Df\Opal\Query\Builder\IStackable;
 
 use DecodeLabs\Glitch;
 
@@ -48,8 +49,12 @@ trait TStacked
             ->setProcessor($processor);
 
         $output = $this->getParentQuery();
-        $output->addStack($stack);
 
+        if (!$output instanceof IStackable) {
+            throw Glitch::EUnexpectedValue('Parent query is not stackable', null, $output);
+        }
+
+        $output->addStack($stack);
         return $output;
     }
 }

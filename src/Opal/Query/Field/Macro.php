@@ -49,7 +49,7 @@ class Macro implements IField
     public function matches(IField $field): bool
     {
         if ($field->getSourceReference() !== $this->sourceReference
-        || !$field instanceof Intrinsic) {
+        || !$field instanceof Macro) {
             return false;
         }
 
