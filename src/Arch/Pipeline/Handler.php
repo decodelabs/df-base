@@ -17,10 +17,11 @@ use Df\Http\Response\Redirect;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Http\Server\MiddlewareInterface;
 
 use DecodeLabs\Glitch;
 
-class Handler implements IHandler
+class Handler implements MiddlewareInterface
 {
     protected $app;
     protected $areaMaps = [];
@@ -38,7 +39,7 @@ class Handler implements IHandler
     /**
      * Load list of string maps
      */
-    public function loadAreaMaps(array $maps): IHandler
+    public function loadAreaMaps(array $maps): Handler
     {
         foreach ($maps as $area => $uri) {
             $map = new AreaMap($area, $uri);
@@ -51,7 +52,7 @@ class Handler implements IHandler
     /**
      * Add area map to stack
      */
-    public function addAreaMap(AreaMap $map): IHandler
+    public function addAreaMap(AreaMap $map): Handler
     {
         $area = $map->getArea();
 
@@ -70,7 +71,7 @@ class Handler implements IHandler
     /**
      * Set list of packages to load routers from
      */
-    public function setRouterBundles(array $bundles): IHandler
+    public function setRouterBundles(array $bundles): Handler
     {
         $this->routerBundles = $bundles;
         return $this;
@@ -80,7 +81,7 @@ class Handler implements IHandler
     /**
      * Load routers from list of packages
      */
-    public function loadRouters(string $area): IHandler
+    public function loadRouters(string $area): Handler
     {
         $this->routers[$area] = [];
 

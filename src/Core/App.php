@@ -28,7 +28,7 @@ use Df\Http\Kernel as HttpKernel;
 use Df\Http\ServiceProvider as HttpServiceProvider;
 
 use Df\Arch\ServiceProvider as ArchServiceProvider;
-use Df\Arch\Pipeline\IHandler as ArchHandler;
+use Df\Arch\Pipeline\Handler as ArchHandler;
 use Df\Arch\Middleware\ErrorHandler as ErrorMiddleware;
 
 use Composer\Autoload\ClassLoader;

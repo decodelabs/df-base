@@ -7,7 +7,8 @@ declare(strict_types=1);
 namespace Df\Arch\Route;
 
 use Df\Core\IApp;
-use Df\Arch\IRoute;
+use Df\Arch\Route;
+use Df\Arch\RouteTrait;
 use Df\Arch\Context;
 use Df\Arch\Uri;
 
@@ -16,9 +17,9 @@ use Df\Http\Response\Stream;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Named implements IRoute
+class Named implements Route
 {
-    use TRoute;
+    use RouteTrait;
 
     protected $name;
     protected $methods = [];
@@ -56,7 +57,7 @@ class Named implements IRoute
     /**
      * Match request $path to route path
      */
-    public function matchIn(string $method, string $requestPath): ?IRoute
+    public function matchIn(string $method, string $requestPath): ?Route
     {
         if ($this->methods !== null && !in_array($method, $this->methods)) {
             return null;

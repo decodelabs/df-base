@@ -4,10 +4,9 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Plug;
+namespace Df\Opal;
 
 use Df\Core\IApp;
-use Df\Plug\IHelper;
 
 use Df\Opal\Query\IReadFacade;
 use Df\Opal\Query\IWriteFacade;
@@ -26,8 +25,7 @@ use Df\Opal\Query\Initiator\Delete as DeleteInitiator;
 
 use DecodeLabs\Glitch;
 
-class Data implements
-    IHelper,
+class Entry implements
     IReadFacade,
     IWriteFacade
 {

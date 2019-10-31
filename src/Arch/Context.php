@@ -15,12 +15,11 @@ use Df\Plug\IContext;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-class Context implements IContext
+class Context
 {
-    use TContext;
-
-    protected $request;
-    protected $httpRequest;
+    public $request;
+    public $httpRequest;
+    public $app;
 
     /**
      * Init with http request and location uri
@@ -30,5 +29,14 @@ class Context implements IContext
         $this->app = $app;
         $this->request = $request;
         $this->httpRequest = $httpRequest ?? $app[ServerRequestInterface::class];
+    }
+
+    /**
+     * Temporary uri router
+     */
+    public function uri($uri): HttpUri
+    {
+        $handler = $this->app['arch.pipeline.handler'];
+        return $handler->routeOut(ArchUri::instance($uri));
     }
 }

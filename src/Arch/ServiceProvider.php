@@ -7,7 +7,6 @@ declare(strict_types=1);
 namespace Df\Arch;
 
 use Df\Arch\Pipeline\AreaMap;
-use Df\Arch\Pipeline\IHandler;
 use Df\Arch\Pipeline\Handler;
 
 use Df\Core\Config\Repository;
@@ -24,7 +23,7 @@ class ServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
-            IHandler::class
+            Handler::class
         ];
     }
 
@@ -33,7 +32,7 @@ class ServiceProvider implements IProvider
      */
     public function registerServices(IContainer $app): void
     {
-        $app->bindShared(IHandler::class, Handler::class)
+        $app->bindShared(Handler::class)
             ->prepareWith(function ($handler, $app) {
                 // Area maps
                 $config = $app[Repository::class];

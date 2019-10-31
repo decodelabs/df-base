@@ -36,7 +36,7 @@ abstract class Router
     /**
      * Convert Http request to arch uri
      */
-    public function matchIn(string $method, string $path): ?IRoute
+    public function matchIn(string $method, string $path): ?Route
     {
         if (empty($this->routes)) {
             $this->setup();
@@ -55,7 +55,7 @@ abstract class Router
     /**
      * Match arch Uri against list of routes
      */
-    public function matchOut(ArchUri $uri): ?IRoute
+    public function matchOut(ArchUri $uri): ?Route
     {
         if (empty($this->routes)) {
             $this->setup();
@@ -180,7 +180,7 @@ abstract class Router
     /**
      * Add a new route to the list
      */
-    public function addRoute(IRoute $route): IRoute
+    public function addRoute(Route $route): Route
     {
         $id = $route->getRouteType().'://'.ltrim($route->getRoutePath(), '/');
         return $this->routes[$id] = $route;

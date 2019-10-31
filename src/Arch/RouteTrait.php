@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Arch\Route;
+namespace Df\Arch;
 
 use Df\Core\IApp;
-use Df\Arch\IRoute;
+use Df\Arch\Route;
 use Df\Arch\Uri;
 
 use Df\Http\Message\Generator;
@@ -26,7 +26,7 @@ use DecodeLabs\Collections\ArrayProvider;
 use DecodeLabs\Tagged\Markup;
 use DecodeLabs\Glitch;
 
-trait TRoute
+trait RouteTrait
 {
     protected $path;
     protected $pattern;
@@ -37,7 +37,7 @@ trait TRoute
     /**
      * Mix in params from area maps
      */
-    public function mergeParams(array $params): IRoute
+    public function mergeParams(array $params): Route
     {
         $this->params = array_merge($params, $this->params);
         return $this;
@@ -88,7 +88,7 @@ trait TRoute
     /**
      * Compile pattern and match path
      */
-    protected function matchPath(string $requestPath): ?IRoute
+    protected function matchPath(string $requestPath): ?Route
     {
         if ($this->pattern === null) {
             $this->preparePattern();

@@ -3,8 +3,9 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace Df\Plug;
+namespace Df\Arch;
 
-interface IGlobalHelper extends IHelper
+interface Node
 {
+    public function dispatch();
 }
