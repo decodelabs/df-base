@@ -5,12 +5,14 @@
  */
 namespace Df\Clip;
 
-interface ITask extends \ArrayAccess
+use DecodeLabs\Terminus\Command\Definition;
+
+interface Task extends \ArrayAccess
 {
-    public function setArgs(array $args): ITask;
+    public function setArgs(array $args): Task;
     public function getArgs(): array;
     public function getArg(string $name);
 
-    public function setup(ICommand $command): void;
+    public function setup(Definition $command): void;
     public function dispatch();
 }

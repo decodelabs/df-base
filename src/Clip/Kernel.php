@@ -9,12 +9,10 @@ namespace Df\Clip;
 use Df\Core\IApp;
 use Df\Core\Kernel\IConsole;
 
-use Df\Clip\ITask;
 use Df\Clip\Task\Base;
-use Df\Clip\Command\Factory;
-use Df\Clip\Command\IRequest;
 
-use Df\Clip\Shell\Std;
+use DecodeLabs\Terminus\Cli;
+use DecodeLabs\Terminus\Command\Request;
 
 class Kernel implements IConsole
 {
@@ -41,30 +39,28 @@ class Kernel implements IConsole
     /**
      * Convert argv into shareable object
      */
-    public function prepareRequest(): IRequest
+    public function prepareRequest(): Request
     {
-        return $this->app[IRequest::class];
+        return $this->app[Request::class];
     }
 
 
     /**
      * Load the task and run it
      */
-    public function handle(IRequest $request): int
+    public function handle(Request $request): int
     {
-        $context = new Context($this->app, $request, $shell = new Std());
-        $task = Base::load($context);
-
-        $factory = $this->app[Factory::class];
-        $command = $factory->requestToCommand($request);
-        $task->setup($command);
+        Cli::replaceSession($request);
+        $task = Base::load($this->app, $request);
+        $session = Cli::prepareCommand([$task, 'setup']);
+        $command = $session->getCommandDefinition();
 
         try {
             $args = $command->apply($request);
         } catch (EGlitch $e) {
-            $shell->writeLine();
-            $context->render($e->getMessage(), 'error');
-            $command->renderHelp($context);
+            Cli::writeLine();
+            Cli::{'error'}($e->getMessage());
+            $command->renderHelp($session);
 
             return 1;
         }
@@ -72,7 +68,7 @@ class Kernel implements IConsole
         $task->setArgs($args);
 
         if ($args['help'] ?? false) {
-            $command->renderHelp($context);
+            $command->renderHelp($session);
             return 0;
         }
 
@@ -83,7 +79,7 @@ class Kernel implements IConsole
         if (is_int($res)) {
             $status = $res;
         } elseif ($res !== null) {
-            $context->render($res);
+            Cli::writeLine($res);
         }
 
         if ($res instanceof \Generator) {
@@ -101,7 +97,7 @@ class Kernel implements IConsole
     /**
      * Close down the app
      */
-    public function terminate(IRequest $request, int $status=0): void
+    public function terminate(Request $request, int $status=0): void
     {
         $this->app->terminate();
         exit($status);

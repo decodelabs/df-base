@@ -5,12 +5,12 @@
  */
 namespace Df\Core\Kernel;
 
-use Df\Clip\Command\IRequest;
+use DecodeLabs\Terminus\Command\Request;
 
 interface IConsole
 {
     public function run(): void;
-    public function prepareRequest(): IRequest;
-    public function handle(IRequest $request): int;
-    public function terminate(IRequest $request, int $status=0): void;
+    public function prepareRequest(): Request;
+    public function handle(Request $request): int;
+    public function terminate(Request $request, int $status=0): void;
 }

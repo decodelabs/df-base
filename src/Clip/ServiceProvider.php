@@ -9,8 +9,8 @@ namespace Df\Clip;
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
 
-use Df\Clip\Command\Factory;
-use Df\Clip\Command\IRequest;
+use DecodeLabs\Terminus\Cli;
+use DecodeLabs\Terminus\Command\Request;
 
 class ServiceProvider implements IProvider
 {
@@ -20,8 +20,7 @@ class ServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
-            Factory::class,
-            IRequest::class
+            Request::class
         ];
     }
 
@@ -30,12 +29,11 @@ class ServiceProvider implements IProvider
      */
     public function registerServices(IContainer $app): void
     {
-        // Factory
-        $app->bindShared(Factory::class);
-
         // Request
-        $app->bindShared(IRequest::class, function ($app, Factory $factory) {
-            return $factory->fromEnvironment();
+        $app->bindShared(Request::class, function ($app) {
+            $args = $_SERVER['argv'];
+            $script = array_shift($args);
+            return Cli::newRequest($args);
         })->alias('clip.request');
     }
 }

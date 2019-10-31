@@ -6,52 +6,57 @@
 declare(strict_types=1);
 namespace Df\Clip\Task;
 
-use Df\Clip\ITask;
-use Df\Clip\ICommand;
-use Df\Clip\Context;
-use Df\Clip\Command\IRequest;
-
-use Df\Plug\TContextProxy;
+use Df\Core\IApp;
+use Df\Clip\Task;
 use Df\Flex\Formatter;
 
+use DecodeLabs\Terminus\Command\Request;
+use DecodeLabs\Terminus\Command\Definition;
 use DecodeLabs\Glitch;
 
-abstract class Base implements ITask
+abstract class Base implements Task
 {
-    use TContextProxy;
-
     protected $args = [];
+    protected $app;
 
 
     /**
      * Load a task
      */
-    public static function load(Context $context): ITask
+    public static function load(IApp $app, Request $request): Task
     {
+        $path = $request->getScript();
+
         $parts = array_map(
             [Formatter::class, 'id'],
-            explode('/', $context->request->getPath())
+            explode('/', $path)
         );
 
         $class = '\\Df\\Apex\\Clip\\'.implode('\\', $parts).'Task';
 
         if (!class_exists($class, true)) {
             throw Glitch::ENotFound([
-                'message' => 'Task not found: '.$context->request->getPath(),
-                'data' => $context->request
+                'message' => 'Task not found: '.$path,
+                'data' => $request
             ]);
         }
 
-        return $context->app->newInstanceOf($class, [
-            'context' => $context,
-        ], ITask::class);
+        return $app->newInstanceOf($class, [], Task::class);
+    }
+
+    /**
+     * Init with app
+     */
+    public function __construct(IApp $app)
+    {
+        $this->app = $app;
     }
 
 
     /**
      * Set parsed arg list
      */
-    public function setArgs(array $args): ITask
+    public function setArgs(array $args): Task
     {
         $this->args = $args;
         return $this;
@@ -110,7 +115,7 @@ abstract class Base implements ITask
     /**
      * Prepare command
      */
-    public function setup(ICommand $command): void
+    public function setup(Definition $command): void
     {
     }
 }
