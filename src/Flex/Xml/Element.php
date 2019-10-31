@@ -11,14 +11,14 @@ use Df\Flex\Formatter;
 use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Glitch;
 
-class Node implements INode
+class Element implements AttributeContainer, \Countable, \ArrayAccess
 {
     protected $element;
 
     /**
      * Create instance from file
      */
-    public static function fromFile(string $path): INode
+    public static function fromFile(string $path): Element
     {
         try {
             $document = static::newDomDocument();
@@ -35,7 +35,7 @@ class Node implements INode
     /**
      * Create instance from string
      */
-    public static function fromString(string $xml): INode
+    public static function fromString(string $xml): Element
     {
         $xml = trim($xml);
 
@@ -60,7 +60,7 @@ class Node implements INode
     /**
      * Create HTML instance from file
      */
-    public static function fromHtmlFile(string $path): INode
+    public static function fromHtmlFile(string $path): Element
     {
         try {
             $document = static::newDomDocument();
@@ -77,7 +77,7 @@ class Node implements INode
     /**
      * Create instance from string
      */
-    public static function fromHtmlString(string $xml): INode
+    public static function fromHtmlString(string $xml): Element
     {
         try {
             $document = static::newDOMDocument();
@@ -94,7 +94,7 @@ class Node implements INode
     /**
      * Create instance from DOMDocument
      */
-    public static function fromDomDocument(\DOMDocument $document): INode
+    public static function fromDomDocument(\DOMDocument $document): Element
     {
         $document->formatOutput = true;
         return new static($document->documentElement);
@@ -121,7 +121,7 @@ class Node implements INode
     /**
      * Replace this node element with a new tag
      */
-    public function setTagName(string $name): INode
+    public function setTagName(string $name): Element
     {
         $newNode = $this->element->ownerDocument->createElement($name);
         $children = [];
@@ -279,7 +279,7 @@ class Node implements INode
     /**
      * Set inner XML string
      */
-    public function setInnerXml(string $inner): INode
+    public function setInnerXml(string $inner): Element
     {
         $this->removeAllChildren();
 
@@ -319,7 +319,7 @@ class Node implements INode
     /**
      * Replace contents with text
      */
-    public function setTextContent(string $content): INode
+    public function setTextContent(string $content): Element
     {
         $this->removeAllChildren();
 
@@ -394,7 +394,7 @@ class Node implements INode
     /**
      * Replace node content with CDATA
      */
-    public function setCDataContent(string $content): INode
+    public function setCDataContent(string $content): Element
     {
         $this->removeAllChildren();
 
@@ -407,7 +407,7 @@ class Node implements INode
     /**
      * Add CDATA section to end of node
      */
-    public function prependCDataContent(string $content): INode
+    public function prependCDataContent(string $content): Element
     {
         $content = $this->element->ownerDocument->createCDataSection($content);
         $this->element->insertBefore($content, $this->element->firstChild);
@@ -418,7 +418,7 @@ class Node implements INode
     /**
      * Add CDATA section to start of node
      */
-    public function appendCDataContent(string $content): INode
+    public function appendCDataContent(string $content): Element
     {
         $content = $this->element->ownerDocument->createCDataSection($content);
         $this->element->appendChild($content);
@@ -528,7 +528,7 @@ class Node implements INode
     /**
      * Get first child element
      */
-    public function getFirstChild(): ?INode
+    public function getFirstChild(): ?Element
     {
         return $this->getFirstChildNode();
     }
@@ -536,7 +536,7 @@ class Node implements INode
     /**
      * Get last child element
      */
-    public function getLastChild(): ?INode
+    public function getLastChild(): ?Element
     {
         return $this->getLastChildNode();
     }
@@ -544,7 +544,7 @@ class Node implements INode
     /**
      * Get child element by index
      */
-    public function getNthChild(int $index): ?INode
+    public function getNthChild(int $index): ?Element
     {
         return $this->getNthChildNode($index);
     }
@@ -569,7 +569,7 @@ class Node implements INode
     /**
      * Get first child of type
      */
-    public function getFirstChildOfType(string $name): ?INode
+    public function getFirstChildOfType(string $name): ?Element
     {
         return $this->getFirstChildNode($name);
     }
@@ -577,7 +577,7 @@ class Node implements INode
     /**
      * Get last child of type
      */
-    public function getLastChildOfType(string $name): ?INode
+    public function getLastChildOfType(string $name): ?Element
     {
         return $this->getLastChildNode($name);
     }
@@ -585,7 +585,7 @@ class Node implements INode
     /**
      * Get child of type by index
      */
-    public function getNthChildOfType(string $name, int $index): ?INode
+    public function getNthChildOfType(string $name, int $index): ?Element
     {
         return $this->getNthChildNode($index, $name);
     }
@@ -622,7 +622,7 @@ class Node implements INode
     /**
      * Get first element in list
      */
-    protected function getFirstChildNode(string $name=null): ?INode
+    protected function getFirstChildNode(string $name=null): ?Element
     {
         foreach ($this->element->childNodes as $node) {
             if ($node->nodeType == \XML_ELEMENT_NODE) {
@@ -638,7 +638,7 @@ class Node implements INode
     /**
      * Get last element in list
      */
-    protected function getLastChildNode(string $name=null): ?INode
+    protected function getLastChildNode(string $name=null): ?Element
     {
         $lastElement = null;
 
@@ -658,7 +658,7 @@ class Node implements INode
     /**
      * Get child at index
      */
-    protected function getNthChildNode(int $index, string $name=null): ?INode
+    protected function getNthChildNode(int $index, string $name=null): ?Element
     {
         if ($index < 1) {
             throw Glitch::EInvalidArgument(
@@ -754,7 +754,7 @@ class Node implements INode
     /**
      * Add child to end of node
      */
-    public function prependChild($newChild, $value=null): INode
+    public function prependChild($newChild, $value=null): Element
     {
         $node = $this->normalizeInputChild($newChild, $value);
         $node = $this->element->insertBefore($node, $this->element->firstChild);
@@ -765,7 +765,7 @@ class Node implements INode
     /**
      * Add child to start of node
      */
-    public function appendChild($newChild, $value=null): INode
+    public function appendChild($newChild, $value=null): Element
     {
         $node = $this->normalizeInputChild($newChild, $value);
         $this->element->appendChild($node);
@@ -776,7 +776,7 @@ class Node implements INode
     /**
      * Replace child node in place
      */
-    public function replaceChild(INode $origChild, $newChild, $value=null): INode
+    public function replaceChild(Element $origChild, $newChild, $value=null): Element
     {
         $origChild = $origChild->getDomElement();
         $node = $this->normalizeInputChild($newChild, $value);
@@ -788,7 +788,7 @@ class Node implements INode
     /**
      * Add child at index
      */
-    public function putChild(int $index, $child, $value=null): INode
+    public function putChild(int $index, $child, $value=null): Element
     {
         $newNode = $this->normalizeInputChild($child, $value);
         $origIndex = $index;
@@ -830,7 +830,7 @@ class Node implements INode
     /**
      * Add child node before chosen node
      */
-    public function insertChildBefore(INode $origChild, $newChild, $value=null): INode
+    public function insertChildBefore(Element $origChild, $newChild, $value=null): Element
     {
         $origChild = $origChild->getDomElement();
         $node = $this->normalizeInputChild($newChild, $value);
@@ -842,7 +842,7 @@ class Node implements INode
     /**
      * Add child node after chosen node
      */
-    public function insertChildAfter(INode $origChild, $newChild, $value=null): INode
+    public function insertChildAfter(Element $origChild, $newChild, $value=null): Element
     {
         $origChild = $origChild->getDomElement();
 
@@ -864,7 +864,7 @@ class Node implements INode
     /**
      * Remove child node
      */
-    public function removeChild(INode $child): Node
+    public function removeChild(Element $child): Element
     {
         $child = $child->getDomElement();
         $this->element->removeChild($child);
@@ -874,7 +874,7 @@ class Node implements INode
     /**
      * Clear all children from node
      */
-    public function removeAllChildren(): INode
+    public function removeAllChildren(): Element
     {
         $queue = [];
 
@@ -893,7 +893,7 @@ class Node implements INode
     /**
      * Get parent node
      */
-    public function getParent(): ?INode
+    public function getParent(): ?Element
     {
         if (!$this->element->parentNode) {
             return null;
@@ -957,7 +957,7 @@ class Node implements INode
     /**
      * Get previous node
      */
-    public function getPreviousSibling(): ?INode
+    public function getPreviousSibling(): ?Element
     {
         $node = $this->element->previousSibling;
 
@@ -977,7 +977,7 @@ class Node implements INode
     /**
      * Get next node
      */
-    public function getNextSibling(): ?INode
+    public function getNextSibling(): ?Element
     {
         $node = $this->element->nextSibling;
 
@@ -998,7 +998,7 @@ class Node implements INode
     /**
      * Insert sibling before this node
      */
-    public function insertBefore($sibling, $value=null): INode
+    public function insertBefore($sibling, $value=null): Element
     {
         $node = $this->normalizeInputChild($sibling, $value);
         $node = $this->element->parentNode->insertBefore($node, $this->element);
@@ -1009,7 +1009,7 @@ class Node implements INode
     /**
      * Insert sibling after this node
      */
-    public function insertAfter($sibling, $value=null): INode
+    public function insertAfter($sibling, $value=null): Element
     {
         $node = $this->normalizeInputChild($sibling, $value);
 
@@ -1031,7 +1031,7 @@ class Node implements INode
     /**
      * Replace this node with another
      */
-    public function replaceWith($sibling, $value=null): INode
+    public function replaceWith($sibling, $value=null): Element
     {
         $node = $this->normalizeInputChild($sibling, $value);
         $this->element->parentNode->replaceChild($node, $this->element);
@@ -1077,7 +1077,7 @@ class Node implements INode
     /**
      * Get element by id
      */
-    public function getById(string $id): ?INode
+    public function getById(string $id): ?Element
     {
         return $this->xPathFirst('//*[@id=\''.$id.'\']');
     }
@@ -1129,7 +1129,7 @@ class Node implements INode
     /**
      * Get first xPath result
      */
-    public function xPathFirst(string $path): ?INode
+    public function xPathFirst(string $path): ?Element
     {
         $xpath = new \DOMXPath($this->element->ownerDocument);
         $output = $xpath->query($path, $this->element)->item(0);
@@ -1145,7 +1145,7 @@ class Node implements INode
     /**
      * Set XML document version
      */
-    public function setXmlVersion(string $version): INode
+    public function setXmlVersion(string $version): Element
     {
         $this->element->ownerDocument->xmlVersion = $version;
         return $this;
@@ -1162,7 +1162,7 @@ class Node implements INode
     /**
      * Set XML document encoding
      */
-    public function setDocumentEncoding(string $encoding): INode
+    public function setDocumentEncoding(string $encoding): Element
     {
         $this->element->ownerDocument->xmlEncoding = $encoding;
         return $this;
@@ -1179,7 +1179,7 @@ class Node implements INode
     /**
      * Set document as standalone
      */
-    public function setDocumentStandalone(bool $flag): INode
+    public function setDocumentStandalone(bool $flag): Element
     {
         $this->element->ownerDocument->xmlStandalone = $flag;
         return $this;
@@ -1196,7 +1196,7 @@ class Node implements INode
     /**
      * Normalize XML document
      */
-    public function normalizeDocument(): INode
+    public function normalizeDocument(): Element
     {
         $this->element->ownerDocument->normalizeDocument();
         return $this;
@@ -1227,7 +1227,7 @@ class Node implements INode
     {
         $node = null;
 
-        if ($child instanceof INode) {
+        if ($child instanceof Element) {
             $node = $child->getDOMElement();
         }
 

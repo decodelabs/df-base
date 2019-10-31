@@ -6,10 +6,15 @@
 declare(strict_types=1);
 namespace Df\Flex\Xml;
 
+use Df\Flex\Xml\Element;
+
+use DecodeLabs\Collections\AttributeContainer;
 use DecodeLabs\Collections\AttributeContainerTrait;
 use DecodeLabs\Glitch;
 
-class Writer implements IWriter
+use ArrayAccess;
+
+class Writer implements AttributeContainer, ArrayAccess
 {
     const ELEMENT = 1;
     const CDATA = 2;
@@ -57,7 +62,7 @@ class Writer implements IWriter
     /**
      * Write initial XML header
      */
-    public function writeHeader(string $version='1.0', string $encoding='UTF-8', bool $standalone=false): IWriter
+    public function writeHeader(string $version='1.0', string $encoding='UTF-8', bool $standalone=false): Writer
     {
         if ($this->headerWritten) {
             throw Glitch::ELogic('XML header has already been written');
@@ -82,7 +87,7 @@ class Writer implements IWriter
     /**
      * Write full DTD
      */
-    public function writeDtd(string $name, string $publicId=null, string $systemId=null, string $subset=null): IWriter
+    public function writeDtd(string $name, string $publicId=null, string $systemId=null, string $subset=null): Writer
     {
         if ($this->rootWritten) {
             throw Glitch::ELogic('XML DTD cannot be written once the document is open');
@@ -107,7 +112,7 @@ class Writer implements IWriter
     /**
      * Write DTD attlist
      */
-    public function writeDtdAttlist(string $name, string $content): IWriter
+    public function writeDtdAttlist(string $name, string $content): Writer
     {
         if ($this->rootWritten) {
             throw Glitch::ELogic('XML DTD cannot be written once the document is open');
@@ -132,7 +137,7 @@ class Writer implements IWriter
     /**
      * Write DTD element
      */
-    public function writeDtdElement(string $name, string $content): IWriter
+    public function writeDtdElement(string $name, string $content): Writer
     {
         if ($this->rootWritten) {
             throw Glitch::ELogic('XML DTD cannot be written once the document is open');
@@ -157,7 +162,7 @@ class Writer implements IWriter
     /**
      * Write DTD entity
      */
-    public function writeDtdEntity(string $name, string $content, string $pe, string $publicId, string $systemId, string $nDataId): IWriter
+    public function writeDtdEntity(string $name, string $content, string $pe, string $publicId, string $systemId, string $nDataId): Writer
     {
         if ($this->rootWritten) {
             throw Glitch::ELogic('XML DTD cannot be written once the document is open');
@@ -184,7 +189,7 @@ class Writer implements IWriter
     /**
      * Write full element in one go
      */
-    public function writeElement(string $name, string $content=null, array $attributes=null): IWriter
+    public function writeElement(string $name, string $content=null, array $attributes=null): Writer
     {
         $this->startElement($name, $attributes);
 
@@ -198,7 +203,7 @@ class Writer implements IWriter
     /**
      * Open element to write into
      */
-    public function startElement(string $name, array $attributes=null): IWriter
+    public function startElement(string $name, array $attributes=null): Writer
     {
         $this->completeCurrentNode();
         $this->document->startElement($name);
@@ -216,7 +221,7 @@ class Writer implements IWriter
     /**
      * Complete writing current element
      */
-    public function endElement(): IWriter
+    public function endElement(): Writer
     {
         if ($this->currentNode !== self::ELEMENT) {
             throw Glitch::ELogic('XML writer is not currently writing an element');
@@ -232,7 +237,7 @@ class Writer implements IWriter
     /**
      * Store element content ready for writing
      */
-    public function setElementContent(string $content): IWriter
+    public function setElementContent(string $content): Writer
     {
         $this->elementContent = $content;
         return $this;
@@ -251,7 +256,7 @@ class Writer implements IWriter
     /**
      * Write a full CDATA section
      */
-    public function writeCData(string $content): IWriter
+    public function writeCData(string $content): Writer
     {
         $this->startCData();
         $this->writeCDataContent($content);
@@ -261,7 +266,7 @@ class Writer implements IWriter
     /**
      * Write new element with CDATA section
      */
-    public function writeCDataElement(string $name, string $content, array $attributes=null): IWriter
+    public function writeCDataElement(string $name, string $content, array $attributes=null): Writer
     {
         $this->startElement($name, $attributes);
         $this->writeCData($content);
@@ -271,7 +276,7 @@ class Writer implements IWriter
     /**
      * Start new CDATA section
      */
-    public function startCData(): IWriter
+    public function startCData(): Writer
     {
         $this->completeCurrentNode();
         $this->document->startCData();
@@ -282,7 +287,7 @@ class Writer implements IWriter
     /**
      * Write content for CDATA section
      */
-    public function writeCDataContent(string $content): IWriter
+    public function writeCDataContent(string $content): Writer
     {
         if ($this->currentNode !== self::CDATA) {
             throw Glitch::ELogic('XML writer is not current writing CDATA');
@@ -296,7 +301,7 @@ class Writer implements IWriter
     /**
      * Finalize CDATA section
      */
-    public function endCData(): IWriter
+    public function endCData(): Writer
     {
         if ($this->currentNode !== self::CDATA) {
             throw Glitch::ELogic('XML writer is not current writing CDATA');
@@ -311,7 +316,7 @@ class Writer implements IWriter
     /**
      * Write comment in one go
      */
-    public function writeComment(string $comment): IWriter
+    public function writeComment(string $comment): Writer
     {
         $this->startComment();
         $this->writeCommentContent($comment);
@@ -321,7 +326,7 @@ class Writer implements IWriter
     /**
      * Begin comment node
      */
-    public function startComment(): IWriter
+    public function startComment(): Writer
     {
         $this->completeCurrentNode();
         $this->document->startComment();
@@ -332,7 +337,7 @@ class Writer implements IWriter
     /**
      * Write comment body
      */
-    public function writeCommentContent(string $comment): IWriter
+    public function writeCommentContent(string $comment): Writer
     {
         if ($this->currentNode !== self::COMMENT) {
             throw Glitch::ELogic('XML writer is not currently writing a comment');
@@ -346,7 +351,7 @@ class Writer implements IWriter
     /**
      * Finalize comment node
      */
-    public function endComment(): IWriter
+    public function endComment(): Writer
     {
         if ($this->currentNode !== self::COMMENT) {
             throw Glitch::ELogic('XML writer is not currently writing a comment');
@@ -361,7 +366,7 @@ class Writer implements IWriter
     /**
      * Write PI in one go
      */
-    public function writePi(string $target, string $content): IWriter
+    public function writePi(string $target, string $content): Writer
     {
         $this->startPi($target);
         $this->writePiContent($content);
@@ -371,7 +376,7 @@ class Writer implements IWriter
     /**
      * Begin PI node
      */
-    public function startPi(string $target): IWriter
+    public function startPi(string $target): Writer
     {
         $this->completeCurrentNode();
         $this->document->startPI($target);
@@ -382,7 +387,7 @@ class Writer implements IWriter
     /**
      * Write PI content
      */
-    public function writePiContent(string $content): IWriter
+    public function writePiContent(string $content): Writer
     {
         if ($this->currentNode !== self::PI) {
             throw Glitch::ELogic('XML writer is not currently writing a processing instruction');
@@ -395,7 +400,7 @@ class Writer implements IWriter
     /**
      * Finalize PI
      */
-    public function endPi(): IWriter
+    public function endPi(): Writer
     {
         if ($this->currentNode !== self::PI) {
             throw Glitch::ELogic('XML writer is not currently writing a processing instruction');
@@ -411,7 +416,7 @@ class Writer implements IWriter
     /**
      * Set list of attribute names to be written raw
      */
-    public function setRawAttributeNames(string ...$names): IWriter
+    public function setRawAttributeNames(string ...$names): Writer
     {
         $this->rawAttributeNames = $names;
         return $this;
@@ -430,7 +435,7 @@ class Writer implements IWriter
     /**
      * Write directly to XML buffer
      */
-    public function writeRaw(string $content): IWriter
+    public function writeRaw(string $content): Writer
     {
         $this->document->writeRaw($content);
         return $this;
@@ -487,7 +492,7 @@ class Writer implements IWriter
     /**
      * Ensure everything is written to buffer
      */
-    public function finalize(): IWriter
+    public function finalize(): Writer
     {
         if ($this->finalized) {
             return $this;
@@ -510,15 +515,15 @@ class Writer implements IWriter
     /**
      * Convert to
      */
-    public function toReader(): INode
+    public function toReader(): Element
     {
-        return Node::fromString($this->__toString());
+        return Element::fromString($this->__toString());
     }
 
     /**
      * Import XML string from reader node
      */
-    public function importReader(INode $reader)
+    public function importReader(Element $reader)
     {
         $this->completeCurrentNode();
         $this->document->writeRaw($reader->toNodeXmlString());
