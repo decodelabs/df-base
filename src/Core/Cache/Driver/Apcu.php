@@ -73,7 +73,7 @@ class Apcu implements IDriver
         do {
             $empty = true;
 
-            $it = new \APCUIterator(
+            $it = new \APCuIterator(
                 $this->createRegexKey($namespace, $key),
                 APC_ITER_KEY,
                 100
@@ -96,7 +96,7 @@ class Apcu implements IDriver
         do {
             $empty = true;
 
-            $it = new \APCUIterator(
+            $it = new \APCuIterator(
                 $this->createRegexKey($namespace, null),
                 APC_ITER_KEY,
                 100

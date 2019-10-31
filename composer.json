@@ -51,7 +51,9 @@
         "decodelabs/collections": "dev-develop",
         "decodelabs/gadgets": "dev-develop",
         "decodelabs/atlas": "dev-develop",
-        "decodelabs/enlighten": "dev-develop"
+        "decodelabs/enlighten": "dev-develop",
+
+        "predis/predis": "^1.1"
     },
     "extra": {
         "branch-alias": {

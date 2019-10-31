@@ -19,11 +19,10 @@ namespace Df
 
     define('Df\\START', microtime(true));
 
-
     /**
-     * Initial bootstrap
+     * Initial setup
      */
-    function bootstrap(string $basePath=null): IApp
+    function setup(string $basePath=null): void
     {
         /* Ensure this only ever gets called once */
         static $started;
@@ -33,8 +32,6 @@ namespace Df
         }
 
         $started = true;
-
-
 
         /* Use reflection to get a handle on vendor path
          * and by extension, base path */
@@ -53,7 +50,14 @@ namespace Df
                 'app' => Df\BASE_PATH,
                 'df-base' => __DIR__
             ]);
+    }
 
+    /**
+     * Initial bootstrap
+     */
+    function bootstrap(string $basePath=null): IApp
+    {
+        Df\setup($basePath);
 
         /* Manually load App class from base path */
         if (file_exists($basePath.'/App.php')) {
@@ -62,7 +66,6 @@ namespace Df
 
         $app = Df\app();
         $app->bootstrap();
-        define('Df\\BOOTSTRAPPED', true);
 
         return $app;
     }

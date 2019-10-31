@@ -1,5 +1,6 @@
 parameters:
     level: 1
+    bootstrap: %rootDir%/../../../../df-base/tests/bootstrap.php
     paths:
         - src
 

@@ -59,66 +59,82 @@ class Entry implements
     /**
      *
      */
+     /*
     public function union(string ...$fields): UnionInitiator
     {
         Glitch::incomplete();
     }
+    */
 
     /**
      *
      */
+     /*
     public function fetch(): FetchInitiator
     {
         Glitch::incomplete();
     }
+    */
 
 
 
     /**
      *
      */
+     /*
     public function insert(array $values): InsertInitiator
     {
         Glitch::incomplete();
     }
+    */
 
     /**
      *
      */
+     /*
     public function batchInsert(array $rows=[]): BatchInsertInitiator
     {
         Glitch::incomplete();
     }
+    */
 
     /**
      *
      */
+     /*
     public function replace(array $values): ReplaceInitiator
     {
         Glitch::incomplete();
     }
+    */
 
     /**
      *
      */
+     /*
     public function batchReplace(array $rows=[]): BatchReplaceInitiator
     {
         Glitch::incomplete();
     }
+    */
 
     /**
      *
      */
+     /*
     public function update(array $valueMap=null): UpdateInitiator
     {
         Glitch::incomplete();
     }
+    */
 
     /**
      *
      */
+     /*
     public function delete(): DeleteInitiator
     {
         Glitch::incomplete();
     }
+    */
 }

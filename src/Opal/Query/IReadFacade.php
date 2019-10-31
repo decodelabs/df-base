@@ -13,6 +13,6 @@ interface IReadFacade
 {
     public function select(string ...$fields): SelectInitiator;
     public function selectDistinct(string ...$fields): SelectInitiator;
-    public function union(string ...$fields): UnionInitiator;
-    public function fetch(): FetchInitiator;
+    //public function union(string ...$fields): UnionInitiator;
+    //public function fetch(): FetchInitiator;
 }

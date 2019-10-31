@@ -14,10 +14,12 @@ use Df\Opal\Query\Initiator\Delete as DeleteInitiator;
 
 interface IWriteFacade
 {
+    /*
     public function insert(array $values): InsertInitiator;
     public function batchInsert(array $rows=[]): BatchInsertInitiator;
     public function replace(array $values): ReplaceInitiator;
     public function batchReplace(array $rows=[]): BatchReplaceInitiator;
     public function update(array $valueMap=null): UpdateInitiator;
     public function delete(): DeleteInitiator;
+    */
 }
