@@ -683,7 +683,7 @@ class Element implements AttributeContainer, \Countable, \ArrayAccess
     protected function getNthChildList(string $formula, string $name=null): array
     {
         if (is_numeric($formula)) {
-            if ($output = $this->getNthChildNode($formula, $name)) {
+            if ($output = $this->getNthChildNode((int)$formula, $name)) {
                 return [$output];
             }
         }

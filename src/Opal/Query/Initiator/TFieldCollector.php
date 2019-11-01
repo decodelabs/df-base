@@ -26,7 +26,7 @@ trait TFieldCollector
     public function setFields(string ...$fields): IFieldCollector
     {
         $this->fields = [];
-        return $this->addFields($fields);
+        return $this->addFields(...$fields);
     }
 
     /**

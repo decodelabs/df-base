@@ -8,6 +8,7 @@ namespace Df\Opal\Query\Clause;
 
 use Df\Opal\Query\Initiator\Select as SelectInitiator;
 use Df\Opal\Query\Builder\Select as SelectBuilder;
+use Df\Opal\Query\IBuilder;
 
 trait THavingFacade
 {
@@ -192,7 +193,19 @@ trait THavingFacade
 
         $output->setAliasPrefix(uniqid('hcs_'));
 
-        $output->asSubQuery($this, 'having', function ($select) use ($local, $operator, $or) {
+        $parent = null;
+
+        if ($this instanceof IBuilder) {
+            $parent = $this;
+        }
+        if ($this instanceof IGroup) {
+            $parent = $this->getQuery();
+        }
+        if (!$parent) {
+            throw Glitch::EUnexpectedValue('Unable to get parent query for sub query', null, $this);
+        }
+
+        $output->asSubQuery($parent, 'having', function ($select) use ($local, $operator, $or) {
             return (new Factory($this))->createQueryClause(
                 $local,
                 $operator,

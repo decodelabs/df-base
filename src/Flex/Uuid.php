@@ -150,7 +150,7 @@ class Uuid
                 return UuidLib::fromString($value);
             }
         } elseif (is_int($value)) {
-            return UuidLib::fromInteger($value);
+            return UuidLib::fromInteger((string)$value);
         } else {
             throw Glitch::EInvalidArgument('Invalid Uuid input', null, $value);
         }
@@ -198,7 +198,7 @@ class Uuid
         }
 
         try {
-            return Date::parse($output->getDateTime());
+            return Date::instance($output->getDateTime());
         } catch (UnsupportedOperationException $e) {
             return null;
         }

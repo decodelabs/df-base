@@ -228,7 +228,7 @@ class Uri implements IUri
      */
     public function getPassword(): ?string
     {
-        if ($this->password !== null) {
+        if ($this->password === null) {
             return null;
         }
 
