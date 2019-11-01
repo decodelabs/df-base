@@ -37,7 +37,7 @@ namespace Df
          * and by extension, base path */
         if ($basePath === null) {
             $class = new \ReflectionClass(ClassLoader::class);
-            [$basePath,] = explode('/vendor/', $class->getFileName(), 2);
+            [$basePath,] = explode('/vendor/', (string)$class->getFileName(), 2);
         }
 
         /* Make basePath available globally */

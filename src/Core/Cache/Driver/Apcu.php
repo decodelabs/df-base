@@ -146,7 +146,7 @@ class Apcu implements IDriver
     public function deleteLock(string $namespace, string $key): bool
     {
         $key = $this->createLockKey($namespace, $key);
-        return apcu_delete($key);
+        return (bool)apcu_delete($key);
     }
 
 

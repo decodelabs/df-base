@@ -59,8 +59,10 @@ class Factory
      */
     public function prepareServerData(array $server): array
     {
-        if (function_exists('apache_request_headers')) {
-            $apache = apache_request_headers();
+        if (
+            function_exists('apache_request_headers') &&
+            false !== ($apache = apache_request_headers())
+        ) {
             $apache = array_change_key_case($apache, CASE_LOWER);
 
             if (isset($apache['authorization'])) {

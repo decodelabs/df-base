@@ -286,9 +286,9 @@ class File implements IDriver
         $key = trim($key, '/');
         $parts = explode(static::KEY_SEPARATOR, $key);
 
-        foreach ($parts as &$part) {
+        foreach ((array)$parts as &$part) {
             if ($part !== '') {
-                $part = md5($part);
+                $part = md5((string)$part);
             }
         }
 

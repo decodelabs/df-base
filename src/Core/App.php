@@ -77,7 +77,11 @@ class App extends Container implements IApp
         /* The loader needs to be set up manually before
          * everything else to ensure custom classes are found */
         $this->registerLoaderServices();
-        $this[ILoader::class]->loadBundles($this::BUNDLES);
+        $loader = $this[ILoader::class];
+
+        if ($loader instanceof ILoader) {
+            $loader->loadBundles($this::BUNDLES);
+        }
 
         /* Load up all the available providers */
         $this->registerProviders(...$this::DEFAULT_PROVIDERS);

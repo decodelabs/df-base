@@ -57,7 +57,9 @@ class DotIni implements IEnvLoader
             throw Glitch::ENotFound('Ini file could not be read', null, $path);
         }
 
-        $data = parse_ini_file($path);
+        if (false === ($data = parse_ini_file($path))) {
+            throw Glitch::ERuntime('Unable to parse ini file', null, $path);
+        }
 
         if (!isset($data['IDENTITY'])) {
             throw Glitch::EUnexpectedValue(

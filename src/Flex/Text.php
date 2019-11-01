@@ -59,7 +59,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function count(): int
     {
-        return mb_strlen($this->text, $this->encoding);
+        return (int)mb_strlen($this->text, $this->encoding);
     }
 
     /**
@@ -67,7 +67,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function getLength(): int
     {
-        return mb_strlen($this->text, $this->encoding);
+        return (int)mb_strlen($this->text, $this->encoding);
     }
 
     /**
@@ -319,7 +319,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
             if (mb_substr(
                 $this->text,
                 0,
-                mb_strlen($start, $this->encoding),
+                (int)mb_strlen($start, $this->encoding),
                 $this->encoding
             ) === $start) {
                 return true;
@@ -339,7 +339,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
                 mb_substr(
                     $this->text,
                     0,
-                    mb_strlen($start, $this->encoding),
+                    (int)mb_strlen($start, $this->encoding),
                     $this->encoding
                 ),
                 $this->encoding
@@ -649,9 +649,13 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function split(string $delimiter, int $limit=PHP_INT_MAX): array
     {
+        if (false === ($output = explode($delimiter, $this->text, $limit))) {
+            throw Glitch::EUnexpectedValue('Unabled to explode text by delimiter "'.$delimiter.'"', null, $this);
+        }
+
         return array_map(function ($part) {
             return new static($part, $this->encoding);
-        }, explode($delimiter, $this->text, $limit));
+        }, $output);
     }
 
     /**
@@ -673,12 +677,12 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
         $encoding = mb_regex_encoding();
         mb_regex_encoding($this->encoding);
 
-        $output = mb_ereg_replace('^[[:space:]]+|[[:space:]]+\$', '', $this->text);
-        $output = mb_ereg_replace('\B([A-Z])', '-\1', $output);
-        $output = mb_strtolower($output, $this->encoding);
-        $output = mb_ereg_replace('[-_]+', ' ', $output);
-        $output = mb_ereg_replace('\p{P}', '', $output);
-        $output = mb_ereg_replace('[\s]+', $delimiter, $output);
+        $output = (string)mb_ereg_replace('^[[:space:]]+|[[:space:]]+\$', '', $this->text);
+        $output = (string)mb_ereg_replace('\B([A-Z])', '-\1', $output);
+        $output = (string)mb_strtolower($output, $this->encoding);
+        $output = (string)mb_ereg_replace('[-_]+', ' ', $output);
+        $output = (string)mb_ereg_replace('\p{P}', '', $output);
+        $output = (string)mb_ereg_replace('[\s]+', $delimiter, $output);
 
         mb_regex_encoding($encoding);
         return new static($output, $this->encoding);
@@ -794,7 +798,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
     {
         return new static(
             mb_strtolower(mb_substr($this->text, 0, 1, $this->encoding)).
-                mb_substr($this->text, 1, mb_strlen($this->text, $this->encoding), $this->encoding),
+                mb_substr($this->text, 1, (int)mb_strlen($this->text, $this->encoding), $this->encoding),
             $this->encoding
         );
     }
@@ -834,7 +838,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
     {
         return new static(
             mb_strtoupper(mb_substr($this->text, 0, 1, $this->encoding)).
-                mb_substr($this->text, 1, mb_strlen($this->text, $this->encoding), $this->encoding),
+                mb_substr($this->text, 1, (int)mb_strlen($this->text, $this->encoding), $this->encoding),
             $this->encoding
         );
     }
@@ -1111,7 +1115,10 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
             return;
         }
 
-        $result = mb_ereg_search_getregs();
+        if (false === ($result = mb_ereg_search_getregs())) {
+            $result = [];
+        }
+
         $count = 0;
 
         do {

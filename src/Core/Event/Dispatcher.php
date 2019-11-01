@@ -15,7 +15,7 @@ class Dispatcher
      */
     public function before(string $id, callable $callback): Dispatcher
     {
-        $this->events['<'.$id][spl_object_id($callback)] = $callback;
+        $this->events['<'.$id][$this->hashCallable($callback)] = $callback;
         return $this;
     }
 
@@ -24,8 +24,24 @@ class Dispatcher
      */
     public function after(string $id, callable $callback): Dispatcher
     {
-        $this->events['>'.$id][spl_object_id($callback)] = $callback;
+        $this->events['>'.$id][$this->hashCallable($callback)] = $callback;
         return $this;
+    }
+
+    /**
+     * Extract id from callable
+     */
+    protected function hashCallable(callable $callback): string
+    {
+        if (is_array($callback)) {
+            return (string)spl_object_id($callback[0]);
+        } elseif ($callback instanceof \Closure) {
+            return (string)spl_object_id($callback);
+        } elseif (is_string($callback)) {
+            return $callback;
+        } else {
+            throw Glitch::EInvalidArgument('Unable to hash callback', null, $callback);
+        }
     }
 
     /**
@@ -141,7 +157,7 @@ class Dispatcher
     public function removeBefore(string $id, callable $callback=null): Dispatcher
     {
         if ($callback) {
-            unset($this->events['<'.$id][spl_object_id($callback)]);
+            unset($this->events['<'.$id][$this->hashCallable($callback)]);
         } else {
             unset($this->events['<'.$id]);
         }
@@ -155,7 +171,7 @@ class Dispatcher
     public function removeAfter(string $id, callable $callback=null): Dispatcher
     {
         if ($callback) {
-            unset($this->events['>'.$id][spl_object_id($callback)]);
+            unset($this->events['>'.$id][$this->hashCallable($callback)]);
         } else {
             unset($this->events['>'.$id]);
         }

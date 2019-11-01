@@ -27,7 +27,10 @@ class Date extends Carbon
         } elseif ($date instanceof \DateTime) {
             return parent::instance($date);
         } elseif (is_array($date)) {
-            return parent::createSafe(...$date);
+            if (false === ($output = parent::createSafe(...$date))) {
+                $output = null;
+            }
+            return $output;
         } else {
             throw Glitch::EInvalidArgument('Invalid date format', null, $date);
         }

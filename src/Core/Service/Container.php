@@ -202,7 +202,7 @@ class Container implements IContainer
         }
 
         if (false !== ($key = array_search($type, $this->aliases))) {
-            return $key;
+            return (string)$key;
         }
 
         return null;
@@ -503,7 +503,15 @@ class Container implements IContainer
      */
     public function call(callable $function, array $params=[])
     {
-        $reflector = new \ReflectionFunction($function);
+        if (is_array($function)) {
+            $classRef = new \ReflectionObject($function[0]);
+            $reflector = $classRef->getMethod($function[1]);
+        } elseif ($function instanceof \Closure || is_string($function)) {
+            $reflector = new \ReflectionFunction($function);
+        } else {
+            throw Glitch::InvalidArgument('Unable to reflect callback', null, $function);
+        }
+
         $paramReflectors = $reflector->getParameters();
         $args = $this->prepareArgs($paramReflectors, $params);
 

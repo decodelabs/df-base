@@ -30,7 +30,7 @@ class Composer implements ILoader
     public function __construct(IApp $app, ClassLoader $autoload)
     {
         $reflection = new \ReflectionClass(ClassLoader::class);
-        $this->vendorPath = dirname(dirname($reflection->getFileName()));
+        $this->vendorPath = dirname(dirname((string)$reflection->getFileName()));
         $this->basePath = dirname($this->vendorPath);
 
         $this->autoload = $autoload;

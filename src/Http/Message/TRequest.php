@@ -206,7 +206,7 @@ trait TRequest
         $output->headerAliases['host'] = 'Host';
 
         foreach (array_keys($output->headers) as $name) {
-            if (strtolower($name) === 'host') {
+            if (strtolower((string)$name) === 'host') {
                 unset($output->headers[$name]);
             }
         }

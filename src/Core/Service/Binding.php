@@ -256,7 +256,17 @@ class Binding implements IBinding
      */
     public function prepareWith(callable $callback): IBinding
     {
-        $this->preparators[spl_object_id($callback)] = $callback;
+        if (is_array($callback)) {
+            $id = (string)spl_object_id($callback[0]);
+        } elseif ($callback instanceof \Closure) {
+            $id = (string)spl_object_id($callback);
+        } elseif (is_string($callback)) {
+            $id = $callback;
+        } else {
+            throw Glitch::EInvalidArgument('Unable to hash callback', null, $callback);
+        }
+
+        $this->preparators[$id] = $callback;
         return $this;
     }
 

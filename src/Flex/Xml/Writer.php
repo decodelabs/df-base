@@ -544,7 +544,11 @@ class Writer implements AttributeContainer, ArrayAccess
     public function __toString(): string
     {
         if ($this->path) {
-            return file_get_contents($this->path);
+            if (false === ($output = file_get_contents($this->path))) {
+                throw Glitch::EUnexpectedValue('Unable to read contents of file', null, $this->path);
+            }
+
+            return $output;
         } else {
             return $this->document->outputMemory();
         }
