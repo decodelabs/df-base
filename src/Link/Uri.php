@@ -9,7 +9,7 @@ use DecodeLabs\Collections\Tree;
 
 use Psr\Http\Message\UriInterface;
 
-interface IUri extends UriInterface
+interface Uri extends UriInterface
 {
     public function setScheme(?string $scheme): UriInterface;
 

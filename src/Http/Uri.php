@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Http;
 
-use Df\Link\IUri;
+use Df\Link\Uri as LinkUri;
 
 use Psr\Http\Message\UriInterface;
 
@@ -14,7 +14,7 @@ use DecodeLabs\Collections\Tree;
 use DecodeLabs\Collections\Tree\NativeMutable as MutableTree;
 use DecodeLabs\Glitch;
 
-class Uri implements IUri
+class Uri implements LinkUri
 {
     const DELIMITERS = '!\$&\'\(\)\*\+,;=';
     const VALID_CHARACTERS = 'a-zA-Z0-9_\-\.~\pL';
