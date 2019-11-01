@@ -6,7 +6,9 @@
 declare(strict_types=1);
 namespace Df\Core\Crypt;
 
+use Df\Core\Crypt\Symmetric;
 use Df\Core\Crypt\Symmetric\Halite as HaliteSymmetric;
+use Df\Core\Crypt\Hasher;
 use Df\Core\Crypt\Hasher\Native as NativeHasher;
 
 use Df\Core\Service\IContainer;
@@ -20,8 +22,8 @@ class ServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
-            ISymmetric::class,
-            IHasher::class
+            Symmetric::class,
+            Hasher::class
         ];
     }
 
@@ -31,12 +33,12 @@ class ServiceProvider implements IProvider
     public function registerServices(IContainer $app): void
     {
         // Symmetric
-        $app->bindShared(ISymmetric::class, function ($app) {
+        $app->bindShared(Symmetric::class, function ($app) {
             return new HaliteSymmetric($app->getBasePath().'/private/halite.key');
         });
 
         // Hasher
-        $app->bindShared(IHasher::class, function ($app) {
+        $app->bindShared(Hasher::class, function ($app) {
             $config = $app['core.config.repository'];
             $options = [];
 

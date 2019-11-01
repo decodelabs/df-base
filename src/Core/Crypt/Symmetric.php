@@ -5,7 +5,7 @@
  */
 namespace Df\Core\Crypt;
 
-interface ISymmetric
+interface Symmetric
 {
     public function encryptString(string $string): string;
     public function encryptData($data): string;

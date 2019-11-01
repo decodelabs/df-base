@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Core\Crypt\Symmetric;
 
-use Df\Core\Crypt\ISymmetric;
+use Df\Core\Crypt\Symmetric;
 
 use ParagonIE\Halite\HiddenString;
 use ParagonIE\Halite\KeyFactory;
@@ -16,7 +16,7 @@ use ParagonIE\Halite\Symmetric\EncryptionKey;
 
 use DecodeLabs\Glitch;
 
-class Halite implements ISymmetric
+class Halite implements Symmetric
 {
     protected $keyPath;
     private $key;

@@ -5,7 +5,7 @@
  */
 namespace Df\Core\Crypt;
 
-interface IHasher
+interface Hasher
 {
     public function getInfo(string $hashedValue): array;
     public function hash(string $value): string;
