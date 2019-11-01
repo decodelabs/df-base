@@ -16,7 +16,7 @@ use Df\Http\Response\Text;
 use Df\Http\Response\Html;
 use Df\Http\Response\Json;
 use Df\Http\Response\Redirect;
-use Df\Http\Response\IProxy;
+use Df\Http\Response\Proxy;
 
 use Psr\Http\Message\UriInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -197,7 +197,7 @@ trait RouteTrait
             );
         }
 
-        if ($output instanceof IProxy) {
+        if ($output instanceof Proxy) {
             $output = $output->toHttpResponse();
         }
 

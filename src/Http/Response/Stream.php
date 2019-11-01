@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Http\Response;
 
-use Df\Http\Message\TMessage;
+use Df\Http\MessageTrait;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -15,7 +15,7 @@ use DecodeLabs\Glitch;
 
 class Stream implements ResponseInterface
 {
-    use TMessage;
+    use MessageTrait;
 
     const CODES = [
         // Info code

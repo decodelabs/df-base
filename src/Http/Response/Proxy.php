@@ -7,7 +7,7 @@ namespace Df\Http\Response;
 
 use Psr\Http\Message\ResponseInterface;
 
-interface IProxy
+interface Proxy
 {
     public function toHttpResponse(): ResponseInterface;
 }

@@ -4,18 +4,20 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Http\Message;
+namespace Df\Http;
 
 use Df\Http\Uri;
+use Df\Http\MessageTrait;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
 
+
 use DecodeLabs\Glitch;
 
-trait TRequest
+trait RequestTrait
 {
-    use TMessage;
+    use MessageTrait;
 
     protected $method = 'GET';
     protected $target = '/';

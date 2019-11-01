@@ -11,9 +11,8 @@ use Df\Core\Service\IProvider;
 
 use Df\Http\Request\Factory;
 use Df\Http\Response\Sender;
-use Df\Http\Response\ISender;
+use Df\Http\Response\Sender\StandardOutput;
 use Df\Http\Pipeline\Dispatcher;
-use Df\Http\Pipeline\IDispatcher;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -26,8 +25,8 @@ class ServiceProvider implements IProvider
     {
         return [
             ServerRequestInterface::class,
-            IDispatcher::class,
-            ISender::class
+            Dispatcher::class,
+            Sender::class
         ];
     }
 
@@ -42,10 +41,10 @@ class ServiceProvider implements IProvider
         })->alias('http.request.server');
 
         // Dispatcher
-        $app->bind(IDispatcher::class, Dispatcher::class);
+        $app->bind(Dispatcher::class);
 
         // Response sender
-        $app->bind(ISender::class, Sender::class)
+        $app->bind(Sender::class, StandardOutput::class)
             ->prepareWith(function ($sender, $app) {
                 $config = $app['core.config.repository'];
 

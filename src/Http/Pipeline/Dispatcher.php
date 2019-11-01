@@ -15,7 +15,7 @@ use Psr\Http\Server\MiddlewareInterface;
 
 use DecodeLabs\Glitch;
 
-class Dispatcher implements IDispatcher
+class Dispatcher implements RequestHandlerInterface, Terminable
 {
     protected $queue = [];
     protected $app;
@@ -34,7 +34,7 @@ class Dispatcher implements IDispatcher
     /**
      * Add middleware to queue
      */
-    public function queue(MiddlewareInterface $middleware): IDispatcher
+    public function queue(MiddlewareInterface $middleware): Dispatcher
     {
         $this->queue[] = $middleware;
         return $this;
@@ -43,7 +43,7 @@ class Dispatcher implements IDispatcher
     /**
      * Add callback to middleware queue
      */
-    public function queueCallable(callable $callable): IDispatcher
+    public function queueCallable(callable $callable): Dispatcher
     {
         return $this->queue(new CallableMiddleware($callable));
     }
@@ -51,7 +51,7 @@ class Dispatcher implements IDispatcher
     /**
      * Add middleware by type
      */
-    public function queueType(string $type): IDispatcher
+    public function queueType(string $type): Dispatcher
     {
         $ref = new \ReflectionClass($type);
 
@@ -70,7 +70,7 @@ class Dispatcher implements IDispatcher
     /**
      * Queue list of middlewares
      */
-    public function queueList(array $middlewares): IDispatcher
+    public function queueList(array $middlewares): Dispatcher
     {
         foreach ($middlewares as $middleware) {
             if ($middleware instanceof MiddlewareInterface) {
@@ -125,7 +125,7 @@ class Dispatcher implements IDispatcher
     public function terminate(ServerRequestInterface $request, ResponseInterface $response): void
     {
         foreach ($this->queue as $middleware) {
-            if ($middleware instanceof ITerminable) {
+            if ($middleware instanceof Terminable) {
                 $middleware->terminate($request, $response);
             }
         }

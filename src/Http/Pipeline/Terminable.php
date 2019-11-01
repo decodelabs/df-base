@@ -3,12 +3,12 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace Df\Http\Response;
+namespace Df\Http\Pipeline;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-interface ISender
+interface Terminable
 {
-    public function sendResponse(ServerRequestInterface $request, ResponseInterface $response): void;
+    public function terminate(ServerRequestInterface $request, ResponseInterface $response): void;
 }

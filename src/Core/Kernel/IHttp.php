@@ -5,13 +5,13 @@
  */
 namespace Df\Core\Kernel;
 
-use Df\Http\Response\ISender;
+use Df\Http\Response\Sender;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-interface IHttp extends RequestHandlerInterface, ISender
+interface IHttp extends RequestHandlerInterface, Sender
 {
     public function run(): void;
     public function prepareRequest(): ServerRequestInterface;

@@ -4,14 +4,16 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Http\Message;
+namespace Df\Http;
 
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
+use Df\Http\Message\Stream;
+
 use DecodeLabs\Glitch;
 
-trait TMessage
+trait MessageTrait
 {
     protected $protocol = '1.1';
     protected $headers = [];

@@ -6,8 +6,8 @@
 declare(strict_types=1);
 namespace Df\Http;
 
-use Df\Http\Pipeline\IDispatcher;
-use Df\Http\Response\ISender;
+use Df\Http\Pipeline\Dispatcher;
+use Df\Http\Response\Sender;
 use Df\Core\IApp;
 use Df\Core\Kernel\IHttp;
 
@@ -23,7 +23,7 @@ class Kernel implements IHttp
     /**
      * Setup with ref to $app
      */
-    public function __construct(IApp $app, IDispatcher $dispatcher, ISender $sender)
+    public function __construct(IApp $app, Dispatcher $dispatcher, Sender $sender)
     {
         $this->app = $app;
         $this->dispatcher = $dispatcher;

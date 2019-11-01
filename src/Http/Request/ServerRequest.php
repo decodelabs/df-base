@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Http\Request;
 
-use Df\Http\Message\TRequest;
+use Df\Http\RequestTrait;
 
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamInterface;
@@ -17,7 +17,7 @@ use DecodeLabs\Glitch;
 
 class ServerRequest implements ServerRequestInterface
 {
-    use TRequest;
+    use RequestTrait;
 
     protected $query = [];
     protected $attributes = [];
