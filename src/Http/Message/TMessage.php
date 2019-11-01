@@ -261,7 +261,7 @@ trait TMessage
      */
     public static function isHeaderValueValid($value): bool
     {
-        if (!is_scalar($value) || $value === null) {
+        if (!is_scalar($value)) {
             return false;
         }
 

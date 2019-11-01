@@ -374,11 +374,7 @@ class Element implements AttributeContainer, \Countable, \ArrayAccess
                     break;
 
                 case \XML_CDATA_SECTION_NODE:
-                    if ($value) {
-                        $value .= "\n";
-                    }
-
-                    $value .= trim($node->nodeValue)."\n";
+                    $value = trim($node->nodeValue)."\n";
                     break;
             }
 
@@ -846,13 +842,22 @@ class Element implements AttributeContainer, \Countable, \ArrayAccess
     {
         $origChild = $origChild->getDomElement();
 
+        if (!$origChild instanceof \DOMElement) {
+            throw Glitch::EInvalidArgument(
+                'Original child is not a valid element'
+            );
+        }
+
         do {
             $origChild = $origChild->nextSibling;
-        } while ($origChild && $origChild->nodeType != \XML_ELEMENT_NODE);
+        } while (
+            $origChild !== null &&
+            $origChild->nodeType !== \XML_ELEMENT_NODE
+        );
 
         $node = $this->normalizeInputChild($newChild, $value);
 
-        if (!$origChild) {
+        if ($origChild === null) {
             $this->element->appendChild($node);
         } else {
             $this->element->insertBefore($node, $origChild);

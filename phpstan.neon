@@ -1,5 +1,5 @@
 parameters:
-    level: 3
+    level: 4
     bootstrap: %rootDir%/../../../../df-base/tests/bootstrap.php
     paths:
         - src
@@ -9,5 +9,5 @@ parameters:
     ignoreErrors:
         - '#Instantiated class Df\\Apex\\App not found\.#'
         - '#Static call to instance method Carbon\\CarbonInterval\:\:#'
-
+        - '#^Strict comparison using === between DOMNode and null will always evaluate to false\.#'
         - '#^Return typehint of method Df\\((Opal\\Query\\(Builder\\Select|IWriteFacade|IReadFacade))|Plug\\Data)\:\:#'

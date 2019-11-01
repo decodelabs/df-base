@@ -48,11 +48,11 @@ class Factory implements IFactory
         $config = $this->config->{$name};
         $type = $config['type'] ?? $name;
 
-        if ($logger = $this->createChannel($name, $type, $config)) {
-            return $logger;
+        try {
+            return $this->createChannel($name, $type, $config);
+        } catch (\Throwable $e) {
+            return $this->createEmergencyChannel($name);
         }
-
-        return $this->createEmergencyChannel($name);
     }
 
 

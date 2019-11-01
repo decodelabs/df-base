@@ -178,8 +178,10 @@ class Handler implements MiddlewareInterface
         // Add params a attributes
         $request = $request->withAttribute('area', $area);
 
-        foreach ($params as $key => $value) {
-            $request = $request->withAttribute($key, $value);
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                $request = $request->withAttribute($key, $value);
+            }
         }
 
 
