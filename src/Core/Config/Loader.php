@@ -7,7 +7,7 @@ namespace Df\Core\Config;
 
 use Df\Core\IApp;
 
-interface IEnvLoader
+interface Loader
 {
-    public function loadEnvConfig(IApp $app): Env;
+    public function loadConfig(IApp $app): Repository;
 }

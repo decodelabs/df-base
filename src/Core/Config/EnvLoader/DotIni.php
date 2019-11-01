@@ -8,12 +8,12 @@ namespace Df\Core\Config\EnvLoader;
 
 use Df;
 use Df\Core\IApp;
-use Df\Core\Config\IEnvLoader;
+use Df\Core\Config\EnvLoader;
 use Df\Core\Config\Env;
 
 use DecodeLabs\Glitch;
 
-class DotIni implements IEnvLoader
+class DotIni implements EnvLoader
 {
     protected $path;
 
@@ -31,7 +31,7 @@ class DotIni implements IEnvLoader
     /**
      * Set load path
      */
-    public function setPath(?string $path): IEnvLoader
+    public function setPath(?string $path): EnvLoader
     {
         $this->path = $path;
         return $this;

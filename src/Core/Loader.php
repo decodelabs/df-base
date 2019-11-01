@@ -5,7 +5,7 @@
  */
 namespace Df\Core;
 
-interface ILoader
+interface Loader
 {
     public function loadBundles(array $bundles): void;
     public function getLoadedBundles(): array;

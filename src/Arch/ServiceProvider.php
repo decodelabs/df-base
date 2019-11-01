@@ -10,7 +10,7 @@ use Df\Arch\Pipeline\AreaMap;
 use Df\Arch\Pipeline\Handler;
 
 use Df\Core\Config\Repository;
-use Df\Core\ILoader;
+use Df\Core\Loader;
 
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
@@ -39,7 +39,7 @@ class ServiceProvider implements IProvider
                 $handler->loadAreaMaps($config->arch->areaMaps->toArray());
 
                 // Routers
-                $bundles = $app[ILoader::class]->getLoadedBundles();
+                $bundles = $app[Loader::class]->getLoadedBundles();
                 $handler->setRouterBundles($bundles);
 
                 return $handler;

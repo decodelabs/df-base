@@ -8,8 +8,10 @@ namespace Df\Core\Config;
 
 use Df\Core\IApp;
 
-use Df\Core\Config\Loader\PhpArray;
+use Df\Core\Config\EnvLoader;
 use Df\Core\Config\EnvLoader\DotIni;
+use Df\Core\Config\Loader;
+use Df\Core\Config\Loader\PhpArray;
 
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
@@ -37,19 +39,19 @@ class ServiceProvider implements IProvider
         }
 
         // Env
-        $app->bindOnce(IEnvLoader::class, DotIni::class)
+        $app->bindOnce(EnvLoader::class, DotIni::class)
             ->inject('path', $app->getBasePath().'/private/.env');
 
-        $app->bindShared(Env::class, function ($app, IEnvLoader $loader) {
+        $app->bindShared(Env::class, function ($app, EnvLoader $loader) {
             return $loader->loadEnvConfig($app);
         });
 
 
 
         // Config
-        $app->bindOnce(ILoader::class, PhpArray::class);
+        $app->bindOnce(Loader::class, PhpArray::class);
 
-        $app->bindShared(Repository::class, function ($app, ILoader $loader) {
+        $app->bindShared(Repository::class, function ($app, Loader $loader) {
             return $loader->loadConfig($app);
         });
     }

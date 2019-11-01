@@ -7,11 +7,11 @@ declare(strict_types=1);
 namespace Df\Core\Loader;
 
 use Df\Core\IApp;
-use Df\Core\ILoader;
+use Df\Core\Loader;
 
 use Composer\Autoload\ClassLoader;
 
-class Composer implements ILoader
+class Composer implements Loader
 {
     protected $appLibraries = false;
 

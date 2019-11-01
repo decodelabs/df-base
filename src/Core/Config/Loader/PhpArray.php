@@ -9,9 +9,9 @@ namespace Df\Core\Config\Loader;
 use Df\Core\IApp;
 
 use Df\Core\Config\Repository;
-use Df\Core\Config\ILoader;
+use Df\Core\Config\Loader;
 
-class PhpArray implements ILoader
+class PhpArray implements Loader
 {
     const CONFIG = [
         'arch' => [

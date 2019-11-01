@@ -14,7 +14,7 @@ use Df\Core\Crypt\ServiceProvider as CryptServiceProvider;
 use Df\Core\Cache\ServiceProvider as CacheServiceProvider;
 use Df\Core\Log\ServiceProvider as LogServiceProvider;
 
-use Df\Core\ILoader;
+use Df\Core\Loader;
 use Df\Core\Loader\Composer as ComposerLoader;
 use Df\Core\Loader\Bundle;
 
@@ -77,9 +77,9 @@ class App extends Container implements IApp
         /* The loader needs to be set up manually before
          * everything else to ensure custom classes are found */
         $this->registerLoaderServices();
-        $loader = $this[ILoader::class];
+        $loader = $this[Loader::class];
 
-        if ($loader instanceof ILoader) {
+        if ($loader instanceof Loader) {
             $loader->loadBundles($this::BUNDLES);
         }
 
@@ -116,7 +116,7 @@ class App extends Container implements IApp
         $this->bindShared(ClassLoader::class, $loader);
 
         /* Register the main loader handler */
-        $this->bindShared(ILoader::class, ComposerLoader::class);
+        $this->bindShared(Loader::class, ComposerLoader::class);
 
         /* Register app folder as bundle */
         $paths = [];
