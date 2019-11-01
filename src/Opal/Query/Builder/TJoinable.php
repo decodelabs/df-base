@@ -28,7 +28,8 @@ trait TJoinable
      */
     public function joinRelation(string $relation, string ...$fields): IJoinable
     {
-        return $this->beginJoinRelation($relation, ...$fields)->endJoin();
+        $this->beginJoinRelation($relation, ...$fields)->endJoin();
+        return $this;
     }
 
     /**
@@ -53,7 +54,8 @@ trait TJoinable
      */
     public function leftJoinRelation(string $relation, string ...$fields): IJoinable
     {
-        return $this->beginLeftJoinRelation($relation, ...$fields)->endJoin();
+        $this->beginLeftJoinRelation($relation, ...$fields)->endJoin();
+        return $this;
     }
 
     /**
@@ -78,7 +80,8 @@ trait TJoinable
      */
     public function rightJoinRelation(string $relation, string ...$fields): IJoinable
     {
-        return $this->beginRightJoinRelation($relation, ...$fields)->endJoin();
+        $this->beginRightJoinRelation($relation, ...$fields)->endJoin();
+        return $this;
     }
 
     /**
@@ -103,7 +106,8 @@ trait TJoinable
      */
     public function outerJoinRelation(string $relation, string ...$fields): IJoinable
     {
-        return $this->beginOuterJoinRelation($relation, ...$fields)->endJoin();
+        $this->beginOuterJoinRelation($relation, ...$fields)->endJoin();
+        return $this;
     }
 
     /**

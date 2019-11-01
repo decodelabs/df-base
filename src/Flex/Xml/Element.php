@@ -443,7 +443,7 @@ class Element implements AttributeContainer, \Countable, \ArrayAccess
     /**
      * Get all CDATA sections within node
      */
-    public function getAllCDataSections(): ?string
+    public function getAllCDataSections(): array
     {
         $output = [];
 

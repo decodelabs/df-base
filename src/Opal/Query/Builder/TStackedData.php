@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Df\Opal\Query\Builder;
 
 use Df\Opal\Query\IBuilder;
+use Df\Opal\Query\Builder\IStackedData;
 
 trait TStackedData
 {
@@ -35,7 +36,13 @@ trait TStackedData
             $valueField = $this->getSourceManager()->findForeignField($field2);
         }
 
-        return $this->registerStack($name, 'list', $keyField, $valueField, $processor);
+        $output = $this->registerStack($name, 'list', $keyField, $valueField, $processor);
+
+        if (!$output instanceof IStackedData) {
+            throw Glitch::EUnexpectedValue('Stack output is not an instanceof IStackedData', null, $output);
+        }
+
+        return $output;
     }
 
     /**
@@ -55,6 +62,12 @@ trait TStackedData
             $valueField = $this->getSourceManager()->findForeignField($field);
         }
 
-        return $this->registerStack($name, 'value', null, $valueField, $processor);
+        $output = $this->registerStack($name, 'value', null, $valueField, $processor);
+
+        if (!$output instanceof IStackedData) {
+            throw Glitch::EUnexpectedValue('Stack output is not an instanceof IStackedData', null, $output);
+        }
+
+        return $output;
     }
 }

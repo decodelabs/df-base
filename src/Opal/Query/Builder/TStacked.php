@@ -54,7 +54,6 @@ trait TStacked
             throw Glitch::EUnexpectedValue('Parent query is not stackable', null, $output);
         }
 
-        $output->addStack($stack);
-        return $output;
+        return $output->addStack($stack);
     }
 }

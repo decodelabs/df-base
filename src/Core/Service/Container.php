@@ -556,8 +556,9 @@ class Container implements IContainer
      */
     public function forgetInstance(string $type): IBinding
     {
-        $this->getBinding($type)->forgetInstance();
-        return $this;
+        $binding = $this->getBinding($type);
+        $binding->forgetInstance();
+        return $binding;
     }
 
     /**
@@ -651,9 +652,9 @@ class Container implements IContainer
     /**
      * Alias remove()
      */
-    public function __unset(string $type)
+    public function __unset(string $type): void
     {
-        return $this->remove($type);
+        $this->remove($type);
     }
 
 

@@ -36,20 +36,22 @@ class Manager
         $driver = $this->getDriverFor($namespace, $conf);
         $store = new Store($namespace, $driver);
 
-        if (isset($conf->pileUpPolicy)) {
-            $store->setPileUpPolicy($conf['pileUpPolicy']);
-        }
+        if ($conf instanceof Repository) {
+            if (isset($conf->pileUpPolicy)) {
+                $store->setPileUpPolicy($conf['pileUpPolicy']);
+            }
 
-        if (isset($conf->preemptTime)) {
-            $store->setPreemptTime((int)$conf['preemptTime']);
-        }
+            if (isset($conf->preemptTime)) {
+                $store->setPreemptTime((int)$conf['preemptTime']);
+            }
 
-        if (isset($conf->sleepTime)) {
-            $store->setSleepTime((int)$conf['sleepTime']);
-        }
+            if (isset($conf->sleepTime)) {
+                $store->setSleepTime((int)$conf['sleepTime']);
+            }
 
-        if (isset($conf->sleepAttempts)) {
-            $store->setSleepAttempts((int)$conf['sleepAttempts']);
+            if (isset($conf->sleepAttempts)) {
+                $store->setSleepAttempts((int)$conf['sleepAttempts']);
+            }
         }
 
         return $this->caches[$namespace] = $store;
@@ -66,6 +68,10 @@ class Manager
             }
 
             $config = clone $this->config->stores->{$name};
+
+            if (!$config instanceof Repository) {
+                throw Glitch::EUnexpectedValue('Config is not a Repository', null, $config);
+            }
 
             try {
                 if ($driver = $this->loadDriver($config['driver'], $config)) {
@@ -131,6 +137,10 @@ class Manager
         foreach ($this->config->stores as $name => $conf) {
             if (!isset($conf->driver)) {
                 continue;
+            }
+
+            if (!$conf instanceof Repository) {
+                throw Glitch::EUnexpectedValue('Config is not a Repository', null, $conf);
             }
 
             try {

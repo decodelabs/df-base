@@ -82,10 +82,14 @@ trait THavingFacade
 
         if ($group) {
             $group($output);
-            return $output->endClause();
-        } else {
-            return $output;
+            $output = $output->endClause();
+
+            if (!$output instanceof IHavingFacade) {
+                throw Glitch::EUnexpectedValue('Parent query is not a having clause facade', null, $output);
+            }
         }
+
+        return $output;
     }
 
     /**
@@ -97,10 +101,14 @@ trait THavingFacade
 
         if ($group) {
             $group($output);
-            return $output->endClause();
-        } else {
-            return $output;
+            $output = $output->endClause();
+
+            if (!$output instanceof IHavingFacade) {
+                throw Glitch::EUnexpectedValue('Parent query is not a having clause facade', null, $output);
+            }
         }
+
+        return $output;
     }
 
 
@@ -213,13 +221,19 @@ trait THavingFacade
                 throw Glitch::EUnexpectedValue('Bridge source is not a where facade', null, $bridge);
             }
 
-            return $bridge->createHavingSelect($manifest['bridgeForeign']['field'], 'in', $manifest['foreign']['field'], false, false)
+            $output = $bridge->createHavingSelect($manifest['bridgeForeign']['field'], 'in', $manifest['foreign']['field'], false, false)
                 ->from($manifest['foreign']['source'], $local);
         } else {
             // Single correlation
-            return $this->createHavingSelect($manifest['local']['field'], $operator, $manifest['foreign']['field'], $or, $distinct)
+            $output = $this->createHavingSelect($manifest['local']['field'], $operator, $manifest['foreign']['field'], $or, $distinct)
                 ->from($manifest['foreign']['source'], $local);
         }
+
+        if (!$output instanceof SelectBuilder) {
+            throw Glitch::EUnexpectedValue('Bridge target query is not a Select', null, $output);
+        }
+
+        return $output;
     }
 
 

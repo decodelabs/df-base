@@ -98,7 +98,7 @@ class Generator implements StreamInterface
     /**
      * Try and write to stream
      */
-    public function write($string): void
+    public function write($string): int
     {
         throw Glitch::ERuntime('Iterators cannot be written to');
     }

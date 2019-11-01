@@ -162,7 +162,9 @@ abstract class Router
             }
         }
 
-        return $this->addRoute(new NamedRoute($methods, $path, $name, $runner));
+        $route = new NamedRoute($methods, $path, $name, $runner);
+        $this->addRoute($route);
+        return $route;
     }
 
 
@@ -172,7 +174,9 @@ abstract class Router
      */
     public function node(string $path, string $node): NodeRoute
     {
-        return $this->addRoute(new NodeRoute($path, $node));
+        $route = new NodeRoute($path, $node);
+        $this->addRoute($route);
+        return $route;
     }
 
 

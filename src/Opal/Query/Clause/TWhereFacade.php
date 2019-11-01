@@ -101,10 +101,14 @@ trait TWhereFacade
 
         if ($group) {
             $group($output);
-            return $output->endClause();
-        } else {
-            return $output;
+            $output = $output->endClause();
+
+            if (!$output instanceof IWhereFacade) {
+                throw Glitch::EUnexpectedValue('Parent query is not a where clause facade', null, $output);
+            }
         }
+
+        return $output;
     }
 
     /**
@@ -116,10 +120,14 @@ trait TWhereFacade
 
         if ($group) {
             $group($output);
-            return $output->endClause();
-        } else {
-            return $output;
+            $output = $output->endClause();
+
+            if (!$output instanceof IWhereFacade) {
+                throw Glitch::EUnexpectedValue('Parent query is not a where clause facade', null, $output);
+            }
         }
+
+        return $output;
     }
 
 
@@ -250,13 +258,19 @@ trait TWhereFacade
                 throw Glitch::EUnexpectedValue('Bridge source is not a where facade', null, $bridge);
             }
 
-            return $bridge->createWhereSelect($manifest['bridgeForeign']['field'], 'in', $manifest['foreign']['field'], false, false)
+            $output = $bridge->createWhereSelect($manifest['bridgeForeign']['field'], 'in', $manifest['foreign']['field'], false, false)
                 ->from($manifest['foreign']['source'], $local);
         } else {
             // Single correlation
-            return $this->createWhereSelect($manifest['local']['field'], $operator, $manifest['foreign']['field'], $or, $distinct)
+            $output = $this->createWhereSelect($manifest['local']['field'], $operator, $manifest['foreign']['field'], $or, $distinct)
                 ->from($manifest['foreign']['source'], $local);
         }
+
+        if (!$output instanceof SelectBuilder) {
+            throw Glitch::EUnexpectedValue('Bridge target query is not a Select', null, $output);
+        }
+
+        return $output;
     }
 
 

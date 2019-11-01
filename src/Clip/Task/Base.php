@@ -41,7 +41,13 @@ abstract class Base implements Task
             ]);
         }
 
-        return $app->newInstanceOf($class, [], Task::class);
+        $output = $app->newInstanceOf($class, [], Task::class);
+
+        if (!$output instanceof Task) {
+            throw Glitch::EDefinition('Task class does not implement Task interface', null, $output);
+        }
+
+        return $output;
     }
 
     /**

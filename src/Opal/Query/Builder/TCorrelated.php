@@ -16,7 +16,7 @@ trait TCorrelated
     /**
      * End correlation
      */
-    public function endCorrelation(string $alias=null): ICorrelated
+    public function endCorrelation(string $alias=null): ICorrelatable
     {
         if ($this->getSubQueryMode() !== 'correlation') {
             throw Glitch::ELogic('Select query is not a correlation');

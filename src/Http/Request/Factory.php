@@ -82,7 +82,11 @@ class Factory
             if ($value instanceof UploadedFileInterface) {
                 $output[$key] = $value;
             } elseif (is_array($value) && isset($value['tmp_name'])) {
-                $output[$key] = $this->createUploadedFile($value);
+                if (is_array($value['tmp_name'])) {
+                    $output = array_merge($output, $this->normalizeNestedFiles($value));
+                } else {
+                    $output[$key] = $this->createUploadedFile($value);
+                }
             } elseif (is_array($value)) {
                 $output[$key] = $this->prepareFiles($value);
             } else {
@@ -249,7 +253,7 @@ class Factory
     public function extractProtocol(array $server): string
     {
         if (null === ($output = ($server['SERVER_PROTOCOL'] ?? null))) {
-            return null;
+            return 'http';
         }
 
         if (!preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $output, $matches)) {
@@ -267,10 +271,6 @@ class Factory
      */
     public function createUploadedFile(array $file): UploadedFileInterface
     {
-        if (is_array($file['tmp_name'])) {
-            return $this->normalizeNestedFiles($file);
-        }
-
         return new UploadedFile(
             $file['tmp_name'],
             $file['size'],

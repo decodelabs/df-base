@@ -143,10 +143,16 @@ class Item implements IItem
     public function setExpiration($expiration): IItem
     {
         if ($expiration instanceof \DateInterval || is_string($expiration)) {
-            return $this->expiresAfter($expiration);
+            $output = $this->expiresAfter($expiration);
         } else {
-            return $this->expiresAt($expiration);
+            $output = $this->expiresAt($expiration);
         }
+
+        if (!$output instanceof IItem) {
+            throw Glitch::EUnexpectedValue('Item is not instanceof IItem', null, $output);
+        }
+
+        return $output;
     }
 
 
