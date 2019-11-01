@@ -4,19 +4,17 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Core\Log\Monolog;
+namespace Df\Core\Logger\Factory;
 
 use Df\Core\IApp;
-use Df\Core\ILogger;
-use Df\Core\Log\IFactory;
-use Df\Core\Log\Logger;
+use Df\Core\Logger\Factory;
 use Df\Core\Config\Repository;
 
 use Df\Flex\Formatter;
 
 use Psr\Log\LoggerInterface;
 
-use Monolog\Logger as Monolog;
+use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogHandler;
 use Monolog\Formatter\LineFormatter;
@@ -26,7 +24,7 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\SlackWebhookHandler;
 use Monolog\Handler\ChromePHPHandler;
 
-class Factory implements IFactory
+class Monolog implements Factory
 {
     protected $config;
     protected $app;
@@ -62,7 +60,7 @@ class Factory implements IFactory
     public function createChannel(string $name, string $type, Repository $config): LoggerInterface
     {
         $handlers = $this->createHandlers($name, $type, $config);
-        return new Monolog($name, $handlers);
+        return new Logger($name, $handlers);
     }
 
     protected function createHandlers(string $name, string $type, Repository $config): array
@@ -123,7 +121,7 @@ class Factory implements IFactory
     {
         return new StreamHandler(
             $config['path'] ?? $this->app->getStoragePath().'/logs/'.Formatter::filename($name).'.log',
-            $config['level'] ?? Monolog::DEBUG,
+            $config['level'] ?? Logger::DEBUG,
             $config['bubble'] ?? true,
             $config['permission'] ?? null,
             $config['locking'] ?? false
@@ -138,7 +136,7 @@ class Factory implements IFactory
         return new RotatingFileHandler(
             $config['path'] ?? $this->app->getStoragePath().'/logs/'.Formatter::filename($name).'.log',
             $config['maxFiles'] ?? 7,
-            $config['level'] ?? Monolog::DEBUG,
+            $config['level'] ?? Logger::DEBUG,
             $config['bubble'] ?? true,
             $config['permission'] ?? null,
             $config['locking'] ?? false
@@ -158,7 +156,7 @@ class Factory implements IFactory
             $config['emoji'] ?? ':boom:',
             $config['short'] ?? false,
             $config['context'] ?? true,
-            $config['level'] ?? Monolog::DEBUG
+            $config['level'] ?? Logger::DEBUG
         );
     }
 
@@ -171,7 +169,7 @@ class Factory implements IFactory
         return new SyslogHandler(
             $this->app->getAppName(),
             $config['facility'] ?? LOG_USER,
-            $config['level'] ?? Monolog::DEBUG,
+            $config['level'] ?? Logger::DEBUG,
             $config['bubble'] ?? true
         );
     }
@@ -183,7 +181,7 @@ class Factory implements IFactory
     {
         return new ErrorLogHandler(
             $config['messageType'] ?? ErrorLogHandler::OPERATING_SYSTEM,
-            $config['level'] ?? Monolog::DEBUG,
+            $config['level'] ?? Logger::DEBUG,
             $config['bubble'] ?? true
         );
     }
@@ -204,10 +202,10 @@ class Factory implements IFactory
      */
     public function createEmergencyChannel(string $name=null): LoggerInterface
     {
-        return new Monolog($name ?? 'emergency', [new RotatingFileHandler(
+        return new Logger($name ?? 'emergency', [new RotatingFileHandler(
             $this->app->getStoragePath().'/logs/emergency.log',
             3,
-            Monolog::DEBUG
+            Logger::DEBUG
         )]);
     }
 }

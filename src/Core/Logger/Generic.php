@@ -4,10 +4,10 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Core\Log;
+namespace Df\Core\Logger;
 
-use Df\Core\ILogger;
-use Df\Core\Log\IFactory;
+use Df\Core\Logger;
+use Df\Core\Logger\Factory;
 
 use Psr\Log\LoggerTrait;
 use Psr\Log\LoggerInterface;
@@ -15,7 +15,7 @@ use Psr\Log\LogLevel;
 
 use DecodeLabs\Glitch;
 
-class Logger implements ILogger
+class Generic implements Logger
 {
     use LoggerTrait;
 
@@ -37,7 +37,7 @@ class Logger implements ILogger
     /**
      * Init with factory
      */
-    public function __construct(IFactory $factory, string $default=null)
+    public function __construct(Factory $factory, string $default=null)
     {
         $this->factory = $factory;
         $this->default = $default ?? 'default';
@@ -46,7 +46,7 @@ class Logger implements ILogger
     /**
      * Register a channel (instanceof Psr\Log\LoggerInterface)
      */
-    public function addChannel(string $name, LoggerInterface $channel): ILogger
+    public function addChannel(string $name, LoggerInterface $channel): Logger
     {
         $this->channels[$name] = $channel;
 
@@ -60,7 +60,7 @@ class Logger implements ILogger
     /**
      * Set existing channel as default
      */
-    public function setDefaultChannel(string $name): ILogger
+    public function setDefaultChannel(string $name): Logger
     {
         $this->default = $name;
         return $this;
@@ -91,7 +91,7 @@ class Logger implements ILogger
     /**
      * Remove registered channel
      */
-    public function removeChannel(string $name): ILogger
+    public function removeChannel(string $name): Logger
     {
         unset($this->channels[$name]);
 
@@ -105,7 +105,7 @@ class Logger implements ILogger
     /**
      * Remove all registered channels
      */
-    public function clearChannels(): ILogger
+    public function clearChannels(): Logger
     {
         $this->channels = [];
         $this->default = null;

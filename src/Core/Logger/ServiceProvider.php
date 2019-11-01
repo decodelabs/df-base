@@ -4,11 +4,12 @@
  * @license http://opensource.org/licenses/MIT
  */
 declare(strict_types=1);
-namespace Df\Core\Log;
+namespace Df\Core\Logger;
 
-use Df\Core\ILogger;
-use Df\Core\Log\Logger;
-use Df\Core\Log\Monolog\Factory as MonologFactory;
+use Df\Core\Logger;
+use Df\Core\Logger\Generic as GenericLogger;
+use Df\Core\Logger\Factory;
+use Df\Core\Logger\Factory\Monolog as MonologFactory;
 
 use Df\Core\Service\IContainer;
 use Df\Core\Service\IProvider;
@@ -23,8 +24,8 @@ class ServiceProvider implements IProvider
     public static function getProvidedServices(): array
     {
         return [
-            IFactory::class,
-            ILogger::class
+            Factory::class,
+            Logger::class
         ];
     }
 
@@ -33,9 +34,9 @@ class ServiceProvider implements IProvider
      */
     public function registerServices(IContainer $app): void
     {
-        $app->bind(IFactory::class, MonologFactory::class);
+        $app->bind(Factory::class, MonologFactory::class);
 
-        $app->bindShared(ILogger::class, Logger::class)
+        $app->bindShared(Logger::class, GenericLogger::class)
             ->prepareWith(function ($logger) {
                 Glitch::setLogger($logger);
                 return $logger;

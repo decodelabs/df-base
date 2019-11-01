@@ -12,7 +12,7 @@ use Df\Core\Config\ServiceProvider as ConfigServiceProvider;
 use Df\Core\Env\ServiceProvider as EnvServiceProvider;
 use Df\Core\Crypt\ServiceProvider as CryptServiceProvider;
 use Df\Core\Cache\ServiceProvider as CacheServiceProvider;
-use Df\Core\Log\ServiceProvider as LogServiceProvider;
+use Df\Core\Logger\ServiceProvider as LogServiceProvider;
 
 use Df\Core\Loader;
 use Df\Core\Loader\Composer as ComposerLoader;

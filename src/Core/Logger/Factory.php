@@ -3,14 +3,14 @@
  * This file is part of the Decode Framework
  * @license http://opensource.org/licenses/MIT
  */
-namespace Df\Core\Log;
+namespace Df\Core\Logger;
 
-use Df\Core\ILogger;
+use Df\Core\Logger;
 use Df\Core\Config\Repository;
 
 use Psr\Log\LoggerInterface;
 
-interface IFactory
+interface Factory
 {
     public function loadChannel(string $name): LoggerInterface;
     public function createChannel(string $name, string $type, Repository $config): LoggerInterface;
