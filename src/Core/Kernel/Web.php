@@ -11,7 +11,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-interface IHttp extends RequestHandlerInterface, Sender
+interface Web extends RequestHandlerInterface, Sender
 {
     public function run(): void;
     public function prepareRequest(): ServerRequestInterface;

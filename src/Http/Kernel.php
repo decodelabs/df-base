@@ -9,12 +9,12 @@ namespace Df\Http;
 use Df\Http\Pipeline\Dispatcher;
 use Df\Http\Response\Sender;
 use Df\Core\IApp;
-use Df\Core\Kernel\IHttp;
+use Df\Core\Kernel\Web as WebKernel;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class Kernel implements IHttp
+class Kernel implements WebKernel
 {
     protected $app;
     protected $dispatcher;

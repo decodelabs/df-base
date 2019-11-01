@@ -7,14 +7,14 @@ declare(strict_types=1);
 namespace Df\Clip;
 
 use Df\Core\IApp;
-use Df\Core\Kernel\IConsole;
+use Df\Core\Kernel\Console as ConsoleKernel;
 
 use Df\Clip\Task\Base;
 
 use DecodeLabs\Terminus\Cli;
 use DecodeLabs\Terminus\Command\Request;
 
-class Kernel implements IConsole
+class Kernel implements ConsoleKernel
 {
     protected $app;
 

@@ -7,7 +7,7 @@ namespace Df\Core\Kernel;
 
 use DecodeLabs\Terminus\Command\Request;
 
-interface IConsole
+interface Console
 {
     public function run(): void;
     public function prepareRequest(): Request;

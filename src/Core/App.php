@@ -18,10 +18,10 @@ use Df\Core\Loader;
 use Df\Core\Loader\Composer as ComposerLoader;
 use Df\Core\Loader\Bundle;
 
-use Df\Core\Kernel\IHttp as IHttpKernel;
-use Df\Core\Kernel\IConsole as IConsoleKernel;
+use Df\Core\Kernel\Web as WebKernel;
+use Df\Core\Kernel\Console as ConsoleKernel;
 
-use Df\Clip\Kernel as ConsoleKernel;
+use Df\Clip\Kernel as ClipKernel;
 use Df\Clip\ServiceProvider as ClipServiceProvider;
 
 use Df\Http\Kernel as HttpKernel;
@@ -133,7 +133,7 @@ class App extends Container implements IApp
      */
     protected function registerHttpKernel(): void
     {
-        $this->bindShared(IHttpKernel::class, HttpKernel::class);
+        $this->bindShared(WebKernel::class, HttpKernel::class);
     }
 
     /**
@@ -141,7 +141,7 @@ class App extends Container implements IApp
      */
     protected function registerConsoleKernel(): void
     {
-        $this->bindShared(IConsoleKernel::class, ConsoleKernel::class);
+        $this->bindShared(ConsoleKernel::class, ClipKernel::class);
     }
 
 
