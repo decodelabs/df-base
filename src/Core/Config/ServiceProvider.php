@@ -13,10 +13,10 @@ use Df\Core\Config\EnvLoader\DotIni;
 use Df\Core\Config\Loader;
 use Df\Core\Config\Loader\PhpArray;
 
-use Df\Core\Service\IContainer;
-use Df\Core\Service\IProvider;
+use Df\Core\Service\Container;
+use Df\Core\Service\Provider;
 
-class ServiceProvider implements IProvider
+class ServiceProvider implements Provider
 {
     /**
      * Get list of provided classes
@@ -32,7 +32,7 @@ class ServiceProvider implements IProvider
     /**
      * Load provided classes into app
      */
-    public function registerServices(IContainer $app): void
+    public function registerServices(Container $app): void
     {
         if (!$app instanceof IApp) {
             throw Glitch::EUnexpectedValue('Container is not the app', null, $app);

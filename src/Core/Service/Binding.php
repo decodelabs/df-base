@@ -10,7 +10,7 @@ use Psr\Container\NotFoundExceptionInterface;
 
 use DecodeLabs\Glitch;
 
-class Binding implements IBinding
+class Binding
 {
     protected $type;
     protected $alias;
@@ -30,7 +30,7 @@ class Binding implements IBinding
      * Create new instance referencing base container
      */
     public function __construct(
-        IContainer $container,
+        Container $container,
         string $type,
         $target,
         bool $autoAlias=true,
@@ -59,7 +59,7 @@ class Binding implements IBinding
     /**
      * Get referenced base container
      */
-    public function getContainer(): IContainer
+    public function getContainer(): Container
     {
         return $this->container;
     }
@@ -98,7 +98,7 @@ class Binding implements IBinding
     /**
      * Prepare factory or instance
      */
-    public function setTarget($target): IBinding
+    public function setTarget($target): Binding
     {
         if ($target === null) {
             $target = $this->type;
@@ -168,7 +168,7 @@ class Binding implements IBinding
     /**
      * Set an alias for the binding
      */
-    public function alias(string $alias): IBinding
+    public function alias(string $alias): Binding
     {
         if (false !== strpos($alias, '\\')) {
             throw Glitch::{
@@ -222,7 +222,7 @@ class Binding implements IBinding
     /**
      * Unregister the alias with the container
      */
-    public function removeAlias(): IBinding
+    public function removeAlias(): Binding
     {
         if ($this->alias !== null) {
             $this->container->unregisterAlias($this->alias);
@@ -244,7 +244,7 @@ class Binding implements IBinding
     /**
      * Make this item a singleton
      */
-    public function setShared(bool $shared): IBinding
+    public function setShared(bool $shared): Binding
     {
         $this->shared = $shared;
         return $this;
@@ -254,7 +254,7 @@ class Binding implements IBinding
     /**
      * Add a preparator callback
      */
-    public function prepareWith(callable $callback): IBinding
+    public function prepareWith(callable $callback): Binding
     {
         if (is_array($callback)) {
             $id = (string)spl_object_id($callback[0]);
@@ -281,7 +281,7 @@ class Binding implements IBinding
     /**
      * Remove all preparators
      */
-    public function clearPreparators(): IBinding
+    public function clearPreparators(): Binding
     {
         $this->preparators = [];
         return $this;
@@ -291,7 +291,7 @@ class Binding implements IBinding
     /**
      * Add an injected call parameter
      */
-    public function inject(string $name, $value): IBinding
+    public function inject(string $name, $value): Binding
     {
         $this->params[ltrim($name, '$')] = $value;
         return $this;
@@ -308,7 +308,7 @@ class Binding implements IBinding
     /**
      * Add a list of injected params
      */
-    public function addParams(array $params): IBinding
+    public function addParams(array $params): Binding
     {
         foreach ($params as $key => $value) {
             $this->inject($key, $value);
@@ -328,7 +328,7 @@ class Binding implements IBinding
     /**
      * Get rid of an injected param
      */
-    public function removeParam(string $name): IBinding
+    public function removeParam(string $name): Binding
     {
         unset($this->params[ltrim($name, '$')]);
         return $this;
@@ -337,7 +337,7 @@ class Binding implements IBinding
     /**
      * Get rid of all injected params
      */
-    public function clearParams(): IBinding
+    public function clearParams(): Binding
     {
         $this->params = [];
         return $this;
@@ -347,7 +347,7 @@ class Binding implements IBinding
     /**
      * Manually set a shared instance
      */
-    public function setInstance(object $instance): IBinding
+    public function setInstance(object $instance): Binding
     {
         $this->target = null;
         $this->instance = $this->prepareInstance($instance);
@@ -357,7 +357,7 @@ class Binding implements IBinding
     /**
      * Get rid of current shared instance
      */
-    public function forgetInstance(): IBinding
+    public function forgetInstance(): Binding
     {
         $this->instance = null;
         return $this;
@@ -457,7 +457,7 @@ class Binding implements IBinding
     /**
      * Add a resolver event handler
      */
-    public function afterResolving(callable $callback): IBinding
+    public function afterResolving(callable $callback): Binding
     {
         $this->container->afterResolving($this->type, $callback);
         return $this;
@@ -466,7 +466,7 @@ class Binding implements IBinding
     /**
      * Add a rebind event handler
      */
-    public function afterRebinding(callable $callback): IBinding
+    public function afterRebinding(callable $callback): Binding
     {
         $this->container->afterRebinding($this->type, $callback);
         return $this;

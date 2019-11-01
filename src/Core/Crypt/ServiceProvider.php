@@ -11,10 +11,10 @@ use Df\Core\Crypt\Symmetric\Halite as HaliteSymmetric;
 use Df\Core\Crypt\Hasher;
 use Df\Core\Crypt\Hasher\Native as NativeHasher;
 
-use Df\Core\Service\IContainer;
-use Df\Core\Service\IProvider;
+use Df\Core\Service\Container;
+use Df\Core\Service\Provider;
 
-class ServiceProvider implements IProvider
+class ServiceProvider implements Provider
 {
     /**
      * Get list of provided classes
@@ -30,7 +30,7 @@ class ServiceProvider implements IProvider
     /**
      * Load provided classes into app
      */
-    public function registerServices(IContainer $app): void
+    public function registerServices(Container $app): void
     {
         // Symmetric
         $app->bindShared(Symmetric::class, function ($app) {

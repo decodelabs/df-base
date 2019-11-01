@@ -5,8 +5,10 @@
  */
 namespace Df\Core\Service;
 
-interface IProvider
+use Df\Core\Service\Container;
+
+interface Provider
 {
     public static function getProvidedServices(): array;
-    public function registerServices(IContainer $container): void;
+    public function registerServices(Container $container): void;
 }

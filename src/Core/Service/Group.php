@@ -6,13 +6,16 @@
 declare(strict_types=1);
 namespace Df\Core\Service;
 
+use Df\Core\Service\Container;
+use Df\Core\Service\Binding;
+
 use DecodeLabs\Glitch;
 
 class Group extends Binding
 {
     protected $bindings = [];
 
-    public function __construct(IContainer $container, string $type)
+    public function __construct(Container $container, string $type)
     {
         parent::__construct($container, $type, null, false, true);
         unset($this->params, $this->target);
@@ -23,7 +26,7 @@ class Group extends Binding
     /**
      * Noop
      */
-    public function setTarget($target): IBinding
+    public function setTarget($target): Binding
     {
         throw Glitch::EImplementation('setTarget is not used for groups');
     }
@@ -66,7 +69,7 @@ class Group extends Binding
     /**
      * Add a binding to the list
      */
-    public function addBinding(IBinding $binding): IBinding
+    public function addBinding(Binding $binding): Binding
     {
         $this->bindings[] = $binding;
         return $this;
@@ -102,7 +105,7 @@ class Group extends Binding
     /**
      * Remove all preparators
      */
-    public function clearPreparators(): IBinding
+    public function clearPreparators(): Binding
     {
         $this->preparators = [];
 
@@ -118,7 +121,7 @@ class Group extends Binding
     /**
      * Add an injected call parameter
      */
-    public function inject(string $name, $value): IBinding
+    public function inject(string $name, $value): Binding
     {
         foreach ($this->bindings as $binding) {
             $binding->inject($name, $value);
@@ -144,7 +147,7 @@ class Group extends Binding
     /**
      * Add a list of injected params
      */
-    public function addParams(array $params): IBinding
+    public function addParams(array $params): Binding
     {
         foreach ($this->bindings as $binding) {
             foreach ($params as $key => $value) {
@@ -172,7 +175,7 @@ class Group extends Binding
     /**
      * Get rid of an injected param
      */
-    public function removeParam(string $name): IBinding
+    public function removeParam(string $name): Binding
     {
         foreach ($this->bindings as $binding) {
             $binding->removeParam($name);
@@ -184,7 +187,7 @@ class Group extends Binding
     /**
      * Get rid of all injected params
      */
-    public function clearParams(): IBinding
+    public function clearParams(): Binding
     {
         foreach ($this->bindings as $binding) {
             $binding->clearParams();
@@ -198,7 +201,7 @@ class Group extends Binding
     /**
      * Noop
      */
-    public function setInstance(object $instance): IBinding
+    public function setInstance(object $instance): Binding
     {
         throw Glitch::EImplementation('setFactory is not used for groups');
     }
@@ -206,7 +209,7 @@ class Group extends Binding
     /**
      * Get rid of current shared instance
      */
-    public function forgetInstance(): IBinding
+    public function forgetInstance(): Binding
     {
         foreach ($this->bindings as $binding) {
             $binding->forgetInstance();

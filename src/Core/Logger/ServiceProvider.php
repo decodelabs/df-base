@@ -11,12 +11,12 @@ use Df\Core\Logger\Generic as GenericLogger;
 use Df\Core\Logger\Factory;
 use Df\Core\Logger\Factory\Monolog as MonologFactory;
 
-use Df\Core\Service\IContainer;
-use Df\Core\Service\IProvider;
+use Df\Core\Service\Container;
+use Df\Core\Service\Provider;
 
 use DecodeLabs\Glitch;
 
-class ServiceProvider implements IProvider
+class ServiceProvider implements Provider
 {
     /**
      * Get list of provided classes
@@ -32,7 +32,7 @@ class ServiceProvider implements IProvider
     /**
      * Load provided classes into app
      */
-    public function registerServices(IContainer $app): void
+    public function registerServices(Container $app): void
     {
         $app->bind(Factory::class, MonologFactory::class);
 

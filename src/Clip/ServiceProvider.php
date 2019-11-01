@@ -6,13 +6,13 @@
 declare(strict_types=1);
 namespace Df\Clip;
 
-use Df\Core\Service\IContainer;
-use Df\Core\Service\IProvider;
+use Df\Core\Service\Container;
+use Df\Core\Service\Provider;
 
 use DecodeLabs\Terminus\Cli;
 use DecodeLabs\Terminus\Command\Request;
 
-class ServiceProvider implements IProvider
+class ServiceProvider implements Provider
 {
     /**
      * Get list of provided classes
@@ -27,7 +27,7 @@ class ServiceProvider implements IProvider
     /**
      * Load provided classes into app
      */
-    public function registerServices(IContainer $app): void
+    public function registerServices(Container $app): void
     {
         // Request
         $app->bindShared(Request::class, function ($app) {

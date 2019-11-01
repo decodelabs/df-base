@@ -6,8 +6,8 @@
 declare(strict_types=1);
 namespace Df\Http;
 
-use Df\Core\Service\IContainer;
-use Df\Core\Service\IProvider;
+use Df\Core\Service\Container;
+use Df\Core\Service\Provider;
 
 use Df\Http\Request\Factory;
 use Df\Http\Response\Sender;
@@ -16,7 +16,7 @@ use Df\Http\Pipeline\Dispatcher;
 
 use Psr\Http\Message\ServerRequestInterface;
 
-class ServiceProvider implements IProvider
+class ServiceProvider implements Provider
 {
     /**
      * Get list of provided classes
@@ -33,7 +33,7 @@ class ServiceProvider implements IProvider
     /**
      * Load provided classes into app
      */
-    public function registerServices(IContainer $app): void
+    public function registerServices(Container $app): void
     {
         // Server request
         $app->bindShared(ServerRequestInterface::class, function ($app) {

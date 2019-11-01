@@ -5,9 +5,9 @@
  */
 namespace Df\Core;
 
-use Df\Core\Service\IContainer;
+use Df\Core\Service\Container;
 
-interface IApp extends IContainer
+interface IApp extends Container
 {
     public function bootstrap(): void;
 

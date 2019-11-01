@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Df\Core;
 
 use Df;
-use Df\Core\Service\Container;
+use Df\Core\Service\Container\Generic as GenericContainer;
 use Df\Core\Config\ServiceProvider as ConfigServiceProvider;
 use Df\Core\Env\ServiceProvider as EnvServiceProvider;
 use Df\Core\Crypt\ServiceProvider as CryptServiceProvider;
@@ -33,7 +33,7 @@ use Df\Arch\Middleware\ErrorHandler as ErrorMiddleware;
 
 use Composer\Autoload\ClassLoader;
 
-class App extends Container implements IApp
+class App extends GenericContainer implements IApp
 {
     const BUNDLES = [];
     const PROVIDERS = [];
