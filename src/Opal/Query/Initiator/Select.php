@@ -9,20 +9,24 @@ namespace Df\Opal\Query\Initiator;
 use Df\Core\IApp;
 use Df\Mesh\Job\TransactionAwareTrait;
 
-use Df\Opal\Query\IInitiator;
-use Df\Opal\Query\IBuilder;
+use Df\Opal\Query\Initiator;
+use Df\Opal\Query\Initiator\FieldCollector;
+use Df\Opal\Query\Initiator\FieldCollectorTrait;
+use Df\Opal\Query\Initiator\FromSource;
+use Df\Opal\Query\Initiator\FromSourceTrait;
+use Df\Opal\Query\Builder;
 use Df\Opal\Query\Source\Manager as SourceManager;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Builder\Select as SelectBuilder;
 
 class Select implements
-    IInitiator,
-    IFieldCollector,
-    IFromSource
+    Initiator,
+    FieldCollector,
+    FromSource
 {
-    use TFieldCollector;
+    use FieldCollectorTrait;
     use TransactionAwareTrait;
-    use TFromSource;
+    use FromSourceTrait;
 
     protected $distinct = false;
     protected $parentQuery;
@@ -64,7 +68,7 @@ class Select implements
     /**
      * Use as subquery
      */
-    public function asSubQuery(IBuilder $parent, string $mode, ?callable $applicator=null): IInitiator
+    public function asSubQuery(Builder $parent, string $mode, ?callable $applicator=null): Initiator
     {
         $this->setParentQuery($parent);
         $this->setSubQueryMode($mode, $applicator);
@@ -74,7 +78,7 @@ class Select implements
     /**
      * Set parent query
      */
-    public function setParentQuery(?IBuilder $parent): IInitiator
+    public function setParentQuery(?Builder $parent): Initiator
     {
         $this->parentQuery = $parent;
         return $this;
@@ -83,7 +87,7 @@ class Select implements
     /**
      * Get parent query
      */
-    public function getParentQuery(): ?IBuilder
+    public function getParentQuery(): ?Builder
     {
         return $this->parentQuery;
     }
@@ -91,7 +95,7 @@ class Select implements
     /**
      * Set sub query mode
      */
-    public function setSubQueryMode(?string $mode, ?callable $applicator=null): IInitiator
+    public function setSubQueryMode(?string $mode, ?callable $applicator=null): Initiator
     {
         $this->subQueryMode = $mode;
         $this->applicator = $applicator;
@@ -110,7 +114,7 @@ class Select implements
     /**
      * Set derivation parent
      */
-    public function setDerivationParent(?IInitiator $parent): IInitiator
+    public function setDerivationParent(?Initiator $parent): Initiator
     {
         $this->derivationParent = $parent;
         return $this;
@@ -119,7 +123,7 @@ class Select implements
     /**
      * Get derivation parent
      */
-    public function getDerivationParent(): ?IInitiator
+    public function getDerivationParent(): ?Initiator
     {
         return $this->derivationParent;
     }
@@ -128,7 +132,7 @@ class Select implements
     /**
      * Set source and alias
      */
-    public function from($source, string $alias=null): IBuilder
+    public function from($source, string $alias=null): Builder
     {
         $manager = new SourceManager($this->app);
         $manager->setTransaction($this->transaction);

@@ -13,8 +13,8 @@ use Df\Mesh\Job\TransactionAdapter;
 use Df\Mesh\Job\TransactionAware;
 use Df\Mesh\Job\TransactionAwareTrait;
 
-use Df\Opal\Query\IField;
-use Df\Opal\Query\ISource;
+use Df\Opal\Query\Field;
+use Df\Opal\Query\Source;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Field\Virtual as VirtualField;
 
@@ -107,11 +107,11 @@ class Manager implements TransactionAware
     /**
      * Ensure input is a source
      */
-    public function normalizeSource($source): ISource
+    public function normalizeSource($source): Source
     {
         if (is_string($source)) {
             Glitch::incomplete('Lookup entity');
-        } elseif (!$source instanceof ISource) {
+        } elseif (!$source instanceof Source) {
             Glitch::incomplete('Other types of source!??');
         }
 
@@ -122,7 +122,7 @@ class Manager implements TransactionAware
     /**
      * Get source by id
      */
-    public function getSource(string $sourceId): ?ISource
+    public function getSource(string $sourceId): ?Source
     {
         return $this->sources[$sourceId] ?? null;
     }
@@ -130,7 +130,7 @@ class Manager implements TransactionAware
     /**
      * Remove source
      */
-    public function removeSource(ISource $source): Manager
+    public function removeSource(Source $source): Manager
     {
         $id = $source->getQuerySourceId();
         unset($this->sources[$id]);
@@ -176,7 +176,7 @@ class Manager implements TransactionAware
     /**
      * Find field and wrap with secondary alias
      */
-    public function realiasField(string $field): IField
+    public function realiasField(string $field): Field
     {
         if (preg_match('/(.+) as ([^ ]+)$/', $field, $matches)) {
             $name = $matches[1];
@@ -200,7 +200,7 @@ class Manager implements TransactionAware
     /**
      * Find local field by string reference
      */
-    public function findLocalField(string $name): IField
+    public function findLocalField(string $name): Field
     {
         $parts = explode('.', $name, 2);
         $fieldName = (string)array_pop($parts);
@@ -222,7 +222,7 @@ class Manager implements TransactionAware
     /**
      * Find foreign field by string reference
      */
-    public function findForeignField(string $name, string $ignoreAlias=null): IField
+    public function findForeignField(string $name, string $ignoreAlias=null): Field
     {
         $parts = explode('.', $name, 2);
         $fieldName = (string)array_pop($parts);
@@ -245,7 +245,7 @@ class Manager implements TransactionAware
     /**
      * Lookup local field
      */
-    protected function lookupLocalField(?string $sourceAlias, string $name, ?Reference &$possible=null, string $ignoreAlias=null): ?IField
+    protected function lookupLocalField(?string $sourceAlias, string $name, ?Reference &$possible=null, string $ignoreAlias=null): ?Field
     {
         if ($sourceAlias !== null) {
             if (isset($this->references[$sourceAlias])) {
@@ -279,7 +279,7 @@ class Manager implements TransactionAware
     /**
      * Lookup foreign field
      */
-    protected function lookupForeignField(?string $sourceAlias, string $name, ?Reference &$possible=null, string $ignoreAlias=null): ?IField
+    protected function lookupForeignField(?string $sourceAlias, string $name, ?Reference &$possible=null, string $ignoreAlias=null): ?Field
     {
         if ($field = $this->lookupLocalField($sourceAlias, $name, $possible, $ignoreAlias)) {
             return $field;

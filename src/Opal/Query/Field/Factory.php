@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Field;
 
-use Df\Opal\Query\IField;
+use Df\Opal\Query\Field;
 use Df\Opal\Query\Field\Intrinsic;
 use Df\Opal\Query\Field\Wildcard;
 
@@ -20,7 +20,7 @@ class Factory
     /**
      * Detect field reference from string
      */
-    public function fromString(string $field, Reference $source, Manager $sourceManager=null): IField
+    public function fromString(string $field, Reference $source, Manager $sourceManager=null): Field
     {
         if (preg_match('/(.+) +as +([^ ]+)$/', $field, $matches)) {
             $field = $matches[1];

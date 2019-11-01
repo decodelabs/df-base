@@ -6,15 +6,14 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Clause;
 
-use Df\Opal\Query\IBuilder;
+use Df\Opal\Query\Builder;
 use Df\Opal\Query\Builder\Select as SelectBuilder;
-use Df\Opal\Query\IClause;
-use Df\Opal\Query\IField;
+use Df\Opal\Query\Clause;
 
-use Df\Opal\Query\Clause\IFacade;
-use Df\Opal\Query\Clause\Value;
-use Df\Opal\Query\Clause\Field;
-use Df\Opal\Query\Clause\Query;
+use Df\Opal\Query\Clause\Provider;
+use Df\Opal\Query\Clause\Value as ValueClause;
+use Df\Opal\Query\Clause\Field as FieldClause;
+use Df\Opal\Query\Clause\Query as QueryClause;
 
 class Factory
 {
@@ -23,7 +22,7 @@ class Factory
     /**
      * Init with query
      */
-    public function __construct(IFacade $facade)
+    public function __construct(Provider $facade)
     {
         $this->facade = $facade;
     }
@@ -31,18 +30,18 @@ class Factory
     /**
      * Create a value based clause
      */
-    public function createValueClause(string $field, string $operator, $value, bool $or): IClause
+    public function createValueClause(string $field, string $operator, $value, bool $or): Clause
     {
         $sourceManager = $this->facade->getSourceManager();
         $field = $sourceManager->findLocalField($field);
 
-        return new Value($field, $operator, $value, $or);
+        return new ValueClause($field, $operator, $value, $or);
     }
 
     /**
      * Create a field based clause
      */
-    public function createFieldClause(string $field, string $operator, string $foreign, bool $or): IClause
+    public function createFieldClause(string $field, string $operator, string $foreign, bool $or): Clause
     {
         $sourceManager = $this->facade->getSourceManager();
         $field = $sourceManager->findLocalField($field);
@@ -52,17 +51,17 @@ class Factory
             $field->getSourceReference()->getAlias()
         );
 
-        return new Field($field, $operator, $foreign, $or);
+        return new FieldClause($field, $operator, $foreign, $or);
     }
 
     /**
-     * Create a IBuilder based clause
+     * Create a Builder based clause
      */
-    public function createQueryClause(string $field, string $operator, SelectBuilder $query, bool $or): IClause
+    public function createQueryClause(string $field, string $operator, SelectBuilder $query, bool $or): Clause
     {
         $sourceManager = $this->facade->getSourceManager();
         $field = $sourceManager->findLocalField($field);
 
-        return new Query($field, $operator, $query, $or);
+        return new QueryClause($field, $operator, $query, $or);
     }
 }

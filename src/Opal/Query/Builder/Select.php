@@ -6,13 +6,38 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Builder;
 
-use Df\Opal\Query\ISource;
+use Df\Opal\Query\Source;
 use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;
 
-use Df\Opal\Query\IBuilder;
-use Df\Opal\Query\Clause\WhereGroup;
-use Df\Opal\Query\Clause\HavingGroup;
+use Df\Opal\Query\Builder;
+use Df\Opal\Query\Builder\SourceProviderTrait;
+use Df\Opal\Query\Builder\ParentAware;
+use Df\Opal\Query\Builder\ParentAwareTrait;
+use Df\Opal\Query\Builder\RelationInspectorTrait;
+use Df\Opal\Query\Builder\Correlatable;
+use Df\Opal\Query\Builder\CorrelatableTrait;
+use Df\Opal\Query\Builder\Correlated;
+use Df\Opal\Query\Builder\CorrelatedTrait;
+use Df\Opal\Query\Builder\Derivable;
+use Df\Opal\Query\Builder\DerivableTrait;
+use Df\Opal\Query\Builder\Extendable;
+use Df\Opal\Query\Builder\ExtendableTrait;
+use Df\Opal\Query\Builder\Joinable;
+use Df\Opal\Query\Builder\JoinableTrait;
+use Df\Opal\Query\Builder\WhereClauseProvider;
+use Df\Opal\Query\Builder\WhereClauseProviderTrait;
+use Df\Opal\Query\Builder\HavingClauseProvider;
+use Df\Opal\Query\Builder\HavingClauseProviderTrait;
+use Df\Opal\Query\Builder\Stackable;
+use Df\Opal\Query\Builder\StackableTrait;
+use Df\Opal\Query\Builder\StackedData;
+use Df\Opal\Query\Builder\StackedDataTrait;
+use Df\Opal\Query\Builder\Nestable;
+use Df\Opal\Query\Builder\NestableTrait;
+
+use Df\Opal\Query\Clause\Group\Where as WhereGroup;
+use Df\Opal\Query\Clause\Group\Having as HavingGroup;
 
 use DecodeLabs\Glitch;
 use DecodeLabs\Glitch\Inspectable;
@@ -20,36 +45,36 @@ use DecodeLabs\Glitch\Dumper\Entity;
 use DecodeLabs\Glitch\Dumper\Inspector;
 
 class Select implements
-    IBuilder,
-    IParentAware,
-    ICorrelatable,
-    ICorrelated,
-    IDerivable,
-    IExtendable,
-    IJoinable,
-    IWhereClauseProvider,
-    IHavingClauseProvider,
+    Builder,
+    ParentAware,
+    Correlatable,
+    Correlated,
+    Derivable,
+    Extendable,
+    Joinable,
+    WhereClauseProvider,
+    HavingClauseProvider,
 
-    IStackable,
-    IStackedData,
-    INestable,
+    Stackable,
+    StackedData,
+    Nestable,
 
     Inspectable
 {
-    use TSources;
-    use TParentAware;
-    use TRelations;
-    use TCorrelatable;
-    use TCorrelated;
-    use TDerivable;
-    use TExtendable;
-    use TJoinable;
-    use TWhereClauseProvider;
-    use THavingClauseProvider;
+    use SourceProviderTrait;
+    use ParentAwareTrait;
+    use RelationInspectorTrait;
+    use CorrelatableTrait;
+    use CorrelatedTrait;
+    use DerivableTrait;
+    use ExtendableTrait;
+    use JoinableTrait;
+    use WhereClauseProviderTrait;
+    use HavingClauseProviderTrait;
 
-    use TStackable;
-    use TStackedData;
-    use TNestable;
+    use StackableTrait;
+    use StackedDataTrait;
+    use NestableTrait;
 
 
     protected $distinct = false;
@@ -104,7 +129,7 @@ class Select implements
     /**
      * Complete subquery and return parent
      */
-    public function as(string $alias): IBuilder
+    public function as(string $alias): Builder
     {
         switch ($this->getSubQueryMode()) {
             case 'correlation':
@@ -125,7 +150,7 @@ class Select implements
     /**
      * Complete clause subquery
      */
-    public function endClause(): IBuilder
+    public function endClause(): Builder
     {
         if (!$parent = $this->getParentQuery()) {
             throw Glitch::ELogic('Query does not have a parent to be aliased into');
@@ -137,7 +162,7 @@ class Select implements
 
         switch ($mode = $this->getSubQueryMode()) {
             case 'where':
-                if (!$parent instanceof IWhereClauseProvider) {
+                if (!$parent instanceof WhereClauseProvider) {
                     throw Glitch::ELogic('Parent query is not a where clause provider');
                 }
 
@@ -145,7 +170,7 @@ class Select implements
                 break;
 
             case 'having':
-                if (!$parent instanceof IHavingClauseProvider) {
+                if (!$parent instanceof HavingClauseProvider) {
                     throw Glitch::ELogic('Parent query is not a having clause provider');
                 }
 

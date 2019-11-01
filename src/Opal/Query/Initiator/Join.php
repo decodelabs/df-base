@@ -9,8 +9,12 @@ namespace Df\Opal\Query\Initiator;
 use Df\Core\IApp;
 use Df\Mesh\Job\TransactionAwareTrait;
 
-use Df\Opal\Query\IInitiator;
-use Df\Opal\Query\IBuilder;
+use Df\Opal\Query\Initiator;
+use Df\Opal\Query\Initiator\FieldCollector;
+use Df\Opal\Query\Initiator\FieldCollectorTrait;
+use Df\Opal\Query\Initiator\FromSource;
+use Df\Opal\Query\Initiator\FromSourceTrait;
+use Df\Opal\Query\Builder;
 use Df\Opal\Query\Source\Manager as SourceManager;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Builder\Join as JoinBuilder;
@@ -18,13 +22,13 @@ use Df\Opal\Query\Builder\Join as JoinBuilder;
 use DecodeLabs\Glitch;
 
 class Join implements
-    IInitiator,
-    IFieldCollector,
-    IFromSource
+    Initiator,
+    FieldCollector,
+    FromSource
 {
-    use TFieldCollector;
+    use FieldCollectorTrait;
     use TransactionAwareTrait;
-    use TFromSource;
+    use FromSourceTrait;
 
     protected $type = 'inner';
     protected $parentQuery;
@@ -33,7 +37,7 @@ class Join implements
     /**
      * Init with fields and distinct
      */
-    public function __construct(IBuilder $parentQuery, array $fields, string $type='inner')
+    public function __construct(Builder $parentQuery, array $fields, string $type='inner')
     {
         $this->app = $parentQuery->getSourceManager()->getApp();
         $this->parentQuery = $parentQuery;
@@ -74,7 +78,7 @@ class Join implements
     /**
      * Get parent query
      */
-    public function getParentQuery(): IBuilder
+    public function getParentQuery(): Builder
     {
         return $this->parentQuery;
     }
@@ -84,7 +88,7 @@ class Join implements
     /**
      * Set source and alias
      */
-    public function from($source, string $alias=null): IBuilder
+    public function from($source, string $alias=null): Builder
     {
         $manager = $this->parentQuery->getSourceManager();
         $source = $manager->normalizeSource($source);

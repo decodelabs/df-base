@@ -8,9 +8,9 @@ namespace Df\Opal\Query\Field;
 
 use Df\Opal\Query\Source\Reference;
 
-use Df\Opal\Query\IField;
+use Df\Opal\Query\Field;
 
-class Aggregate implements IField
+class Aggregate implements Field
 {
     const FUNCTIONS = [
         'COUNT', 'SUM', 'AVG', 'MIN', 'MAX', 'HAS'
@@ -51,7 +51,7 @@ class Aggregate implements IField
     /**
      * Does field match?
      */
-    public function matches(IField $field): bool
+    public function matches(Field $field): bool
     {
         if ($field->getSourceReference() !== $this->sourceReference
         || !$field instanceof Aggregate) {

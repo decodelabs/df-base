@@ -6,11 +6,11 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Source;
 
-use Df\Opal\Query\IComposedSource;
-use Df\Opal\Query\IBuilder;
-use Df\Opal\Query\Builder\ICorrelated;
+use Df\Opal\Query\Source\Composed as ComposedSource;
+use Df\Opal\Query\Builder;
+use Df\Opal\Query\Builder\Correlated as CorrelatedBuilder;
 
-class Correlated implements IComposedSource
+class Correlated implements ComposedSource
 {
     protected $name;
     protected $query;
@@ -19,7 +19,7 @@ class Correlated implements IComposedSource
     /**
      * Init with derivable query
      */
-    public function __construct(ICorrelated $query, string $name)
+    public function __construct(CorrelatedBuilder $query, string $name)
     {
         $this->query = $query;
         $this->source = $query->getPrimarySource();
@@ -53,7 +53,7 @@ class Correlated implements IComposedSource
     /**
      * Get source query
      */
-    public function getSubQuery(): ICorrelated
+    public function getSubQuery(): CorrelatedBuilder
     {
         return $this->query;
     }

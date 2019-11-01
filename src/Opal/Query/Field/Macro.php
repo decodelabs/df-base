@@ -7,9 +7,9 @@ declare(strict_types=1);
 namespace Df\Opal\Query\Field;
 
 use Df\Opal\Query\Source\Reference;
-use Df\Opal\Query\IField;
+use Df\Opal\Query\Field;
 
-class Macro implements IField
+class Macro implements Field
 {
     protected $type;
     protected $inner;
@@ -46,7 +46,7 @@ class Macro implements IField
     /**
      * Does field match?
      */
-    public function matches(IField $field): bool
+    public function matches(Field $field): bool
     {
         if ($field->getSourceReference() !== $this->sourceReference
         || !$field instanceof Macro) {

@@ -6,24 +6,30 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Builder;
 
-use Df\Opal\Query\ISource;
+use Df\Opal\Query\Source;
 use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;
 
-use Df\Opal\Query\IBuilder;
-use Df\Opal\Query\Clause\WhereGroup;
+use Df\Opal\Query\Builder;
+use Df\Opal\Query\Builder\SourceProviderTrait;
+use Df\Opal\Query\Builder\ParentAware;
+use Df\Opal\Query\Builder\ParentAwareTrait;
+use Df\Opal\Query\Builder\WhereClauseProvider;
+use Df\Opal\Query\Builder\WhereClauseProviderTrait;
+use Df\Opal\Query\Builder\RelationInspectorTrait;
+use Df\Opal\Query\Clause\Group\Where as WhereGroup;
 
 use DecodeLabs\Glitch;
 
 class Join implements
-    IBuilder,
-    IParentAware,
-    IWhereClauseProvider
+    Builder,
+    ParentAware,
+    WhereClauseProvider
 {
-    use TSources;
-    use TParentAware;
-    use TWhereClauseProvider;
-    use TRelations;
+    use SourceProviderTrait;
+    use ParentAwareTrait;
+    use WhereClauseProviderTrait;
+    use RelationInspectorTrait;
 
     protected $type;
     protected $sourceReference;
@@ -31,7 +37,7 @@ class Join implements
     /**
      * Init with parent
      */
-    public function __construct(IBuilder $parentQuery, Reference $reference, string $type='inner')
+    public function __construct(Builder $parentQuery, Reference $reference, string $type='inner')
     {
         $this->subQueryMode = 'join';
         $this->parentQuery = $parentQuery;
@@ -97,7 +103,7 @@ class Join implements
     /**
      * Complete join with alias and return parent
      */
-    public function as(string $alias): IBuilder
+    public function as(string $alias): Builder
     {
         return $this->endJoin($alias);
     }
@@ -105,7 +111,7 @@ class Join implements
     /**
      * Finalize join
      */
-    public function endJoin(string $alias=null): IBuilder
+    public function endJoin(string $alias=null): Builder
     {
         $this->parentQuery->addJoin($this, $alias);
         return $this->parentQuery;

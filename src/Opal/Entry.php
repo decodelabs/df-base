@@ -8,9 +8,9 @@ namespace Df\Opal;
 
 use Df\Core\IApp;
 
-use Df\Opal\Query\IReadFacade;
-use Df\Opal\Query\IWriteFacade;
-use Df\Opal\Query\IBuilder;
+use Df\Opal\Query\EntryPoint\Read as ReadEntryPoint;
+use Df\Opal\Query\EntryPoint\Write as WriteEntryPoint;
+use Df\Opal\Query\Builder;
 
 use Df\Opal\Query\Initiator\Select as SelectInitiator;
 use Df\Opal\Query\Initiator\Fetch as FetchInitiator;
@@ -26,8 +26,8 @@ use Df\Opal\Query\Initiator\Delete as DeleteInitiator;
 use DecodeLabs\Glitch;
 
 class Entry implements
-    IReadFacade,
-    IWriteFacade
+    ReadEntryPoint,
+    WriteEntryPoint
 {
     protected $app;
 

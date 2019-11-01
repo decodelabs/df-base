@@ -7,9 +7,9 @@ declare(strict_types=1);
 namespace Df\Opal\Query\Field;
 
 use Df\Opal\Query\Source\Reference;
-use Df\Opal\Query\IField;
+use Df\Opal\Query\Field;
 
-class Wildcard implements IField
+class Wildcard implements Field
 {
     protected $sourceReference;
 
@@ -40,7 +40,7 @@ class Wildcard implements IField
     /**
      * Does field match?
      */
-    public function matches(IField $field): bool
+    public function matches(Field $field): bool
     {
         if ($field->getSourceReference() !== $this->sourceReference) {
             return false;

@@ -7,9 +7,10 @@ declare(strict_types=1);
 namespace Df\Opal\Query\Field;
 
 use Df\Opal\Query\Source\Reference;
-use Df\Opal\Query\IField;
+use Df\Opal\Query\Field;
+use Df\Opal\Query\Field\Named;
 
-class Virtual implements IField, INamed
+class Virtual implements Field, Named
 {
     protected $name;
     protected $alias;
@@ -59,7 +60,7 @@ class Virtual implements IField, INamed
     /**
      * Does field match?
      */
-    public function matches(IField $field): bool
+    public function matches(Field $field): bool
     {
         if ($field->getSourceReference() !== $this->sourceReference
         || !$field instanceof Virtual) {

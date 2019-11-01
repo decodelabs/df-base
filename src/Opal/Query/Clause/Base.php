@@ -6,15 +6,15 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Clause;
 
-use Df\Opal\Query\IClause;
-use Df\Opal\Query\IField;
-use Df\Opal\Query\Clause\TRepresentation;
+use Df\Opal\Query\Clause;
+use Df\Opal\Query\Field;
+use Df\Opal\Query\Clause\RepresentationTrait;
 
 use DecodeLabs\Glitch;
 
-abstract class Base implements IClause
+abstract class Base implements Clause
 {
-    use TRepresentation;
+    use RepresentationTrait;
 
     const OP_EQ = '=';
     const OP_GT = '>';
@@ -42,7 +42,7 @@ abstract class Base implements IClause
     /**
      * Init with field, op and isOr
      */
-    public function __construct(IField $field, string $operator, bool $or=false)
+    public function __construct(Field $field, string $operator, bool $or=false)
     {
         $this->setField($field);
         $this->setOperator($operator);
@@ -53,7 +53,7 @@ abstract class Base implements IClause
     /**
      * Set local clause field
      */
-    public function setField(IField $field): IClause
+    public function setField(Field $field): Clause
     {
         // TODO: check for virtual
 
@@ -64,7 +64,7 @@ abstract class Base implements IClause
     /**
      * Get local clause field
      */
-    public function getField(): IField
+    public function getField(): Field
     {
         return $this->field;
     }
@@ -73,7 +73,7 @@ abstract class Base implements IClause
     /**
      * Set operator
      */
-    public function setOperator(string $operator): IClause
+    public function setOperator(string $operator): Clause
     {
         $this->operator = self::normalizeOperator($operator, $negate);
         $this->negate = $negate;
@@ -128,7 +128,7 @@ abstract class Base implements IClause
     /**
      * Negate current operator
      */
-    public function invert(): IClause
+    public function invert(): Clause
     {
         $this->negate = !$this->negate;
         return $this;

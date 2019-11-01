@@ -6,9 +6,9 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Clause;
 
-use Df\Opal\Query\IField;
-use Df\Opal\Query\Field\INamed as INamedField;
-use Df\Opal\Query\IBuilder;
+use Df\Opal\Query\Field;
+use Df\Opal\Query\Field\Named as NamedField;
+use Df\Opal\Query\Builder;
 use Df\Opal\Query\Builder\Select as SelectBuilder;
 
 use DecodeLabs\Glitch;
@@ -20,7 +20,7 @@ class Query extends Base
     /**
      * Init with field, op and isOr
      */
-    public function __construct(IField $field, string $operator, SelectBuilder $query, bool $or=false)
+    public function __construct(Field $field, string $operator, SelectBuilder $query, bool $or=false)
     {
         parent::__construct($field, $operator, $or);
         $this->query = $query;
@@ -45,7 +45,7 @@ class Query extends Base
             $operator = '!'.$operator;
         }
 
-        if ($this->field instanceof INamedField) {
+        if ($this->field instanceof NamedField) {
             $fieldName = '`'.$this->field.'`';
         } else {
             $fieldName = '*'.$this->field->getAlias();

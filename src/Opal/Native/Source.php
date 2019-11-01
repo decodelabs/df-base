@@ -7,11 +7,11 @@ declare(strict_types=1);
 namespace Df\Opal\Native;
 
 use Df\Mesh\Job\TransactionAdapter;
-use Df\Opal\Query\IComposedSource;
+use Df\Opal\Query\Source\Composed as ComposedSource;
 
 use DecodeLabs\Glitch;
 
-class Source implements IComposedSource, TransactionAdapter
+class Source implements ComposedSource, TransactionAdapter
 {
     protected $name;
     protected $data;

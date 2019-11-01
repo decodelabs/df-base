@@ -6,11 +6,11 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Field;
 
-use Df\Opal\Query\Builder\ICorrelated;
+use Df\Opal\Query\Builder\Correlated;
 use Df\Opal\Query\Source\Reference;
-use Df\Opal\Query\IField;
+use Df\Opal\Query\Field;
 
-class Correlation implements IField
+class Correlation implements Field
 {
     protected $alias;
     protected $sourceReference;
@@ -35,7 +35,7 @@ class Correlation implements IField
     /**
      * Get query
      */
-    public function getSubQuery(): ICorrelated
+    public function getSubQuery(): Correlated
     {
         return $this->sourceReference->getSource()->getSubQuery();
     }
@@ -51,7 +51,7 @@ class Correlation implements IField
     /**
      * Does field match?
      */
-    public function matches(IField $field): bool
+    public function matches(Field $field): bool
     {
         if ($field->getSourceReference() !== $this->sourceReference
         || !$field instanceof Correlation) {

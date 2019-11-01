@@ -6,11 +6,11 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Source;
 
-use Df\Opal\Query\ISource;
-use Df\Opal\Query\IComposedSource;
+use Df\Opal\Query\Source;
+use Df\Opal\Query\Source\Composed as ComposedSource;
 
-use Df\Opal\Query\IField;
-use Df\Opal\Query\Field\INamed as INamedField;
+use Df\Opal\Query\Field;
+use Df\Opal\Query\Field\Named as NamedField;
 use Df\Opal\Query\Field\Wildcard;
 use Df\Opal\Query\Field\Factory;
 
@@ -28,7 +28,7 @@ class Reference
     /**
      * Init with source and alias
      */
-    public function __construct(ISource $source, string $alias=null, string $prefix=null)
+    public function __construct(Source $source, string $alias=null, string $prefix=null)
     {
         $this->source = $source;
 
@@ -43,7 +43,7 @@ class Reference
     /**
      * Get source
      */
-    public function getSource(): ISource
+    public function getSource(): Source
     {
         return $this->source;
     }
@@ -91,7 +91,7 @@ class Reference
      */
     public function getSourceFields(): ?array
     {
-        if (!$this->source instanceof IComposedSource) {
+        if (!$this->source instanceof ComposedSource) {
             return null;
         }
 
@@ -106,10 +106,10 @@ class Reference
     /**
      * Lookup or select field by name
      */
-    public function findFieldByName(string $name, bool $create=false): ?IField
+    public function findFieldByName(string $name, bool $create=false): ?Field
     {
         foreach ($this->fields as $field) {
-            if ($field instanceof INamedField && $field->getName() === $name) {
+            if ($field instanceof NamedField && $field->getName() === $name) {
                 return $field;
             }
         }
@@ -124,7 +124,7 @@ class Reference
     /**
      * Lookup or select field by alias
      */
-    public function findFieldByAlias(string $alias): ?IField
+    public function findFieldByAlias(string $alias): ?Field
     {
         return $this->fields[$alias] ?? null;
     }
@@ -132,7 +132,7 @@ class Reference
     /**
      * Register field
      */
-    public function selectField(string $field): IField
+    public function selectField(string $field): Field
     {
         $field = (new Factory())->fromString($field, $this);
 
@@ -150,7 +150,7 @@ class Reference
     /**
      * Direct register field
      */
-    public function registerField(IField $field): Reference
+    public function registerField(Field $field): Reference
     {
         $alias = $field->getAlias();
 

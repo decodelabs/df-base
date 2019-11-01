@@ -6,21 +6,29 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Builder;
 
-use Df\Opal\Query\IBuilder;
-use Df\Opal\Query\ISource;
-use Df\Opal\Query\Field\INamed as INamedField;
+use Df\Opal\Query\Builder;
+use Df\Opal\Query\Builder\FieldCollector;
+use Df\Opal\Query\Builder\Nestable;
+use Df\Opal\Query\Builder\Nested;
+use Df\Opal\Query\Builder\SourceProviderTrait;
+use Df\Opal\Query\Builder\ParentAware;
+use Df\Opal\Query\Builder\ParentAwareTrait;
+
+use Df\Opal\Query\Source;
 use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;
+
+use Df\Opal\Query\Field\Named as NamedField;
 
 use DecodeLabs\Glitch;
 
 class Nest implements
-    INested,
-    IParentAware,
-    IFieldCollector
+    Nested,
+    ParentAware,
+    FieldCollector
 {
-    use TSources;
-    use TParentAware;
+    use SourceProviderTrait;
+    use ParentAwareTrait;
 
     protected $name;
     protected $copy = false;
@@ -30,7 +38,7 @@ class Nest implements
     /**
      * Init with query and fields
      */
-    public function __construct(IBuilder $parentQuery, array $fields)
+    public function __construct(Builder $parentQuery, array $fields)
     {
         $this->parentQuery = $parentQuery;
         $this->addFields(...$fields);
@@ -57,7 +65,7 @@ class Nest implements
     /**
      * Set list of fields to nest
      */
-    public function setFields(string ...$fields): IFieldCollector
+    public function setFields(string ...$fields): FieldCollector
     {
         return $this->clearFields()->addFields(...$fields);
     }
@@ -65,7 +73,7 @@ class Nest implements
     /**
      * Add list of fields to nest
      */
-    public function addFields(string ...$fields): IFieldCollector
+    public function addFields(string ...$fields): FieldCollector
     {
         $manager = $this->getSourceManager();
 
@@ -88,7 +96,7 @@ class Nest implements
     /**
      * Remove all registered fields
      */
-    public function clearFields(): IFieldCollector
+    public function clearFields(): FieldCollector
     {
         $this->fields = [];
         return $this;
@@ -99,7 +107,7 @@ class Nest implements
     /**
      * Set key field
      */
-    public function withKey(string ...$fields): INested
+    public function withKey(string ...$fields): Nested
     {
         $manager = $this->getSourceManager();
 
@@ -126,7 +134,7 @@ class Nest implements
     /**
      * Remove key fields
      */
-    public function clearKeyFields(): INested
+    public function clearKeyFields(): Nested
     {
         $this->keyFields = null;
         return $this;
@@ -136,7 +144,7 @@ class Nest implements
     /**
      * Set instruction name
      */
-    public function setName(string $name): INested
+    public function setName(string $name): Nested
     {
         $this->name = $name;
         return $this;
@@ -159,7 +167,7 @@ class Nest implements
     /**
      * Mark instruction as a copy
      */
-    public function setCopy(bool $copy): INested
+    public function setCopy(bool $copy): Nested
     {
         $this->copy = $copy;
         return $this;
@@ -179,7 +187,7 @@ class Nest implements
     /**
      * Alias of endNest()
      */
-    public function as(string $name): INestable
+    public function as(string $name): Nestable
     {
         return $this->endNest($name);
     }
@@ -188,7 +196,7 @@ class Nest implements
     /**
      * End nest and mark as copy
      */
-    public function asCopy(string $name): INestable
+    public function asCopy(string $name): Nestable
     {
         return $this->setCopy(true)
             ->endNest($name);
@@ -198,7 +206,7 @@ class Nest implements
     /**
      * End nest instruction and register
      */
-    public function endNest(?string $name=null): INestable
+    public function endNest(?string $name=null): Nestable
     {
         if ($name !== null) {
             $this->setName($name);
@@ -227,7 +235,7 @@ class Nest implements
         $fields = $keys = [];
 
         foreach ($this->fields as $field) {
-            if ($field instanceof INamedField) {
+            if ($field instanceof NamedField) {
                 $fieldName = (string)$field;
             } else {
                 $fieldName = '*'.$field->getAlias();
@@ -239,7 +247,7 @@ class Nest implements
         $output .= '    '.implode("\n    ", $fields)."\n";
 
         foreach ($this->keyFields as $field) {
-            if ($field instanceof INamedField) {
+            if ($field instanceof NamedField) {
                 $fieldName = (string)$field;
             } else {
                 $fieldName = '*'.$field->getAlias();

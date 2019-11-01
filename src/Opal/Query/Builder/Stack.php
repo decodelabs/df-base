@@ -6,8 +6,8 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Builder;
 
-use Df\Opal\Query\IBuilder;
-use Df\Opal\Query\IField;
+use Df\Opal\Query\Builder;
+use Df\Opal\Query\Field;
 
 class Stack
 {
@@ -21,7 +21,7 @@ class Stack
     /**
      * Init with name and query
      */
-    public function __construct(string $name, IBuilder $builder, string $mode)
+    public function __construct(string $name, Builder $builder, string $mode)
     {
         $this->name = $name;
         $this->query = $builder;
@@ -47,7 +47,7 @@ class Stack
     /**
      * Get sub query
      */
-    public function getQuery(): IBuilder
+    public function getQuery(): Builder
     {
         return $this->query;
     }
@@ -55,7 +55,7 @@ class Stack
     /**
      * Set key field
      */
-    public function setKeyField(?IField $field): Stack
+    public function setKeyField(?Field $field): Stack
     {
         $this->keyField = $field;
         return $this;
@@ -64,7 +64,7 @@ class Stack
     /**
      * Get key field
      */
-    public function getKeyField(): ?IField
+    public function getKeyField(): ?Field
     {
         return $this->keyField;
     }
@@ -72,7 +72,7 @@ class Stack
     /**
      * Set value field
      */
-    public function setValueField(?IField $field): Stack
+    public function setValueField(?Field $field): Stack
     {
         $this->valueField = $field;
         return $this;
@@ -81,7 +81,7 @@ class Stack
     /**
      * Get value field
      */
-    public function getValueField(): ?IField
+    public function getValueField(): ?Field
     {
         return $this->valueField;
     }

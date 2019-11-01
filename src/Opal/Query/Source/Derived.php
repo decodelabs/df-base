@@ -6,10 +6,10 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Source;
 
-use Df\Opal\Query\IComposedSource;
-use Df\Opal\Query\Builder\IDerivable;
+use Df\Opal\Query\Source\Composed as ComposedSource;
+use Df\Opal\Query\Builder\Derivable;
 
-class Derived implements IComposedSource
+class Derived implements ComposedSource
 {
     protected $name;
     protected $query;
@@ -18,7 +18,7 @@ class Derived implements IComposedSource
     /**
      * Init with derivable query
      */
-    public function __construct(IDerivable $query, string $name)
+    public function __construct(Derivable $query, string $name)
     {
         $this->query = $query;
         $this->source = $query->getPrimarySource();
