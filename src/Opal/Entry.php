@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Opal;
 
-use Df\Core\IApp;
+use Df\Core\App;
 
 use Df\Opal\Query\EntryPoint\Read as ReadEntryPoint;
 use Df\Opal\Query\EntryPoint\Write as WriteEntryPoint;
@@ -34,7 +34,7 @@ class Entry implements
     /**
      * Init with app
      */
-    public function __construct(IApp $app)
+    public function __construct(App $app)
     {
         $this->app = $app;
     }

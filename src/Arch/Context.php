@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Arch;
 
-use Df\Core\IApp;
+use Df\Core\App;
 use Df\Arch\Uri as ArchUri;
 use Df\Http\Uri as HttpUri;
 
@@ -24,7 +24,7 @@ class Context
     /**
      * Init with http request and location uri
      */
-    public function __construct(IApp $app, Uri $request, ServerRequestInterface $httpRequest=null)
+    public function __construct(App $app, Uri $request, ServerRequestInterface $httpRequest=null)
     {
         $this->app = $app;
         $this->request = $request;

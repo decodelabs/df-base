@@ -11,7 +11,7 @@ declare(strict_types=1);
 namespace Df
 {
     use Df;
-    use Df\Core\IApp;
+    use Df\Core\App;
     use Df\Core\Config\Env;
 
     use Composer\Autoload\ClassLoader;
@@ -55,7 +55,7 @@ namespace Df
     /**
      * Initial bootstrap
      */
-    function bootstrap(string $basePath=null): IApp
+    function bootstrap(string $basePath=null): App
     {
         Df\setup($basePath);
 
@@ -74,7 +74,7 @@ namespace Df
     /**
      * Get active app instance
      */
-    function app(): IApp
+    function app(): App
     {
         static $app;
 
@@ -82,7 +82,7 @@ namespace Df
             if (class_exists('Df\\Apex\\App', true)) {
                 $app = new Df\Apex\App();
             } else {
-                $app = new Df\Core\App();
+                $app = new Df\Core\App\Generic();
             }
         }
 

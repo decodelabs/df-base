@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Arch;
 
-use Df\Core\IApp;
+use Df\Core\App;
 use Df\Arch\Route;
 use Df\Arch\Uri;
 
@@ -183,7 +183,7 @@ trait RouteTrait
     /**
      * Ensure output is ResponseInterface
      */
-    protected function normalizeResponse($output, IApp $app): ResponseInterface
+    protected function normalizeResponse($output, App $app): ResponseInterface
     {
         if ($output instanceof \Closure) {
             $output = $app->call($output);

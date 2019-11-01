@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Core\Config;
 
-use Df\Core\IApp;
+use Df\Core\App;
 
 use Df\Core\Config\EnvLoader;
 use Df\Core\Config\EnvLoader\DotIni;
@@ -34,7 +34,7 @@ class ServiceProvider implements Provider
      */
     public function registerServices(Container $app): void
     {
-        if (!$app instanceof IApp) {
+        if (!$app instanceof App) {
             throw Glitch::EUnexpectedValue('Container is not the app', null, $app);
         }
 

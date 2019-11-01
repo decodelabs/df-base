@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Source;
 
-use Df\Core\IApp;
+use Df\Core\App;
 
 use Df\Mesh\Job\Transaction;
 use Df\Mesh\Job\TransactionAdapter;
@@ -32,7 +32,7 @@ class Manager implements TransactionAware
     /**
      * Init with
      */
-    public function __construct(IApp $app)
+    public function __construct(App $app)
     {
         $this->app = $app;
     }
@@ -40,7 +40,7 @@ class Manager implements TransactionAware
     /**
      * Get app
      */
-    public function getApp(): IApp
+    public function getApp(): App
     {
         return $this->app;
     }

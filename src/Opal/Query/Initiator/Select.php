@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Initiator;
 
-use Df\Core\IApp;
+use Df\Core\App;
 use Df\Mesh\Job\TransactionAwareTrait;
 
 use Df\Opal\Query\Initiator;
@@ -38,7 +38,7 @@ class Select implements
     /**
      * Init with fields and distinct
      */
-    public function __construct(IApp $app, array $fields, bool $distinct=false)
+    public function __construct(App $app, array $fields, bool $distinct=false)
     {
         $this->app = $app;
         $this->importFields($fields);

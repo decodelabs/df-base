@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Core\Config\Loader;
 
-use Df\Core\IApp;
+use Df\Core\App;
 
 use Df\Core\Config\Repository;
 use Df\Core\Config\Loader;
@@ -38,7 +38,7 @@ class PhpArray implements Loader
     /**
      * Load config repository from php array files in app folder
      */
-    public function loadConfig(IApp $app): Repository
+    public function loadConfig(App $app): Repository
     {
         return new Repository(static::CONFIG);
     }

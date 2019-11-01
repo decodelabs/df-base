@@ -5,9 +5,9 @@
  */
 namespace Df\Core\Config;
 
-use Df\Core\IApp;
+use Df\Core\App;
 
 interface Loader
 {
-    public function loadConfig(IApp $app): Repository;
+    public function loadConfig(App $app): Repository;
 }

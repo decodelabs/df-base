@@ -8,7 +8,7 @@ namespace Df\Http;
 
 use Df\Http\Pipeline\Dispatcher;
 use Df\Http\Response\Sender;
-use Df\Core\IApp;
+use Df\Core\App;
 use Df\Core\Kernel\Web as WebKernel;
 
 use Psr\Http\Message\ResponseInterface;
@@ -23,7 +23,7 @@ class Kernel implements WebKernel
     /**
      * Setup with ref to $app
      */
-    public function __construct(IApp $app, Dispatcher $dispatcher, Sender $sender)
+    public function __construct(App $app, Dispatcher $dispatcher, Sender $sender)
     {
         $this->app = $app;
         $this->dispatcher = $dispatcher;

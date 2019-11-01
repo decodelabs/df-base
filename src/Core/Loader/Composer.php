@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Core\Loader;
 
-use Df\Core\IApp;
+use Df\Core\App;
 use Df\Core\Loader;
 
 use Composer\Autoload\ClassLoader;
@@ -27,7 +27,7 @@ class Composer implements Loader
     /**
      * Construct with default Composer ClassLoader
      */
-    public function __construct(IApp $app, ClassLoader $autoload)
+    public function __construct(App $app, ClassLoader $autoload)
     {
         $reflection = new \ReflectionClass(ClassLoader::class);
         $this->vendorPath = dirname(dirname((string)$reflection->getFileName()));

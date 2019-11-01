@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Df\Core\Config\EnvLoader;
 
 use Df;
-use Df\Core\IApp;
+use Df\Core\App;
 use Df\Core\Config\EnvLoader;
 use Df\Core\Config\Env;
 
@@ -49,7 +49,7 @@ class DotIni implements EnvLoader
     /**
      * Load ini file from app root
      */
-    public function loadEnvConfig(IApp $app): Env
+    public function loadEnvConfig(App $app): Env
     {
         $path = $this->getPath();
 

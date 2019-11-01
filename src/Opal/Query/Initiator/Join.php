@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Initiator;
 
-use Df\Core\IApp;
+use Df\Core\App;
 use Df\Mesh\Job\TransactionAwareTrait;
 
 use Df\Opal\Query\Initiator;

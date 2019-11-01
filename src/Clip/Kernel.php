@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Clip;
 
-use Df\Core\IApp;
+use Df\Core\App;
 use Df\Core\Kernel\Console as ConsoleKernel;
 
 use Df\Clip\Task\Base;
@@ -21,7 +21,7 @@ class Kernel implements ConsoleKernel
     /**
      * Setup with ref to $app
      */
-    public function __construct(IApp $app)
+    public function __construct(App $app)
     {
         $this->app = $app;
     }

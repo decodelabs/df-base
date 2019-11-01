@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Http\Pipeline;
 
-use Df\Core\IApp;
+use Df\Core\App;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -24,7 +24,7 @@ class Dispatcher implements RequestHandlerInterface, Terminable
     /**
      * Init with middleware queue
      */
-    public function __construct(IApp $app, array $middlewares=[])
+    public function __construct(App $app, array $middlewares=[])
     {
         $this->app = $app;
         $this->queueList($middlewares);

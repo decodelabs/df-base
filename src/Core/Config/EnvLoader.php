@@ -5,9 +5,9 @@
  */
 namespace Df\Core\Config;
 
-use Df\Core\IApp;
+use Df\Core\App;
 
 interface EnvLoader
 {
-    public function loadEnvConfig(IApp $app): Env;
+    public function loadEnvConfig(App $app): Env;
 }

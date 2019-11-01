@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Core\Logger\Factory;
 
-use Df\Core\IApp;
+use Df\Core\App;
 use Df\Core\Logger\Factory;
 use Df\Core\Config\Repository;
 
@@ -32,7 +32,7 @@ class Monolog implements Factory
     /**
      * Init with config
      */
-    public function __construct(IApp $app, Repository $config)
+    public function __construct(App $app, Repository $config)
     {
         $this->config = $config->logging;
         $this->app = $app;

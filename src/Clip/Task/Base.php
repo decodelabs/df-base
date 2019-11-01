@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Clip\Task;
 
-use Df\Core\IApp;
+use Df\Core\App;
 use Df\Clip\Task;
 use Df\Flex\Formatter;
 
@@ -23,7 +23,7 @@ abstract class Base implements Task
     /**
      * Load a task
      */
-    public static function load(IApp $app, Request $request): Task
+    public static function load(App $app, Request $request): Task
     {
         if (empty($path = $request->getScript())) {
             throw Glitch::EUnexpectedValue('Script path not set in request', null, $request);
@@ -55,7 +55,7 @@ abstract class Base implements Task
     /**
      * Init with app
      */
-    public function __construct(IApp $app)
+    public function __construct(App $app)
     {
         $this->app = $app;
     }

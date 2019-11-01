@@ -5,7 +5,7 @@
  */
 namespace Df\Arch;
 
-use Df\Core\IApp;
+use Df\Core\App;
 
 trait NodeTrait
 {
@@ -14,7 +14,7 @@ trait NodeTrait
     /**
      * Construct with app
      */
-    public function __construct(IApp $app)
+    public function __construct(App $app)
     {
         $this->app = $app;
     }

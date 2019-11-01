@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Arch\Pipeline;
 
-use Df\Core\IApp;
+use Df\Core\App;
 
 use Df\Arch\Uri as ArchUri;
 use Df\Arch\Context;
@@ -31,7 +31,7 @@ class Handler implements MiddlewareInterface
     /**
      * Construct with app
      */
-    public function __construct(IApp $app)
+    public function __construct(App $app)
     {
         $this->app = $app;
     }
