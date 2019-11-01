@@ -134,7 +134,11 @@ class Uri implements IUri
      */
     protected function prepareScheme(?string $scheme): ?string
     {
-        $schema = strtolower((string)$scheme);
+        if ($scheme === null) {
+            return null;
+        }
+
+        $scheme = strtolower($scheme);
         $scheme = preg_replace('#:(//)?$#', '', $scheme);
 
         if (empty($scheme)) {
@@ -472,7 +476,7 @@ class Uri implements IUri
             );
         }
 
-        $path = preg_replace_callback(
+        $path = (string)preg_replace_callback(
             '#(?:[^'.self::VALID_CHARACTERS.')(:@&=\+\$,/;%]+|%(?![A-Fa-f0-9]{2}))#u',
             function ($matches) {
                 return rawurlencode($matches[0]);
@@ -541,7 +545,7 @@ class Uri implements IUri
         $parts = explode('&', $query);
 
         foreach ($parts as $i => $part) {
-            $vals = explode('=', $part, 2);
+            $vals = explode('=', (string)$part, 2);
             $key = array_shift($vals);
             $value = array_shift($vals);
 
@@ -561,9 +565,13 @@ class Uri implements IUri
      */
     public function setQueryTree(?Tree $tree): UriInterface
     {
-        $query = $tree->toDelimitedString();
+        if ($tree !== null) {
+            $query = $tree->toDelimitedString();
 
-        if (!strlen($query)) {
+            if (!strlen($query)) {
+                $query = null;
+            }
+        } else {
             $query = null;
         }
 

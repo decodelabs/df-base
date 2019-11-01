@@ -535,7 +535,7 @@ class Writer implements AttributeContainer, ArrayAccess
      */
     protected static function normalizeString(string $string): string
     {
-        return preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '', $string);
+        return (string)preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '', $string);
     }
 
     /**

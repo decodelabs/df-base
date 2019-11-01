@@ -310,7 +310,7 @@ class Element implements AttributeContainer, \Countable, \ArrayAccess
     public function getComposedInnerXml(): string
     {
         $output = $this->getInnerXml();
-        $output = preg_replace('/  +/', ' ', $output);
+        $output = (string)preg_replace('/  +/', ' ', $output);
         $output = str_replace(["\r", "\n\n", "\n "], ["\n", "\n", "\n"], $output);
         return trim($output);
     }
@@ -1275,7 +1275,7 @@ class Element implements AttributeContainer, \Countable, \ArrayAccess
      */
     protected static function normalizeString(string $string): string
     {
-        return preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '', $string);
+        return (string)preg_replace('/[^\x{0009}\x{000a}\x{000d}\x{0020}-\x{D7FF}\x{E000}-\x{FFFD}]+/u', '', $string);
     }
 
     /**

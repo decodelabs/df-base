@@ -128,7 +128,10 @@ class Item implements IItem
             return $this;
         }
 
-        $interval = Interval::instance($time);
+        if (null === ($interval = Interval::instance($time))) {
+            throw Glitch::EInvalidArgument('Unable to prepare interval', null, $time);
+        }
+
         $date = new Date();
         $date->add($interval);
 
@@ -345,9 +348,12 @@ class Item implements IItem
         $this->locked = true;
 
         if ($ttl !== null) {
+            if (null === ($interval = Interval::instance($ttl))) {
+                throw Glitch::EInvalidArgument('Unable to prepare interval', null, $ttl);
+            }
+
             $date = new Date();
-            $ttl = Interval::instance($ttl);
-            $date->add($ttl);
+            $date->add($interval);
             $expires = $date->timestamp;
         } else {
             $expires = time() + static::LOCK_TTL;

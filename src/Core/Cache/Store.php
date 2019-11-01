@@ -534,7 +534,7 @@ class Store implements IStore
     /**
      * Normalize iterable key list
      */
-    protected function normalizeKeyList($keys): ?array
+    protected function normalizeKeyList($keys): array
     {
         if (!is_array($keys)) {
             if (!$keys instanceof \Traversable) {

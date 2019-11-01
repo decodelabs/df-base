@@ -124,7 +124,7 @@ trait RouteTrait
         $this->matchKeys = [];
         $pattern = '/'.ltrim($this->path, '/');
 
-        $pattern = preg_replace_callback('#{([a-zA-Z0-9\-_]+)([/\?]*)}#', function ($matches) {
+        $pattern = (string)preg_replace_callback('#{([a-zA-Z0-9\-_]+)([/\?]*)}#', function ($matches) {
             $rep = 'r'.count($this->params);
             $key = $matches[1];
             $greedy = $optional = false;

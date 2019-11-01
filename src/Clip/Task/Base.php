@@ -25,11 +25,13 @@ abstract class Base implements Task
      */
     public static function load(IApp $app, Request $request): Task
     {
-        $path = $request->getScript();
+        if (empty($path = $request->getScript())) {
+            throw Glitch::EUnexpectedValue('Script path not set in request', null, $request);
+        }
 
         $parts = array_map(
             [Formatter::class, 'id'],
-            explode('/', $path)
+            explode('/', (string)$path)
         );
 
         $class = '\\Df\\Apex\\Clip\\'.implode('\\', $parts).'Task';

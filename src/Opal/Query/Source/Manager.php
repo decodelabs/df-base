@@ -160,9 +160,11 @@ class Manager implements ITransactionAware
     {
         $this->transaction = $transaction;
 
-        foreach ($this->sources as $source) {
-            if ($source instanceof ITransactionAdapter) {
-                $this->transaction->registerAdapter($source);
+        if ($this->transaction !== null) {
+            foreach ($this->sources as $source) {
+                if ($source instanceof ITransactionAdapter) {
+                    $this->transaction->registerAdapter($source);
+                }
             }
         }
 
@@ -201,7 +203,7 @@ class Manager implements ITransactionAware
     public function findLocalField(string $name): IField
     {
         $parts = explode('.', $name, 2);
-        $fieldName = array_pop($parts);
+        $fieldName = (string)array_pop($parts);
         $sourceAlias = array_shift($parts);
 
         if ($field = $this->lookupLocalField($sourceAlias, $fieldName, $possible)) {
@@ -223,7 +225,7 @@ class Manager implements ITransactionAware
     public function findForeignField(string $name, string $ignoreAlias=null): IField
     {
         $parts = explode('.', $name, 2);
-        $fieldName = array_pop($parts);
+        $fieldName = (string)array_pop($parts);
         $sourceAlias = array_shift($parts);
 
         if ($field = $this->lookupForeignField($sourceAlias, $fieldName, $possible, $ignoreAlias)) {

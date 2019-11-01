@@ -164,7 +164,7 @@ class Factory
         [$host, $port] = $this->extractHostAndPort($server, $headers);
         $relative = $this->extractRelative($server);
         $parts = explode('#', $relative, 2);
-        $relative = array_shift($parts);
+        $relative = (string)array_shift($parts);
         $fragment = array_shift($parts);
         $parts = explode('?', $relative, 2);
         $path = array_shift($parts);

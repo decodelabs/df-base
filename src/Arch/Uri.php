@@ -86,7 +86,7 @@ class Uri implements \ArrayAccess, Inspectable
     protected function parse(string $uri): void
     {
         $parts = explode('://', $uri, 2);
-        $path = ltrim(array_pop($parts), '/');
+        $path = ltrim((string)array_pop($parts), '/');
         $scheme = array_shift($parts);
 
         if (substr($path, 0, 1) != '~') {
@@ -305,7 +305,7 @@ class Uri implements \ArrayAccess, Inspectable
             );
         }
 
-        $path = preg_replace_callback(
+        $path = (string)preg_replace_callback(
             '#(?:[^'.self::VALID_CHARACTERS.')(:@&=\+\$,/;%]+|%(?![A-Fa-f0-9]{2}))#u',
             function ($matches) {
                 return rawurlencode($matches[0]);

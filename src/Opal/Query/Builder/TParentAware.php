@@ -131,7 +131,10 @@ trait TParentAware
         $sourceId = $reference->getId().' as '.$reference->getAlias();
 
         do {
-            $gp = $gp->getParentQuery();
+            if (!($gp = $gp->getParentQuery())) {
+                return false;
+            }
+
             $gpReference = $gp->getPrimarySourceReference();
 
             if ($gpReference->getId().' as '.$gpReference->getAlias() === $sourceId) {

@@ -84,6 +84,10 @@ trait TMessage
      */
     protected function prepareProtocolVersion(?string $version): string
     {
+        if ($version === null) {
+            $version = '1.1';
+        }
+
         if (!preg_match('#^(1\.[01]|2)$#', (string)$version)) {
             throw Glitch::EInvalidArgument(
                 'Invalid HTTP protocol version: '.$version,

@@ -92,7 +92,7 @@ trait TCorrelatable
     public function addCorrelation(Select $subQuery, string $alias=null): ICorrelatable
     {
         $reference = new Reference(
-            $source = new CorrelatedSource($subQuery, $alias),
+            $source = new CorrelatedSource($subQuery, $alias ?? uniqid('cor_')),
             $alias,
             $subQuery->getPrimarySourceReference()->getPrefix()
         );

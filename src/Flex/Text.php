@@ -934,7 +934,9 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
                 return true;
 
             default:
-                return $default;
+                if ($default !== null) {
+                    return $default;
+                }
         }
 
         if (is_numeric($text)) {

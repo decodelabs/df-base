@@ -40,7 +40,12 @@ class Interval extends CarbonInterval
     {
         $date = new \DateTime();
         $date->add($this);
-        return static::instance($date->diff(new \DateTime()));
+
+        if (null === ($output = static::instance($date->diff(new \DateTime())))) {
+            throw Glitch::EUnexpectedValue('Unable to create instance from date', null, $date);
+        }
+
+        return $output;
     }
 
     /**

@@ -39,8 +39,14 @@ class Date extends Carbon
     /**
      * Get the difference as an Interval instance
      */
-    public function diffAsInterval($date = null, $absolute = true): Interval
+    public function diffAsInterval($date=null, $absolute=true): Interval
     {
-        return Interval::instance($this->diff($this->resolveCarbon($date), $absolute));
+        $output = Interval::instance($this->diff($this->resolveCarbon($date), $absolute));
+
+        if ($output === null) {
+            throw Glitch::EUnexpectedValue('Unable to create instance from date', null, $date);
+        }
+
+        return $output;
     }
 }

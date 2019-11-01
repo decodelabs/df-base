@@ -83,7 +83,7 @@ class Binding implements IBinding
             return null;
         }
 
-        $name = array_pop($parts);
+        $name = (string)array_pop($parts);
         $parts = array_map('lcfirst', $parts);
 
         if ($name{0} === 'I' && interface_exists($type)) {
