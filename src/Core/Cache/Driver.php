@@ -7,10 +7,10 @@ namespace Df\Core\Cache;
 
 use Df\Core\Config\Repository;
 
-interface IDriver
+interface Driver
 {
     public static function isAvailable(): bool;
-    public static function fromConfig(Repository $config): ?IDriver;
+    public static function fromConfig(Repository $config): ?Driver;
 
     public function store(string $namespace, string $key, $value, int $created, ?int $expires): bool;
     public function fetch(string $namespace, string $key): ?array;

@@ -6,10 +6,10 @@
 declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
-use Df\Core\Cache\IDriver;
+use Df\Core\Cache\Driver;
 use Df\Core\Config\Repository;
 
-class Memcache implements IDriver
+class Memcache implements Driver
 {
     use TIndexedKeyGen;
 
@@ -28,7 +28,7 @@ class Memcache implements IDriver
     /**
      * Attempt to load an instance from config
      */
-    public static function fromConfig(Repository $config): ?IDriver
+    public static function fromConfig(Repository $config): ?Driver
     {
         if (isset($config->servers) && !$config->servers->isEmpty()) {
             return self::create($config->servers->toArray());
@@ -40,7 +40,7 @@ class Memcache implements IDriver
     /**
      * Create a local instance of Memcached
      */
-    public static function createLocal(): IDriver
+    public static function createLocal(): Driver
     {
         $memcached = new \Memcached();
         $memcached->addServer('127.0.0.1', 11211);
@@ -50,7 +50,7 @@ class Memcache implements IDriver
     /**
      * Create instance of Memcached from server list
      */
-    public static function create(array $servers): IDriver
+    public static function create(array $servers): Driver
     {
         $memcached = new \Memcached();
         $memcached->addServers($servers);

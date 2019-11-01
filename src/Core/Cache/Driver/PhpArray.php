@@ -6,11 +6,10 @@
 declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
-use Df\Core\Cache\IDriver;
-use Df\Core\Cache\IItem;
+use Df\Core\Cache\Driver;
 use Df\Core\Config\Repository;
 
-class PhpArray implements IDriver
+class PhpArray implements Driver
 {
     use TKeyGen;
 
@@ -30,7 +29,7 @@ class PhpArray implements IDriver
     /**
      * Attempt to load an instance from config
      */
-    public static function fromConfig(Repository $config): ?IDriver
+    public static function fromConfig(Repository $config): ?Driver
     {
         return new static();
     }

@@ -6,12 +6,14 @@
 declare(strict_types=1);
 namespace Df\Core\Cache;
 
+use Df\Core\Cache\Store;
+
 use Df\Time\Date;
 use Df\Time\Interval;
 
 use Psr\Cache\CacheItemInterface;
 
-class Item implements IItem
+class Item implements CacheItemInterface
 {
     const IGNORE = 'ignore';
     const PREEMPT = 'preempt';
@@ -38,7 +40,7 @@ class Item implements IItem
     /**
      * Init with store and key
      */
-    public function __construct(IStore $store, string $key)
+    public function __construct(Store $store, string $key)
     {
         $this->key = $key;
         $this->store = $store;
@@ -47,7 +49,7 @@ class Item implements IItem
     /**
      * Get parent store
      */
-    public function getStore(): IStore
+    public function getStore(): Store
     {
         return $this->store;
     }
@@ -143,7 +145,7 @@ class Item implements IItem
     /**
      * Work out best expiration from value
      */
-    public function setExpiration($expiration): IItem
+    public function setExpiration($expiration): Item
     {
         if ($expiration instanceof \DateInterval || is_string($expiration)) {
             $output = $this->expiresAfter($expiration);
@@ -151,8 +153,8 @@ class Item implements IItem
             $output = $this->expiresAt($expiration);
         }
 
-        if (!$output instanceof IItem) {
-            throw Glitch::EUnexpectedValue('Item is not instanceof IItem', null, $output);
+        if (!$output instanceof Item) {
+            throw Glitch::EUnexpectedValue('Item is not instanceof Item', null, $output);
         }
 
         return $output;
@@ -202,7 +204,7 @@ class Item implements IItem
     /**
      * Set pile up policy to ignore
      */
-    public function pileUpIgnore(): IItem
+    public function pileUpIgnore(): Item
     {
         $this->pileUpPolicy = self::IGNORE;
         return $this;
@@ -211,7 +213,7 @@ class Item implements IItem
     /**
      * Set pile up policy to preempt
      */
-    public function pileUpPreempt(int $preemptTime=null): IItem
+    public function pileUpPreempt(int $preemptTime=null): Item
     {
         $this->pileUpPolicy = self::PREEMPT;
 
@@ -225,7 +227,7 @@ class Item implements IItem
     /**
      * Set pile up policy to sleep
      */
-    public function pileUpSleep(int $time=null, int $attempts=null): IItem
+    public function pileUpSleep(int $time=null, int $attempts=null): Item
     {
         $this->pileUpPolicy = self::SLEEP;
 
@@ -243,7 +245,7 @@ class Item implements IItem
     /**
      * Set pile up policy to return value
      */
-    public function pileUpValue($value): IItem
+    public function pileUpValue($value): Item
     {
         $this->pileUpPolicy = self::VALUE;
         $this->fallbackValue = $value;
@@ -254,7 +256,7 @@ class Item implements IItem
     /**
      * Set pile up policy
      */
-    public function setPileUpPolicy(string $policy): IItem
+    public function setPileUpPolicy(string $policy): Item
     {
         $this->pileUpPolicy = $policy;
         return $this;
@@ -272,7 +274,7 @@ class Item implements IItem
     /**
      * Replace preempt time
      */
-    public function setPreemptTime(int $preemptTime): IItem
+    public function setPreemptTime(int $preemptTime): Item
     {
         $this->preemptTime = $preemptTime;
         return $this;
@@ -290,7 +292,7 @@ class Item implements IItem
     /**
      * Replace sleep time
      */
-    public function setSleepTime(int $time): IItem
+    public function setSleepTime(int $time): Item
     {
         $this->sleepTime = $time;
         return $this;
@@ -307,7 +309,7 @@ class Item implements IItem
     /**
      * Replace sleep attempts
      */
-    public function setSleepAttempts(int $attempts): IItem
+    public function setSleepAttempts(int $attempts): Item
     {
         $this->sleepAttempts = $attempts;
         return $this;
@@ -325,7 +327,7 @@ class Item implements IItem
     /**
      * Replace fallback value
      */
-    public function setFallbackValue($value): IItem
+    public function setFallbackValue($value): Item
     {
         $this->fallbackValue = $value;
         return $this;

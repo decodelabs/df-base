@@ -6,13 +6,13 @@
 declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
-use Df\Core\Cache\IDriver;
+use Df\Core\Cache\Driver;
 use Df\Core\Config\Repository;
 
 use Predis\Client;
 use Predis\ClientInterface;
 
-class Predis implements IDriver
+class Predis implements Driver
 {
     use TIndexedKeyGen;
 
@@ -31,7 +31,7 @@ class Predis implements IDriver
     /**
      * Attempt to load an instance from config
      */
-    public static function fromConfig(Repository $config): ?IDriver
+    public static function fromConfig(Repository $config): ?Driver
     {
         if (isset($config->host) || isset($config->path)) {
             return new static(new Client($config->toArray()));
@@ -43,7 +43,7 @@ class Predis implements IDriver
     /**
      * Create a local instance of Memcached
      */
-    public static function createLocal(): IDriver
+    public static function createLocal(): Driver
     {
         return new static(new Client());
     }

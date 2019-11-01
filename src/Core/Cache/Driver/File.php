@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
 use Df;
-use Df\Core\Cache\IDriver;
+use Df\Core\Cache\Driver;
 use Df\Core\Config\Repository;
 
 use DecodeLabs\Atlas;
@@ -15,7 +15,7 @@ use DecodeLabs\Atlas\File as FileInterface;
 use DecodeLabs\Atlas\File\Local as LocalFile;
 use DecodeLabs\Atlas\Dir\Local as LocalDir;
 
-class File implements IDriver
+class File implements Driver
 {
     use TKeyGen;
 
@@ -37,7 +37,7 @@ class File implements IDriver
     /**
      * Attempt to load an instance from config
      */
-    public static function fromConfig(Repository $config): ?IDriver
+    public static function fromConfig(Repository $config): ?Driver
     {
         $name = lcfirst((new \ReflectionClass(get_called_class()))->getShortName());
         $path = $config['path'] ?? Df\BASE_PATH.'/storage/local/cache@'.$name;

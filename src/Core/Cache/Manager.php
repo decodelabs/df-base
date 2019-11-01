@@ -8,6 +8,8 @@ namespace Df\Core\Cache;
 
 use Df\Core\Config\Repository;
 use Df\Core\Cache\Driver;
+use Df\Core\Cache\Store;
+use Df\Core\Cache\Store\Generic as GenericStore;
 
 use DecodeLabs\Glitch;
 
@@ -27,14 +29,14 @@ class Manager
     /**
      * Get cache pool
      */
-    public function get(string $namespace): IStore
+    public function get(string $namespace): Store
     {
         if (isset($this->caches[$namespace])) {
             return $this->caches[$namespace];
         }
 
         $driver = $this->getDriverFor($namespace, $conf);
-        $store = new Store($namespace, $driver);
+        $store = new GenericStore($namespace, $driver);
 
         if ($conf instanceof Repository) {
             if (isset($conf->pileUpPolicy)) {
@@ -60,7 +62,7 @@ class Manager
     /**
      * Get a driver for a specific namespace from config
      */
-    public function getDriverFor(string $namespace, Repository &$config=null): IDriver
+    public function getDriverFor(string $namespace, Repository &$config=null): Driver
     {
         foreach ([$namespace, 'default'] as $name) {
             if (!isset($this->config->stores->{$name}->driver)) {
@@ -100,7 +102,7 @@ class Manager
     /**
      * Load driver by name
      */
-    public function loadDriver(string $name, Repository &$directConf=null): ?IDriver
+    public function loadDriver(string $name, Repository &$directConf=null): ?Driver
     {
         $class = 'Df\\Core\\Cache\\Driver\\'.$name;
 

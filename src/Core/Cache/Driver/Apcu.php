@@ -6,10 +6,10 @@
 declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
-use Df\Core\Cache\IDriver;
+use Df\Core\Cache\Driver;
 use Df\Core\Config\Repository;
 
-class Apcu implements IDriver
+class Apcu implements Driver
 {
     use TKeyGen;
 
@@ -26,7 +26,7 @@ class Apcu implements IDriver
     /**
      * Attempt to load an instance from config
      */
-    public static function fromConfig(Repository $config): ?IDriver
+    public static function fromConfig(Repository $config): ?Driver
     {
         return new self();
     }

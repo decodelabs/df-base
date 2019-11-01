@@ -6,10 +6,10 @@
 declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
-use Df\Core\Cache\IDriver;
+use Df\Core\Cache\Driver;
 use Df\Core\Config\Repository;
 
-class Redis implements IDriver
+class Redis implements Driver
 {
     use TIndexedKeyGen;
 
@@ -28,7 +28,7 @@ class Redis implements IDriver
     /**
      * Attempt to load an instance from config
      */
-    public static function fromConfig(Repository $config): ?IDriver
+    public static function fromConfig(Repository $config): ?Driver
     {
         if (isset($config->host)) {
             $redis = new \Redis();
@@ -42,7 +42,7 @@ class Redis implements IDriver
     /**
      * Create a local instance of Memcached
      */
-    public static function createLocal(): IDriver
+    public static function createLocal(): Driver
     {
         $redis = new \Redis();
         $redis->connect('127.0.0.1', 6379);
