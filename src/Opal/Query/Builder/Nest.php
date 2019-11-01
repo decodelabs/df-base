@@ -6,9 +6,6 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Builder;
 
-use Df\Mesh\Job\ITransaction;
-use Df\Mesh\Job\ITransactionAware;
-
 use Df\Opal\Query\IBuilder;
 use Df\Opal\Query\ISource;
 use Df\Opal\Query\Field\INamed as INamedField;

@@ -8,10 +8,10 @@ namespace Df\Opal\Query\Source;
 
 use Df\Core\IApp;
 
-use Df\Mesh\Job\ITransaction;
-use Df\Mesh\Job\ITransactionAdapter;
-use Df\Mesh\Job\ITransactionAware;
-use Df\Mesh\Job\TTransactionAware;
+use Df\Mesh\Job\Transaction;
+use Df\Mesh\Job\TransactionAdapter;
+use Df\Mesh\Job\TransactionAware;
+use Df\Mesh\Job\TransactionAwareTrait;
 
 use Df\Opal\Query\IField;
 use Df\Opal\Query\ISource;
@@ -20,9 +20,9 @@ use Df\Opal\Query\Field\Virtual as VirtualField;
 
 use DecodeLabs\Glitch;
 
-class Manager implements ITransactionAware
+class Manager implements TransactionAware
 {
-    use TTransactionAware;
+    use TransactionAwareTrait;
 
     protected $references = [];
     protected $sources = [];
@@ -79,7 +79,7 @@ class Manager implements ITransactionAware
         $source = $reference->getSource();
         $this->sources[$source->getQuerySourceId()] = $source;
 
-        if ($this->transaction && $source instanceof ITransactionAdapter) {
+        if ($this->transaction && $source instanceof TransactionAdapter) {
             $this->transaction->registerAdapter($source);
         }
 
@@ -156,13 +156,13 @@ class Manager implements ITransactionAware
     /**
      * Set transaction and add all current sources
      */
-    public function setTransaction(?ITransaction $transaction): ITransactionAware
+    public function setTransaction(?Transaction $transaction): TransactionAware
     {
         $this->transaction = $transaction;
 
         if ($this->transaction !== null) {
             foreach ($this->sources as $source) {
-                if ($source instanceof ITransactionAdapter) {
+                if ($source instanceof TransactionAdapter) {
                     $this->transaction->registerAdapter($source);
                 }
             }

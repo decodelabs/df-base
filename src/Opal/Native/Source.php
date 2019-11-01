@@ -6,12 +6,12 @@
 declare(strict_types=1);
 namespace Df\Opal\Native;
 
-use Df\Mesh\Job\ITransactionAdapter;
+use Df\Mesh\Job\TransactionAdapter;
 use Df\Opal\Query\IComposedSource;
 
 use DecodeLabs\Glitch;
 
-class Source implements IComposedSource, ITransactionAdapter
+class Source implements IComposedSource, TransactionAdapter
 {
     protected $name;
     protected $data;
@@ -86,7 +86,7 @@ class Source implements IComposedSource, ITransactionAdapter
     /**
      * Start a transaction
      */
-    public function begin(): ITransactionAdapter
+    public function begin(): TransactionAdapter
     {
         $this->previousState = clone $this;
         return $this;
@@ -95,7 +95,7 @@ class Source implements IComposedSource, ITransactionAdapter
     /**
      * Commit the current transaction
      */
-    public function commit(): ITransactionAdapter
+    public function commit(): TransactionAdapter
     {
         if (!$this->previousState) {
             return $this;
@@ -111,7 +111,7 @@ class Source implements IComposedSource, ITransactionAdapter
     /**
      * Revert back to previous state
      */
-    public function rollback(): ITransactionAdapter
+    public function rollback(): TransactionAdapter
     {
         if ($this->previousState) {
             $this->data = $this->previousState->data;

@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Df\Opal\Query\Initiator;
 
 use Df\Core\IApp;
-use Df\Mesh\Job\TTransactionAware;
+use Df\Mesh\Job\TransactionAwareTrait;
 
 use Df\Opal\Query\IInitiator;
 use Df\Opal\Query\IBuilder;
@@ -21,7 +21,7 @@ class Select implements
     IFromSource
 {
     use TFieldCollector;
-    use TTransactionAware;
+    use TransactionAwareTrait;
     use TFromSource;
 
     protected $distinct = false;
@@ -146,7 +146,7 @@ class Select implements
         $output->setParentQuery($this->parentQuery);
         $output->setSubQueryMode($this->subQueryMode, $this->applicator);
         $output->setDerivationParent($this->derivationParent);
-        
+
         return $output;
     }
 }

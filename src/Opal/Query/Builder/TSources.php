@@ -6,8 +6,8 @@
 declare(strict_types=1);
 namespace Df\Opal\Query\Builder;
 
-use Df\Mesh\Job\ITransaction;
-use Df\Mesh\Job\ITransactionAware;
+use Df\Mesh\Job\Transaction;
+use Df\Mesh\Job\TransactionAware;
 use Df\Opal\Query\ISource;
 
 trait TSources
@@ -31,7 +31,7 @@ trait TSources
     /**
      * Pass transaction through to source mananger
      */
-    public function setTransaction(?ITransaction $transaction): ITransactionAware
+    public function setTransaction(?Transaction $transaction): TransactionAware
     {
         $this->getSourceManager()->setTransaction($transaction);
         return $this;
@@ -40,7 +40,7 @@ trait TSources
     /**
      * Get transaction from source manager
      */
-    public function getTransaction(): ?ITransaction
+    public function getTransaction(): ?Transaction
     {
         return $this->getSourceManager()->getTransaction();
     }

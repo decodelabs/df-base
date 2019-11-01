@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Mesh\Job;
 
-trait TTransactionAware
+trait TransactionAwareTrait
 {
     protected $transaction;
 
@@ -14,7 +14,7 @@ trait TTransactionAware
     /**
      * Set a global transaction on this object
      */
-    public function setTransaction(?ITransaction $transaction): ITransactionAware
+    public function setTransaction(?Transaction $transaction): TransactionAware
     {
         $this->transaction = $transaction;
         return $this;
@@ -23,7 +23,7 @@ trait TTransactionAware
     /**
      * Get the current transaction
      */
-    public function getTransaction(): ?ITransaction
+    public function getTransaction(): ?Transaction
     {
         return $this->transaction;
     }

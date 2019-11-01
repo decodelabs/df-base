@@ -5,12 +5,12 @@
  */
 namespace Df\Opal\Query;
 
-use Df\Mesh\Job\ITransactionAware;
+use Df\Mesh\Job\TransactionAware;
 
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Source\Manager;
 
-interface IBuilder extends ITransactionAware
+interface IBuilder extends TransactionAware
 {
     public function getSourceManager(): Manager;
     public function getPrimarySourceReference(): Reference;
