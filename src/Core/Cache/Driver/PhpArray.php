@@ -11,7 +11,7 @@ use Df\Core\Config\Repository;
 
 class PhpArray implements Driver
 {
-    use TKeyGen;
+    use KeyGenTrait;
 
     const KEY_SEPARATOR = '::';
 

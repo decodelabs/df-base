@@ -14,7 +14,7 @@ use Predis\ClientInterface;
 
 class Predis implements Driver
 {
-    use TIndexedKeyGen;
+    use IndexedKeyGenTrait;
 
     const KEY_SEPARATOR = '::';
 

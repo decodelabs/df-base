@@ -8,7 +8,7 @@ namespace Df\Core\Cache\Driver;
 
 use DecodeLabs\Glitch;
 
-trait TKeyGen
+trait KeyGenTrait
 {
     protected $prefix;
 

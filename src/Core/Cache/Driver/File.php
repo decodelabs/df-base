@@ -17,7 +17,7 @@ use DecodeLabs\Atlas\Dir\Local as LocalDir;
 
 class File implements Driver
 {
-    use TKeyGen;
+    use KeyGenTrait;
 
     const KEY_SEPARATOR = '/';
     const EXTENSION = '.cache';

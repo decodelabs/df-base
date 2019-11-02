@@ -6,9 +6,9 @@
 declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
-trait TIndexedKeyGen
+trait IndexedKeyGenTrait
 {
-    use TKeyGen;
+    use KeyGenTrait;
 
     protected $keyCache = [];
     protected $keyCacheTime = 0;

@@ -11,7 +11,7 @@ use Df\Core\Config\Repository;
 
 class Redis implements Driver
 {
-    use TIndexedKeyGen;
+    use IndexedKeyGenTrait;
 
     const KEY_SEPARATOR = '::';
 
