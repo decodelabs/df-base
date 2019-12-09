@@ -516,7 +516,7 @@ class Generic implements Store
      */
     protected function validateKey($key): string
     {
-        if (!is_string($key) || !isset($key{0})) {
+        if (!is_string($key) || !isset($key[0])) {
             throw Glitch::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
                 'Cache key must be a string',
                 null,

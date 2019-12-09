@@ -979,7 +979,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
 
         while ($number >= 0) {
             $key = $number % 26;
-            $output = $alphabet{$key}.$output;
+            $output = $alphabet[$key].$output;
             $number = (($number - $key) / 26) - 1;
         }
 
