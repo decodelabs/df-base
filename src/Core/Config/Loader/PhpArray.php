@@ -16,7 +16,7 @@ class PhpArray implements Loader
     const CONFIG = [
         'arch' => [
             'areaMaps' => [
-                '*' => 'df.test/test/df-playground-/'
+                '*' => 'df.localtest.me/test/df-playground-/'
             ]
         ],
         'crypt' => [
