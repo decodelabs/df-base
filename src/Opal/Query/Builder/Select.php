@@ -40,9 +40,7 @@ use Df\Opal\Query\Clause\Group\Where as WhereGroup;
 use Df\Opal\Query\Clause\Group\Having as HavingGroup;
 
 use DecodeLabs\Glitch;
-use DecodeLabs\Glitch\Inspectable;
-use DecodeLabs\Glitch\Dumper\Entity;
-use DecodeLabs\Glitch\Dumper\Inspector;
+use DecodeLabs\Glitch\Dumpable;
 
 class Select implements
     Builder,
@@ -59,7 +57,7 @@ class Select implements
     StackedData,
     Nestable,
 
-    Inspectable
+    Dumpable
 {
     use SourceProviderTrait;
     use ParentAwareTrait;
@@ -246,15 +244,10 @@ class Select implements
     /**
      * Inspect for Glitch
      */
-    public function glitchInspect(Entity $entity, Inspector $inspector): void
+    public function glitchDump(): iterable
     {
-        $entity
-            ->setText($this->__toString())
-            ->setProperty('*sourceManager', $inspector($this->sourceManager, function ($entity) {
-                $entity->setOpen(false);
-            }))
-            ->setProperty('%source', $inspector($this->sourceReference, function ($entity) {
-                $entity->setOpen(false);
-            }));
+        yield 'text' => $this->__toString();
+        yield '^property:*sourceManager' => $this->sourceManager;
+        yield '^property:%source' => $this->sourceReference;
     }
 }

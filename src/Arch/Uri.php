@@ -10,11 +10,11 @@ use DecodeLabs\Collections\Tree;
 use DecodeLabs\Collections\Tree\NativeMutable as MutableTree;
 
 use DecodeLabs\Glitch;
-use DecodeLabs\Glitch\Inspectable;
+use DecodeLabs\Glitch\Dumpable;
 use DecodeLabs\Glitch\Dumper\Entity;
 use DecodeLabs\Glitch\Dumper\Inspector;
 
-class Uri implements \ArrayAccess, Inspectable
+class Uri implements \ArrayAccess, Dumpable
 {
     const DELIMITERS = '!\$&\'\(\)\*\+,;=';
     const VALID_CHARACTERS = 'a-zA-Z0-9_\-\.~\pL';
@@ -418,8 +418,8 @@ class Uri implements \ArrayAccess, Inspectable
     /**
      * Inspect for Glitch
      */
-    public function glitchInspect(Entity $entity, Inspector $inspector): void
+    public function glitchDump(): iterable
     {
-        $entity->setDefinition($this->__toString());
+        yield 'definition' => $this->__toString();
     }
 }
