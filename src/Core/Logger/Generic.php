@@ -13,7 +13,7 @@ use Psr\Log\LoggerTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Generic implements Logger
 {
@@ -119,7 +119,7 @@ class Generic implements Logger
     public function log($level, $message, array $context=[])
     {
         if (!isset(self::LEVELS[$level])) {
-            throw Glitch::{'EInvalidArgument,Psr\Log\InvalidArgumentException'}(
+            throw Exceptional::{'InvalidArgument,Psr\\Log\\InvalidArgumentException'}(
                 'Invalid log level: '.$level
             );
         }

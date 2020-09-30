@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Factory
 {
@@ -92,7 +92,9 @@ class Factory
             } elseif (is_array($value)) {
                 $output[$key] = $this->prepareFiles($value);
             } else {
-                throw Glitch::EInvalidArgument('Invalid $_FILES array', null, $files);
+                throw Exceptional::InvalidArgument(
+                    'Invalid $_FILES array', null, $files
+                );
             }
         }
 
@@ -259,7 +261,7 @@ class Factory
         }
 
         if (!preg_match('#^(HTTP/)?(?P<version>[1-9]\d*(?:\.\d)?)$#', $output, $matches)) {
-            throw Glitch::EUnexpectedValue(
+            throw Exceptional::UnexpectedValue(
                 'Unrecognized HTTP protocal version: '.$output
             );
         }

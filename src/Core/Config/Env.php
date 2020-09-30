@@ -9,7 +9,7 @@ namespace Df\Core\Config;
 use DecodeLabs\Gadgets\Then;
 use DecodeLabs\Gadgets\ThenTrait;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Env implements \ArrayAccess, Then
 {
@@ -27,7 +27,7 @@ class Env implements \ArrayAccess, Then
 
         foreach ($data as $key => $value) {
             if (!is_scalar($value)) {
-                throw Glitch::EUnexpectedValue(
+                throw Exceptional::UnexpectedValue(
                     'Env value '.$key.' is not a scalar',
                     null,
                     $value
@@ -182,7 +182,9 @@ class Env implements \ArrayAccess, Then
         }
 
         if (!empty($failed)) {
-            throw Glitch('Env key(s) '.implode(', ', $failed).' have not been set');
+            throw Exceptional::Runtime(
+                'Env key(s) '.implode(', ', $failed).' have not been set'
+            );
         }
 
         return $this;

@@ -19,7 +19,7 @@ use Df\Opal\Query\Builder\WhereClauseProviderTrait;
 use Df\Opal\Query\Builder\RelationInspectorTrait;
 use Df\Opal\Query\Clause\Group\Where as WhereGroup;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Join implements
     Builder,
@@ -75,7 +75,7 @@ class Join implements
                 break;
 
             default:
-                throw Glitch::EInvalidArgument(
+                throw Exceptional::InvalidArgument(
                     'Unknown join type '.$type
                 );
         }

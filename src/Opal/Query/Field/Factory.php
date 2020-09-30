@@ -13,7 +13,7 @@ use Df\Opal\Query\Field\Wildcard;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Source\Manager;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Factory
 {
@@ -72,6 +72,8 @@ class Factory
             return $ref;
         }
 
-        throw Glitch::EUnexpectedValue('Source alias '.$sourceAlias.' has not been defined');
+        throw Exceptional::UnexpectedValue(
+            'Source alias '.$sourceAlias.' has not been defined'
+        );
     }
 }

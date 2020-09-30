@@ -11,6 +11,8 @@ use Df\Core\Cache\Store;
 use Df\Time\Date;
 use Df\Time\Interval;
 
+use DecodeLabs\Exceptional;
+
 use Psr\Cache\CacheItemInterface;
 
 class Item implements CacheItemInterface
@@ -131,7 +133,9 @@ class Item implements CacheItemInterface
         }
 
         if (null === ($interval = Interval::instance($time))) {
-            throw Glitch::EInvalidArgument('Unable to prepare interval', null, $time);
+            throw Exceptional::InvalidArgument(
+                'Unable to prepare interval', null, $time
+            );
         }
 
         $date = new Date();
@@ -154,7 +158,9 @@ class Item implements CacheItemInterface
         }
 
         if (!$output instanceof Item) {
-            throw Glitch::EUnexpectedValue('Item is not instanceof Item', null, $output);
+            throw Exceptional::UnexpectedValue(
+                'Item is not instanceof Item', null, $output
+            );
         }
 
         return $output;
@@ -351,7 +357,9 @@ class Item implements CacheItemInterface
 
         if ($ttl !== null) {
             if (null === ($interval = Interval::instance($ttl))) {
-                throw Glitch::EInvalidArgument('Unable to prepare interval', null, $ttl);
+                throw Exceptional::InvalidArgument(
+                    'Unable to prepare interval', null, $ttl
+                );
             }
 
             $date = new Date();

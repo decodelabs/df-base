@@ -13,7 +13,7 @@ use Df\Http\Response\Sender;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class StandardOutput implements Sender
 {
@@ -89,7 +89,9 @@ class StandardOutput implements Sender
     public function sendResponse(ServerRequestInterface $request, ResponseInterface $response): void
     {
         if (headers_sent()) {
-            throw Glitch::ERuntime('Cannot send response, headers already sent');
+            throw Exceptional::Runtime(
+                'Cannot send response, headers already sent'
+            );
         }
 
         $status = $response->getStatusCode();

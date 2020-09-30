@@ -9,6 +9,7 @@ namespace Df\Core\Service;
 use Psr\Container\NotFoundExceptionInterface;
 
 use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Binding
 {
@@ -39,7 +40,7 @@ class Binding
         $this->container = $container;
 
         if (!interface_exists($type, true) && !class_exists($type, true)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Binding type must be a valid interface'
             );
         }
@@ -117,8 +118,8 @@ class Binding
                     return $this->container->buildInstanceOf($target, $this->params);
                 };
             } else {
-                throw Glitch::{
-                    'EInvalidArgument,Psr\\Container\\NotFoundExceptionInterface'
+                throw Exceptional::{
+                    'InvalidArgument,Psr\\Container\\NotFoundExceptionInterface'
                 }(
                     'Binding target for '.$this->type.' cannot be converted to a factory'
                 );
@@ -171,8 +172,8 @@ class Binding
     public function alias(string $alias): Binding
     {
         if (false !== strpos($alias, '\\')) {
-            throw Glitch::{
-                'EInvalidArgument,Psr\Container\ContainerExceptionInterface'
+            throw Exceptional::{
+                'InvalidArgument,Psr\\Container\\ContainerExceptionInterface'
             }(
                 'Aliases must not contain \\ character',
                 null,
@@ -186,8 +187,8 @@ class Binding
 
         if ($this->container->hasAlias($alias)
         && $this->container->getAliasedType($alias) !== $this->type) {
-            throw Glitch::{
-                'ELogic,Psr\Container\ContainerExceptionInterface'
+            throw Exceptional::{
+                'Logic,Psr\\Container\\ContainerExceptionInterface'
             }(
                 'Alias "'.$alias.'" has already been bound'
             );
@@ -263,7 +264,9 @@ class Binding
         } elseif (is_string($callback)) {
             $id = $callback;
         } else {
-            throw Glitch::EInvalidArgument('Unable to hash callback', null, $callback);
+            throw Exceptional::InvalidArgument(
+                'Unable to hash callback', null, $callback
+            );
         }
 
         $this->preparators[$id] = $callback;
@@ -440,8 +443,8 @@ class Binding
         }
 
         if (!$instance instanceof $this->type) {
-            throw Glitch::{
-                'ELogic,Psr\\Container\\ContainerExceptionInterface'
+            throw Exceptional::{
+                'Logic,Psr\\Container\\ContainerExceptionInterface'
             }(
                 'Binding instance does not implement type '.$this->type,
                 null,

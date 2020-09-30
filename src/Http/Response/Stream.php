@@ -11,7 +11,7 @@ use Df\Http\MessageTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Stream implements ResponseInterface
 {
@@ -153,7 +153,7 @@ class Stream implements ResponseInterface
     protected function prepareStatusCode(int $code): int
     {
         if (!isset(static::CODES[$code])) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid HTTP status code: '.$code
             );
         }

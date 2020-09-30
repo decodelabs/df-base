@@ -11,7 +11,7 @@ use Df\Arch\Route\Named as NamedRoute;
 use Df\Arch\Route\Node as NodeRoute;
 use Df\Arch\Route\View as ViewRoute;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 abstract class Router
 {
@@ -156,7 +156,7 @@ abstract class Router
                 $runner = $name;
                 $name = $path;
             } else {
-                throw Glitch::EInvalidArgument(
+                throw Exceptional::InvalidArgument(
                     'Named routes must define a runner function'
                 );
             }

@@ -12,7 +12,7 @@ use Df\Opal\Query\Builder\Stacked;
 
 use Df\Opal\Query\Field;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 trait StackedTrait
 {
@@ -42,7 +42,9 @@ trait StackedTrait
     protected function registerStack(string $name, string $mode, ?Field $keyField=null, ?Field $valueField=null, ?callable $processor=null): Stacked
     {
         if ($this->getSubQueryMode() !== 'stack') {
-            throw Glitch::ELogic('Sub query is not in stack mode');
+            throw Exceptional::Logic(
+                'Sub query is not in stack mode'
+            );
         }
 
         $stack = (new Stack($name, $this, $mode))
@@ -53,7 +55,9 @@ trait StackedTrait
         $output = $this->getParentQuery();
 
         if (!$output instanceof Stackable) {
-            throw Glitch::EUnexpectedValue('Parent query is not stackable', null, $output);
+            throw Exceptional::UnexpectedValue(
+                'Parent query is not stackable', null, $output
+            );
         }
 
         return $output->addStack($stack);

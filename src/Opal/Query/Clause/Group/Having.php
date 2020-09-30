@@ -16,6 +16,8 @@ use Df\Opal\Query\Clause\GroupTrait;
 use Df\Opal\Query\Builder\RelationInspectorTrait;
 use Df\Opal\Query\Builder\HavingClauseProvider as HavingClauseProviderBuilder;
 
+use DecodeLabs\Exceptional;
+
 class Having implements HavingRepresentation, Group, HavingClauseProvider
 {
     use GroupTrait;
@@ -80,7 +82,9 @@ class Having implements HavingRepresentation, Group, HavingClauseProvider
         $parent = $this->getParent();
 
         if (!$parent instanceof HavingClauseProviderBuilder) {
-            throw Glitch::EUnexpectedValue('Parent query is not a having clause provider', null, $parent);
+            throw Exceptional::UnexpectedValue(
+                'Parent query is not a having clause provider', null, $parent
+            );
         }
 
         $parent->addHavingClause($this);

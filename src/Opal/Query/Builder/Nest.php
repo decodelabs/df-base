@@ -20,7 +20,7 @@ use Df\Opal\Query\Source\Reference;
 
 use Df\Opal\Query\Field\Named as NamedField;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Nest implements
     Nested,
@@ -156,7 +156,9 @@ class Nest implements
     public function getName(): string
     {
         if ($this->name === null) {
-            throw Glitch::ELogic('No name has been given to nest instruction');
+            throw Exceptional::Logic(
+                'No name has been given to nest instruction'
+            );
         }
 
         return $this->name;

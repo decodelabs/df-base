@@ -13,7 +13,7 @@ use Ramsey\Uuid\UuidInterface;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Exception\UnsupportedOperationException;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Uuid
 {
@@ -152,7 +152,9 @@ class Uuid
         } elseif (is_int($value)) {
             return UuidLib::fromInteger((string)$value);
         } else {
-            throw Glitch::EInvalidArgument('Invalid Uuid input', null, $value);
+            throw Exceptional::InvalidArgument(
+                'Invalid Uuid input', null, $value
+            );
         }
     }
 

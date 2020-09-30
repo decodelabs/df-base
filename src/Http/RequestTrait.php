@@ -12,8 +12,7 @@ use Df\Http\MessageTrait;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\UriInterface;
 
-
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 trait RequestTrait
 {
@@ -37,7 +36,7 @@ trait RequestTrait
         $method = strtoupper($method);
 
         if (!$this->isValidMethod($method)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid HTTP method: '.$method
             );
         }
@@ -106,7 +105,7 @@ trait RequestTrait
     public function withRequestTarget($target): RequestInterface
     {
         if (preg_match('/\s/', $target)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Request target must not contain spaces'
             );
         }
@@ -143,7 +142,7 @@ trait RequestTrait
         $method = strtoupper($method);
 
         if (!$this->isValidMethod($method)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid HTTP method: '.$method
             );
         }

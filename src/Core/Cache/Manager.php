@@ -12,6 +12,7 @@ use Df\Core\Cache\Store;
 use Df\Core\Cache\Store\Generic as GenericStore;
 
 use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Manager
 {
@@ -72,7 +73,9 @@ class Manager
             $config = clone $this->config->stores->{$name};
 
             if (!$config instanceof Repository) {
-                throw Glitch::EUnexpectedValue('Config is not a Repository', null, $config);
+                throw Exceptional::UnexpectedValue(
+                    'Config is not a Repository', null, $config
+                );
             }
 
             try {
@@ -107,7 +110,7 @@ class Manager
         $class = 'Df\\Core\\Cache\\Driver\\'.$name;
 
         if (!class_exists($class)) {
-            throw Glitch::{'EInvalidArgument,ENotFound'}(
+            throw Exceptional::{'InvalidArgument,NotFound'}(
                 'Cache driver '.$name.' could not be found'
             );
         }
@@ -142,7 +145,9 @@ class Manager
             }
 
             if (!$conf instanceof Repository) {
-                throw Glitch::EUnexpectedValue('Config is not a Repository', null, $conf);
+                throw Exceptional::UnexpectedValue(
+                    'Config is not a Repository', null, $conf
+                );
             }
 
             try {

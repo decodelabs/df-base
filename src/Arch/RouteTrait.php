@@ -24,7 +24,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 use DecodeLabs\Collections\ArrayProvider;
 use DecodeLabs\Tagged\Markup;
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 trait RouteTrait
 {
@@ -56,7 +56,7 @@ trait RouteTrait
             unset($query[$matches[1]]);
 
             if ($value == '') {
-                throw Glitch::EUnexpectedValue(
+                throw Exceptional::UnexpectedValue(
                     'Route out '.$uri.' requires "'.$matches[1].'" in the query'
                 );
             }
@@ -139,7 +139,7 @@ trait RouteTrait
             }
 
             if (array_key_exists($key, $this->params)) {
-                throw Glitch::EUnexpectedValue(
+                throw Exceptional::UnexpectedValue(
                     'Area map key {'.$key.'} has been used more than once'
                 );
             }
@@ -225,7 +225,7 @@ trait RouteTrait
             return new Text((string)$output);
         }
 
-        throw Glitch::EUnexpectedValue(
+        throw Exceptional::UnexpectedValue(
             'Don\'t know how to handle response',
             null,
             $output

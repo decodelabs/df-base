@@ -6,6 +6,8 @@
 declare(strict_types=1);
 namespace Df\Core\Event;
 
+use DecodeLabs\Exceptional;
+
 class Dispatcher
 {
     protected $events = [];
@@ -40,7 +42,9 @@ class Dispatcher
         } elseif (is_string($callback)) {
             return $callback;
         } else {
-            throw Glitch::EInvalidArgument('Unable to hash callback', null, $callback);
+            throw Exceptional::InvalidArgument(
+                'Unable to hash callback', null, $callback
+            );
         }
     }
 

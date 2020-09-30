@@ -8,7 +8,7 @@ namespace Df\Opal\Query\Builder;
 
 use Df\Opal\Query\Builder\Correlatable;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 trait CorrelatedTrait
 {
@@ -18,15 +18,21 @@ trait CorrelatedTrait
     public function endCorrelation(string $alias=null): Correlatable
     {
         if ($this->getSubQueryMode() !== 'correlation') {
-            throw Glitch::ELogic('Select query is not a correlation');
+            throw Exceptional::Logic(
+                'Select query is not a correlation'
+            );
         }
 
         if (!$parent = $this->getParentQuery()) {
-            throw Glitch::ELogic('Query does not have a parent to be aliased into');
+            throw Exceptional::Logic(
+                'Query does not have a parent to be aliased into'
+            );
         }
 
         if (!$parent instanceof Correlatable) {
-            throw Glitch::ELogic('Parent query is not correlatable');
+            throw Exceptional::Logic(
+                'Parent query is not correlatable'
+            );
         }
 
         $parent->addCorrelation($this, $alias);

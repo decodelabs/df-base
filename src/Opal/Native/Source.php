@@ -9,7 +9,7 @@ namespace Df\Opal\Native;
 use Df\Mesh\Job\TransactionAdapter;
 use Df\Opal\Query\Source\Composed as ComposedSource;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Source implements ComposedSource, TransactionAdapter
 {
@@ -26,7 +26,9 @@ class Source implements ComposedSource, TransactionAdapter
         $this->data = $data;
 
         if (preg_match('/[^a-zA-Z0-9_-]/', $name)) {
-            throw Glitch::EInvalidArgument('Source name must only contain alphanumerics, - and _');
+            throw Exceptional::InvalidArgument(
+                'Source name must only contain alphanumerics, - and _'
+            );
         }
 
         $this->name = $name;

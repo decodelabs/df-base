@@ -14,7 +14,7 @@ use ParagonIE\Halite\File;
 use ParagonIE\Halite\Symmetric\Crypto;
 use ParagonIE\Halite\Symmetric\EncryptionKey;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Halite implements Symmetric
 {
@@ -37,7 +37,7 @@ class Halite implements Symmetric
     public function generateKeyFile(): void
     {
         if ($this->keyFileExists()) {
-            throw Glitch::ERuntime(
+            throw Exceptional::Runtime(
                 'Key file already exists at keyPath'
             );
         }
@@ -45,7 +45,7 @@ class Halite implements Symmetric
         $dir = realpath(dirname($this->keyPath));
 
         if ($dir === false || !is_dir($dir) || !is_writable($dir)) {
-            throw Glitch::{'ERuntime,EIo'}(
+            throw Exceptional::{'Runtime,Io'}(
                 'Cannot write encryption key to keyPath'
             );
         }
@@ -87,7 +87,7 @@ class Halite implements Symmetric
     public function encryptFile(string $inputFilePath, string $outputFilePath): void
     {
         if (!is_file($inputFilePath) || !is_readable($inputFilePath)) {
-            throw Glitch::{'ENotFound,EIo'}(
+            throw Exceptional::{'NotFound,Io'}(
                 'File to encrypt could not be found',
                 null,
                 $inputFilePath
@@ -97,7 +97,7 @@ class Halite implements Symmetric
         $dir = realpath(dirname($outputFilePath));
 
         if ($dir === false || !is_dir($dir) || !is_writable($dir)) {
-            throw Glitch::{'ERuntime,EIo'}(
+            throw Exceptional::{'Runtime,Io'}(
                 'Cannot write encryped file to $outputFilePath',
                 null,
                 $outputFilePath
@@ -114,7 +114,7 @@ class Halite implements Symmetric
     public function checksumFile(string $filePath): string
     {
         if (!is_file($filePath)) {
-            throw Glitch::{'ENotFound,EIo'}(
+            throw Exceptional::{'NotFound,Io'}(
                 'File to checksum could not be found',
                 null,
                 $filePath
@@ -149,7 +149,7 @@ class Halite implements Symmetric
     public function decryptFile(string $inputFilePath, string $outputFilePath): void
     {
         if (!is_file($inputFilePath)) {
-            throw Glitch::{'ENotFound,EIo'}(
+            throw Exceptional::{'NotFound,Io'}(
                 'File to decrypt could not be found',
                 null,
                 $inputFilePath
@@ -159,7 +159,7 @@ class Halite implements Symmetric
         $dir = realpath(dirname($outputFilePath));
 
         if ($dir === false || !is_dir($dir) || !is_writable($dir)) {
-            throw Glitch::{'ERuntime,EIo'}(
+            throw Exceptional::{'Runtime,Io'}(
                 'Cannot write decryped file to $outputFilePath',
                 null,
                 $outputFilePath

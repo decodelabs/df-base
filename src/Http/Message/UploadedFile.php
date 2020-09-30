@@ -9,7 +9,7 @@ namespace Df\Http\Message;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\StreamInterface;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class UploadedFile implements UploadedFileInterface
 {
@@ -60,7 +60,7 @@ class UploadedFile implements UploadedFileInterface
         $this->size = $size;
 
         if (!isset(static::ERRORS[$error])) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid uploaded file status: '.$error
             );
         }
@@ -110,19 +110,19 @@ class UploadedFile implements UploadedFileInterface
     public function moveTo($targetPath): void
     {
         if ($this->moved) {
-            throw Glitch::ERuntime(
+            throw Exceptional::Runtime(
                 'File has already been moved'
             );
         }
 
         if ($this->error !== UPLOAD_ERR_OK) {
-            throw Glitch::ERuntime(
+            throw Exceptional::Runtime(
                 'Cannot move file: '.static::ERRORS[$this->error]
             );
         }
 
         if (empty($targetPath = (string)$targetPath)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid upload file target path'
             );
         }
@@ -130,7 +130,7 @@ class UploadedFile implements UploadedFileInterface
         $targetDir = dirname($targetPath);
 
         if (!is_dir($targetDir) || !is_writable($targetDir)) {
-            throw Glitch::ERuntime(
+            throw Exceptional::Runtime(
                 'Target directory doesn\'t exist: '.$targetDir
             );
         }
@@ -141,7 +141,7 @@ class UploadedFile implements UploadedFileInterface
             $this->writeFile($targetPath);
         } else {
             if (false === move_uploaded_file($this->file, $targetPath)) {
-                throw Glitch::ERuntime(
+                throw Exceptional::Runtime(
                     'Moving uploaded file failed'
                 );
             }
@@ -156,7 +156,7 @@ class UploadedFile implements UploadedFileInterface
     protected function writeFile(string $targetPath): void
     {
         if (false === ($fp = fopen($targetPath, 'wb+'))) {
-            throw Glitch::ERuntime(
+            throw Exceptional::Runtime(
                 'Target path is not writable'
             );
         }
@@ -177,13 +177,13 @@ class UploadedFile implements UploadedFileInterface
     public function getStream(): StreamInterface
     {
         if ($this->error !== UPLOAD_ERR_OK) {
-            throw Glitch::ERuntime(
+            throw Exceptional::Runtime(
                 'Stream not available: '.static::ERRORS[$this->error]
             );
         }
 
         if ($this->moved) {
-            throw Glitch::ERuntime(
+            throw Exceptional::Runtime(
                 'Stream not available, file has already been moved'
             );
         }

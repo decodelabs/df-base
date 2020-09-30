@@ -14,7 +14,7 @@ use Df\Opal\Query\Field\Named as NamedField;
 use Df\Opal\Query\Field\Wildcard;
 use Df\Opal\Query\Field\Factory;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Reference
 {
@@ -155,7 +155,9 @@ class Reference
         $alias = $field->getAlias();
 
         if (isset($this->fields[$alias]) && !$this->fields[$alias]->matches($field)) {
-            throw Glitch::EUnexpectedValue('Another field has already been aliased as '.$alias);
+            throw Exceptional::UnexpectedValue(
+                'Another field has already been aliased as '.$alias
+            );
         }
 
         $this->fields[$field->getAlias()] = $field;

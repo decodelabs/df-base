@@ -16,6 +16,8 @@ use Df\Opal\Query\Clause\GroupTrait;
 use Df\Opal\Query\Builder\RelationInspectorTrait;
 use Df\Opal\Query\Builder\WhereClauseProvider as WhereClauseProviderBuilder;
 
+use DecodeLabs\Exceptional;
+
 class Where implements WhereRepresentation, Group, WhereClauseProvider
 {
     use GroupTrait;
@@ -74,7 +76,9 @@ class Where implements WhereRepresentation, Group, WhereClauseProvider
         $parent = $this->getParent();
 
         if (!$parent instanceof WhereClauseProviderBuilder) {
-            throw Glitch::EUnexpectedValue('Parent query is not a where clause provider', null, $parent);
+            throw Exceptional::UnexpectedValue(
+                'Parent query is not a where clause provider', null, $parent
+            );
         }
 
         $parent->addPrerequisite($this->prerequisiteName, $this);
@@ -124,7 +128,9 @@ class Where implements WhereRepresentation, Group, WhereClauseProvider
         $parent = $this->getParent();
 
         if (!$parent instanceof WhereClauseProviderBuilder) {
-            throw Glitch::EUnexpectedValue('Parent query is not a where clause provider', null, $parent);
+            throw Exceptional::UnexpectedValue(
+                'Parent query is not a where clause provider', null, $parent
+            );
         }
 
         $parent->addWhereClause($this);

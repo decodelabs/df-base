@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace Df\Arch\Middleware;
 
 use DecodeLabs\Glitch\Stack\Trace;
+use DecodeLabs\Exceptional;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -32,8 +33,8 @@ class ErrorHandler implements MiddlewareInterface
      */
     public function renderError(\Throwable $e): ResponseInterface
     {
-        if ($e instanceof \EGlitch) {
-            $http = $e->getHttpCode() ?? 500;
+        if ($e instanceof Exceptional\Exception) {
+            $http = $e->getHttpStatus() ?? 500;
             $trace = $e->getStackTrace();
         } else {
             $http = 500;

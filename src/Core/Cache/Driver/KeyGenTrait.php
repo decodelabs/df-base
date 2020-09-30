@@ -6,7 +6,7 @@
 declare(strict_types=1);
 namespace Df\Core\Cache\Driver;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 trait KeyGenTrait
 {
@@ -63,7 +63,9 @@ trait KeyGenTrait
         $man = $this->parseKey($namespace, $key);
 
         if ($man['children']) {
-            throw Glitch::EInvalidArgument('Invalid cache key', null, $key);
+            throw Exceptional::InvalidArgument(
+                'Invalid cache key', null, $key
+            );
         }
 
         return $this->buildKey($namespace, $man['normal']);

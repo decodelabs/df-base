@@ -11,7 +11,7 @@ use Psr\Http\Message\StreamInterface;
 
 use Df\Http\Message\Stream;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 trait MessageTrait
 {
@@ -91,7 +91,7 @@ trait MessageTrait
         }
 
         if (!preg_match('#^(1\.[01]|2)$#', (string)$version)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid HTTP protocol version: '.$version,
                 null,
                 $version
@@ -153,7 +153,7 @@ trait MessageTrait
     public function withHeader($name, $value): MessageInterface
     {
         if (!$this->isHeaderNameValid($name)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid header name: '.$name
             );
         }
@@ -179,7 +179,7 @@ trait MessageTrait
     public function withAddedHeader($name, $value): MessageInterface
     {
         if (!$this->isHeaderNameValid($name)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid header name: '.$name
             );
         }
@@ -219,7 +219,7 @@ trait MessageTrait
 
         foreach ($input as $name => $value) {
             if (!$this->isHeaderNameValid($name)) {
-                throw Glitch::EInvalidArgument(
+                throw Exceptional::InvalidArgument(
                     'Invalid header name: '.$name
                 );
             }
@@ -243,7 +243,7 @@ trait MessageTrait
 
         return array_map(function ($value) {
             if (!$this->isHeaderValueValid($value)) {
-                throw Glitch::EInvalidArgument(
+                throw Exceptional::InvalidArgument(
                     'Invalid header value',
                     null,
                     $value

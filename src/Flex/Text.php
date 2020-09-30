@@ -8,7 +8,7 @@ namespace Df\Flex;
 
 use DecodeLabs\Gadgets\Then;
 use DecodeLabs\Gadgets\ThenTrait;
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Text implements \IteratorAggregate, \ArrayAccess, \Countable
 {
@@ -176,7 +176,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function offsetSet($index, $value)
     {
-        throw Glitch::EImplementation(
+        throw Exceptional::Implementation(
             'Immutable flex\\Text does not support array-access setting'
         );
     }
@@ -194,7 +194,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
      */
     public function offsetUnset($index)
     {
-        throw Glitch::EImplementation(
+        throw Exceptional::Implementation(
             'Immutable flex\\Text does not support array-access unset'
         );
     }
@@ -650,7 +650,9 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
     public function split(string $delimiter, int $limit=PHP_INT_MAX): array
     {
         if (false === ($output = explode($delimiter, $this->text, $limit))) {
-            throw Glitch::EUnexpectedValue('Unabled to explode text by delimiter "'.$delimiter.'"', null, $this);
+            throw Exceptional::UnexpectedValue(
+                'Unabled to explode text by delimiter "'.$delimiter.'"', null, $this
+            );
         }
 
         return array_map(function ($part) {
@@ -1008,7 +1010,7 @@ class Text implements \IteratorAggregate, \ArrayAccess, \Countable
         }
 
         if (!is_int($output)) {
-            throw Glitch::ERange(
+            throw Exceptional::Range(
                 'Alpha to numeric string overflowed int max'
             );
         }

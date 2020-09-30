@@ -9,7 +9,7 @@ namespace Df\Http\Message;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Generator implements StreamInterface
 {
@@ -30,7 +30,7 @@ class Generator implements StreamInterface
         }
 
         if (!$iterator instanceof \Iterator) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid iterator passed as response'
             );
         }
@@ -76,7 +76,9 @@ class Generator implements StreamInterface
      */
     public function seek($offset, $whence=SEEK_SET): void
     {
-        throw Glitch::ERuntime('Iterators cannot seek');
+        throw Exceptional::Runtime(
+            'Iterators cannot seek'
+        );
     }
 
     /**
@@ -84,7 +86,9 @@ class Generator implements StreamInterface
      */
     public function rewind(): void
     {
-        throw Glitch::ERuntime('Iterators cannot seek');
+        throw Exceptional::Runtime(
+            'Iterators cannot seek'
+        );
     }
 
     /**
@@ -100,7 +104,9 @@ class Generator implements StreamInterface
      */
     public function write($string): int
     {
-        throw Glitch::ERuntime('Iterators cannot be written to');
+        throw Exceptional::Runtime(
+            'Iterators cannot be written to'
+        );
     }
 
     /**
@@ -119,11 +125,15 @@ class Generator implements StreamInterface
     public function read($length): string
     {
         if ($this->iterator === null) {
-            throw Glitch::ERuntime('Cannot read from stream, resource has been detached');
+            throw Exceptional::Runtime(
+                'Cannot read from stream, resource has been detached'
+            );
         }
 
         if ($this->eof) {
-            throw Glitch::ERuntime('Cannot read from stream, iterator has completed');
+            throw Exceptional::Runtime(
+                'Cannot read from stream, iterator has completed'
+            );
         }
 
 
@@ -161,11 +171,15 @@ class Generator implements StreamInterface
     public function getContents(): string
     {
         if ($this->iterator === null) {
-            throw Glitch::ERuntime('Cannot read from stream, resource has been detached');
+            throw Exceptional::Runtime(
+                'Cannot read from stream, resource has been detached'
+            );
         }
 
         if ($this->eof) {
-            throw Glitch::ERuntime('Cannot read from stream, iterator has completed');
+            throw Exceptional::Runtime(
+                'Cannot read from stream, iterator has completed'
+            );
         }
 
         $output = '';

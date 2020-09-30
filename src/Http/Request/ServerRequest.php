@@ -13,7 +13,7 @@ use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Message\UriInterface;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class ServerRequest implements ServerRequestInterface
 {
@@ -210,7 +210,7 @@ class ServerRequest implements ServerRequestInterface
             }
 
             if (!$file instanceof UploadedFileInterface) {
-                throw Glitch::EInvalidArgument(
+                throw Exceptional::InvalidArgument(
                     'Invalid uploaded file array - files must be instances of UploadedFileInterface'
                 );
             }

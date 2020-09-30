@@ -13,7 +13,7 @@ use Df\Opal\Query\Builder;
 use Df\Opal\Query\Source\Manager;
 use Df\Opal\Query\Source\Reference;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 trait GroupTrait
 {
@@ -52,11 +52,15 @@ trait GroupTrait
                 $test = $target->getParent();
 
                 if ($test === $target) {
-                    throw Glitch::ELogic('Recursive clause group detected');
+                    throw Exceptional::Logic(
+                        'Recursive clause group detected'
+                    );
                 }
 
                 if ($test === null) {
-                    throw Glitch::ELogic('Clause group is not contained in a query');
+                    throw Exceptional::Logic(
+                        'Clause group is not contained in a query'
+                    );
                 }
 
                 $target = $test;

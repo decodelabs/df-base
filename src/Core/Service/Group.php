@@ -9,7 +9,7 @@ namespace Df\Core\Service;
 use Df\Core\Service\Container;
 use Df\Core\Service\Binding;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Group extends Binding
 {
@@ -28,7 +28,9 @@ class Group extends Binding
      */
     public function setTarget($target): Binding
     {
-        throw Glitch::EImplementation('setTarget is not used for groups');
+        throw Exceptional::Implementation(
+            'setTarget is not used for groups'
+        );
     }
 
     /**
@@ -36,7 +38,9 @@ class Group extends Binding
      */
     public function getTarget()
     {
-        throw Glitch::EImplementation('getTarget is not used for groups');
+        throw Exceptional::Implementation(
+            'getTarget is not used for groups'
+        );
     }
 
     /**
@@ -44,7 +48,9 @@ class Group extends Binding
      */
     public function setFactory(\Closure $factory)
     {
-        throw Glitch::EImplementation('setFactory is not used for groups');
+        throw Exceptional::Implementation(
+            'setFactory is not used for groups'
+        );
     }
 
 
@@ -203,7 +209,9 @@ class Group extends Binding
      */
     public function setInstance(object $instance): Binding
     {
-        throw Glitch::EImplementation('setFactory is not used for groups');
+        throw Exceptional::Implementation(
+            'setFactory is not used for groups'
+        );
     }
 
     /**
@@ -226,6 +234,10 @@ class Group extends Binding
         foreach ($this->bindings as $binding) {
             return $binding->getInstance();
         }
+
+        throw Exceptional::Runtime(
+            'No available bindings'
+        );
     }
 
     /**
@@ -236,6 +248,10 @@ class Group extends Binding
         foreach ($this->bindings as $binding) {
             return $binding->newInstance();
         }
+
+        throw Exceptional::Runtime(
+            'No available bindings'
+        );
     }
 
     /**

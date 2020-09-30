@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Dispatcher implements RequestHandlerInterface, Terminable
 {
@@ -56,7 +56,7 @@ class Dispatcher implements RequestHandlerInterface, Terminable
         $ref = new \ReflectionClass($type);
 
         if (!$ref->implementsInterface('Psr\Http\Server\MiddlewareInterface')) {
-            throw Glitch::EImplementation(
+            throw Exceptional::Implementation(
                 'Queued middleware "'.$type.'" does not implement MiddlewareInterface'
             );
         }
@@ -80,7 +80,7 @@ class Dispatcher implements RequestHandlerInterface, Terminable
             } elseif (is_string($middleware)) {
                 $this->queueType($middleware);
             } else {
-                throw Glitch::EInvalidArgument(
+                throw Exceptional::InvalidArgument(
                     'Unexpected / invalid middleware type',
                     null,
                     $middleware
@@ -101,7 +101,7 @@ class Dispatcher implements RequestHandlerInterface, Terminable
         next($this->queue);
 
         if (!$middleware) {
-            throw Glitch::ENotFound([
+            throw Exceptional::NotFound([
                 'message' => 'Reached the end of the middleware queue without a response',
                 'http' => 404
             ]);

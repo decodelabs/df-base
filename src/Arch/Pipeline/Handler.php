@@ -19,7 +19,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Handler implements MiddlewareInterface
 {
@@ -57,7 +57,7 @@ class Handler implements MiddlewareInterface
         $area = $map->getArea();
 
         if (isset($this->areaMaps[$area])) {
-            throw Glitch::ELogic(
+            throw Exceptional::Logic(
                 'Area "'.$area.'" has already been mapped'
             );
         }
@@ -122,13 +122,13 @@ class Handler implements MiddlewareInterface
     {
         // Make sure area maps make sense
         if (empty($this->areaMaps)) {
-            throw Glitch::ELogic(
+            throw Exceptional::Logic(
                 'No area maps have been defined'
             );
         }
 
         if (!isset($this->areaMaps['front']) && !isset($this->areaMaps['*'])) {
-            throw Glitch::EDefinition(
+            throw Exceptional::Definition(
                 'No default area map (front or *) has been defined'
             );
         }
@@ -257,7 +257,7 @@ class Handler implements MiddlewareInterface
         }
 
         if (!$route) {
-            throw Glitch::EUnexpectedValue(
+            throw Exceptional::UnexpectedValue(
                 'Arch uri '.$uri.' did not match any routes'
             );
         }
@@ -265,7 +265,7 @@ class Handler implements MiddlewareInterface
         $map = $this->areaMaps[$area] ?? $this->areaMaps['*'] ?? null;
 
         if (!$map) {
-            throw Glitch::ERuntime(
+            throw Exceptional::Runtime(
                 'No matching area maps to route out uri: '.$uri
             );
         }

@@ -19,6 +19,7 @@ use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Field\Virtual as VirtualField;
 
 use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Manager implements TransactionAware
 {
@@ -72,7 +73,9 @@ class Manager implements TransactionAware
         $alias = $reference->getAlias();
 
         if (isset($this->references[$alias])) {
-            throw Glitch::ERuntime('A source has already been defined as '.$alias);
+            throw Exceptional::Runtime(
+                'A source has already been defined as '.$alias
+            );
         }
 
         $this->references[$alias] = $reference;
@@ -214,7 +217,7 @@ class Manager implements TransactionAware
             return $possible->findField($fieldName);
         }
 
-        throw Glitch::EUnexpectedValue(
+        throw Exceptional::UnexpectedValue(
             'Field '.$name.' could not be found in current query'
         );
     }
@@ -236,7 +239,7 @@ class Manager implements TransactionAware
             return $possible->findField($fieldName);
         }
 
-        throw Glitch::EUnexpectedValue(
+        throw Exceptional::UnexpectedValue(
             'Field '.$name.' could not be found in current query'
         );
     }

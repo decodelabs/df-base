@@ -16,7 +16,7 @@ use Df\Http\Response\Stream;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Node implements Route
 {
@@ -75,7 +75,7 @@ class Node implements Route
         $class = '\\Df\\Apex\\Http\\'.ucfirst($context->request->area).'\\'.implode('\\', $parts).'Node';
 
         if (!class_exists($class, true)) {
-            throw Glitch::ENotFound([
+            throw Exceptional::NotFound([
                 'message' => 'Node not found: '.$context->request,
                 'http' => 404,
                 'data' => $context->request

@@ -9,10 +9,8 @@ namespace Df\Arch;
 use DecodeLabs\Collections\Tree;
 use DecodeLabs\Collections\Tree\NativeMutable as MutableTree;
 
-use DecodeLabs\Glitch;
 use DecodeLabs\Glitch\Dumpable;
-use DecodeLabs\Glitch\Dumper\Entity;
-use DecodeLabs\Glitch\Dumper\Inspector;
+use DecodeLabs\Exceptional;
 
 class Uri implements \ArrayAccess, Dumpable
 {
@@ -60,7 +58,7 @@ class Uri implements \ArrayAccess, Dumpable
             return $value;
         }
 
-        throw Glitch::EInvalidArgument(
+        throw Exceptional::InvalidArgument(
             'Invalid Arch Uri instance',
             null,
             $value
@@ -101,7 +99,7 @@ class Uri implements \ArrayAccess, Dumpable
         $parts = parse_url($uri);
 
         if ($parts === false) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Unable to parse uri',
                 null,
                 $uri
@@ -125,7 +123,9 @@ class Uri implements \ArrayAccess, Dumpable
             return $this->{$part};
         }
 
-        throw Glitch::ELogic('Arch\\Uri does not have member "'.$part.'"');
+        throw Exceptional::Logic(
+            'Arch\\Uri does not have member "'.$part.'"'
+        );
     }
 
     /**
@@ -260,7 +260,9 @@ class Uri implements \ArrayAccess, Dumpable
         }
 
         if (preg_match('/[^a-zA-Z0-9\-]/', $type)) {
-            throw Glitch('Invalid Arch\Uri route type: '.$type);
+            throw Glitch::InvalidArgument(
+                'Invalid Arch\Uri route type: '.$type
+            );
         }
 
         return lcfirst($type);
@@ -278,7 +280,9 @@ class Uri implements \ArrayAccess, Dumpable
         $area = lcfirst(ltrim($area, '~'));
 
         if (preg_match('/[^a-zA-Z0-9\-]/', $area)) {
-            throw Glitch('Invalid Arch\Uri route area: '.$area);
+            throw Exceptional::InvalidArgument(
+                'Invalid Arch\Uri route area: '.$area
+            );
         }
 
         return $area;
@@ -294,13 +298,13 @@ class Uri implements \ArrayAccess, Dumpable
         }
 
         if (strpos($path, '?') !== false) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid path, must not contain query string'
             );
         }
 
         if (strpos($path, '#') !== false) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid path, must not contain fragment'
             );
         }

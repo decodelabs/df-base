@@ -8,7 +8,7 @@ namespace Df\Core\Crypt\Hasher;
 
 use Df\Core\Crypt\Hasher;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Native implements Hasher
 {
@@ -44,7 +44,7 @@ class Native implements Hasher
         $output = password_hash($value, $this->algo, $this->options);
 
         if ($output === false) {
-            throw Glitch::ERuntime(
+            throw Exceptional::Runtime(
                 'Hashing failed with current options'
             );
         }

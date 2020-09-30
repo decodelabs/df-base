@@ -10,6 +10,8 @@ use Df\Opal\Query\Builder;
 use Df\Opal\Query\Builder\StackedData;
 use Df\Opal\Query\Builder\StackedTrait;
 
+use DecodeLabs\Exceptional;
+
 trait StackedDataTrait
 {
     use StackedTrait;
@@ -40,7 +42,9 @@ trait StackedDataTrait
         $output = $this->registerStack($name, 'list', $keyField, $valueField, $processor);
 
         if (!$output instanceof StackedData) {
-            throw Glitch::EUnexpectedValue('Stack output is not an instanceof StackedData', null, $output);
+            throw Exceptional::UnexpectedValue(
+                'Stack output is not an instanceof StackedData', null, $output
+            );
         }
 
         return $output;
@@ -66,7 +70,9 @@ trait StackedDataTrait
         $output = $this->registerStack($name, 'value', null, $valueField, $processor);
 
         if (!$output instanceof StackedData) {
-            throw Glitch::EUnexpectedValue('Stack output is not an instanceof StackedData', null, $output);
+            throw Exceptional::UnexpectedValue(
+                'Stack output is not an instanceof StackedData', null, $output
+            );
         }
 
         return $output;

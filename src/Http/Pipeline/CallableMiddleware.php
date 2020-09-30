@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class CallableMiddleware implements MiddlewareInterface
 {
@@ -33,7 +33,7 @@ class CallableMiddleware implements MiddlewareInterface
         $response = ($this->callable)($request, $handler);
 
         if (!$response instanceof ResponseInterface) {
-            throw Glitch::EImplementation(
+            throw Exceptional::Implementation(
                 'Callable middleware did not return a ResponseInterface instance'
             );
         }

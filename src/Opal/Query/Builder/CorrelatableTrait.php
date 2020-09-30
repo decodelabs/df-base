@@ -17,6 +17,7 @@ use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Field\Correlation as CorrelationField;
 
 use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 trait CorrelatableTrait
 {
@@ -52,7 +53,9 @@ trait CorrelatableTrait
         $output = $this->correlateRelation($relation, 'COUNT');
 
         if (!$output instanceof Correlated) {
-            throw Glitch::EUnexpectedValue('Output query is not correlated', null, $output);
+            throw Exceptional::UnexpectedValue(
+                'Output query is not correlated', null, $output
+            );
         }
 
         return $output->endCorrelation($alias);
@@ -74,7 +77,9 @@ trait CorrelatableTrait
         $output = $this->correlateRelation($relation, 'HAS');
 
         if (!$output instanceof Correlated) {
-            throw Glitch::EUnexpectedValue('Output query is not correlated', null, $output);
+            throw Exceptional::UnexpectedValue(
+                'Output query is not correlated', null, $output
+            );
         }
 
         return $output->endCorrelation($alias);

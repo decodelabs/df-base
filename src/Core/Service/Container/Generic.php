@@ -12,7 +12,7 @@ use Df\Core\Service\Provider;
 use Df\Core\Service\Group;
 use Df\Core\Event\Dispatcher;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -40,7 +40,7 @@ class Generic implements Container
     public function registerProvider(string $provider): void
     {
         if (!class_exists($provider, true)) {
-            throw Glitch::{'EImplementation,ENotFound'}(
+            throw Exceptional::{'Implementation,NotFound'}(
                 'Service provider '.$provider.' could not be found'
             );
         }
@@ -341,8 +341,8 @@ class Generic implements Container
             return $binding;
         }
 
-        throw Glitch::{
-            'ENotFound,Psr\\Container\\NotFoundExceptionInterface'
+        throw Exceptional::{
+            'NotFound,Psr\\Container\\NotFoundExceptionInterface'
         }(
             $type.' has not been bound'
         );
@@ -470,8 +470,8 @@ class Generic implements Container
         $reflector = new \ReflectionClass($type);
 
         if (!$reflector->isInstantiable()) {
-            throw Glitch::{
-                'ELogic,Psr\\Container\\ContainerExceptionInterface'
+            throw Exceptional::{
+                'Logic,Psr\\Container\\ContainerExceptionInterface'
             }(
                 'Binding target '.$type.' cannot be instantiated'
             );
@@ -495,7 +495,7 @@ class Generic implements Container
     {
         foreach ($interfaces as $interface) {
             if (!$object instanceof $interface) {
-                throw Glitch::EImplementation(
+                throw Exceptional::Implementation(
                     'Binding target does not implement '.$interface
                 );
             }
@@ -515,7 +515,9 @@ class Generic implements Container
         } elseif ($function instanceof \Closure || is_string($function)) {
             $reflector = new \ReflectionFunction($function);
         } else {
-            throw Glitch::InvalidArgument('Unable to reflect callback', null, $function);
+            throw Exceptional::InvalidArgument(
+                'Unable to reflect callback', null, $function
+            );
         }
 
         $paramReflectors = $reflector->getParameters();
@@ -552,8 +554,8 @@ class Generic implements Container
             } elseif ($i === 0 && $reflector->name === 'app') {
                 $args[] = $this;
             } else {
-                throw Glitch::{
-                    'ELogic,Psr\\Container\\ContainerExceptionInterface'
+                throw Exceptional::{
+                    'Logic,Psr\\Container\\ContainerExceptionInterface'
                 }(
                     'Binding param $'.$reflector->name.' cannot be resolved'
                 );
@@ -685,9 +687,9 @@ class Generic implements Container
     /**
      * Alias bind()
      */
-    public function offsetSet($type, $target)
+    public function offsetSet($type, $target): void
     {
-        return $this->bind($type, $target);
+        $this->bind($type, $target);
     }
 
     /**
@@ -701,9 +703,9 @@ class Generic implements Container
     /**
      * Alias remove()
      */
-    public function offsetUnset($type)
+    public function offsetUnset($type): void
     {
-        return $this->remove($type);
+        $this->remove($type);
     }
 
 

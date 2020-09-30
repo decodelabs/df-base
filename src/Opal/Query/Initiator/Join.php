@@ -19,7 +19,7 @@ use Df\Opal\Query\Source\Manager as SourceManager;
 use Df\Opal\Query\Source\Reference;
 use Df\Opal\Query\Builder\Join as JoinBuilder;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Join implements
     Initiator,
@@ -59,7 +59,7 @@ class Join implements
                 break;
 
             default:
-                throw Glitch::EInvalidArgument(
+                throw Exceptional::InvalidArgument(
                     'Unknown join type '.$type
                 );
         }

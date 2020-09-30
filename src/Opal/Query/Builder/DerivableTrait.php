@@ -11,7 +11,7 @@ use Df\Opal\Query\Builder\Derivable;
 use Df\Opal\Query\Initiator;
 use Df\Opal\Query\Source\Derived;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 trait DerivableTrait
 {
@@ -40,7 +40,7 @@ trait DerivableTrait
     public function endDerivation(string $alias=null): Builder
     {
         if (!$this->derivationParent) {
-            throw Glitch::ELogic(
+            throw Exceptional::Logic(
                 'Cannot create derived source - no parent query available'
             );
         }

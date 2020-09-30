@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Df\Time;
 
 use Carbon\Carbon;
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Date extends Carbon
 {
@@ -16,7 +16,7 @@ class Date extends Carbon
      */
     public static function instance($date): ?Date
     {
-        if ($date === null) {
+        if ($date === null) { /** @phpstan-ignore-line */
             return null;
         } elseif ($date instanceof Date) {
             return $date;
@@ -32,7 +32,9 @@ class Date extends Carbon
             }
             return $output;
         } else {
-            throw Glitch::EInvalidArgument('Invalid date format', null, $date);
+            throw Exceptional::InvalidArgument(
+                'Invalid date format', null, $date
+            );
         }
     }
 
@@ -44,7 +46,9 @@ class Date extends Carbon
         $output = Interval::instance($this->diff($this->resolveCarbon($date), $absolute));
 
         if ($output === null) {
-            throw Glitch::EUnexpectedValue('Unable to create instance from date', null, $date);
+            throw Exceptional::UnexpectedValue(
+                'Unable to create instance from date', null, $date
+            );
         }
 
         return $output;

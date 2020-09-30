@@ -16,6 +16,8 @@ use Df\Opal\Query\Initiator\Select as SelectInitiator;
 use Df\Opal\Query\Builder;
 use Df\Opal\Query\Builder\Select as SelectBuilder;
 
+use DecodeLabs\Exceptional;
+
 trait WhereTrait
 {
     protected $where = [];
@@ -108,7 +110,9 @@ trait WhereTrait
             $output = $output->endClause();
 
             if (!$output instanceof WhereClauseProvider) {
-                throw Glitch::EUnexpectedValue('Parent query is not a where clause facade', null, $output);
+                throw Exceptional::UnexpectedValue(
+                    'Parent query is not a where clause facade', null, $output
+                );
             }
         }
 
@@ -127,7 +131,9 @@ trait WhereTrait
             $output = $output->endClause();
 
             if (!$output instanceof WhereClauseProvider) {
-                throw Glitch::EUnexpectedValue('Parent query is not a where clause facade', null, $output);
+                throw Exceptional::UnexpectedValue(
+                    'Parent query is not a where clause facade', null, $output
+                );
             }
         }
 
@@ -243,7 +249,9 @@ trait WhereTrait
             $parent = $this->getQuery();
         }
         if (!$parent) {
-            throw Glitch::EUnexpectedValue('Unable to get parent query for sub query', null, $this);
+            throw Exceptional::UnexpectedValue(
+                'Unable to get parent query for sub query', null, $this
+            );
         }
 
         $output->asSubQuery($parent, 'where', function ($select) use ($local, $operator, $or) {
@@ -271,7 +279,9 @@ trait WhereTrait
                 ->from($manifest['bridgeLocal']['source'], $local);
 
             if (!$bridge instanceof self) {
-                throw Glitch::EUnexpectedValue('Bridge source is not a where facade', null, $bridge);
+                throw Exceptional::UnexpectedValue(
+                    'Bridge source is not a where facade', null, $bridge
+                );
             }
 
             $output = $bridge->createWhereSelect($manifest['bridgeForeign']['field'], 'in', $manifest['foreign']['field'], false, false)
@@ -283,7 +293,9 @@ trait WhereTrait
         }
 
         if (!$output instanceof SelectBuilder) {
-            throw Glitch::EUnexpectedValue('Bridge target query is not a Select', null, $output);
+            throw Exceptional::UnexpectedValue(
+                'Bridge target query is not a Select', null, $output
+            );
         }
 
         return $output;

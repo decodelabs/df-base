@@ -10,7 +10,7 @@ use Df\Opal\Query\Clause;
 use Df\Opal\Query\Field;
 use Df\Opal\Query\Clause\RepresentationTrait;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 abstract class Base implements Clause
 {
@@ -116,7 +116,7 @@ abstract class Base implements Clause
                 break;
 
             default:
-                throw Glitch::EInvalidArgument(
+                throw Exceptional::InvalidArgument(
                     'Operator '.$operator.' is not recognized'
                 );
         }

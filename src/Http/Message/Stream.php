@@ -10,7 +10,7 @@ use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
 use DecodeLabs\Atlas\Channel\Stream as IoStream;
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Stream implements StreamInterface
 {
@@ -78,11 +78,15 @@ class Stream implements StreamInterface
     public function tell(): int
     {
         if ($this->resource === null) {
-            throw Glitch::ERuntime('Cannot tell stream position, resource has been detached');
+            throw Exceptional::Runtime(
+                'Cannot tell stream position, resource has been detached'
+            );
         }
 
         if (false === ($output = ftell($this->resource))) {
-            throw Glitch::ERuntime('Unable to tell stream position');
+            throw Exceptional::Runtime(
+                'Unable to tell stream position'
+            );
         }
 
         return $output;
@@ -119,17 +123,23 @@ class Stream implements StreamInterface
     public function seek($offset, $whence=SEEK_SET): void
     {
         if ($this->resource === null) {
-            throw Glitch::ERuntime('Cannot seek stream position, resource has been detached');
+            throw Exceptional::Runtime(
+                'Cannot seek stream position, resource has been detached'
+            );
         }
 
         if (!$this->isSeekable()) {
-            throw Glitch::ERuntime('Stream is not seekable');
+            throw Exceptional::Runtime(
+                'Stream is not seekable'
+            );
         }
 
         $result = fseek($this->resource, $offset, $whence);
 
         if ($result !== 0) {
-            throw Glitch::ERuntime('Stream seeking failed');
+            throw Exceptional::Runtime(
+                'Stream seeking failed'
+            );
         }
     }
 
@@ -168,17 +178,23 @@ class Stream implements StreamInterface
     public function write($string)
     {
         if ($this->resource === null) {
-            throw Glitch::ERuntime('Cannot write to stream, resource has been detached');
+            throw Exceptional::Runtime(
+                'Cannot write to stream, resource has been detached'
+            );
         }
 
         if (!$this->isWritable()) {
-            throw Glitch::ERuntime('Stream is not writable');
+            throw Exceptional::Runtime(
+                'Stream is not writable'
+            );
         }
 
         $output = fwrite($this->resource, $string);
 
         if ($output === false) {
-            throw Glitch::ERuntime('Writing to stream failed');
+            throw Exceptional::Runtime(
+                'Writing to stream failed'
+            );
         }
 
         return (int)$output;
@@ -205,17 +221,23 @@ class Stream implements StreamInterface
     public function read($length): string
     {
         if ($this->resource === null) {
-            throw Glitch::ERuntime('Cannot read from stream, resource has been detached');
+            throw Exceptional::Runtime(
+                'Cannot read from stream, resource has been detached'
+            );
         }
 
         if (!$this->isReadable()) {
-            throw Glitch::ERuntime('Stream is not readable');
+            throw Exceptional::Runtime(
+                'Stream is not readable'
+            );
         }
 
         $output = fread($this->resource, $length);
 
         if ($output === false) {
-            throw Glitch::ERuntime('Reading from stream failed');
+            throw Exceptional::ERuntime(
+                'Reading from stream failed'
+            );
         }
 
         return $output;
@@ -227,13 +249,17 @@ class Stream implements StreamInterface
     public function getContents(): string
     {
         if (!$this->isReadable()) {
-            throw Glitch::ERuntime('Stream is not readable');
+            throw Exceptional::Runtime(
+                'Stream is not readable'
+            );
         }
 
         $output = stream_get_contents($this->resource);
 
         if ($output === false) {
-            throw Glitch::ERuntime('Reading from stream failed');
+            throw Exceptional::Runtime(
+                'Reading from stream failed'
+            );
         }
 
         return $output;
@@ -281,7 +307,7 @@ class Stream implements StreamInterface
             try {
                 $stream = fopen($stream, $mode);
             } catch (\ErrorException $e) {
-                throw Glitch::EInvalidArgument([
+                throw Exceptional::InvalidArgument([
                     'message' => 'Invalid HTTP body stream',
                     'data' => $stream,
                     'previous' => $e
@@ -292,7 +318,7 @@ class Stream implements StreamInterface
         }
 
         if (!is_resource($stream)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid HTTP body stream',
                 null,
                 $stream

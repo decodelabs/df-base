@@ -11,6 +11,8 @@ use Df\Opal\Query\Clause\Provider\Where as RootWhereClauseProvider;
 use Df\Opal\Query\Clause\Provider\WhereTrait as RootWhereClauseProviderTrait;
 use Df\Opal\Query\Clause\Group\Where as WhereGroup;
 
+use DecodeLabs\Exceptional;
+
 trait WhereClauseProviderTrait
 {
     use RootWhereClauseProviderTrait;
@@ -26,7 +28,9 @@ trait WhereClauseProviderTrait
         $output->where($local, $operator, $value);
 
         if (!$output instanceof WhereGroup) {
-            throw Glitch::EUnexpectedValue('Parent query is not a where clause provider', null, $output);
+            throw Exceptional::UnexpectedValue(
+                'Parent query is not a where clause provider', null, $output
+            );
         }
 
         return $output->endPrerequisite($name);
@@ -41,7 +45,9 @@ trait WhereClauseProviderTrait
         $output->whereField($local, $operator, $foreign);
 
         if (!$output instanceof WhereGroup) {
-            throw Glitch::EUnexpectedValue('Parent query is not a where clause provider', null, $output);
+            throw Exceptional::UnexpectedValue(
+                'Parent query is not a where clause provider', null, $output
+            );
         }
 
         return $output->endPrerequisite($name);

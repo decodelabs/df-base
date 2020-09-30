@@ -16,6 +16,8 @@ use Df\Core\Config\Loader\PhpArray;
 use Df\Core\Service\Container;
 use Df\Core\Service\Provider;
 
+use DecodeLabs\Exceptional;
+
 class ServiceProvider implements Provider
 {
     /**
@@ -35,7 +37,9 @@ class ServiceProvider implements Provider
     public function registerServices(Container $app): void
     {
         if (!$app instanceof App) {
-            throw Glitch::EUnexpectedValue('Container is not the app', null, $app);
+            throw Exceptional::UnexpectedValue(
+                'Container is not the app', null, $app
+            );
         }
 
         // Env

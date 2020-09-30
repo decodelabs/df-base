@@ -12,7 +12,7 @@ use Df\Flex\Formatter;
 
 use DecodeLabs\Terminus\Command\Request;
 use DecodeLabs\Terminus\Command\Definition;
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 abstract class Base implements Task
 {
@@ -26,7 +26,9 @@ abstract class Base implements Task
     public static function load(App $app, Request $request): Task
     {
         if (empty($path = $request->getScript())) {
-            throw Glitch::EUnexpectedValue('Script path not set in request', null, $request);
+            throw Exceptional::UnexpectedValue(
+                'Script path not set in request', null, $request
+            );
         }
 
         $parts = array_map(
@@ -37,7 +39,7 @@ abstract class Base implements Task
         $class = '\\Df\\Apex\\Clip\\'.implode('\\', $parts).'Task';
 
         if (!class_exists($class, true)) {
-            throw Glitch::ENotFound([
+            throw Exceptional::NotFound([
                 'message' => 'Task not found: '.$path,
                 'data' => $request
             ]);
@@ -46,7 +48,9 @@ abstract class Base implements Task
         $output = $app->newInstanceOf($class, [], Task::class);
 
         if (!$output instanceof Task) {
-            throw Glitch::EDefinition('Task class does not implement Task interface', null, $output);
+            throw Exceptional::Definition(
+                'Task class does not implement Task interface', null, $output
+            );
         }
 
         return $output;

@@ -12,7 +12,7 @@ use Psr\Http\Message\UriInterface;
 
 use DecodeLabs\Collections\Tree;
 use DecodeLabs\Collections\Tree\NativeMutable as MutableTree;
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Uri implements LinkUri
 {
@@ -78,7 +78,7 @@ class Uri implements LinkUri
         $parts = parse_url($uri);
 
         if ($parts === false) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Unable to parse uri',
                 null,
                 $uri
@@ -146,7 +146,7 @@ class Uri implements LinkUri
         }
 
         if (!isset(self::SCHEMES[$scheme])) {
-            throw Glitch::{'EInvalidArgument'}(
+            throw Exceptional::InvalidArgument(
                 'Scheme "'.$scheme.'" is unsupported'
             );
         }
@@ -387,7 +387,7 @@ class Uri implements LinkUri
         }
 
         if (!is_numeric($port)) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid port: '.$port
             );
         }
@@ -395,7 +395,7 @@ class Uri implements LinkUri
         $port = (int)$port;
 
         if ($port < 1 || $port > 65535) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid port: '.$port
             );
         }
@@ -465,13 +465,13 @@ class Uri implements LinkUri
         }
 
         if (strpos($path, '?') !== false) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid path, must not contain query string'
             );
         }
 
         if (strpos($path, '#') !== false) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid path, must not contain fragment'
             );
         }
@@ -536,7 +536,7 @@ class Uri implements LinkUri
         }
 
         if (strpos($query, '#') !== false) {
-            throw Glitch::EInvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid query string - must not contain fragment'
             );
         }

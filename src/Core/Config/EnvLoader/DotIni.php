@@ -11,7 +11,7 @@ use Df\Core\App;
 use Df\Core\Config\EnvLoader;
 use Df\Core\Config\Env;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class DotIni implements EnvLoader
 {
@@ -54,15 +54,19 @@ class DotIni implements EnvLoader
         $path = $this->getPath();
 
         if (!is_readable($path) || !is_file($path)) {
-            throw Glitch::ENotFound('Ini file could not be read', null, $path);
+            throw Exceptional::NotFound(
+                'Ini file could not be read', null, $path
+            );
         }
 
         if (false === ($data = parse_ini_file($path))) {
-            throw Glitch::ERuntime('Unable to parse ini file', null, $path);
+            throw Exceptional::Runtime(
+                'Unable to parse ini file', null, $path
+            );
         }
 
         if (!isset($data['IDENTITY'])) {
-            throw Glitch::EUnexpectedValue(
+            throw Exceptional::UnexpectedValue(
                 'Env data does not define an IDENTITY'
             );
         }

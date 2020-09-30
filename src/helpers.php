@@ -17,6 +17,8 @@ namespace Df
     use Composer\Autoload\ClassLoader;
     use DecodeLabs\Glitch;
 
+    use RuntimeException;
+
     define('Df\\START', microtime(true));
 
     /**
@@ -28,7 +30,9 @@ namespace Df
         static $started;
 
         if ($started) {
-            throw new \RuntimeException('Df has already been bootstrapped');
+            throw new RuntimeException(
+                'Df has already been bootstrapped'
+            );
         }
 
         $started = true;

@@ -14,7 +14,7 @@ use Df\Core\Cache\Item;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\InvalidArgumentException as CacheInvalidArgumentException;
 
-use DecodeLabs\Glitch;
+use DecodeLabs\Exceptional;
 
 class Generic implements Store
 {
@@ -39,7 +39,9 @@ class Generic implements Store
         $this->driver = $driver;
 
         if ($namespace === '') {
-            throw Glitch::EInvalidArgument('Invalid empty cache namespace');
+            throw Exceptional::InvalidArgument(
+                'Invalid empty cache namespace'
+            );
         }
 
         $this->namespace = $namespace;
@@ -261,7 +263,7 @@ class Generic implements Store
     public function save(CacheItemInterface $item): bool
     {
         if (!$item instanceof Item) {
-            throw Glitch::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
+            throw Exceptional::{'InvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
                 'Cache items must implement Df\\Core\\Cache\\Item',
                 null,
                 $item
@@ -517,7 +519,7 @@ class Generic implements Store
     protected function validateKey($key): string
     {
         if (!is_string($key) || !isset($key[0])) {
-            throw Glitch::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
+            throw Exceptional::{'InvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
                 'Cache key must be a string',
                 null,
                 $key
@@ -525,7 +527,7 @@ class Generic implements Store
         }
 
         if (preg_match('|[\{\}\(\)/\\\@\:]|', $key)) {
-            throw Glitch::{'EInvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
+            throw Exceptional::{'InvalidArgument,Psr\\Cache\\InvalidArgumentException'}(
                 'Cache key must not contain reserved extension characters: {}()/\@:',
                 null,
                 $key
@@ -542,7 +544,7 @@ class Generic implements Store
     {
         if (!is_array($keys)) {
             if (!$keys instanceof \Traversable) {
-                throw Glitch::{'EInvalidArgument,Psr\\SimpleCache\\InvalidArgumentException'}(
+                throw Exceptional::{'InvalidArgument,Psr\\SimpleCache\\InvalidArgumentException'}(
                     'Invalid cache keys',
                     null,
                     $keys
@@ -565,7 +567,7 @@ class Generic implements Store
         try {
             return $func();
         } catch (CacheInvalidArgumentException $e) {
-            throw Glitch::{'EInvalidArgument,Psr\\SimpleCache\\InvalidArgumentException'}(
+            throw Exceptional::{'InvalidArgument,Psr\\SimpleCache\\InvalidArgumentException'}(
                 $e->getMessage(),
                 ['previous' => $e]
             );
