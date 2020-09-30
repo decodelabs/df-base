@@ -235,7 +235,7 @@ class Stream implements StreamInterface
         $output = fread($this->resource, $length);
 
         if ($output === false) {
-            throw Exceptional::ERuntime(
+            throw Exceptional::Runtime(
                 'Reading from stream failed'
             );
         }

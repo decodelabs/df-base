@@ -260,7 +260,7 @@ class Uri implements \ArrayAccess, Dumpable
         }
 
         if (preg_match('/[^a-zA-Z0-9\-]/', $type)) {
-            throw Glitch::InvalidArgument(
+            throw Exceptional::InvalidArgument(
                 'Invalid Arch\Uri route type: '.$type
             );
         }
