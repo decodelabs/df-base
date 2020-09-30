@@ -111,7 +111,7 @@ class File implements Driver
         try {
             $file->putContents($data);
             $output = true;
-        } catch (Atlas\EGlitch $e) {
+        } catch (\Throwable $e) {
             $output = false;
         }
 
@@ -220,7 +220,7 @@ class File implements Driver
         try {
             $file->putContents($expires);
             return true;
-        } catch (Atlas\EGlitch $e) {
+        } catch (\Throwable $e) {
             return false;
         }
     }

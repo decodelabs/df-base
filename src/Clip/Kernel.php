@@ -57,7 +57,7 @@ class Kernel implements ConsoleKernel
 
         try {
             $args = $command->apply($request);
-        } catch (EGlitch $e) {
+        } catch (\Throwable $e) {
             Cli::writeLine();
             Cli::{'error'}($e->getMessage());
             $command->renderHelp($session);
