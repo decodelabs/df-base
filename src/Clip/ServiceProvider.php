@@ -9,7 +9,7 @@ namespace Df\Clip;
 use Df\Core\Service\Container;
 use Df\Core\Service\Provider;
 
-use DecodeLabs\Terminus\Cli;
+use DecodeLabs\Terminus as Cli;
 use DecodeLabs\Terminus\Command\Request;
 
 class ServiceProvider implements Provider

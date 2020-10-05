@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace Df\Apex\Clip;
 
 use Df\Clip\Task\Base;
-use DecodeLabs\Terminus\Cli;
+use DecodeLabs\Terminus as Cli;
 use DecodeLabs\Terminus\Command\Definition;
 
 class HelpTask extends Base

@@ -11,7 +11,7 @@ use Df\Core\Kernel\Console as ConsoleKernel;
 
 use Df\Clip\Task\Base;
 
-use DecodeLabs\Terminus\Cli;
+use DecodeLabs\Terminus as Cli;
 use DecodeLabs\Terminus\Command\Request;
 
 class Kernel implements ConsoleKernel
