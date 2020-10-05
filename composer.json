@@ -11,9 +11,9 @@
         "php": "^7.2",
         "symfony/polyfill-mbstring": "~1.7",
 
-        "decodelabs/exceptional": "^0.2",
+        "decodelabs/exceptional": "^0.2.8",
         "decodelabs/glitch": "^0.16.5",
-        "decodelabs/veneer": "^0.6",
+        "decodelabs/veneer": "^0.6.2",
         "decodelabs/systemic": "^0.6.11",
         "decodelabs/tagged": "^0.8.6",
         "decodelabs/terminus": "^0.5.7",
