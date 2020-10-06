@@ -6,8 +6,8 @@
 declare(strict_types=1);
 namespace Df\Core\Config;
 
-use DecodeLabs\Gadgets\Then;
-use DecodeLabs\Gadgets\ThenTrait;
+use DecodeLabs\Fluidity\Then;
+use DecodeLabs\Fluidity\ThenTrait;
 
 use DecodeLabs\Exceptional;
 
