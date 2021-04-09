@@ -11,7 +11,7 @@
         "php": "^7.2|^8.0",
         "symfony/polyfill-mbstring": "~1.7",
 
-        "decodelabs/atlas": "^0.8",
+        "decodelabs/atlas": "^0.9",
         "decodelabs/collections": "^0.6",
         "decodelabs/deliverance": "^0.1",
         "decodelabs/exceptional": "^0.3",
