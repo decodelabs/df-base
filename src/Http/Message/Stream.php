@@ -9,7 +9,7 @@ namespace Df\Http\Message;
 use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\StreamInterface;
 
-use DecodeLabs\Atlas\Channel\Stream as IoStream;
+use DecodeLabs\Deliverance\Channel\Stream as IoStream;
 use DecodeLabs\Exceptional;
 
 class Stream implements StreamInterface
