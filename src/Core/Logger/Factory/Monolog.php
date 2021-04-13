@@ -10,7 +10,7 @@ use Df\Core\App;
 use Df\Core\Logger\Factory;
 use Df\Core\Config\Repository;
 
-use Df\Flex\Formatter;
+use DecodeLabs\Dictum;
 
 use Psr\Log\LoggerInterface;
 
@@ -120,7 +120,7 @@ class Monolog implements Factory
     protected function createStreamHandler(string $name, Repository $config): HandlerInterface
     {
         return new StreamHandler(
-            $config['path'] ?? $this->app->getStoragePath().'/logs/'.Formatter::filename($name).'.log',
+            $config['path'] ?? $this->app->getStoragePath().'/logs/'.Dictum::filename($name).'.log',
             $config['level'] ?? Logger::DEBUG,
             $config['bubble'] ?? true,
             $config['permission'] ?? null,
@@ -134,7 +134,7 @@ class Monolog implements Factory
     protected function createDailyHandler(string $name, Repository $config): HandlerInterface
     {
         return new RotatingFileHandler(
-            $config['path'] ?? $this->app->getStoragePath().'/logs/'.Formatter::filename($name).'.log',
+            $config['path'] ?? $this->app->getStoragePath().'/logs/'.Dictum::filename($name).'.log',
             $config['maxFiles'] ?? 7,
             $config['level'] ?? Logger::DEBUG,
             $config['bubble'] ?? true,

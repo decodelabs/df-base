@@ -8,11 +8,11 @@ namespace Df\Clip\Task;
 
 use Df\Core\App;
 use Df\Clip\Task;
-use Df\Flex\Formatter;
 
 use DecodeLabs\Terminus\Command\Request;
 use DecodeLabs\Terminus\Command\Definition;
 use DecodeLabs\Exceptional;
+use DecodeLabs\Dictum;
 
 abstract class Base implements Task
 {
@@ -32,7 +32,9 @@ abstract class Base implements Task
         }
 
         $parts = array_map(
-            [Formatter::class, 'id'],
+            function ($value) {
+                return Dictum::id($value);
+            },
             explode('/', (string)$path)
         );
 
